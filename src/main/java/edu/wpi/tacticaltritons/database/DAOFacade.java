@@ -25,6 +25,8 @@ public class DAOFacade {
   static FurnitureDaoImpl furnitureDao = new FurnitureDaoImpl();
   static FurnitureRequestOptionsDaoImpl furnitureRequestOptionsDao = new FurnitureRequestOptionsDaoImpl();
 
+  static HomeServiceRequestsDaoImpl homeServiceRequestsDao = new HomeServiceRequestsDaoImpl();
+
   public static void addNode(Node node) throws SQLException {
     nodeDao.insert(node);
   }
@@ -295,5 +297,9 @@ public class DAOFacade {
 
   public static Furniture getFurniture(int orderNum) throws SQLException {
     return furnitureDao.get(orderNum);
+  }
+
+  public static List<HomeServiceRequests> getSessionServiceRequests(String firstName, String lastName) throws SQLException{
+    return homeServiceRequestsDao.getAll(firstName,lastName);
   }
 }
