@@ -1,5 +1,6 @@
 package edu.wpi.tacticaltritons.controllers;
 
+import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.database.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -13,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 
 import java.sql.SQLException;
 import java.sql.Time;
@@ -22,6 +24,7 @@ public class NewHomeController {
     @FXML FlowPane requestsPane;
     @FXML FlowPane movesPane;
     @FXML FlowPane eventsPane;
+    @FXML GridPane tableGridPane;
 
     TableView<HomeServiceRequests> tableServiceRequest = new TableView<>();
     @FXML
@@ -91,12 +94,39 @@ public class NewHomeController {
         tableServiceRequest.getColumns().addAll(completed, serviceType,orderNum,deliveryDate,deliveryTime);
 
         tableServiceRequest.getItems().addAll(requestObservableList);
+tableServiceRequest.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        Platform.runLater(() -> {
-            tableServiceRequest.setPrefWidth(requestsPane.getWidth());
-            tableServiceRequest.setPrefHeight(requestsPane.getHeight());
-            tableServiceRequest.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        App.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) ->
+        {
+            requestsPane.getChildren().clear();
+            if(App.getPrimaryStage().isMaximized())
+            {
+                System.out.println("Width Property Is maximized");
+                System.out.println("Old value: " + oldValue + " newvalue: " + newValue);
+                System.out.println("Width of gridpane: " + tableGridPane.getCellBounds(1,0).getWidth());
+                System.out.println();
+                tableServiceRequest.setPrefWidth(600);
+            }
+            else
+            {
+                System.out.println("Width Property");
+                System.out.println("Old value: " + oldValue + " newvalue: " + newValue);
+                System.out.println("Width of gridpane: " + tableGridPane.getCellBounds(1,0).getWidth());
+                System.out.println();
+                tableServiceRequest.setPrefWidth(tableGridPane.getCellBounds(1,0).getWidth() - 40);
+            }
             requestsPane.getChildren().add(tableServiceRequest);
         });
+
+        App.getPrimaryStage().heightProperty().addListener((observable, oldValue, newValue) ->
+        {
+//            System.out.println("Height Property");
+//            System.out.println("Old value: " + oldValue + " newvalue: " + newValue);
+//            System.out.println("Height of gridpane: " + tableGridPane.getCellBounds(1,0).getHeight());
+            requestsPane.getChildren().clear();
+            tableServiceRequest.setPrefHeight(tableGridPane.getCellBounds(1,0).getHeight());
+            requestsPane.getChildren().add(tableServiceRequest);
+        });
+
     }
 }
