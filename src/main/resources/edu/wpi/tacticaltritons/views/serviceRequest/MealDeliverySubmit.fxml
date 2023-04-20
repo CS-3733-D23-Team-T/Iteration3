@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import net.kurobako.gesturefx.GesturePane?>
+
+<!--<GridPane fx:id="gridMeal" stylesheets="@../../stylesheets/ServiceRequest.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.MealDeliverySubmitController">-->
+<!--   <Pane prefHeight="2.0" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />-->
+<!--    <columnConstraints>
+        <ColumnConstraints />
+    </columnConstraints>-->
+<!--    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>-->
+<!--</GridPane>-->
+
+<BorderPane fx:id="content" stylesheets="@../../stylesheets/ServiceRequest.css" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.MealDeliverySubmitController">
+        <right>
+            <FlowPane fx:id="orderPane" columnHalignment="CENTER" prefWrapLength="0.0" BorderPane.alignment="CENTER_LEFT">
+                <children>
+                    <ScrollPane fx:id="orderPaneScroll">
+                        <content>
+                            <StackPane fx:id="orderPaneStack">
+                                <children>
+                                    <Rectangle fx:id="orderPaneRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="300.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle" width="300.0" StackPane.alignment="TOP_LEFT">
+                                        <StackPane.margin>
+                                            <Insets bottom="10.0" />
+                                        </StackPane.margin>
+                                    </Rectangle>
+                                    <VBox fx:id="orderListPane" spacing="10.0">
+                                        <children>
+                                            <Label fx:id="restaurantDisplayHeader1" alignment="TOP_LEFT" styleClass="text-header" text="Restaurant Name" />
+                                            <Label fx:id="priceDisplay" styleClass="text-general" text="Price" />
+                                        </children>
+                                        <padding>
+                                            <Insets left="10.0" top="5.0" />
+                                        </padding>
+                                        <StackPane.margin>
+                                            <Insets />
+                                        </StackPane.margin>
+                                    </VBox>
+                                </children>
+                                <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                </padding>
+                                <opaqueInsets>
+                                    <Insets />
+                                </opaqueInsets>
+                            </StackPane>
+                        </content>
+                    </ScrollPane>
+                    <Button fx:id="clearButton" alignment="BASELINE_LEFT" mnemonicParsing="false" styleClass="button-clear" text="Clear Order">
+                        <opaqueInsets>
+                            <Insets />
+                        </opaqueInsets>
+                        <FlowPane.margin>
+                            <Insets bottom="10.0" left="10.0" top="10.0" />
+                        </FlowPane.margin>
+                    </Button>
+                    <Button fx:id="cancelButton" alignment="CENTER" mnemonicParsing="false" styleClass="button-cancel" text="Cancel Order">
+                        <FlowPane.margin>
+                            <Insets bottom="10.0" left="10.0" top="10.0" />
+                        </FlowPane.margin>
+                    </Button>
+                    <Button fx:id="submitButton" mnemonicParsing="false" styleClass="button-submit" text="Submit">
+                        <FlowPane.margin>
+                            <Insets bottom="10.0" left="10.0" top="10.0" />
+                        </FlowPane.margin>
+                    </Button>
+                </children>
+                <opaqueInsets>
+                    <Insets />
+                </opaqueInsets></FlowPane>
+        </right>
+        <GridPane.margin>
+            <Insets />
+        </GridPane.margin>
+        <left>
+            <ScrollPane fx:id="scrollPane" BorderPane.alignment="CENTER_RIGHT">
+                <content>
+                    <StackPane fx:id="formPaneStack">
+                        <children>
+                            <Rectangle fx:id="formRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="520.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle" width="254.0" StackPane.alignment="TOP_CENTER">
+                        <StackPane.margin>
+                           <Insets bottom="10.0" right="10.0" top="10.0" />
+                        </StackPane.margin></Rectangle>
+                            <FlowPane fx:id="formPane" alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" vgap="10.0">
+                        <children>
+                           <MFXTextField fx:id="firstName" floatingText="First Name" promptText="First Name" />
+                           <MFXTextField fx:id="lastName" floatingText="Last Name" promptText="Last Name" />
+                           <MFXTextField fx:id="patientFirstName" floatingText="Patient First Name" promptText="Patient First Name" />
+                           <MFXTextField fx:id="patientLastName" floatingText="Patient Last Name" promptText="Patient Last Name" />
+                           <MFXFilterComboBox fx:id="staffMemberName" floatingText="Staff Member Name" promptText="Staff Member Name" />
+                           <MFXFilterComboBox fx:id="room" floatingText="Room Number" promptText="Room Number" />
+                           <MFXDatePicker fx:id="date" floatingText="Delivery Date" promptText="Delivery Date" />
+                           <MFXTextField fx:id="time" floatingText="Delivery Time" promptText="Delivery Time (HH:MM)" />
+                           <Button fx:id="clearFormButton" mnemonicParsing="false" styleClass="button-cancel" text="Clear Form" />
+                        </children>
+                        <StackPane.margin>
+                           <Insets top="20.0" />
+                        </StackPane.margin></FlowPane>
+                        </children>
+                  <padding>
+                     <Insets bottom="10.0" left="10.0" />
+                  </padding>
+                    </StackPane>
+                </content>
+            </ScrollPane>
+        </left>
+      <center>
+         <StackPane fx:id="mapStackPane" BorderPane.alignment="CENTER">
+            <children>
+                <GesturePane fx:id="groundFloor">
+                    <StackPane fx:id="selectedFloorPane">
+                        <children>
+                            <Group fx:id="groundGroup">
+                                <children>
+                                    <ImageView fx:id="groundFloorImage" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="L1Group">
+                                <children>
+                                    <ImageView fx:id="lowerLevel1Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="L2Group">
+                                <children>
+                                    <ImageView fx:id="lowerLevel2Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="floor1Group">
+                                <children>
+                                    <ImageView fx:id="floor1Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="floor2Group">
+                                <children>
+                                    <ImageView fx:id="floor2Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="floor3Group">
+                                <children>
+                                    <ImageView fx:id="floor3Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+                        </children>
+                    </StackPane>
+                    <StackPane.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </StackPane.margin>
+                </GesturePane>
+            </children>
+         </StackPane>
+      </center>
+      <top>
+         <Pane prefHeight="2.0" BorderPane.alignment="CENTER" />
+      </top>
+    </BorderPane>

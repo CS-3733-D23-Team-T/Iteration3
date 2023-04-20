@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="610.0" prefWidth="300.0"
+            style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER"
+            xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.wpi.tacticaltritons.controllers.settings.CreateAccountController">
+   <BorderPane.margin>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </BorderPane.margin>
+   <center>
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefWrapLength="9999.0" BorderPane.alignment="CENTER">
+         <children>
+              <FlowPane alignment="CENTER" orientation="VERTICAL" prefWrapLength="60.0">
+                 <children>
+                  <MFXTextField fx:id="usernameField" floatMode="BORDER" floatingText="Username" prefWidth="200.0" promptText="Username">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <FlowPane.margin>
+                        <Insets />
+                     </FlowPane.margin>
+                  </MFXTextField>
+                  <Text fx:id="usernameValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Username" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="15.0" />
+                     </FlowPane.margin>
+                  </Text>
+                 </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </FlowPane.margin>
+              </FlowPane>
+            <FlowPane alignment="CENTER" orientation="VERTICAL" prefWrapLength="60.0">
+               <children>
+                    <MFXTextField fx:id="emailField" floatMode="BORDER" floatingText="Email" prefWidth="200.0" promptText="Email">
+                       <font>
+                          <Font size="14.0" />
+                       </font>
+                       <FlowPane.margin>
+                          <Insets />
+                       </FlowPane.margin>
+                    </MFXTextField>
+                  <Text fx:id="emailValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Email" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="15.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </FlowPane.margin>
+            </FlowPane>
+            <FlowPane alignment="CENTER" orientation="VERTICAL" prefWrapLength="60.0">
+               <children>
+                  <MFXTextField fx:id="firstNameField" floatMode="BORDER" floatingText="First Name" prefWidth="200.0" promptText="First Name">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <FlowPane.margin>
+                        <Insets />
+                     </FlowPane.margin>
+                  </MFXTextField>
+                  <Text fx:id="firstNameValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Name" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="15.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </FlowPane.margin>
+            </FlowPane>
+            <FlowPane alignment="CENTER" orientation="VERTICAL" prefWrapLength="60.0">
+               <children>
+                  <MFXTextField fx:id="lastNameField" floatMode="BORDER" floatingText="First Name" prefWidth="200.0" promptText="Last Name">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <FlowPane.margin>
+                        <Insets />
+                     </FlowPane.margin>
+                  </MFXTextField>
+                  <Text fx:id="lastNameValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Name" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="15.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </FlowPane.margin>
+            </FlowPane>
+            <FlowPane alignment="CENTER" orientation="VERTICAL" prefWrapLength="110.0">
+               <children>
+                  <FlowPane alignment="CENTER" columnHalignment="CENTER" prefWrapLength="300.0">
+                     <children>
+                        <MFXPasswordField fx:id="passwordField" allowPaste="true" floatMode="BORDER" floatingText="Password" prefWidth="200.0" promptText="Password">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <FlowPane.margin>
+                              <Insets left="40.0" />
+                           </FlowPane.margin>
+                        </MFXPasswordField>
+                        <MFXButton fx:id="generatePasswordButton" minHeight="30.0" minWidth="30.0" prefWidth="30.0" style="-fx-background-color: transparent;" text="">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <Image url="@../../images/home_page/pendingRequestIcon.png" />
+                              </ImageView>
+                           </graphic>
+                           <FlowPane.margin>
+                              <Insets left="10.0" />
+                           </FlowPane.margin>
+                        </MFXButton>
+                     </children>
+                  </FlowPane>
+                  <Text fx:id="passwordValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Password" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="60.0" />
+                     </FlowPane.margin>
+                  </Text>
+                  <BorderPane>
+                     <left>
+                        <Text fx:id="passwordStrengthLabel" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Strong" visible="false" BorderPane.alignment="CENTER" />
+                     </left>
+                     <FlowPane.margin>
+                        <Insets left="40.0" right="40.0" />
+                     </FlowPane.margin>
+                     <right>
+                        <ProgressBar fx:id="passwordStrengthBar" prefHeight="15.0" prefWidth="150.0" progress="0.1" style="-fx-accent: red;" visible="false" BorderPane.alignment="CENTER" />
+                     </right>
+                  </BorderPane>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER" orientation="VERTICAL" prefWrapLength="60.0">
+               <children>
+                  <MFXPasswordField fx:id="confirmPasswordField" allowPaste="true" floatMode="BORDER" floatingText="Confirm Password" prefWidth="200.0" promptText="Confirm Password">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </MFXPasswordField>
+                  <Text fx:id="confirmPasswordValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Passwords Don't Match" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="15.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+         </children>
+      </FlowPane>
+   </center>
+   <bottom>
+         <FlowPane alignment="CENTER" BorderPane.alignment="CENTER">
+             <children>
+                 <MFXButton fx:id="cancelButton" alignment="CENTER" minHeight="27.0" minWidth="70.0" style="-fx-background-color: #ffffff; -fx-text-fill: #003A96; -fx-border-color: #000000; -fx-border-radius: 10; -fx-background-radius: 10;" text="Cancel">
+                     <font>
+                         <Font size="16.0" />
+                     </font>
+                     <FlowPane.margin>
+                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </FlowPane.margin>
+                 </MFXButton>
+                 <MFXButton fx:id="createAccountButton" alignment="CENTER" disable="true" minHeight="27.0" minWidth="70.0" style="-fx-background-color: #003A96; -fx-text-fill: #ffffff; -fx-border-radius: 10; -fx-background-radius: 10;" text="Create Account">
+                     <font>
+                         <Font size="16.0" />
+                     </font>
+                     <FlowPane.margin>
+                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </FlowPane.margin>
+                 </MFXButton>
+             </children>
+         </FlowPane>
+   </bottom>
+   <top>
+      <Text fx:id="userHeader" strokeType="OUTSIDE" strokeWidth="0.0" text="Create User" underline="true" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Text>
+   </top>
+</BorderPane>

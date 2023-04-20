@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<MFXScrollPane fx:id="helptext" prefHeight="600" prefWidth="1280" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.database.DatabaseHelpController">
+   <content>
+      <TextArea editable="false" layoutX="66.0" layoutY="45.0" style="-fx-font-size: 30" text="Closing the application&#10;- Click on the Exit button on the top right&#10;&#10;Importing CSV file&#10;- Click on the import button then upload your desired file&#10;&#10;Exporting table&#10;- Click on the export table and ... (a CSV file will pop up able to be downloaded)&#10;&#10;Updating nodes coordinate&#10;- Fill out the nodeID of the node you hope to update in the top field, then fill &#10;out your desired X and Y coordinates in the field below. Once you are satisfied with &#10;the fields, click on the update coordinate button&#10;&#10;Updating nodes long name&#10;- Fill out the nodeID of the node you hope to update in the top field, then fill &#10;out the new desired name in the last field. Once you are satisfied with the fields, &#10;click on the update location button" >
+      </TextArea>
+   </content>
+</MFXScrollPane>

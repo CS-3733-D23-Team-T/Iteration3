@@ -1,0 +1,55 @@
+@import "Colors.css";
+
+.mfx-text-field{
+    -fx-border-color: -navy;
+    -fx-text-fill:-navy;
+}
+
+.mfx-text-field .floating-text {
+    -fx-text-fill: -text-yellow;
+}
+
+.mfx-combo-box .caret .mfx-font-icon{
+    -mfx-color: -yellow;
+}
+
+.mfx-combo-box .caret .mfx-ripple-generator{
+    -mfx-ripple-color: -yellow;
+}
+
+.mfx-combo-box .combo-popup .virtual-flow .mfx-combo-box-cell:hover{
+    -fx-background-color: -light-yellow;
+}
+
+.mfx-combo-box .combo-popup .virtual-flow .mfx-combo-box-cell:selected{
+    -fx-background-color: -light-navy;
+}
+
+.mfx-date-picker .mfx-icon-wrapper .mfx-font-icon{
+    -fx-fill: -yellow;
+}
+
+.mfx-date-picker .date-picker-popup .mfx-date-cell:hover{
+    -fx-background-color: -yellow;
+}
+
+.mfx-date-picker .date-picker-popup .mfx-date-cell:selected{
+    -fx-background-color: -navy;
+    -fx-text-fill: -text-yellow;
+}
+
+.mfx-date-picker .date-picker-popup .mfx-date-cell{
+    -fx-text-fill: -navy;
+}
+
+.mfx-date-picker .icon{
+    -mfx-color: -yellow;
+}
+
+.mfx-date-picker .date-picker-popup .week-day{
+    -fx-text-fill: -navy;
+}
+
+.mfx-date-picker .mfx-icon-wrapper .mfx-ripple-generator{
+    -mfx-ripple-color: -yellow;
+}

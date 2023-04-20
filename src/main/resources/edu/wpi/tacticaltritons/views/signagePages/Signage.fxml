@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<BorderPane prefHeight="650" prefWidth="1280" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.signagePages.SignageController">
+    <top>
+        <HBox prefHeight="80" prefWidth="1280" alignment="CENTER">
+            <MFXFilterComboBox fx:id="locationSelection" floatingText="Current Location" prefHeight="50" prefWidth="1280">
+                <HBox.margin>
+                    <Insets left="50" right="50"/>
+                </HBox.margin>
+            </MFXFilterComboBox>
+        </HBox>
+    </top>
+    <center>
+        <MFXScrollPane prefHeight="600" prefWidth="1280" fitToWidth="true">
+            <content>
+                <VBox fx:id="basePane" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity">
+                </VBox>
+            </content>
+        </MFXScrollPane>
+    </center>
+</BorderPane>
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="basePane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1280.0"
+            stylesheets="@../../stylesheets/Table.css"
+            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.ViewServiceRequestsController">
+   <top>
+      <FlowPane id="block" alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="80.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Service Request:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <FlowPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </FlowPane.margin>
+            </Text>
+            <MFXComboBox fx:id="comboBox" prefHeight="50.0" prefWidth="150.0">
+               <FlowPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </FlowPane.margin>
+            </MFXComboBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+         </BorderPane.margin>
+      </FlowPane>
+   </top>
+   <center>
+      <FlowPane fx:id="tableInsert" alignment="CENTER" columnHalignment="CENTER" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+         </BorderPane.margin>
+      </FlowPane>
+   </center>
+</BorderPane>

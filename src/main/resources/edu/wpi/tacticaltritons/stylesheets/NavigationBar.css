@@ -1,0 +1,56 @@
+*{
+    -button-font-color: white;
+    -button-background-color: #002D59;
+    -button-font-hover: rgba(175, 175, 175, 0.6);
+}
+
+/*.combo-box .list-view .list-cell{*/
+/*    -fx-text-fill: #FFFFFF;*/
+/*    -fx-background-color: #002D59;*/
+/*}*/
+
+/*.combo-box .list-view .list-cell:hover{*/
+/*    -fx-text-fill: rgba(160, 160, 160, 0.3);*/
+/*}*/
+
+/*.combo-box .list-cell{*/
+/*    -fx-text-fill: #FFFFFF;*/
+/*    -fx-background-color: #002D59;*/
+/*}*/
+
+/*.combo-box .list-view{*/
+/*    -fx-background-color: #002D59;*/
+/*}*/
+
+.menu-item .label {
+    -fx-text-fill: -button-font-color;
+    -fx-background-color: -button-background-color;
+}
+
+.menu-item:focused, menu-item:hover {
+    -fx-background-color: -button-background-color;
+}
+
+.menu-item:focused .label, menu-item:hover .label{
+    -fx-text-fill: -button-font-hover;
+}
+
+.context-menu {
+    -fx-background-color: -button-background-color;
+}
+
+.menu-button > .label {
+    -fx-text-fill: white;
+}
+
+.menu-button > .label:hover, .menu-button > .label:focused{
+    -fx-text-fill: -button-font-hover;
+}
+/*.menu-button > .label:disabled {*/
+/*    -fx-opacity: 1;*/
+/*}*/
+
+.menu-button > .arrow-button, .menu-button > .arrow-button > .arrow{
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}

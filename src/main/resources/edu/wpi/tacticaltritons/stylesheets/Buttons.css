@@ -1,0 +1,44 @@
+@import "Colors.css";
+
+.mfx-button{
+    -fx-background-radius: 10;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 12;
+}
+
+#normalButton{
+    -fx-background-color: -navy;
+    -fx-text-fill: white;
+}
+
+#normalButton:hover{
+    -fx-background-color: -yellow;
+}
+
+
+#cancelButton{
+    -fx-background-color: -yellow;
+}
+
+#cancelButton:hover{
+    -fx-background-color: -alert;
+    -fx-text-fill: white;
+}
+
+#clearButton{
+    -fx-background-color: -gray;
+}
+
+#clearButton:hover{
+   -fx-background-color: -alert;
+    -fx-text-fill: white;
+}
+
+#helpButton{
+    -fx-background-color: -yellow;
+}
+
+#helpButton:hover{
+    -fx-background-color: -navy;
+    -fx-text-fill: -yellow;
+}

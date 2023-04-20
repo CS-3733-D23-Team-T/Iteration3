@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import io.github.palexdev.materialfx.controls.MFXIconWrapper?>
+<?import io.github.palexdev.materialfx.font.MFXFontIcon?>
+<HBox fx:id="signageBlock" alignment="CENTER" id="block" spacing="50" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="200.0" prefWidth="1280" fx:controller="edu.wpi.tacticaltritons.controllers.signagePages.SignageBlocksController">
+</HBox>

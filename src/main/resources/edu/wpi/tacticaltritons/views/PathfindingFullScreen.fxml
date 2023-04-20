@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import net.kurobako.gesturefx.GesturePane?>
+
+<BorderPane prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.PathfindingFullScreenController">
+    <center>
+        <StackPane BorderPane.alignment="CENTER">
+            <children>
+                <GesturePane fx:id="gesturePane">
+                    <StackPane fx:id="selectedFloorPane">
+                        <children>
+                            <Group fx:id="L1Group">
+                                <children>
+                                    <ImageView fx:id="lowerLevel1Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="L2Group">
+                                <children>
+                                    <ImageView fx:id="lowerLevel2Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="floor1Group">
+                                <children>
+                                    <ImageView fx:id="floor1Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="floor2Group">
+                                <children>
+                                    <ImageView fx:id="floor2Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="floor3Group">
+                                <children>
+                                    <ImageView fx:id="floor3Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+                        </children>
+                    </StackPane>
+                </GesturePane>
+            <StackPane fx:id="menuPane" maxWidth="220.0" style="-fx-background-color: ffffff; -fx-background-radius: 0;" StackPane.alignment="TOP_LEFT">
+               <children>
+                  <Line fx:id="filterLine1" endX="70.0" startX="-70.0" stroke="#c6c6c6" StackPane.alignment="TOP_CENTER">
+                     <StackPane.margin>
+                        <Insets top="72.0" />
+                     </StackPane.margin>
+                  </Line>
+                  <Text fx:id="menuLocationName" strokeType="OUTSIDE" strokeWidth="0.0" text="Location Name" StackPane.alignment="TOP_CENTER">
+                     <StackPane.margin>
+                        <Insets top="25.0" />
+                     </StackPane.margin>
+                  </Text>
+                  <Text fx:id="menuLocationDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="Location Description" StackPane.alignment="TOP_LEFT">
+                     <StackPane.margin>
+                        <Insets left="15.0" top="100.0" />
+                     </StackPane.margin>
+                  </Text>
+               </children>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.3499999940395355" />
+                     </color>
+                  </DropShadow>
+               </effect>
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
+            </StackPane>
+                <StackPane fx:id="directionsPane" maxHeight="450.0" maxWidth="200.0" style="-fx-background-color: ffffff; -fx-background-radius: 10;" StackPane.alignment="TOP_RIGHT">
+                    <StackPane.margin>
+                        <Insets right="20.0" top="20.0" />
+                    </StackPane.margin>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.3499999940395355" />
+                     </color>
+                  </DropShadow>
+               </effect>
+               <children>
+                  <TextArea fx:id="textDirections" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
+                     <StackPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="70.0" />
+                     </StackPane.margin>
+                  </TextArea>
+                  <Text fx:id="textForDirections" strokeType="OUTSIDE" strokeWidth="0.0" text="DIRECTIONS" StackPane.alignment="TOP_CENTER">
+                     <StackPane.margin>
+                        <Insets top="40.0" />
+                     </StackPane.margin>
+                     <font>
+                        <Font name="Open Sans Regular" size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+                </StackPane>
+            <MFXButton fx:id="directions" text="DIRECTIONS" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets right="77.0" top="30.0" />
+               </StackPane.margin>
+            </MFXButton>
+                <MFXFilterComboBox fx:id="startLocation" minHeight="50.0" prefWidth="300.0" StackPane.alignment="TOP_LEFT">
+                    <StackPane.margin>
+                        <Insets left="80.0" top="20.0" />
+                    </StackPane.margin>
+                </MFXFilterComboBox>
+                <MFXFilterComboBox fx:id="floorSelect" minHeight="50.0" prefWidth="100.0" StackPane.alignment="TOP_LEFT">
+                    <StackPane.margin>
+                        <Insets left="450.0" top="20.0" />
+                    </StackPane.margin>
+                </MFXFilterComboBox>
+            <MFXButton fx:id="viewNodes" prefHeight="50.0" prefWidth="110.0" text="VIEW NODES" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="580.0" top="20.0" />
+               </StackPane.margin>
+            </MFXButton>
+            <MFXButton fx:id="pathfinding" prefHeight="50.0" prefWidth="50.0" text="P" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="390.0" top="20.0" />
+               </StackPane.margin>
+            </MFXButton>
+            <MFXButton fx:id="menuBar" prefHeight="50.0" prefWidth="50.0" text="M" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="20.0" top="20.0" />
+               </StackPane.margin>
+            </MFXButton>
+            <MFXFilterComboBox fx:id="endLocation" minHeight="50.0" prefWidth="300.0" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="80.0" top="80.0" />
+               </StackPane.margin>
+            </MFXFilterComboBox>
+            </children>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </StackPane>
+    </center>
+</BorderPane>
