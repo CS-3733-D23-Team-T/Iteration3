@@ -783,6 +783,10 @@ public class MealDeliveryEntity {
                     String[] nameWithEmail = staffMemberName.getText().split("/");
                     String firstNameStaff = nameWithEmail[0].split(" ")[0];
                     String lastNameStaff = nameWithEmail[0].split(" ")[1];
+                    if(firstNameStaff.equals("")){
+                        firstNameStaff = null;
+                        lastNameStaff = null;
+                    }
 
                     Meal meal = new Meal(firstName.getText(), lastName.getText(), patientFirstName.getText(),
                             patientLastName.getText(), firstNameStaff, lastNameStaff, sendDate, sendTime,

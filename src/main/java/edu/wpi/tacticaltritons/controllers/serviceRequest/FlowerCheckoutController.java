@@ -393,8 +393,8 @@ public class FlowerCheckoutController {
         }
         else
         {
-            staffFirst = "";
-            staffLast = "";
+            staffFirst = null;
+            staffLast = null;
         }
 
         Flower flower = new Flower(userFirst, userLast, patientFirst, patientLast, staffFirst, staffLast, deliveryDate, deliveryTime, location, items.get(), total, status);

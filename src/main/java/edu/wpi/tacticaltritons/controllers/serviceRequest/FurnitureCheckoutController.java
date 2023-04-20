@@ -298,8 +298,8 @@ public class FurnitureCheckoutController {
     String userFirst = userFirstField.getText();
     String userLast = userLastField.getText();
     int i = assignedStaffComboBox.getText().indexOf(' ');
-    String staffFirst = "";
-    String staffLast = "";
+    String staffFirst = null;
+    String staffLast = null;
     if(!assignedStaffComboBox.getText().isEmpty())
     {
        staffFirst = assignedStaffComboBox.getText().substring(0, i);
