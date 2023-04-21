@@ -152,8 +152,6 @@ public class Validator {
         return strength;
     }
 
-
-
     public static ChangeListener<? super String> generateValidatorListener(BooleanProperty validator, String regex, String validatorField, Text validatorNode){
         return (obs, o, n) -> {
             validatorNode.setText(validatorField);
@@ -249,7 +247,6 @@ public class Validator {
             validatorField.setVisible(!validator.getValue());
         };
     }
-
     public static ChangeListener<? super Boolean> generateFormListener(Node node, BooleanProperty... validators){
         return (obs, o, n) -> {
             if(validators == null || validators.length == 0) node.setDisable(true);
