@@ -1,7 +1,7 @@
 @import "Colors.css";
 
 .mfx-button{
-    -fx-background-radius: 10;
+    -fx-background-radius: 20;
     -fx-font-family: "Arial Rounded MT Bold";
     -fx-font-size: 12;
 }

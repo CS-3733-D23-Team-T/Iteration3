@@ -41,12 +41,12 @@
          <bottom>
             <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="50.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXButton fx:id="clearButton" prefHeight="50.0" prefWidth="125.0" style="-fx-background-color: #bebebe; -fx-background-radius: 20; -fx-text-fill: white;" text="Clear">
+                  <MFXButton id="clearButton" fx:id="clearButton" prefHeight="50.0" prefWidth="125.0" text="Clear">
                      <FlowPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </FlowPane.margin>
                   </MFXButton>
-                  <MFXButton fx:id="checkoutButton" disable="true" prefHeight="50.0" prefWidth="125.0" style="-fx-background-color: #002d59; -fx-background-radius: 20; -fx-text-fill: white;" text="Checkout">
+                  <MFXButton id="normalButton" fx:id="checkoutButton" disable="true" prefHeight="50.0" prefWidth="125.0" text="Checkout">
                      <FlowPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </FlowPane.margin>
