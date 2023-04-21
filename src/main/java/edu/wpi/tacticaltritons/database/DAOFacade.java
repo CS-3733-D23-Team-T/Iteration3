@@ -24,8 +24,8 @@ public class DAOFacade {
   static FlowerRequestOptionsDaoImpl flowerRequestOptionsDao = new FlowerRequestOptionsDaoImpl();
   static FurnitureDaoImpl furnitureDao = new FurnitureDaoImpl();
   static FurnitureRequestOptionsDaoImpl furnitureRequestOptionsDao = new FurnitureRequestOptionsDaoImpl();
-
   static HomeServiceRequestsDaoImpl homeServiceRequestsDao = new HomeServiceRequestsDaoImpl();
+  static InvitationsDaoImpl invitationsDao = new InvitationsDaoImpl();
 
   public static void addNode(Node node) throws SQLException {
     nodeDao.insert(node);
@@ -309,5 +309,13 @@ public class DAOFacade {
 
   public static List<Move> getAllFutureMoves(Date currentDate) throws SQLException{
     return moveDao.getAllFuture(currentDate);
+  }
+
+  public static List<Invitations> getAllSessionInvitations(String firstName, String lastName) throws SQLException{
+    return invitationsDao.getAll(firstName,lastName);
+  }
+
+  public static void addInvitation(Invitations invitation) throws SQLException{
+    invitationsDao.insert(invitation);
   }
 }

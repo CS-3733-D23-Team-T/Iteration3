@@ -60,6 +60,91 @@ public class NewHomeController {
 
     @FXML
     public void initialize() throws SQLException {
+        initMoveTable();
+        initServiceTable();
+    }
+
+    private void initEventTable() throws SQLException {
+        TableColumn<Invitations, Integer> conferenceID = new TableColumn<>("ConferenceID");
+        conferenceID.setCellValueFactory(new PropertyValueFactory<>("conferenceID"));
+
+        TableColumn<Invitations, String> location = new TableColumn<>("Location");
+        location.setCellValueFactory(new PropertyValueFactory<>("location"));
+
+        TableColumn<Invitations, Date> date = new TableColumn<>("Date");
+        date.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        ObservableList<Invitations> inviteObservableList = null;
+        try {
+            inviteObservableList = FXCollections.observableArrayList(DAOFacade.getAllSessionInvitations(UserSessionToken.getUser().getFirstname(), UserSessionToken.getUser().getLastname()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        TableColumn<Invitations, Void> completed = new TableColumn<>("");
+        completed.setPrefWidth(100);
+        completed.setCellFactory(event -> new TableCell<>() {
+            private final MFXButton button = new MFXButton("Accept");
+
+            {
+                button.setOnAction(event -> {
+                    Invitations invite = getTableView().getItems().get(getIndex());
+                    try {
+                        if (!invite.isAccepted()) {
+                            Invitations invitation = DAOFacade.getI(invite.getOrderNum());
+                            meal.setStatus(RequestStatus.DONE);
+                            DAOFacade.updateMeal(meal);
+                        }
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                    getTableView().getItems().remove(request);
+                    getTableView().refresh();
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(button);
+                }
+            }
+        });
+
+        tableServiceRequest.getColumns().addAll(completed, serviceType, items, fullNameCol, deliveryDate, deliveryTime);
+
+        tableServiceRequest.getItems().addAll(requestObservableList);
+        tableServiceRequest.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        App.getPrimaryStage().widthProperty().addListener(((obs, o, n) -> {
+            double scaleX = requestsPane.getWidth() / App.getPrimaryStage().getWidth();
+            requestsPane.setMinWidth(scaleX);
+        }));
+        App.getPrimaryStage().heightProperty().addListener(((obs, o, n) -> {
+            double scaleY = requestsPane.getHeight() / App.getPrimaryStage().getHeight();
+            requestsPane.setMinHeight(scaleY);
+        }));
+
+        requestsPane.widthProperty().addListener((observable, oldValue, newValue) -> {
+            requestsPane.getChildren().clear();
+            tableServiceRequest.setMinWidth(requestsPane.getMinWidth() - 1);
+            tableServiceRequest.setPrefWidth(newValue.doubleValue() - 1);
+            requestsPane.getChildren().add(tableServiceRequest);
+        });
+
+        requestsPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+            requestsPane.getChildren().clear();
+            tableServiceRequest.setMinWidth(newValue.doubleValue() - 1);
+            tableServiceRequest.setPrefHeight(newValue.doubleValue() - 1);
+            requestsPane.getChildren().add(tableServiceRequest);
+        });
+    }
+
+    private void initMoveTable() throws SQLException {
         lowerLevel1Image = new ImageView(App.lowerlevel1);
         lowerLevel2Image = new ImageView(App.lowerlevel2);
         floor1Image = new ImageView(App.firstfloor);
@@ -70,11 +155,7 @@ public class NewHomeController {
         floor1Group = new Group(floor1Image);
         floor2Group = new Group(floor2Image);
         floor3Group = new Group(floor3Image);
-        initMoveTable();
-        initServiceTable();
-    }
 
-    private void initMoveTable() throws SQLException {
         PopOver popOver = new PopOver();
         popOver.setPrefSize(300, 300);
         popOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
