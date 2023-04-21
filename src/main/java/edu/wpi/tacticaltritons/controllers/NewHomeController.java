@@ -3,21 +3,28 @@ package edu.wpi.tacticaltritons.controllers;
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.database.*;
+import edu.wpi.tacticaltritons.styling.ThemeColors;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import net.kurobako.gesturefx.GesturePane;
+import org.controlsfx.control.PopOver;
 
 import java.sql.SQLException;
 import java.sql.Date;
@@ -35,16 +42,42 @@ public class NewHomeController {
     FlowPane eventsPane;
     @FXML
     GridPane tableGridPane;
+    @FXML private Group L1Group;
+    @FXML private Group L2Group;
+    @FXML private Group floor1Group;
+    @FXML private Group floor2Group;
+    @FXML private Group floor3Group;
+    @FXML private ImageView lowerLevel1Image;
+    @FXML private ImageView lowerLevel2Image;
+    @FXML private ImageView floor1Image;
+    @FXML private ImageView floor2Image;
+    @FXML private ImageView floor3Image;
+    @FXML private GesturePane gesturePane = new GesturePane();
+    @FXML private StackPane stackPane = new StackPane();
 
     TableView<HomeServiceRequests> tableServiceRequest = new TableView<>();
 
     @FXML
     public void initialize() throws SQLException {
+        lowerLevel1Image = new ImageView(App.lowerlevel1);
+        lowerLevel2Image = new ImageView(App.lowerlevel2);
+        floor1Image = new ImageView(App.firstfloor);
+        floor2Image = new ImageView(App.secondfloor);
+        floor3Image = new ImageView(App.thirdfloor);
+        L1Group = new Group(lowerLevel1Image);
+        L2Group = new Group(lowerLevel2Image);
+        floor1Group = new Group(floor1Image);
+        floor2Group = new Group(floor2Image);
+        floor3Group = new Group(floor3Image);
         initMoveTable();
         initServiceTable();
     }
 
     private void initMoveTable() throws SQLException {
+        PopOver popOver = new PopOver();
+        popOver.setPrefSize(300, 300);
+        popOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+
         Date currentDate = Date.valueOf(java.time.LocalDate.now());
         List<Move> allMoves = DAOFacade.getAllMoves();
         List<Move> allFutureMoves = DAOFacade.getAllFutureMoves(currentDate);
@@ -59,7 +92,6 @@ public class NewHomeController {
                 String moveToLocation = moveTo.getLocation().getLongName();
                 if(moveFromLocation.equals(moveToLocation) && moveFrom.getNode().getNodeID() == moveTo.getNode().getNodeID())
                 {
-                    System.out.println("TEST?");
                     check = true;
                 }
                 if(check) {
@@ -71,9 +103,17 @@ public class NewHomeController {
                     Button moveButton = new Button(moveFrom.getLocation().getLongName() + ": Node " + moveFrom.getNode().getNodeID() + " -> Node " + moveTo.getNode().getNodeID());
                     moveButton.prefWidthProperty().bind(movesPane.widthProperty());
                     moveButtons.add(moveButton);
+                    gesturePane.setPrefSize(popOver.getPrefWidth(),popOver.getPrefHeight());
+                    stackPane.getChildren().clear();
+                    stackPane.getChildren().addAll(L1Group,L2Group,floor1Group,floor2Group,floor3Group);
+                    gesturePane.setContent(stackPane);
+
                     moveButton.setOnAction(event -> {
-                        System.out.println("WORKING");
+                        displayNode(moveFrom, gesturePane);
+                        popOver.setContentNode(gesturePane);
+                        popOver.show(moveButton);
                     });
+                    gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
                     counter = 0;
                 }
             }
@@ -180,5 +220,71 @@ public class NewHomeController {
             tableServiceRequest.setPrefHeight(newValue.doubleValue() - 1);
             requestsPane.getChildren().add(tableServiceRequest);
         });
+    }
+
+
+    public void displayNode(Move moveFrom, GesturePane gesturePane) {
+        L1Group.setVisible(false);
+        L2Group.setVisible(false);
+        floor1Group.setVisible(false);
+        floor2Group.setVisible(false);
+        floor3Group.setVisible(false);
+        Circle circle = new Circle();
+
+        circle = drawCircle(moveFrom.getNode().getXcoord(), moveFrom.getNode().getYcoord());
+
+
+        String endFloor = null;
+        endFloor = moveFrom.getNode().getFloor();
+
+        if (endFloor != null) {
+            switch (endFloor) {
+                case "L1":
+                    L1Group.setVisible(true);
+                    lowerLevel1Image.setVisible(true);
+                    this.L1Group.getChildren().add(circle);
+                    break;
+                case "L2":
+                    L2Group.setVisible(true);
+                    lowerLevel2Image.setVisible(true);
+                    this.L2Group.getChildren().add(circle);
+                    break;
+                case "1":
+                    floor1Group.setVisible(true);
+                    floor1Image.setVisible(true);
+                    this.floor1Group.getChildren().add(circle);
+                    break;
+                case "2":
+                    floor2Group.setVisible(true);
+                    floor2Image.setVisible(true);
+                    this.floor2Group.getChildren().add(circle);
+                    break;
+                case "3":
+                    floor3Group.setVisible(true);
+                    floor3Image.setVisible(true);
+                    this.floor3Group.getChildren().add(circle);
+                    break;
+            }
+        }
+        Point2D centrePoint = new Point2D(circle.getCenterX(), circle.getCenterY());
+        System.out.println(centrePoint);
+        System.out.println(gesturePane.getPrefWidth());
+        Platform.runLater(() -> {
+            gesturePane.centreOn(centrePoint);
+        });
+
+        gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
+    }
+
+    public Circle drawCircle(double x, double y) {
+        Circle circle = new Circle();
+        circle.setVisible(true);
+        circle.setFill(Color.web(ThemeColors.PATH_NODE_COLOR.getColor()));
+        circle.setStroke(Color.web(ThemeColors.GRAY.getColor()));
+        circle.setStrokeWidth(3.0f);
+        circle.setCenterX(x);
+        circle.setCenterY(y);
+        circle.setRadius(10.0);
+        return circle;
     }
 }
