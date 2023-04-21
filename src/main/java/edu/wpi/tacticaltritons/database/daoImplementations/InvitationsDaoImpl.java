@@ -1,9 +1,6 @@
 package edu.wpi.tacticaltritons.database.daoImplementations;
 
-import edu.wpi.tacticaltritons.database.Furniture;
-import edu.wpi.tacticaltritons.database.Invitations;
-import edu.wpi.tacticaltritons.database.RequestStatus;
-import edu.wpi.tacticaltritons.database.Tdb;
+import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.database.dao.InvitationsDao;
 
 import java.sql.*;
@@ -17,7 +14,7 @@ public class InvitationsDaoImpl implements InvitationsDao {
     }
 
     @Override
-    public List<Invitations> getAll(String sessionFirstName, String sessionLastName) throws SQLException {
+    public List<Invitations> getAll(String sessionFirstName, String sessionLastName, Date currentDate) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -28,12 +25,14 @@ public class InvitationsDaoImpl implements InvitationsDao {
             String sql = "SELECT I.firstName, I.lastName, I.conferenceID, I.accepted, C.date, C.location " +
                     "FROM Invitations I " +
                     "JOIN Conference C ON C.orderNum = I.conferenceID " +
-                    "WHERE I.firstName = ? AND I.lastName = ?;";
+                    "WHERE I.firstName = ? AND I.lastName = ? AND C.date >= ? " +
+                    "ORDER BY C.date;";
             ps = connection.prepareStatement(sql);
             ps.setString(1, sessionFirstName);
             ps.setString(2, sessionLastName);
+            ps.setDate(3,currentDate);
 
-            rs = ps.executeQuery(sql);
+            rs = ps.executeQuery();
 
             while (rs.next()) {
                 String firstName = rs.getString("firstName");
@@ -96,6 +95,38 @@ public class InvitationsDaoImpl implements InvitationsDao {
             }
             if(connection != null){
                 connection.close();
+            }
+        }
+    }
+
+    @Override
+    public void update(Invitations invitation) throws SQLException {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            connection = Tdb.getConnection();
+            String sql =
+                    "UPDATE Invitations SET accepted = ? where conferenceID = ? AND firstName = ? ANd lastName = ?";
+
+            ps = connection.prepareStatement(sql);
+
+            ps.setBoolean(1, invitation.isAccepted());
+            ps.setInt(2, invitation.getConferenceID());
+            ps.setString(3, invitation.getFirstName());
+            ps.setString(4, invitation.getLastName());
+
+            int result = ps.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if(ps != null){
+                ps.close();
             }
         }
     }

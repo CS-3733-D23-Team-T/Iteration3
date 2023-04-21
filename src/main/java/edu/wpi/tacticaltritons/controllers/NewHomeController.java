@@ -57,91 +57,118 @@ public class NewHomeController {
     @FXML private StackPane stackPane = new StackPane();
 
     TableView<HomeServiceRequests> tableServiceRequest = new TableView<>();
+    TableView<Invitations> tableInvitation = new TableView<>();
 
     @FXML
     public void initialize() throws SQLException {
+        initEventTable();
         initMoveTable();
         initServiceTable();
     }
 
     private void initEventTable() throws SQLException {
-        TableColumn<Invitations, Integer> conferenceID = new TableColumn<>("ConferenceID");
-        conferenceID.setCellValueFactory(new PropertyValueFactory<>("conferenceID"));
-
         TableColumn<Invitations, String> location = new TableColumn<>("Location");
         location.setCellValueFactory(new PropertyValueFactory<>("location"));
+        location.setPrefWidth(150);
+        location.setCellFactory(column -> {
+            return new TableCell<Invitations, String>() {
+                private final Text text = new Text();
+
+                {
+                    text.wrappingWidthProperty().bind(widthProperty());
+                    setGraphic(text);
+                }
+
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (item == null || empty) {
+                        text.setText(null);
+                    } else {
+                        text.setText(item);
+                    }
+                }
+            };
+        });
+
 
         TableColumn<Invitations, Date> date = new TableColumn<>("Date");
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        date.setPrefWidth(75);
 
+        Date currentDate = Date.valueOf(java.time.LocalDate.now());
         ObservableList<Invitations> inviteObservableList = null;
         try {
-            inviteObservableList = FXCollections.observableArrayList(DAOFacade.getAllSessionInvitations(UserSessionToken.getUser().getFirstname(), UserSessionToken.getUser().getLastname()));
+            inviteObservableList = FXCollections.observableArrayList(DAOFacade.getAllSessionInvitations(UserSessionToken.getUser().getFirstname(), UserSessionToken.getUser().getLastname(), currentDate));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        TableColumn<Invitations, Void> completed = new TableColumn<>("");
-        completed.setPrefWidth(100);
-        completed.setCellFactory(event -> new TableCell<>() {
-            private final MFXButton button = new MFXButton("Accept");
-
+        TableColumn<Invitations, Void> accepted = new TableColumn<>("");
+        accepted.setPrefWidth(74);
+        accepted.setCellFactory(event -> new TableCell<>() {
+            private final MFXButton button = new MFXButton();
             {
                 button.setOnAction(event -> {
-                    Invitations invite = getTableView().getItems().get(getIndex());
-                    try {
-                        if (!invite.isAccepted()) {
-                            Invitations invitation = DAOFacade.getI(invite.getOrderNum());
-                            meal.setStatus(RequestStatus.DONE);
-                            DAOFacade.updateMeal(meal);
-                        }
-                    } catch (SQLException ex) {
-                        throw new RuntimeException(ex);
+                    Invitations invitation = getTableView().getItems().get(getIndex());
+                    if (invitation.isAccepted()) {
+                        invitation.setAccepted(false);
+                        button.setText("Accept");
+                        button.setStyle("-fx-background-color: green");
+                    } else {
+                        invitation.setAccepted(true);
+                        button.setText("Cancel");
+                        button.setStyle("-fx-background-color: red");
                     }
-
-                    getTableView().getItems().remove(request);
-                    getTableView().refresh();
+                    try {
+                        DAOFacade.updateInvitation(invitation);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
             }
-
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
                 } else {
+                    Invitations invitation = getTableView().getItems().get(getIndex());
+                    if (invitation.isAccepted()) {
+                        button.setText("Cancel");
+                        button.setStyle("-fx-background-color: red");
+                    } else {
+                        button.setText("Accept");
+                        button.setStyle("-fx-background-color: green");
+                    }
                     setGraphic(button);
                 }
             }
         });
 
-        tableServiceRequest.getColumns().addAll(completed, serviceType, items, fullNameCol, deliveryDate, deliveryTime);
+        tableInvitation.getColumns().addAll(accepted, location, date);
 
-        tableServiceRequest.getItems().addAll(requestObservableList);
-        tableServiceRequest.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableInvitation.getItems().addAll(inviteObservableList);
+        tableInvitation.setPrefWidth(301);
+        tableInvitation.prefHeightProperty().bind(eventsPane.heightProperty());
 
-        App.getPrimaryStage().widthProperty().addListener(((obs, o, n) -> {
-            double scaleX = requestsPane.getWidth() / App.getPrimaryStage().getWidth();
-            requestsPane.setMinWidth(scaleX);
-        }));
         App.getPrimaryStage().heightProperty().addListener(((obs, o, n) -> {
-            double scaleY = requestsPane.getHeight() / App.getPrimaryStage().getHeight();
-            requestsPane.setMinHeight(scaleY);
+            tableInvitation.prefHeightProperty().unbind();
+            double scaleY = eventsPane.getHeight() / App.getPrimaryStage().getHeight();
+            eventsPane.setMinHeight(scaleY);
         }));
-
-        requestsPane.widthProperty().addListener((observable, oldValue, newValue) -> {
-            requestsPane.getChildren().clear();
-            tableServiceRequest.setMinWidth(requestsPane.getMinWidth() - 1);
-            tableServiceRequest.setPrefWidth(newValue.doubleValue() - 1);
-            requestsPane.getChildren().add(tableServiceRequest);
+        eventsPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+            tableInvitation.prefHeightProperty().unbind();
+            eventsPane.getChildren().clear();
+            tableInvitation.setMinHeight(newValue.doubleValue());
+            tableInvitation.setPrefHeight(newValue.doubleValue());
+            eventsPane.getChildren().add(tableInvitation);
         });
 
-        requestsPane.heightProperty().addListener((observable, oldValue, newValue) -> {
-            requestsPane.getChildren().clear();
-            tableServiceRequest.setMinWidth(newValue.doubleValue() - 1);
-            tableServiceRequest.setPrefHeight(newValue.doubleValue() - 1);
-            requestsPane.getChildren().add(tableServiceRequest);
-        });
+        eventsPane.getChildren().clear();
+        eventsPane.getChildren().add(tableInvitation);
+        tableInvitation.setFocusTraversable(false);
     }
 
     private void initMoveTable() throws SQLException {
@@ -292,17 +319,18 @@ public class NewHomeController {
 
         requestsPane.widthProperty().addListener((observable, oldValue, newValue) -> {
             requestsPane.getChildren().clear();
-            tableServiceRequest.setMinWidth(requestsPane.getMinWidth() - 1);
-            tableServiceRequest.setPrefWidth(newValue.doubleValue() - 1);
+            tableServiceRequest.setMinWidth(requestsPane.getMinWidth());
+            tableServiceRequest.setPrefWidth(newValue.doubleValue());
             requestsPane.getChildren().add(tableServiceRequest);
         });
 
         requestsPane.heightProperty().addListener((observable, oldValue, newValue) -> {
             requestsPane.getChildren().clear();
-            tableServiceRequest.setMinWidth(newValue.doubleValue() - 1);
-            tableServiceRequest.setPrefHeight(newValue.doubleValue() - 1);
+            tableServiceRequest.setMinHeight(newValue.doubleValue());
+            tableServiceRequest.setPrefHeight(newValue.doubleValue());
             requestsPane.getChildren().add(tableServiceRequest);
         });
+        tableServiceRequest.setFocusTraversable(false);
     }
 
 

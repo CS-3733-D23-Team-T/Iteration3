@@ -311,11 +311,15 @@ public class DAOFacade {
     return moveDao.getAllFuture(currentDate);
   }
 
-  public static List<Invitations> getAllSessionInvitations(String firstName, String lastName) throws SQLException{
-    return invitationsDao.getAll(firstName,lastName);
+  public static List<Invitations> getAllSessionInvitations(String firstName, String lastName, Date currentDate) throws SQLException{
+    return invitationsDao.getAll(firstName,lastName,currentDate);
   }
 
   public static void addInvitation(Invitations invitation) throws SQLException{
     invitationsDao.insert(invitation);
+  }
+
+  public static void updateInvitation(Invitations invitation) throws SQLException {
+    invitationsDao.update(invitation);
   }
 }
