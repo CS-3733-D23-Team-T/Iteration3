@@ -23,6 +23,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import net.kurobako.gesturefx.GesturePane;
 import org.controlsfx.control.PopOver;
 
@@ -100,16 +101,17 @@ public class NewHomeController {
                     }
                 }
                 if(counter == 2){
-                    Button moveButton = new Button(moveFrom.getLocation().getLongName() + ": Node " + moveFrom.getNode().getNodeID() + " -> Node " + moveTo.getNode().getNodeID());
+                    MFXButton moveButton = new MFXButton(moveFrom.getLocation().getLongName() + "\nNode " + moveFrom.getNode().getNodeID() + " -> Node " + moveTo.getNode().getNodeID() + "\n" + moveTo.getMoveDate());
+                    moveButton.setTextAlignment(TextAlignment.CENTER);
                     moveButton.prefWidthProperty().bind(movesPane.widthProperty());
                     moveButtons.add(moveButton);
-                    gesturePane.setPrefSize(popOver.getPrefWidth(),popOver.getPrefHeight());
-                    stackPane.getChildren().clear();
-                    stackPane.getChildren().addAll(L1Group,L2Group,floor1Group,floor2Group,floor3Group);
-                    gesturePane.setContent(stackPane);
 
                     moveButton.setOnAction(event -> {
-                        displayNode(moveFrom, gesturePane);
+                        gesturePane.setPrefSize(popOver.getPrefWidth(),popOver.getPrefHeight());
+                        stackPane.getChildren().clear();
+                        stackPane.getChildren().addAll(L1Group,L2Group,floor1Group,floor2Group,floor3Group);
+                        gesturePane.setContent(stackPane);
+                        displayNode(moveTo, gesturePane);
                         popOver.setContentNode(gesturePane);
                         popOver.show(moveButton);
                     });
@@ -154,7 +156,7 @@ public class NewHomeController {
         TableColumn<HomeServiceRequests, Void> completed = new TableColumn<>("");
         completed.setPrefWidth(100);
         completed.setCellFactory(event -> new TableCell<>() {
-            private final Button button = new Button("Complete");
+            private final MFXButton button = new MFXButton("Complete");
 
             {
                 button.setOnAction(event -> {
@@ -267,10 +269,9 @@ public class NewHomeController {
             }
         }
         Point2D centrePoint = new Point2D(circle.getCenterX(), circle.getCenterY());
-        System.out.println(centrePoint);
-        System.out.println(gesturePane.getPrefWidth());
         Platform.runLater(() -> {
             gesturePane.centreOn(centrePoint);
+            gesturePane.zoomTo(1, centrePoint);
         });
 
         gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
