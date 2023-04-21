@@ -34,7 +34,7 @@ public enum Screen {
   FLOWER_CHOICE("views/serviceRequest/FlowerChoice.fxml"),
   FLOWER_CHECKOUT("views/serviceRequest/FlowerCheckout.fxml"),
 
-  SIGNAGE("views/signagePages/Signage.fxml"),
+  SIGNAGE("views/signagePages/signagePage.fxml"),
   PATHFINDING("views/PathfindingFullScreen.fxml"),
   EDIT_MAP("views/EditMapFullScreen.fxml"),
   VIEW_MAP("views/ViewMapFullScreen.fxml"),

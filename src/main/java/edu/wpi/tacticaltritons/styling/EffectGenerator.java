@@ -7,10 +7,8 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import org.controlsfx.control.spreadsheet.Grid;
 
 public class EffectGenerator {
     private static final DropShadow shadow = new DropShadow(StylingParameters.shadowRadius, StylingParameters.shadowOffsetX, StylingParameters.shadowOffsetY, StylingParameters.shandowColor);
@@ -20,6 +18,7 @@ public class EffectGenerator {
           thisPane.setEffect(shadow);
        }
     }
+
 
     public static void generateSpacing(FlowPane targetPane, int spacing){
         Insets marginInsets = new Insets(spacing / 2,spacing,spacing / 2,spacing);
@@ -42,6 +41,14 @@ public class EffectGenerator {
         ObservableList<Node> childrenItems = targetHBox.getChildren();
         for(Node item: childrenItems){
             targetHBox.setMargin(item,marginInsets);
+        }
+    }
+
+    public static void generateSpacing(GridPane targetGridPane, int spacing){
+        Insets marginInsets = new Insets(spacing / 2,spacing,spacing / 2,spacing);
+        ObservableList<Node> childrenItems = targetGridPane.getChildren();
+        for(Node item: childrenItems){
+            targetGridPane.setMargin(item,marginInsets);
         }
     }
 
