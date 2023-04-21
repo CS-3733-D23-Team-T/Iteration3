@@ -198,7 +198,7 @@
                         </FlowPane>
                     </content>
                     <BorderPane.margin>
-                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                        <Insets bottom="15.0" left="25.0" right="25.0" top="25.0" />
                     </BorderPane.margin>
                 </MFXScrollPane>
             </center>
@@ -225,11 +225,31 @@
                 </FlowPane>
             </top>
             <bottom>
-                <MFXButton id="normalButton" fx:id="submitButton" prefHeight="30.0" prefWidth="350" text="Submit" BorderPane.alignment="CENTER">
-                    <BorderPane.margin>
-                        <Insets bottom="25" />
-                    </BorderPane.margin>
-                </MFXButton>
+            <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="25.0" />
+               </BorderPane.margin>
+               <children>
+                  <FlowPane alignment="CENTER" columnHalignment="CENTER">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price: ">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="priceText" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                     <FlowPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </FlowPane.margin>
+                  </FlowPane>
+                      <MFXButton id="normalButton" fx:id="submitButton" prefHeight="30.0" prefWidth="350" text="Submit" />
+               </children>
+            </FlowPane>
             </bottom>
             <BorderPane.margin>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

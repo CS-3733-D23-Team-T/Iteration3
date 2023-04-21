@@ -96,9 +96,7 @@ public class FlowerCheckoutController {
     @FXML
     MFXFilterComboBox assignedComboBox;
     @FXML
-    private StackPane selectedFloorPane;
-    @FXML
-    private BorderPane basePane;
+    private Text priceText;
     private String userFirst;
     private String userLast;
     private String patientFirst;
@@ -115,10 +113,11 @@ public class FlowerCheckoutController {
     private double flowerTotal;
     private ObservableMap<String, Integer> checkoutItems = FXCollections.observableHashMap();
 
+
     public void initialize() throws SQLException {
 
         hourComboBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
-        minComboBox.setItems(FXCollections.observableArrayList("01", "02", "03", "04", "05", "06", "07", "08", "09", "00", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
+        minComboBox.setItems(FXCollections.observableArrayList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "00", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
         timeDayComboBox.setItems(FXCollections.observableArrayList("AM", "PM"));
 
         for (Login login : DAOFacade.getAllLogins()) {
@@ -194,6 +193,8 @@ public class FlowerCheckoutController {
 
         this.checkoutItems = FlowerDeliveryController.checkoutItems;
         this.flowerTotal = FlowerDeliveryController.flowerTotal;
+        priceText.setText(Double.toString(flowerTotal));
+
 
         checkoutItems.forEach((key, value) ->
         {
@@ -231,6 +232,7 @@ public class FlowerCheckoutController {
                         clearForm();
                         Navigation.navigate(Screen.HOME);
                     } else {
+                        System.out.println("Form cannot submit");
                         //TODO do something when not filled
                     }
                 });
@@ -288,7 +290,6 @@ public class FlowerCheckoutController {
                 }
             }
             Point2D centrePoint = new Point2D(circle.getCenterX(), circle.getCenterY());
-            System.out.println(centrePoint);
             groundFloor.centreOn(centrePoint);
         });
 
@@ -352,23 +353,19 @@ public class FlowerCheckoutController {
             staffLast = "";
         }
 
-        if(timeOfDay.equals("AM"))
-        {
-            deliveryTime = Time.valueOf(Integer.toString(hour) + min);
-        }
-        else
-        {
-            if(hour == 12)
-            {
-                deliveryTime = Time.valueOf(Integer.toString(0) + min);
+        if (timeOfDay.equals("AM")) {
+            if (hour == 12) {
+                deliveryTime = Time.valueOf(Integer.toString(0) + ":" + min + ":00");
+            } else {
+                deliveryTime = Time.valueOf(Integer.toString(hour) + ":" + min + ":00");
             }
-            else
-            {
-                deliveryTime = Time.valueOf(Integer.toString(hour + 12) + min);
+        } else {
+            if (hour == 12) {
+                deliveryTime = Time.valueOf(Integer.toString(hour) + ":" + min + ":00");
+            } else {
+                deliveryTime = Time.valueOf(Integer.toString(hour + 12) + ":" + min + ":00");
             }
         }
-        System.out.println(deliveryTime);
-
 
         Flower flower = new Flower(userFirst, userLast, patientFirst, patientLast, staffFirst, staffLast, deliveryDate, deliveryTime, location, items.get(), total, status);
         DAOFacade.addFlower(flower);
@@ -391,13 +388,6 @@ public class FlowerCheckoutController {
         } else {
             EffectGenerator.noFirstNameAlertOff(userLastField);
             userLast = userLastField.getText();
-        }
-
-        if (assignedComboBox.isSelectable()) {
-            EffectGenerator.noAssigendStaff(assignedComboBox);
-            readyToSubmit = false;
-        } else {
-            EffectGenerator.noAssigendStaffOff(assignedComboBox);
         }
 
         if (deliveryDateField.getText().isEmpty()) {
@@ -427,21 +417,25 @@ public class FlowerCheckoutController {
             patientLast = patientLastField.getText();
         }
 
-        if (!hourComboBox.isSelectable()) {
+
+        // this is a problem
+        if (hourComboBox.getSelectedItem() == null) {
             EffectGenerator.noTimeAlertOn(hourComboBox);
             readyToSubmit = false;
         } else {
             EffectGenerator.noTimeAlertOff(hourComboBox);
             hour = hourComboBox.getSelectedItem();
         }
-        if (!minComboBox.isSelectable()) {
+
+        if (minComboBox.getSelectedItem() == null) {
             EffectGenerator.noTimeAlertOn(minComboBox);
             readyToSubmit = false;
         } else {
             EffectGenerator.noTimeAlertOff(minComboBox);
             min = Integer.parseInt(minComboBox.getSelectedItem());
         }
-        if (!timeDayComboBox.isSelectable()) {
+
+        if (timeDayComboBox.getSelectedItem() == null) {
             EffectGenerator.noTimeAlertOn(timeDayComboBox);
             readyToSubmit = false;
         } else {
