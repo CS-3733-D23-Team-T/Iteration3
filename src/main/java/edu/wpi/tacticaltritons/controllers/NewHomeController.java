@@ -106,15 +106,15 @@ public class NewHomeController {
 
         requestsPane.widthProperty().addListener((observable, oldValue, newValue) -> {
             requestsPane.getChildren().clear();
-            tableServiceRequest.setMinWidth(requestsPane.getMinWidth());
-            tableServiceRequest.setPrefWidth(newValue.doubleValue());
+            tableServiceRequest.setMinWidth(requestsPane.getMinWidth()-1);
+            tableServiceRequest.setPrefWidth(newValue.doubleValue()-1);
             requestsPane.getChildren().add(tableServiceRequest);
         });
 
         requestsPane.heightProperty().addListener((observable, oldValue, newValue) -> {
             requestsPane.getChildren().clear();
-            tableServiceRequest.setMinWidth(newValue.doubleValue());
-            tableServiceRequest.setPrefHeight(newValue.doubleValue());
+            tableServiceRequest.setMinWidth(newValue.doubleValue()-1);
+            tableServiceRequest.setPrefHeight(newValue.doubleValue()-1);
             requestsPane.getChildren().add(tableServiceRequest);
         });
     }

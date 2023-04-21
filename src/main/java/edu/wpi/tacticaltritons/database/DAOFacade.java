@@ -7,7 +7,7 @@ import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class DAOFacade {
@@ -301,5 +301,13 @@ public class DAOFacade {
 
   public static List<HomeServiceRequests> getSessionServiceRequests(String firstName, String lastName) throws SQLException{
     return homeServiceRequestsDao.getAll(firstName,lastName);
+  }
+
+  public static List<Move> getAllCurrentMoves(Date currentDate) throws SQLException{
+    return moveDao.getAllCurrent(currentDate);
+  }
+
+  public static List<Move> getAllFutureMoves(Date currentDate) throws SQLException{
+    return moveDao.getAllFuture(currentDate);
   }
 }
