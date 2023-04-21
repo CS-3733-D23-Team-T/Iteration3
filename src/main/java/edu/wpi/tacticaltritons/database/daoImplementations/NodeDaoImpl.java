@@ -5,7 +5,7 @@ import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.database.dao.NodeDao;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class NodeDaoImpl implements NodeDao {

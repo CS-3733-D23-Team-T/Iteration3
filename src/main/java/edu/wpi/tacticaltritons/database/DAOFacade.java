@@ -7,7 +7,7 @@ import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class DAOFacade {
@@ -24,6 +24,8 @@ public class DAOFacade {
   static FlowerRequestOptionsDaoImpl flowerRequestOptionsDao = new FlowerRequestOptionsDaoImpl();
   static FurnitureDaoImpl furnitureDao = new FurnitureDaoImpl();
   static FurnitureRequestOptionsDaoImpl furnitureRequestOptionsDao = new FurnitureRequestOptionsDaoImpl();
+  static HomeServiceRequestsDaoImpl homeServiceRequestsDao = new HomeServiceRequestsDaoImpl();
+  static InvitationsDaoImpl invitationsDao = new InvitationsDaoImpl();
 
   public static void addNode(Node node) throws SQLException {
     nodeDao.insert(node);
@@ -295,5 +297,29 @@ public class DAOFacade {
 
   public static Furniture getFurniture(int orderNum) throws SQLException {
     return furnitureDao.get(orderNum);
+  }
+
+  public static List<HomeServiceRequests> getSessionServiceRequests(String firstName, String lastName) throws SQLException{
+    return homeServiceRequestsDao.getAll(firstName,lastName);
+  }
+
+  public static List<Move> getAllCurrentMoves(Date currentDate) throws SQLException{
+    return moveDao.getAllCurrent(currentDate);
+  }
+
+  public static List<Move> getAllFutureMoves(Date currentDate) throws SQLException{
+    return moveDao.getAllFuture(currentDate);
+  }
+
+  public static List<Invitations> getAllSessionInvitations(String firstName, String lastName, Date currentDate) throws SQLException{
+    return invitationsDao.getAll(firstName,lastName,currentDate);
+  }
+
+  public static void addInvitation(Invitations invitation) throws SQLException{
+    invitationsDao.insert(invitation);
+  }
+
+  public static void updateInvitation(Invitations invitation) throws SQLException {
+    invitationsDao.update(invitation);
   }
 }
