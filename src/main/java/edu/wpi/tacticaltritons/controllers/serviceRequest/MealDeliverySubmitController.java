@@ -36,7 +36,7 @@ import java.util.List;
 
 
 /**
- * Controller for the meal delivery service form page. Collects info on the page and submits to db
+ * Controller for the meal delivery service checkout page. Collects info on the page and submits to db
  *
  * @author Mark Caleca
  */
@@ -54,7 +54,7 @@ public class MealDeliverySubmitController {
     @FXML
     StackPane orderPaneStack, formPaneStack;
     @FXML
-    Button clearButton, cancelButton, submitButton, clearFormButton, previewButton;
+    Button clearButton, cancelButton, submitButton, clearFormButton;
     @FXML
     VBox orderListPane;
 
@@ -104,13 +104,14 @@ public class MealDeliverySubmitController {
         nodes.add(room);
         nodes.add(date);
         nodes.add(time);
-        for (LocationName name : DAOFacade.getAllLocationNames()) { //room list
+        for (LocationName name : DAOFacade.getAllLocationNames()) { //generate room list dropdown
             room.getItems().add(name.getLongName());
         }
         ArrayList<Login> allPeople = (ArrayList<Login>) DAOFacade.getAllLogins();
-        for(Login people: allPeople){ //staff list
+        for(Login people: allPeople){ //generate staff list dropdown
             staffMemberName.getItems().add(people.getFirstName() + " " + people.getLastName() + "/" + people.getEmail());
         }
+        //date/time config
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         time.setText(formatter.format(LocalDateTime.now().plusMinutes(15)));
         formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
@@ -131,14 +132,13 @@ public class MealDeliverySubmitController {
                 }
             }
         });
-        me.initCheckout(App.getPrimaryStage(),scrollPane,orderListPane,nodes,previewButton);
+        me.initCheckout(App.getPrimaryStage(),scrollPane,orderListPane,nodes);
 
         //bind panes to reactively resize
         formRectangle.widthProperty().bind(Bindings.max(220,me.imageViewWidth.add(20)));
         formRectangle.heightProperty().bind(Bindings.max(520,me.screenY.subtract(30)));
         restaurantDisplayHeader1.textProperty().bind(me.restaurant);
         priceDisplay.textProperty().bind(Bindings.format("$%.2f", me.price));
-
         orderPaneScroll.prefHeightProperty().bind(me.screenY.subtract(90));
         orderPaneScroll.prefWidthProperty().bind(Bindings.max(400,me.imageViewWidth.multiply(1.5)));
         orderPaneRectangle.widthProperty().bind(orderPaneScroll.widthProperty().subtract(40));
@@ -206,6 +206,9 @@ public class MealDeliverySubmitController {
 
     }
 
+    /**
+     * clear map selection view
+     */
     public void clearAllNodes() {
         floor1Group.getChildren().remove(1, floor1Group.getChildren().size());
         floor2Group.getChildren().remove(1, floor2Group.getChildren().size());
@@ -214,6 +217,12 @@ public class MealDeliverySubmitController {
         L2Group.getChildren().remove(1, L2Group.getChildren().size());
     }
 
+    /**
+     * draw a circle on the screen at the location selected by the user
+     * @param x the X coordinate to draw the circle at
+     * @param y the Y coordinate to draw the circle at
+     * @return draw a circle on the screen
+     */
     public Circle drawCircle(double x, double y) {
         Circle circle = new Circle();
         circle.setVisible(true);

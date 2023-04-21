@@ -106,6 +106,11 @@ public class MealDeliveryEntity {
 
     //------------------------DATABASE ACCESS------------------------//
 
+    /**
+     * read database for all available restaurants
+     * @param vBoxOrderPane the VBox to display the order in (needs to be cleared)
+     * @throws SQLException handle errors reading the database
+     */
     public void readDatabaseRestaurants(VBox vBoxOrderPane) throws SQLException {
         clearLists(vBoxOrderPane);
         for (RequestOptions requestOptions : DAOFacade.getAllOptions()) {
@@ -116,6 +121,12 @@ public class MealDeliveryEntity {
         }
     }
 
+    /**
+     * read database for all items available from a restaurant
+     * @param name the name of the restaurant selected
+     * @param vBoxOrderPane the VBox to display the order in (needs to be cleared)
+     * @throws SQLException handle errors reading the database
+     */
     public void readRestaurantItems(String name, VBox vBoxOrderPane) throws SQLException {
         clearLists(vBoxOrderPane);
         for (RequestOptions requestOptions : DAOFacade.getAllOptions(name)) {
@@ -166,6 +177,17 @@ public class MealDeliveryEntity {
         }
     }
 
+    /**
+     * initialize the text fields for the checkout page
+     * @param firstName text field for first name
+     * @param lastName text field for last name
+     * @param patientFirstName text field for patient first name
+     * @param patientLastName text field for patient last name
+     * @param time text field for time
+     * @param room dropdown for room locations
+     * @param staffMemberName dropdown for staff member name
+     * @param date date picker
+     */
     public void initTextFields(MFXTextField firstName,MFXTextField lastName,MFXTextField patientFirstName,MFXTextField patientLastName,MFXTextField time, MFXFilterComboBox room, MFXFilterComboBox staffMemberName, MFXDatePicker date){
         this.firstName = firstName;
         this.lastName = lastName;
@@ -178,7 +200,7 @@ public class MealDeliveryEntity {
     }
 
     /**
-     * checks if the meal form is complete
+     * checks if the meal form is complete, and if not disable the submit button
      *
      * @return true if complete, false if any field is blank
      */
@@ -212,6 +234,9 @@ public class MealDeliveryEntity {
         return complete;
     }
 
+    /**
+     * calculate the new total order price and set observable price to that value
+     */
     private void updatePrice() {
         items.set("");
         price.set(0);
@@ -226,12 +251,27 @@ public class MealDeliveryEntity {
 
     //------------------------Initialize Panes------------------------//
 
+    /**
+     * initialize restaurant options from database with rectangles, images
+     * @param stage the stage of the page (for resizing purposes)
+     * @param scrollPane the scroll pane for the page (for resizing purposes)
+     * @param flowPane the flow pane to display restaurant options on
+     * @throws SQLException handle errors reading the database
+     */
     public void initRestaurant(Stage stage, ScrollPane scrollPane, FlowPane flowPane) throws SQLException {
-        init(stage, scrollPane);
-        scrollPane.prefWidthProperty().bind(screenX);
-        addRestaurants(flowPane);
+        init(stage, scrollPane); //resizing
+        scrollPane.prefWidthProperty().bind(screenX); //resizing
+        addRestaurants(flowPane); //view options on screen
     }
 
+    /**
+     * initialize item options on the screen from database with rectangles, images
+     * @param stage the stage of the page (for resizing purposes)
+     * @param scrollPane the scroll pane for the part of the page holding items (for resizing purposes)
+     * @param restaurantPane the flow pane to display restaurant options on
+     * @param orderPane the VBox to hold items selected, quantity, and price
+     * @throws SQLException handle errors reading the database
+     */
     public void initItems(Stage stage, ScrollPane scrollPane, FlowPane restaurantPane, VBox orderPane) throws SQLException {
         init(stage, scrollPane);
         scrollPane.prefWidthProperty().bind(screenX.multiply(1.95 / 3));
@@ -242,12 +282,20 @@ public class MealDeliveryEntity {
         addRectanglePanes(restaurantPane,orderPane,false);
     }
 
-    public void initCheckout(Stage stage, ScrollPane scrollPane, VBox orderPane, List<MFXTextField> nodes, Button preview) throws SQLException {
+    /**
+     *
+     * @param stage the stage of the page (for resizing purposes)
+     * @param scrollPane the scroll pane for the part of the page holding the form (for resizing purposes)
+     * @param orderPane the VBox to hold items selected, quantity, and price
+     * @param nodes the list of text fields to hold user input for the form
+     * @throws SQLException
+     */
+    public void initCheckout(Stage stage, ScrollPane scrollPane, VBox orderPane, List<MFXTextField> nodes) throws SQLException {
         firstName.setText(UserSessionToken.getUser().getFirstname());
         lastName.setText(UserSessionToken.getUser().getLastname());
         orderPane.getChildren().addAll(getVBox().getChildren().subList(2,getVBox().getChildren().size()));
         init(stage, scrollPane);
-        initFormPane(nodes,preview);
+        initFormPane(nodes);
     }
 
     /**
@@ -267,60 +315,81 @@ public class MealDeliveryEntity {
         scrollPane.prefHeightProperty().bind(screenY);
     }
 
+    /**
+     * add restaurant options and rectangles to the screen
+     * @param restaurantPane the flow pane to add the options to
+     * @throws SQLException handle database read errors
+     */
     private void addRestaurants(FlowPane restaurantPane) throws SQLException {
-        readDatabaseRestaurants(new VBox());//dummy data
+        readDatabaseRestaurants(new VBox());//since there's no order pane on this page, don't need to clear it
         addRectanglePanes(restaurantPane, true);
+
+        //resizing
         restaurantPane.hgapProperty().bind(screenX.divide(80));
         restaurantPane.vgapProperty().bind(screenY.divide(50));
     }
 
+    /**
+     * add a new item to the order pane with image, name, quantity, and +/- buttons
+     * @param meal the meal name to add
+     * @param orderPane the VBox to add the item information to
+     */
     private void addToOrderPane(String meal, VBox orderPane) {
-        int index = title.indexOf(meal);
-        String path = paths.get(index);
+        //image display
+        String path = paths.get(title.indexOf(meal)); //store file path of image
         Image image = new Image(path);
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(50);
 
+        //meal name and quantity display
         Label mealDisplay = new Label(meal);
         mealDisplay.getStyleClass().add("text-general");
         Label qtyDisplay = new Label();
         qtyDisplay.textProperty().bind(Bindings.valueAt(orderList, meal).asString());
         qtyDisplay.getStyleClass().add("text-general");
 
+        //plus and minus button display
         Button minus = new Button("-");
         minus.getStyleClass().add("button-submit");
         Button plus = new Button("+");
         plus.getStyleClass().add("button-submit");
 
+        //create a bounding hbox for each item to hold image, text, and buttons
         HBox hBox = new HBox(imageView, mealDisplay, minus, qtyDisplay, plus);
         hBox.setSpacing(20);
         mealDisplay.setPadding(new Insets(8,0,0,0));
         qtyDisplay.setPadding(new Insets(8,0,0,0));
         orderPane.getChildren().add(hBox);
+
+        //configure plus and minus button functionality
         minus.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
-                if (orderList.get(meal) <= 1) {
+                if (orderList.get(meal) <= 1) { //remove item if quantity reaches zero
                     orderPane.getChildren().remove(hBox);
                 }
-//                else
-                orderList.put(meal, orderList.get(meal) - 1);
-                updatePrice();
-                formComplete();
+                orderList.put(meal, orderList.get(meal) - 1); //update quantity of item displayed and on hashmap of order
+                updatePrice(); //update price based on new quantity
+                formComplete(); //check if there are still items in the order, otherwise disable the submit button
             }
         });
         plus.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                orderList.put(meal, orderList.get(meal) + 1);
-                updatePrice();
-                formComplete();
+                orderList.put(meal, orderList.get(meal) + 1); //update quantity of item displayed and on hashmap of order
+                updatePrice(); //update price based on new quantity
             }
         });
     }
 
+    /**
+     * add rectangles with items / restaurants to a page if it doesn't have an order pane
+     * @param flowPane the flow pane to add to
+     * @param type if restaurant (true) create horizontal rectangles, otherwise create vertical ones
+     * @throws SQLException
+     */
     private void addRectanglePanes(FlowPane flowPane, boolean type) throws SQLException {
         addRectanglePanes(flowPane, null, type);
     }
@@ -329,7 +398,7 @@ public class MealDeliveryEntity {
      * adds all rectangle selection panes with images and text depending on type
      *
      * @param flowPane the FlowPane to edit
-     * @param type     if restaurant (true) create horizontal rectangles, otherwise create vertical ones
+     * @param type if restaurant (true) create horizontal rectangles, otherwise create vertical ones
      * @throws SQLException database read errors
      */
     private void addRectanglePanes(FlowPane flowPane, VBox orderPane, boolean type) throws SQLException {
@@ -354,7 +423,7 @@ public class MealDeliveryEntity {
                 ImageView imageView = new ImageView(image);
                 imageView.setPreserveRatio(true);
 
-                //rectangle
+                //rectangle as background for item
                 rectangle = new Rectangle();
 
                 //set title and description
@@ -362,7 +431,7 @@ public class MealDeliveryEntity {
                 Text body = new Text(description.get(i));
                 body.getStyleClass().add("text-general");
 
-                StackPane stackPane2;
+                StackPane stackPane2; //stack text and rectangle
                 VBox vBox = new VBox(top, body);
                 vBox.setPadding(new Insets(10));
 
@@ -436,7 +505,12 @@ public class MealDeliveryEntity {
         }
     }
 
-    public void initFormPane(List<MFXTextField> nodes, Button preview) throws SQLException { //TODO resume
+    /**
+     * initialize checkout page form text fields
+     * @param nodes the list of text fields to store data
+     * @throws SQLException handle database read errors
+     */
+    public void initFormPane(List<MFXTextField> nodes) throws SQLException {
         for (MFXTextField node : nodes) {
             node.prefWidthProperty().bind(Bindings.max(200, imageViewWidth));
             node.textProperty().addListener(((observable, oldValue, newValue) -> {
@@ -447,6 +521,12 @@ public class MealDeliveryEntity {
 
 
     //------------------------Initialize Buttons------------------------//
+
+    /**
+     * initialize the checkout button on the item page to go to the checkout page
+     * @param button pass in the button from scene builder
+     * @param orderPane the order VBox to store data
+     */
     public void initCheckoutButton(Button button, VBox orderPane){
         checkoutButton = button;
         checkoutButton.setDisable(true);
@@ -459,6 +539,10 @@ public class MealDeliveryEntity {
         });
     }
 
+    /**
+     * initialize the submit button on the checkout page to submit data to the database
+     * @param button pass in the button from scene builder
+     */
     public void initSubmitButton(Button button) {
         submitButton = button;
         submitButton.setVisible(true);
@@ -467,7 +551,9 @@ public class MealDeliveryEntity {
             @Override
             public void handle(ActionEvent event) {
                 if (formComplete()) {
-                    Navigation.navigate(Screen.HOME);
+                    Navigation.navigate(Screen.HOME); //go to the home screen
+
+                    //convert data for database
                     //order number is time of submission
                     String pattern = "yyyy-MM-dd";
                     DateTimeFormatter df = DateTimeFormatter.ofPattern(pattern);
@@ -500,6 +586,11 @@ public class MealDeliveryEntity {
         });
     }
 
+    /**
+     * initialize the clear button to delete order
+     * @param button pass in the button from scene builder
+     * @param vBoxOrderPane the order VBox to store data
+     */
     public void initClearButton(Button button, VBox vBoxOrderPane) {
         clearButton = button;
         clearButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -510,6 +601,11 @@ public class MealDeliveryEntity {
         });
     }
 
+    /**
+     * initialize the cancel button to delete the order and go back to the home screen
+     * @param button pass in the button from scene builder
+     * @param vBoxOrderPane the order VBox to store data
+     */
     public void initCancelButton(Button button,VBox vBoxOrderPane){
         cancelButton = button;
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {

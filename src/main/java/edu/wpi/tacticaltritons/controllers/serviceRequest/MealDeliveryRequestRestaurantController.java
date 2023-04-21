@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 
 /**
- * Controller for the meal delivery service request item page. Collects info on the page and stores it
+ * Controller for the meal delivery service restaurant select page. Collects info on the page and stores it
  *
  * @author Mark Caleca
  */
@@ -22,6 +22,7 @@ public class MealDeliveryRequestRestaurantController {
     static MealDeliveryEntity me;
     @FXML public void initialize() throws SQLException {
         me = new MealDeliveryEntity();
+        //init screen by reading database and displaying available restaurants
         me.initRestaurant(App.getPrimaryStage(),scrollPane,restaurantPane);
     }
 }
