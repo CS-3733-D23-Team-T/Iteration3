@@ -10,7 +10,7 @@ public enum Screen {
   LOGIN_CONTAINER("views/login/LoginContainer.fxml"),
 
   ROOT("views/Root.fxml"),
-  HOME("views/Home.fxml"),
+  HOME("views/NewHomePage.fxml"),
 
   SETTINGS("views/settings/Settings.fxml"),
   USER_OPTIONS("views/settings/UserOptions.fxml"),

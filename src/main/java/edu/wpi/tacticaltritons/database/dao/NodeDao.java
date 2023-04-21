@@ -2,7 +2,7 @@ package edu.wpi.tacticaltritons.database.dao;
 
 import edu.wpi.tacticaltritons.database.Node;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Date;
 
 public interface NodeDao extends IDao<Node> {
   Node get(int nodeID) throws SQLException;
