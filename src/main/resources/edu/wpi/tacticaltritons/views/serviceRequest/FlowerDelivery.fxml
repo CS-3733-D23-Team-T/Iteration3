@@ -39,7 +39,7 @@
                               <Font name="Times New Roman" size="15.0" />
                            </font>
                         </Label>
-                        <Label fx:id="priceLable" text="(Price)">
+                        <Label fx:id="priceLable" text="0.00">
                            <font>
                               <Font name="Times New Roman" size="15.0" />
                            </font>
