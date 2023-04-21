@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -34,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.wpi.tacticaltritons.styling.ThemeColors;
+import org.controlsfx.control.PopOver;
 
 public class MapSuperController {
     @FXML
@@ -99,6 +101,8 @@ public class MapSuperController {
     public List<Node> allNodes = DAOFacade.getAllNodes();
     public List<Move> allMoves = DAOFacade.getAllMoves();
     public List<LocationName> allLocationNames = DAOFacade.getAllLocationNames();
+    public List<String> blank = new ArrayList<>();
+
 
 
     Date today = Date.valueOf(java.time.LocalDate.now());
@@ -106,7 +110,7 @@ public class MapSuperController {
     public MapSuperController() throws SQLException {
     }
 
-    private enum selectedFloor {
+    protected enum selectedFloor {
         FLOOR("1");
         public String floor;
 
@@ -196,6 +200,46 @@ public class MapSuperController {
         floor3Image.setVisible(false);
     }
 
+    public void setClickedButton(){
+        switch (selectedFloor.FLOOR.floor) {
+            case "L1":
+                resetButtons();
+                this.lowerLevel1.setStyle("-fx-background-color: BLUE");
+                resetImages();
+                L1Group.setVisible(true);
+                lowerLevel1Image.setVisible(true);
+                break;
+            case "L2":
+                resetButtons();
+                this.lowerLevel2.setStyle("-fx-background-color: BLUE");
+                resetImages();
+                L2Group.setVisible(true);
+                lowerLevel2Image.setVisible(true);
+                break;
+            case "1":
+                resetButtons();
+                this.floor1.setStyle("-fx-background-color: BLUE");
+                resetImages();
+                floor1Group.setVisible(true);
+                floor1Image.setVisible(true);
+                break;
+            case "2":
+                resetButtons();
+                this.floor2.setStyle("-fx-background-color: BLUE");
+                resetImages();
+                floor2Group.setVisible(true);
+                floor2Image.setVisible(true);
+                break;
+            case "3":
+                resetButtons();
+                this.floor3.setStyle("-fx-background-color: BLUE");
+                resetImages();
+                floor3Group.setVisible(true);
+                floor3Image.setVisible(true);
+                break;
+        }
+    }
+
     public void initalizeFloorButtons() {
         this.lowerLevel1.setOnAction(event -> {
             resetButtons();
@@ -251,35 +295,6 @@ public class MapSuperController {
         return circle;
     }
 
-    public void editNodeColor(String nodetype ,Color fill, Color stroke) {
-        Group thisGroup = new Group();
-        switch (selectedFloor.FLOOR.floor) {
-            case "L1":
-                thisGroup = this.L1Group;
-                break;
-            case "L2":
-                thisGroup = this.L2Group;
-                break;
-            case "1":
-                thisGroup = this.floor1Group;
-                break;
-            case "2":
-                thisGroup = this.floor2Group;
-                break;
-            case "3":
-                thisGroup = this.floor3Group;
-                break;
-        }
-        for(javafx.scene.Node node : thisGroup.getChildren()){
-            if(node instanceof Circle)
-            {
-                ((Circle) node).setFill(fill);
-                ((Circle) node).setStroke(stroke);
-            }
-        }
-
-    }
-
     public void clearAllNodes() {
         floor1Group.getChildren().remove(1, floor1Group.getChildren().size());
         floor2Group.getChildren().remove(1, floor2Group.getChildren().size());
@@ -296,39 +311,111 @@ public class MapSuperController {
         return hash;
     }
 
+    public void initializeGesturePane(){
+        javafx.application.Platform.runLater(() -> {
+            gesturePane.centreOn(new Point2D(2500,1000));
+        });
+        this.gesturePane.setVisible(true);
+        gesturePane.toBack();
+        gesturePane.reset();
+    }
 
-
-    public void findAllNodes() throws SQLException {
+    public void findAllNodes(List<String> nodeTypeList, String floor) throws SQLException {
+        selectedFloor.FLOOR.floor = floor;
         getNodeHashMap().forEach(((key, value) -> {
-            if (value.getFloor().equals(selectedFloor.FLOOR.floor)) {
+            if (value.getFloor().equals(floor)) {
                 try {
                     if (getMoveHashMap().get(key) == null) {
 
                     } else {
-                        Circle circle = drawCircle(value.getXcoord(), value.getYcoord(), Color.GRAY, Color.DARKGRAY);
+                        Circle circle;
+                        Text longName = new Text();
+
+                        if(nodeTypeList.contains(getMoveHashMap().get(value.getNodeID()).getLocation().getNodeType()))
+                        {
+                            circle = drawCircle(value.getXcoord(), value.getYcoord(), Color.RED, Color.BLACK);
+                            longName.setFill(Color.BLACK);
+                        }
+                        else{
+                            circle = drawCircle(value.getXcoord(), value.getYcoord(), Color.GRAY, Color.DARKGRAY);
+                            longName.setVisible(false);
+                        }
+
+
+                        if(!getMoveHashMap().get(value.getNodeID()).getLocation().getNodeType().equals("HALL"))
+                        {
+                            longName.setText(getMoveHashMap().get(value.getNodeID()).getLocation().getShortName());
+                        }
+                        longName.setFont(Font.font("Ariel", FontWeight.BOLD, 15));
+                        longName.toFront();
+                        longName.setX(value.getXcoord() - (longName.getLayoutBounds().getWidth() / 2));
+                        longName.setY(value.getYcoord() + (circle.getRadius() * 2) + 5);
+
                         switch (selectedFloor.FLOOR.floor) {
                             case "L1":
-                                this.L1Group.getChildren().add(circle);
+                                this.L1Group.getChildren().addAll(circle,longName);
                                 break;
                             case "L2":
-                                this.L2Group.getChildren().add(circle);
+                                this.L2Group.getChildren().addAll(circle,longName);
                                 break;
                             case "1":
-                                this.floor1Group.getChildren().add(circle);
+                                this.floor1Group.getChildren().addAll(circle,longName);
                                 break;
                             case "2":
-                                this.floor2Group.getChildren().add(circle);
+                                this.floor2Group.getChildren().addAll(circle,longName);
                                 break;
                             case "3":
-                                this.floor3Group.getChildren().add(circle);
+                                this.floor3Group.getChildren().addAll(circle,longName);
                                 break;
                         }
+                        setClickedButton();
+                        clickCircle(circle , value);
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             }
         }));
+    }
+
+    public void clickCircle(Circle circle, Node node){
+        circle.setOnMouseClicked(event -> {
+            try {
+                if(getLocationNameHashMap().get(getMoveHashMap().get(node.getNodeID()).getLocation().getLongName()).getNodeType().equals("HALL")){
+
+                }
+                else {
+                    try {
+                        this.searchOnMap.getSelectionModel().selectItem(getMoveHashMap().get(node.getNodeID()).getLocation().getLongName());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    PopOver popover = new PopOver();
+                    FlowPane flowPane = new FlowPane();
+                    Text text = new Text();
+                    try {
+                        text.setText("Long Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getLongName() + "Short Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getShortName() + "\n" + "Node Type: " + getMoveHashMap().get(node.getNodeID()).getLocation().getNodeType() + "\n" + "Node ID: " + node.getNodeID() + "\n" + "Coordinates (x,y): (" + node.getXcoord() + "," + node.getYcoord() + ")" + "\n" + "Floor: " + node.getFloor() + "\n" + "Building: " + node.getBuilding());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    popover.setDetachable(false);
+                    popover.setCornerRadius(5);
+                    popover.setAnimated(true);
+                    popover.setCloseButtonEnabled(true);
+                    popover.setPrefSize(300,300);
+                    flowPane.setPrefSize(popover.getPrefWidth(),popover.getPrefHeight());
+                    text.setFont(Font.font("Ariel", FontWeight.BOLD, 10));
+                    flowPane.getChildren().add(text);
+                    popover.setContentNode(flowPane);
+                    popover.setAutoFix(false);
+                    popover.setArrowLocation(PopOver.ArrowLocation.LEFT_CENTER);
+                    popover.setArrowSize(5);
+                    popover.show(floor1Group,circle.getCenterX(),circle.getCenterY());
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
 

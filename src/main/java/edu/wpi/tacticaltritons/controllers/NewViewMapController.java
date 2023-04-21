@@ -29,10 +29,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class NewViewMapController extends MapSuperController {
 
@@ -127,20 +124,16 @@ public class NewViewMapController extends MapSuperController {
 
     @FXML
     private void initialize() throws SQLException {
-        javafx.application.Platform.runLater(() -> {
-            gesturePane.centreOn(new Point2D(2500,1000));
-        });
 
+        initializeGesturePane();
         initializeImages();
         initializeSearch();
 
-        this.gesturePane.setVisible(true);
         this.floor1Group.setVisible(true);
         this.floor1Image.setVisible(true);
         searchOnMap.toFront();
         searchOnMap.setVisible(true);
-        gesturePane.toBack();
-        gesturePane.reset();
+
 
         showFilters(false);
         filter.setVisible(true);
@@ -173,60 +166,62 @@ public class NewViewMapController extends MapSuperController {
 
         this.applyFilter.setOnAction(event -> {
             clearAllNodes();
+            List<String> nodeTypeList = new ArrayList<>();
+
+            if (restrooms.isSelected() == true) {
+                nodeTypeList.add("REST");
+            }
+
+            if (elevators.isSelected() == true) {
+                nodeTypeList.add("ELEV");
+            }
+
+            if (stairs.isSelected() == true) {
+                nodeTypeList.add("STAI");
+            }
+
+            if (hallways.isSelected() == true) {
+                nodeTypeList.add("HALL");
+            }
+
+            if (departments.isSelected() == true) {
+                nodeTypeList.add("DEPT");
+            }
+
+            if (labs.isSelected() == true) {
+                nodeTypeList.add("LABS");
+            }
+
+            if (infoDesks.isSelected() == true) {
+                nodeTypeList.add("INFO");
+            }
+
+            if (conferenceRooms.isSelected() == true) {
+                nodeTypeList.add("CONF");
+            }
+
+            if (retail.isSelected() == true) {
+                nodeTypeList.add("RETL");
+            }
+
+            if (services.isSelected() == true) {
+                nodeTypeList.add("SERV");
+            }
+
+            if (exits.isSelected() == true) {
+                nodeTypeList.add("EXIT");
+            }
+
+            if (bathrooms.isSelected() == true) {
+                nodeTypeList.add("BATH");
+            }
+
 
             try {
-                findAllNodes();
+                findAllNodes(nodeTypeList, selectedFloor.FLOOR.floor);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-//
-//            if (restrooms.isSelected() == true) {
-//                findNodes("REST");
-//            }
-//
-//            if (elevators.isSelected() == true) {
-//                findNodes("ELEV");
-//            }
-//
-//            if (stairs.isSelected() == true) {
-//                findNodes("STAI");
-//            }
-//
-//            if (hallways.isSelected() == true) {
-//                findNodes("HALL");
-//            }
-//
-//            if (departments.isSelected() == true) {
-//                findNodes("DEPT");
-//            }
-//
-//            if (labs.isSelected() == true) {
-//                findNodes("LABS");
-//            }
-//
-//            if (infoDesks.isSelected() == true) {
-//                findNodes("INFO");
-//            }
-//
-//            if (conferenceRooms.isSelected() == true) {
-//                findNodes("CONF");
-//            }
-//
-//            if (retail.isSelected() == true) {
-//                findNodes("RETL");
-//            }
-//
-//            if (services.isSelected() == true) {
-//                findNodes("SERV");
-//            }
-//
-//            if (exits.isSelected() == true) {
-//                findNodes("EXIT");
-//            }
-//
-//            if (bathrooms.isSelected() == true) {
-//                findNodes("BATH");
-//            }
         });
 
         this.filter.setOnAction(event -> {
@@ -240,54 +235,84 @@ public class NewViewMapController extends MapSuperController {
         this.searchOnMap.setOnAction(event -> {
 
             clearAllNodes();
+
+
             Circle circle = new Circle();
+            final double[] circleCoord = new double[2];
+            final String[] thisFloor = new String[1];
 
             try {
-                circle = drawCircle(DAOFacade.getNode(this.searchOnMap.getSelectedItem(), today).getXcoord(), DAOFacade.getNode(this.searchOnMap.getSelectedItem(), today).getYcoord(), Color.RED, Color.BLACK);
+                getMoveHashMap().forEach((key, value) -> {
+                    if(value.getLocation().getLongName().equals(this.searchOnMap.getSelectedItem()))
+                    {
+                        try {
+                            circleCoord[0] = getNodeHashMap().get(key).getXcoord();
+                            circleCoord[1] = getNodeHashMap().get(key).getYcoord();
+                            thisFloor[0] = getNodeHashMap().get(key).getFloor();
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+
+            try {
+                findAllNodes(blank, thisFloor[0]);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+            circle = drawCircle( circleCoord[0],  circleCoord[1], Color.PINK, Color.RED);
 
             String endFloor = null;
+            endFloor = thisFloor[0];
+
+            Text longName = new Text();
+
+
             try {
-                endFloor = DAOFacade.getNode(this.searchOnMap.getSelectedItem(), today).getFloor();
+                longName.setText(getLocationNameHashMap().get(this.searchOnMap.getSelectedItem()).getShortName());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+            longName.setVisible(true);
+            longName.setFont(Font.font("Ariel", FontWeight.BOLD, 15));
+            longName.toFront();
+            longName.setX(circle.getCenterX() - (longName.getLayoutBounds().getWidth() / 2));
+            longName.setY(circle.getCenterY() + (circle.getRadius() * 2) + 5);
 
+            selectedFloor.FLOOR.floor = endFloor;
             if (endFloor != null) {
                 switch (endFloor) {
                     case "L1":
-
                         L1Group.setVisible(true);
                         lowerLevel1Image.setVisible(true);
-                        this.L1Group.getChildren().add(circle);
+                        this.L1Group.getChildren().addAll(circle, longName);
                         break;
                     case "L2":
-
                         L2Group.setVisible(true);
                         lowerLevel2Image.setVisible(true);
-                        this.L2Group.getChildren().add(circle);
+                        this.L2Group.getChildren().addAll(circle, longName);
                         break;
                     case "1":
-
                         floor1Group.setVisible(true);
                         floor1Image.setVisible(true);
-                        this.floor1Group.getChildren().add(circle);
+                        this.floor1Group.getChildren().addAll(circle, longName);
                         break;
                     case "2":
-
                         floor2Group.setVisible(true);
                         floor2Image.setVisible(true);
-                        this.floor2Group.getChildren().add(circle);
+                        this.floor2Group.getChildren().addAll(circle, longName);
                         break;
                     case "3":
-
                         floor3Group.setVisible(true);
                         floor3Image.setVisible(true);
-                        this.floor3Group.getChildren().add(circle);
+                        this.floor3Group.getChildren().addAll(circle, longName);
                         break;
                 }
+                setClickedButton();
             }
             Point2D centrePoint = new Point2D(circle.getCenterX(), circle.getCenterY());
             gesturePane.centreOn(centrePoint);
