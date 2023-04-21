@@ -5,6 +5,7 @@ import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.database.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -97,6 +98,12 @@ public class NewHomeController {
         TableColumn<HomeServiceRequests, Time> deliveryTime = new TableColumn<>("Time");
         deliveryTime.setCellValueFactory(new PropertyValueFactory<>("deliveryTime"));
 
+        TableColumn<HomeServiceRequests, String> fullNameCol = new TableColumn<>("Patient");
+        fullNameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPatientLast() + ", " + cellData.getValue().getPatientFirst()));
+
+        TableColumn<HomeServiceRequests, String> items = new TableColumn<>("Item(s)");
+        items.setCellValueFactory(new PropertyValueFactory<>("items"));
+
         ObservableList<HomeServiceRequests> requestObservableList = null;
         try {
             requestObservableList = FXCollections.observableArrayList(DAOFacade.getSessionServiceRequests(UserSessionToken.getUser().getFirstname(), UserSessionToken.getUser().getLastname()));
@@ -146,7 +153,7 @@ public class NewHomeController {
             }
         });
 
-        tableServiceRequest.getColumns().addAll(completed, serviceType, orderNum, deliveryDate, deliveryTime);
+        tableServiceRequest.getColumns().addAll(completed, serviceType, items, fullNameCol, deliveryDate, deliveryTime);
 
         tableServiceRequest.getItems().addAll(requestObservableList);
         tableServiceRequest.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);

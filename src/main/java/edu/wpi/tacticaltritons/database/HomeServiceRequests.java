@@ -10,14 +10,20 @@ public class HomeServiceRequests {
         private int orderNum;
         private Date deliveryDate;
         private Time deliveryTime;
+        private String patientFirst;
+        private String patientLast;
+        private String items;
 
-    public HomeServiceRequests(String firstName, String lastName, String requestType, int orderNum, Date deliveryDate, Time deliveryTime) {
+    public HomeServiceRequests(String firstName, String lastName, String requestType, int orderNum, Date deliveryDate, Time deliveryTime, String patientFirst, String patientLast, String items) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.requestType = requestType;
         this.orderNum = orderNum;
         this.deliveryDate = deliveryDate;
         this.deliveryTime = deliveryTime;
+        this.patientFirst = patientFirst;
+        this.patientLast = patientLast;
+        this.items = items;
     }
 
     public String getFirstName() {
@@ -66,5 +72,29 @@ public class HomeServiceRequests {
 
     public void setDeliveryTime(Time delieveryTime) {
         this.deliveryTime = delieveryTime;
+    }
+
+    public String getPatientFirst() {
+        return patientFirst;
+    }
+
+    public void setPatientFirst(String patientFirst) {
+        this.patientFirst = patientFirst;
+    }
+
+    public String getPatientLast() {
+        return patientLast;
+    }
+
+    public void setPatientLast(String patientLast) {
+        this.patientLast = patientLast;
+    }
+
+    public String getItems() {
+        return items;
+    }
+
+    public void setItems(String items) {
+        this.items = items;
     }
 }
