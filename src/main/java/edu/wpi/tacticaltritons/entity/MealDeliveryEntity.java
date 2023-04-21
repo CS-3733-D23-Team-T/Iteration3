@@ -63,20 +63,20 @@ import java.util.concurrent.Flow;
  * @author Mark Caleca
  */
 public class MealDeliveryEntity {
-    @Getter
-    @Setter
+    //observable properties for display data and resizing
     public DoubleProperty price = new SimpleDoubleProperty(); //total price
     public SimpleStringProperty restaurant = new SimpleStringProperty("Select");
     private SimpleStringProperty items = new SimpleStringProperty("");
     public DoubleProperty imageViewWidth = new SimpleDoubleProperty();
-    @Setter
     public DoubleProperty screenX = new SimpleDoubleProperty();
-    @Setter
     public DoubleProperty screenY = new SimpleDoubleProperty();
-
     private ObservableMap<String, Integer> orderList = FXCollections.observableHashMap();
 
+    //store data and user enter data
     private Map<String, Double> priceList = new HashMap<>();
+    private List<String> title = new ArrayList<>();//name of restaurant or food
+    private List<String> description = new ArrayList<>();//description of restaurant or food
+    private List<String> paths = new ArrayList<>();//path to image
     //first name
     private MFXTextField firstName = new MFXTextField();
     //last name
@@ -95,40 +95,14 @@ public class MealDeliveryEntity {
     private MFXTextField time = new MFXTextField();
     private Rectangle rectangle;
     private List<MFXTextField> nodes = new ArrayList<>();
-
-    private ImageView groundFloorImage = new ImageView();
-
-    private ImageView lowerLevel1Image = new ImageView();
-
-    private ImageView lowerLevel2Image= new ImageView();
-
-    private ImageView floor1Image= new ImageView();
-
-    private ImageView floor2Image= new ImageView();
-
-    private ImageView floor3Image= new ImageView();
-
-//    private MFXButton preview = new MFXButton("Preview");
-
-    private Group groundGroup = new Group();
-    private Group L1Group= new Group();
-    private Group L2Group= new Group();
-    private Group floor1Group= new Group();
-    private Group floor2Group= new Group();
-    private Group floor3Group= new Group();
-
-    @Getter
-    private List<String> title = new ArrayList<>();//name of restaurant or food
-    @Getter
-    private List<String> description = new ArrayList<>();//description of restaurant or food
-
-    @Getter
-    private List<String> paths = new ArrayList<>();//path to image
-    @Getter @Setter public static VBox vBox = new VBox();
+    @Getter @Setter
+    public static VBox vBox = new VBox(); //order pane vBox to store between pages
+    //UI buttons
     private Button checkoutButton = new Button();
     private Button submitButton = new Button();
     private Button clearButton = new Button();
     private Button cancelButton = new Button();
+
 
     //------------------------DATABASE ACCESS------------------------//
 
@@ -171,7 +145,6 @@ public class MealDeliveryEntity {
      * clears meal selection and form data but keeps restaurant selection
      */
     private void resetFormData(VBox vBoxOrderPane) {
-//        orderList.clear();
         for (String item : orderList.keySet()) {
             orderList.put(item, 0);
         }
@@ -184,9 +157,6 @@ public class MealDeliveryEntity {
         }
         //remove everything except title and price
         if(vBoxOrderPane.getChildren().size() > 2){
-/*            for(Node node:vBoxOrderPane.getChildren().subList(2,vBoxOrderPane.getChildren().size())){
-                vBoxOrderPane.getChildren().remove(node);
-            }*/
             Iterator<Node> iterator = vBoxOrderPane.getChildren().subList(2,vBoxOrderPane.getChildren().size()).iterator();
             while(iterator.hasNext()){
                 Node node = iterator.next();
@@ -264,31 +234,19 @@ public class MealDeliveryEntity {
 
     public void initItems(Stage stage, ScrollPane scrollPane, FlowPane restaurantPane, VBox orderPane) throws SQLException {
         init(stage, scrollPane);
-//        vBoxOrderPane = orderPane;
         scrollPane.prefWidthProperty().bind(screenX.multiply(1.95 / 3));
         readRestaurantItems(restaurant.get(),orderPane);
         restaurantPane.hgapProperty().bind(screenX.divide(128));
         restaurantPane.vgapProperty().bind(screenY.divide(64));
         restaurantPane.prefWidthProperty().bind(screenX.multiply(1.95/3));
-//        orderPane.prefWidthProperty().bind(screenX.subtract(restaurantPane.prefWidthProperty().add(40)));
-//        orderPane.prefHeightProperty().bind(screenY.subtract(clearButton.heightProperty().add(20)));
         addRectanglePanes(restaurantPane,orderPane,false);
-//        orderPane.getChildren().add(vBoxOrderPane);
     }
 
     public void initCheckout(Stage stage, ScrollPane scrollPane, VBox orderPane, List<MFXTextField> nodes, Button preview) throws SQLException {
         firstName.setText(UserSessionToken.getUser().getFirstname());
         lastName.setText(UserSessionToken.getUser().getLastname());
         orderPane.getChildren().addAll(getVBox().getChildren().subList(2,getVBox().getChildren().size()));
-/*
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        time.setText(formatter.format(LocalDateTime.now().plusMinutes(15)));
-
-        formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
-        date.setValue(LocalDate.from(formatter.parse(formatter.format(LocalDateTime.now()))));*/
-
         init(stage, scrollPane);
-//        scrollPane.prefWidthProperty().bind(screenX.multiply(1.95 / 3));
         initFormPane(nodes,preview);
     }
 
@@ -326,14 +284,7 @@ public class MealDeliveryEntity {
 
         Label mealDisplay = new Label(meal);
         mealDisplay.getStyleClass().add("text-general");
-//        IntegerProperty num = new SimpleIntegerProperty(orderList.get(meal));
-//        ObservableMap<String, Integer> order = FXCollections.observableMap(orderList);//TODO
-//        num.bind(Bindings.valueAt(order,meal));
-//        int num = (orderList.containsKey(meal)) ? orderList.get(meal) : 1;
         Label qtyDisplay = new Label();
-//        qtyDisplay.textProperty().bind(num.asString());
-//        qtyDisplay.textProperty().bind(Bindings.valueAt(order,meal).asString());
-//        qtyDisplay.textProperty().bind(Bindings.createStringBinding(() -> ));
         qtyDisplay.textProperty().bind(Bindings.valueAt(orderList, meal).asString());
         qtyDisplay.getStyleClass().add("text-general");
 
@@ -342,19 +293,11 @@ public class MealDeliveryEntity {
         Button plus = new Button("+");
         plus.getStyleClass().add("button-submit");
 
-        //        mealDisplay.setPrefWidth(160);
-//        mealDisplay.prefWidthProperty().bind(orderPane.prefWidthProperty().divide(2));
-
         HBox hBox = new HBox(imageView, mealDisplay, minus, qtyDisplay, plus);
         hBox.setSpacing(20);
         mealDisplay.setPadding(new Insets(8,0,0,0));
         qtyDisplay.setPadding(new Insets(8,0,0,0));
-//        mealDisplay.setAlignment(Pos.BOTTOM_CENTER);
-//        qtyDisplay.setAlignment(Pos.BOTTOM_CENTER);
         orderPane.getChildren().add(hBox);
-//        vBoxOrderPane.getChildren().add(hBox);
-//        stackPaneHelper.getChildren().addAll(hBox,orderPane);
-//        orderPane.getChildren().add(hBox);
         minus.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -412,8 +355,6 @@ public class MealDeliveryEntity {
                 imageView.setPreserveRatio(true);
 
                 //rectangle
-                //bounds based on size of image
-//                rectangle = new Rectangle(imageView.getFitWidth() * 2, rectangleHeight);
                 rectangle = new Rectangle();
 
                 //set title and description
@@ -469,10 +410,8 @@ public class MealDeliveryEntity {
                         Navigation.navigate(Screen.MEAL_REQUEST);
                     } else {
                         String meal = top.getText();
-//                        int qty = 1;
                         //if already contains item, add 1
                         if (orderList.get(meal) == 0) {
-//                            qty = orderList.get(meal) + 1;
                             addToOrderPane(meal, orderPane);//only add visual to order pane if it isn't already there
                         }
                         checkoutButton.setDisable(false);
@@ -498,260 +437,22 @@ public class MealDeliveryEntity {
     }
 
     public void initFormPane(List<MFXTextField> nodes, Button preview) throws SQLException { //TODO resume
-/*        rectangle = new Rectangle();
-        rectangle.widthProperty().bind(Bindings.max(200, imageViewWidth));
-        rectangle.heightProperty().bind(screenY.subtract(30));
-        rectangle.getStyleClass().add("rectangle");
-        rectangle.setTranslateX(10);
-        rectangle.setTranslateY(10);*/
-
-/*        Button clearFormButton = new Button("Clear Form");
-        clearFormButton.getStyleClass().add("button-clear");
-
-        preview.getStyleClass().add("button-clear");*/
-
-//        for(LocationName name:db.getAllLocationNames()){
-/*        for (LocationName name : DAOFacade.getAllLocationNames()) {
-            room.getItems().add(name.getLongName());
-        }*/
-
-/*        firstName.setPromptText("Your First Name");
-        lastName.setPromptText("Your Last Name");
-        patientFirstName.setPromptText("Patient First Name");
-        patientLastName.setPromptText("Patient Last Name");
-        staffFirstName.setPromptText("Staff Member First Name");
-        staffLastName.setPromptText("Staff Member Last Name");
-        room.setPromptText("Room Number");
-        date.setPromptText("Date");
-        time.setPromptText("Time (hh:mm)");*/
         for (MFXTextField node : nodes) {
             node.prefWidthProperty().bind(Bindings.max(200, imageViewWidth));
-//            node.setAlignment(Pos.CENTER);
             node.textProperty().addListener(((observable, oldValue, newValue) -> {
                 formComplete();//check if re-enable submit button
             }));
-//            node.setAlignment(Pos.CENTER);
         }
-/*
-        VBox vBox = new VBox();
-        vBox.getChildren().addAll(nodes);
-        HBox hBox = new HBox();
-        hBox.getChildren().addAll(clearFormButton,preview);
-        hBox.setSpacing(30.0);
-        vBox.getChildren().add(hBox);
-        vBox.setPadding(new Insets(20));
-        vBox.setAlignment(Pos.CENTER);
-        vBox.setSpacing(10);
-        vBox.setTranslateX(10);
-        StackPane stackPane = new StackPane(rectangle, vBox);
-        vBox.prefWidthProperty().bind(Bindings.max(200, imageViewWidth));
-        stackPane.setAlignment(rectangle, Pos.CENTER_LEFT);
-        stackPane.setAlignment(vBox, Pos.CENTER_RIGHT);
-        stackPane.prefWidthProperty().bind(Bindings.max(200, imageViewWidth));*/
-
-/*        clearFormButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                for (MFXTextField node : nodes) {
-                    node.clear();
-                }
-            }
-        });*/
-//
-//        //TODO add map pane
-//
-//        java.util.Date today = new java.util.Date(2023, 4, 10);
-//
-//        lowerLevel1Image.setImage(App.lowerlevel1);
-//        lowerLevel2Image.setImage(App.lowerlevel2);
-//        groundFloorImage.setImage(App.groundfloor);
-//        floor1Image.setImage(App.firstfloor);
-//        floor2Image.setImage(App.secondfloor);
-//        floor3Image.setImage(App.thirdfloor);
-//
-//        Group groundGroup = new Group(groundFloorImage);
-//        Group L1Group = new Group(lowerLevel1Image);
-//        Group L2Group = new Group(lowerLevel2Image);
-//        Group floor1Group = new Group(floor1Image);
-//        Group floor2Group = new Group(floor2Image);
-//        Group floor3Group = new Group(floor3Image);
-//
-//        StackPane stack = new StackPane();
-//        stack.getChildren().add(groundGroup);
-//        stack.getChildren().add(L1Group);
-//        stack.getChildren().add(L2Group);
-//        stack.getChildren().add(floor1Group);
-//        stack.getChildren().add(floor2Group);
-//        stack.getChildren().add(floor3Group);
-////        stack.prefWidthProperty().bind(MealDeliverySubmitController.gesturePaneWidth);
-////        stack.setPrefWidth(500);
-////        gesturePane.setPrefWidth(500);
-//
-////        GesturePane gesturePane = new GesturePane();
-////        gesturePane.setPrefHeight(520);
-////        gesturePane.setPrefWidth(520);
-//
-////        gesturePane.prefWidthProperty().bind(formPane.prefWidthProperty());
-////        gesturePane.prefWidthProperty().bind(MealDeliverySubmitController.gesturePaneWidth);
-////        gesturePane.prefHeightProperty().bind(screenY);
-////        gesturePane.setContent(stack);
-////        gesturePane.setFitHeight(true);
-////        gesturePane.setFitWidth(true);
-//        //use min max pref to get border
-//        //add margins 20, title at top of
-///*
-//        FlowPane flowPane = new FlowPane();
-//
-//        flowPane.setAlignment(Pos.CENTER);
-//        flowPane.prefWidthProperty().bind(MealDeliverySubmitController.gesturePaneWidth);
-//
-//        flowPane.getChildren().add(gesturePane);
-//        flowPane.setStyle("-fx-background-color: white; -fx-background-radius: 10");*/
-//
-////        gesturePane.setVisible(true);
-//        floor1Image.setVisible(true);
-//        lowerLevel1Image.setVisible(false);
-//        lowerLevel2Image.setVisible(false);
-//        groundFloorImage.setVisible(false);
-//        floor2Image.setVisible(false);
-//        floor3Image.setVisible(false);
-//
-//        preview.setOnAction(event -> {
-//            Circle circle;
-//
-//            try {
-//                circle = drawCircle(DAOFacade.getNode(this.room.getText(), today).getXcoord(), DAOFacade.getNode(this.room.getText(), today).getYcoord());
-//            } catch (SQLException e) {
-//                throw new RuntimeException(e);
-//            }
-//
-//            String endFloor = null;
-//            try {
-//                endFloor = DAOFacade.getNode(this.room.getText(), today).getFloor();
-//            } catch (SQLException e) {
-//                throw new RuntimeException(e);
-//            }
-//            circle.setVisible(true);
-//            if (endFloor != null) {
-//                switch (endFloor) {
-//                    case "L1":
-//                        L2Group.setVisible(false);
-//                        floor1Group.setVisible(false);
-//                        floor2Group.setVisible(false);
-//                        floor3Group.setVisible(false);
-//
-//                        L1Group.setVisible(true);
-//                        lowerLevel1Image.setVisible(true);
-//                        this.L1Group.getChildren().add(circle);
-//                        break;
-//                    case "L2":
-//                        L1Group.setVisible(false);
-//                        floor1Group.setVisible(false);
-//                        floor2Group.setVisible(false);
-//                        floor3Group.setVisible(false);
-//
-//                        L2Group.setVisible(true);
-//                        lowerLevel2Image.setVisible(true);
-//                        this.L2Group.getChildren().add(circle);
-//                        break;
-//                    case "1":
-//                        L1Group.setVisible(false);
-//                        L2Group.setVisible(false);
-//                        floor2Group.setVisible(false);
-//                        floor3Group.setVisible(false);
-//
-//                        floor1Group.setVisible(true);
-//                        floor1Image.setVisible(true);
-//                        this.floor1Group.getChildren().add(circle);
-//                        break;
-//                    case "2":
-//                        L1Group.setVisible(false);
-//                        L2Group.setVisible(false);
-//                        floor1Group.setVisible(false);
-//                        floor3Group.setVisible(false);
-//
-//                        floor2Group.setVisible(true);
-//                        floor2Image.setVisible(true);
-//                        this.floor2Group.getChildren().add(circle);
-//                        break;
-//                    case "3":
-//                        L1Group.setVisible(false);
-//                        L2Group.setVisible(false);
-//                        floor2Group.setVisible(false);
-//                        floor1Group.setVisible(false);
-//
-//                        floor3Group.setVisible(true);
-//                        floor3Image.setVisible(true);
-//                        this.floor3Group.getChildren().add(circle);
-//                        break;
-//                }
-//            }
-//            Point2D centerpoint = new Point2D(circle.getCenterX(), circle.getCenterY());
-//            gesturePane.centreOn(centerpoint);
-//
-//        });
-
-//        formPane.getChildren().addAll(flowPane);
-//        formPane.getChildren().add(gesturePane);
-//        formPane.prefWidthProperty().bind(MealDeliverySubmitController.gesturePaneWidth);
-/*
-        formPane.setStyle("-fx-background-color: white;");
-        formPane.setOrientation(Orientation.HORIZONTAL);
-        formPane.getChildren().addAll(stackPane, flowPane);
-        formPane.hgapProperty().bind(screenX.divide(40));
-        formPane.vgapProperty().bind(screenY.divide(100));
-        formPane.prefWidthProperty().bind(screenX.multiply(1.95 / 3));
-        formPane.prefHeightProperty().bind(screenY.subtract(10));*/
-    }
-
-    public void clearAllNodes() {
-        floor1Group.getChildren().remove(1, floor1Group.getChildren().size());
-        floor2Group.getChildren().remove(1, floor2Group.getChildren().size());
-        floor3Group.getChildren().remove(1, floor3Group.getChildren().size());
-        L1Group.getChildren().remove(1, L1Group.getChildren().size());
-        L2Group.getChildren().remove(1, L2Group.getChildren().size());
-    }
-
-    public Circle drawCircle(double x, double y) {
-        Circle circle = new Circle();
-        circle.setVisible(true);
-        circle.toFront();
-        circle.setViewOrder(1);
-        circle.setFill(Color.RED);
-        circle.setStroke(Color.BLACK);
-        circle.setStrokeWidth(3.0f);
-        circle.setCenterX(x);
-        circle.setCenterY(y);
-        circle.setRadius(10.0);
-        return circle;
     }
 
 
     //------------------------Initialize Buttons------------------------//
-
-/*    public void initCheckoutButton(Button button, VBox orderPane) {
-        checkoutButton = button;
-        checkoutButton.setDisable(true);
-        checkoutButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (orderList.size() != 0) {
-                    Navigation.navigate(Screen.MEAL_SUBMIT);
-                    vBox = orderPane;
-                } else {
-                    checkoutButton.setDisable(true);//shouldn't be able to reach this point, but just in case
-                }
-            }
-        });
-    }*/
     public void initCheckoutButton(Button button, VBox orderPane){
         checkoutButton = button;
         checkoutButton.setDisable(true);
         checkoutButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-//                me.getVBox().getChildren().addAll(orderListPane.getChildren());
-//                me.setVBox(getOrderListPane());
                 setVBox(orderPane);
                 Navigation.navigate(Screen.MEAL_SUBMIT);
             }
@@ -789,7 +490,6 @@ public class MealDeliveryEntity {
                             room.getText(), items.get(), (int) price.get(), status);
                     try {
                         DAOFacade.addMeal(meal);
-//                        DAOFacade.getAllMealRequests();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }

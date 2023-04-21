@@ -2,13 +2,8 @@ package edu.wpi.tacticaltritons.controllers.serviceRequest;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.entity.MealDeliveryEntity;
-import edu.wpi.tacticaltritons.navigation.Navigation;
-import edu.wpi.tacticaltritons.navigation.Screen;
 import javafx.beans.binding.Bindings;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -50,7 +45,6 @@ public class MealDeliveryRequestItemsController {
     public void initialize() throws SQLException {
         me = MealDeliveryRequestRestaurantController.me;
 
-//        me.initCheckoutButton(checkoutButton, orderListPane);
         me.initClearButton(clearButton, orderListPane);
         me.initCancelButton(cancelButton, orderListPane);
         me.initCheckoutButton(checkoutButton, orderListPane);
@@ -69,12 +63,5 @@ public class MealDeliveryRequestItemsController {
         orderPaneScroll.prefWidthProperty().bind(me.screenX.subtract(restaurantPane.widthProperty().add(80)));
         orderPaneRectangle.widthProperty().bind(orderPaneScroll.widthProperty().subtract(40));
         orderPaneRectangle.heightProperty().bind(Bindings.max(80,orderListPane.heightProperty().subtract(2)));
-
-//        orderPaneRectangle.heightProperty().bind(me.screenY.subtract(clearButton.heightProperty().add(20)));
-//        orderPaneRectangle.widthProperty().bind(me.screenX.subtract(restaurantPane.widthProperty().add(50)));
-        restaurantRectangle.widthProperty().bind(restaurantPane.widthProperty().subtract(40));
-//        orderPaneScroll.prefWidthProperty().bind(orderPaneRectangle.widthProperty().add(40));
-//        orderPaneScroll.prefHeightProperty().bind(orderPaneRectangle.heightProperty().add(40));
-
     }
 }
