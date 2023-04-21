@@ -199,7 +199,7 @@ public class FlowerDeliveryController {
                 flowPane.setRowValignment(VPos.CENTER);
                 flowPane.setColumnHalignment(HPos.CENTER);
                 flowPane.setAlignment(Pos.TOP_CENTER);
-                flowPane.setStyle("-fx-background-color: white");
+                flowPane.setBackground(Background.fill(Color.WHITE));
                 flowPane.setMargin(flowPane, new Insets(20, 20, 20, 20));
 
                 // Creates the image view
@@ -208,7 +208,6 @@ public class FlowerDeliveryController {
                 imageView.setFitWidth(defaultImageViewFitWidth);
                 imageView.setFitHeight(defaultImageViewFitHeight);
                 imageView.setPreserveRatio(true);
-
 
                 // creates the Shope name lable
                 Label itemTitle = new Label();

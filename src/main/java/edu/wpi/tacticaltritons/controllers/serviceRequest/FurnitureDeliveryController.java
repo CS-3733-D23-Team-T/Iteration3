@@ -25,6 +25,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,15 +35,21 @@ import java.util.List;
 public class FurnitureDeliveryController {
     private String shopName;
     @FXML private Label checkoutLabel;
-    @FXML private Label searchbarShopName;
 
-    @FXML private MFXFilterComboBox searchBar;
     @FXML public FlowPane checkoutFlowpane;
     @FXML private Text itemValidator;
     @FXML private MFXButton clearButton;
     @FXML private MFXButton checkoutButton;
     @FXML private BorderPane infoBoardPane;
     private TabPane tabPane = new TabPane();
+
+    private final double defaultFlowPanePrefWidth = 200;
+    private final double defaultFlowPanePrefHeight = 400;
+    private final double defaultImageViewFitWidth = 150;
+    private final double defaultImageViewFitHeight = 150;
+    private final double defaultTitleFontSize = 20;
+    private final double defaultTitleHeight = 50;
+    private final double defaultDiscriptionFontSize = 15;
 
     static public ObservableMap<String, Integer > checkoutItems = FXCollections.observableHashMap();
 
@@ -57,7 +64,6 @@ public class FurnitureDeliveryController {
         this.shopName = "Storage";
         // Sets the label to the name of the shop that was selected
         checkoutLabel.setText(shopName);
-        searchbarShopName.setText(shopName);
 
         try {
             furnitureRequestOptionsList = DAOFacade.getAllFurnitureRequestOptions();
@@ -119,8 +125,7 @@ public class FurnitureDeliveryController {
                 flowPane.setOrientation(Orientation.VERTICAL);
                 flowPane.setRowValignment(VPos.CENTER);
                 flowPane.setColumnHalignment(HPos.CENTER);
-                flowPane.setAlignment(Pos.CENTER);
-                flowPane.setPadding(new Insets(20, 20, 20, 20));
+                flowPane.setAlignment(Pos.TOP_CENTER);
                 flowPane.setMargin(flowPane, new Insets(20, 20, 20, 20));
                 flowPane.setBackground(Background.fill(Color.WHITE));
 
@@ -128,39 +133,75 @@ public class FurnitureDeliveryController {
                 // Creates the image view
                 Image image = new Image("/edu/wpi/tacticaltritons/images/flower_request/Boston Blossoms.jpg");
                 ImageView imageView = new ImageView(image);
-                imageView.setFitHeight(150);
-                imageView.setFitWidth(200);
+                imageView.setFitWidth(defaultImageViewFitWidth);
+                imageView.setFitHeight(defaultImageViewFitHeight);
+                imageView.setPreserveRatio(true);
+
 
                 // creates the Shope name lable
                 Label itemTitle = new Label();
                 itemTitle.setText(options.getItemName());
                 itemTitle.setWrapText(true);
-                itemTitle.setFont(new Font(20));
+                itemTitle.setFont(new Font(defaultTitleFontSize));
+                itemTitle.setAlignment(Pos.CENTER);
+                itemTitle.setTextAlignment(TextAlignment.CENTER);
+                itemTitle.setPrefWidth(defaultFlowPanePrefWidth);
 
 
                 //creates the discription label
                 Label discriptionLabel = new Label();
                 discriptionLabel.setPrefWidth(flowPane.getPrefWidth());
                 discriptionLabel.setText(options.getItemDescription());
-                discriptionLabel.setFont(new Font(15));
+                discriptionLabel.setFont(new Font(defaultDiscriptionFontSize));
                 discriptionLabel.setWrapText(true);
-                discriptionLabel.setPadding(new Insets(0, 20, 0, 20));
+                discriptionLabel.setPadding(new Insets(0, 10, 0, 10));
+                discriptionLabel.setPrefWidth(defaultFlowPanePrefWidth);
+                discriptionLabel.prefHeightProperty().bind(Bindings.divide(flowPane.heightProperty(), 5));
 
-
-                flowPane.getChildren().add(imageView);
                 flowPane.getChildren().add(itemTitle);
+                flowPane.getChildren().add(imageView);
                 flowPane.getChildren().add(discriptionLabel);
 
                 flowPane.setOnMouseClicked(event ->
                 {
                     updatedCheckoutBox(options);
                 });
-
-
                 mainFlowPane.getChildren().add(flowPane);
+
+                scrollPane.widthProperty().addListener((observable, oldValue, newValue) ->
+                {
+                    flowPane.setPrefWidth((defaultFlowPanePrefWidth * newValue.doubleValue()) / 700);
+                    itemTitle.setPrefWidth((defaultFlowPanePrefWidth * newValue.doubleValue()) / 700);
+                    discriptionLabel.setPrefWidth((defaultFlowPanePrefWidth * newValue.doubleValue()) / 700);
+                    imageView.setFitWidth(defaultFlowPanePrefWidth * newValue.doubleValue() / 700);
+
+                });
+
+                scrollPane.heightProperty().addListener((observable, oldValue, newValue) ->
+                {
+                    flowPane.setPrefHeight((defaultFlowPanePrefHeight * newValue.doubleValue()) / 680);
+                    itemTitle.setPrefHeight((defaultTitleHeight * newValue.doubleValue()) / 680);
+                    discriptionLabel.prefHeightProperty().bind(Bindings.divide(flowPane.heightProperty(), 5));
+                    //imageView.setFitHeight(defaultImageViewFitHeight * newValue.doubleValue() / 680);
+
+
+                    itemTitle.setText(options.getItemName());
+                    itemTitle.setFont(new Font((defaultTitleFontSize * newValue.doubleValue()) / 680));
+
+                    discriptionLabel.setText(options.getItemDescription());
+                    discriptionLabel.setFont(new Font((defaultDiscriptionFontSize * newValue.doubleValue()) / 680));
+
+
+                });
+
+
             }
         }
-        mainFlowPane.setPrefWidth(300 * counter);
+        mainFlowPane.setPrefWidth((defaultFlowPanePrefWidth + 40) * counter);
+        scrollPane.widthProperty().addListener((observable, oldValue, newValue) ->
+        {
+            mainFlowPane.setPrefWidth(newValue.doubleValue());
+        });
         scrollPane.setContent(mainFlowPane);
         return scrollPane;
     }
