@@ -566,10 +566,13 @@ public class MealDeliveryEntity {
                     if ((!staffMemberName.getText().isEmpty())){
                         status = RequestStatus.PROCESSING;
                     }
+                    String firstNameStaff = "", lastNameStaff = "";
 
                     String[] nameWithEmail = staffMemberName.getText().split("/");
-                    String firstNameStaff = nameWithEmail[0].split(" ")[0];
-                    String lastNameStaff = nameWithEmail[0].split(" ")[1];
+                    if(nameWithEmail.length > 1){
+                        firstNameStaff = nameWithEmail[0].split(" ")[0];
+                        lastNameStaff = nameWithEmail[0].split(" ")[1];
+                    }
 
                     Meal meal = new Meal(firstName.getText(), lastName.getText(), patientFirstName.getText(),
                             patientLastName.getText(), firstNameStaff, lastNameStaff, sendDate, sendTime,

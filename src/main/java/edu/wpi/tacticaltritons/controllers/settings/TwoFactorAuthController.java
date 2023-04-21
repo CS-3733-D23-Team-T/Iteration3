@@ -66,7 +66,7 @@ public class TwoFactorAuthController {
             twoFactorCombobox.setDisable(true);
         }
 
-//        twoFactorCombobox.setItems(FXCollections.observableList(twoFactorOptions.keySet().stream().toList()));
+        twoFactorCombobox.setItems(FXCollections.observableList(twoFactorOptions.keySet().stream().toList()));
         twoFactorCombobox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
             if(!Objects.equals(o, n) && n != null || !Objects.equals(n, "") ||
                 !TwoFactorNavigation.methodPage.get().formalName().equals(n)){
