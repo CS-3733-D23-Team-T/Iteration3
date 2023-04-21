@@ -50,8 +50,6 @@ public class FlowerCheckoutController {
     private MFXComboBox<Integer> hourComboBox;
     @FXML
     private MFXComboBox<String> minComboBox;
-    @FXML
-    private MFXComboBox<String> timeDayComboBox;
 
     @FXML
     private MFXButton cancelButton;
@@ -107,7 +105,6 @@ public class FlowerCheckoutController {
     private Time deliveryTime;
     private int hour;
     private int min;
-    private String timeOfDay;
     private String location;
     RequestStatus status = RequestStatus.BLANK;
     private double flowerTotal;
@@ -116,9 +113,8 @@ public class FlowerCheckoutController {
 
     public void initialize() throws SQLException {
 
-        hourComboBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+        hourComboBox.setItems(FXCollections.observableArrayList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23));
         minComboBox.setItems(FXCollections.observableArrayList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "00", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
-        timeDayComboBox.setItems(FXCollections.observableArrayList("AM", "PM"));
 
         for (Login login : DAOFacade.getAllLogins()) {
             assignedComboBox.getItems().add(login.getFirstName() + " " + login.getLastName());
@@ -353,19 +349,8 @@ public class FlowerCheckoutController {
             staffLast = "";
         }
 
-        if (timeOfDay.equals("AM")) {
-            if (hour == 12) {
-                deliveryTime = Time.valueOf(Integer.toString(0) + ":" + min + ":00");
-            } else {
-                deliveryTime = Time.valueOf(Integer.toString(hour) + ":" + min + ":00");
-            }
-        } else {
-            if (hour == 12) {
-                deliveryTime = Time.valueOf(Integer.toString(hour) + ":" + min + ":00");
-            } else {
-                deliveryTime = Time.valueOf(Integer.toString(hour + 12) + ":" + min + ":00");
-            }
-        }
+
+        deliveryTime = Time.valueOf(Integer.toString(hour) + ":" + min + ":00");
 
         Flower flower = new Flower(userFirst, userLast, patientFirst, patientLast, staffFirst, staffLast, deliveryDate, deliveryTime, location, items.get(), total, status);
         DAOFacade.addFlower(flower);
@@ -435,14 +420,6 @@ public class FlowerCheckoutController {
             min = Integer.parseInt(minComboBox.getSelectedItem());
         }
 
-        if (timeDayComboBox.getSelectedItem() == null) {
-            EffectGenerator.noTimeAlertOn(timeDayComboBox);
-            readyToSubmit = false;
-        } else {
-            EffectGenerator.noTimeAlertOff(timeDayComboBox);
-            timeOfDay = timeDayComboBox.getSelectedItem();
-        }
-
         if (locationComboBox.getText().isEmpty()) {
             EffectGenerator.noRoomAlertOn(locationComboBox);
             readyToSubmit = false;
@@ -462,7 +439,6 @@ public class FlowerCheckoutController {
         deliveryDateField.clear();
         hourComboBox.clear();
         minComboBox.clear();
-        timeDayComboBox.clear();
         locationComboBox.clear();
     }
 
