@@ -37,7 +37,7 @@ public enum Screen {
   SIGNAGE("views/signagePages/Signage.fxml"),
   PATHFINDING("views/PathfindingFullScreen.fxml"),
   EDIT_MAP("views/EditMapFullScreen.fxml"),
-  VIEW_MAP("views/ViewMapFullScreen.fxml"),
+  VIEW_MAP("views/NewViewMap.fxml"),
 
   DATABASE("views/database/Database.fxml"),
   DATABASE_HELP("views/database/DatabaseHelp.fxml"),

@@ -31,6 +31,8 @@ public class App extends Application {
   public static Image firstfloor;
   public static Image secondfloor;
   public static Image thirdfloor;
+  public static Image menuBar;
+  public static Image pathfinding;
 
   public static String invalidMFXTextField;
 
@@ -57,6 +59,13 @@ public class App extends Application {
             new Image(Objects.requireNonNull(getClass().getResource("images/map_page/02_thesecondfloor.png")).toString());
     thirdfloor = new Image(Objects.requireNonNull(
                     getClass().getResource("images/map_page/03_thethirdfloor.png")).toString());
+
+    menuBar =
+            new Image(Objects.requireNonNull(getClass().getResource("images/map_page/menu_icon.png")).toString());
+
+    pathfinding =
+            new Image(Objects.requireNonNull(getClass().getResource("images/map_page/pathfindingButton.png")).toString());
+
 
     invalidMFXTextField =
             Objects.requireNonNull(getClass().getResource("stylesheets/InvalidMFXTextFields.css")).toString();
