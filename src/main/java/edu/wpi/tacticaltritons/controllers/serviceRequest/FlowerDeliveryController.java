@@ -179,6 +179,7 @@ public class FlowerDeliveryController {
         int counter = 0;
         MFXScrollPane scrollPane = new MFXScrollPane();
         scrollPane.setPrefWidth(600);
+
         FlowPane mainFlowPane = new FlowPane();
         mainFlowPane.setPrefHeight(150);
         mainFlowPane.setOrientation(Orientation.HORIZONTAL);
@@ -265,8 +266,6 @@ public class FlowerDeliveryController {
                     price.setPrefHeight((defaultTitleHeight * newValue.doubleValue()) / 680);
                     itemTitle.setPrefHeight((defaultTitleHeight * newValue.doubleValue()) / 680);
                     discriptionLabel.prefHeightProperty().bind(Bindings.divide(flowPane.heightProperty(), 5));
-                    //imageView.setFitHeight(defaultImageViewFitHeight * newValue.doubleValue() / 680);
-
 
                     itemTitle.setText(options.getItemName());
                     itemTitle.setFont(new Font((defaultTitleFontSize * newValue.doubleValue()) / 680));
@@ -276,11 +275,7 @@ public class FlowerDeliveryController {
 
                     discriptionLabel.setText(options.getItemDescription());
                     discriptionLabel.setFont(new Font((defaultDiscriptionFontSize * newValue.doubleValue()) / 680));
-
-
                 });
-
-
             }
         }
         mainFlowPane.setPrefWidth((defaultFlowPanePrefWidth + 40) * counter);
@@ -293,12 +288,6 @@ public class FlowerDeliveryController {
     }
 
     private void updatedCheckoutBox(FlowerRequestOptions options, HashMap<String, Image> imageHashMap) {
-    /*
-    Todo
-    when hit the flower in the main page it will update based on the checkout
-    when I get the q to 0 delete from the checkout box
-     */
-
         if (!checkoutItems.containsKey(options.getItemName())) {
             checkoutItems.put(options.getItemName(), 1);
             priceOfItems.put(options.getItemName(), options.getPrice());

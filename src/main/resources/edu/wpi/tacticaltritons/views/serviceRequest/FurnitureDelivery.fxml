@@ -68,9 +68,12 @@
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </BorderPane.margin>
          <center>
-            <MFXScrollPane BorderPane.alignment="CENTER">
+            <MFXScrollPane id="dashBoard" fitToHeight="true" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="25.0" left="25.0" right="25.0" />
+               </BorderPane.margin>
                <content>
-                  <FlowPane id="dashBoard" fx:id="checkoutFlowpane" alignment="TOP_CENTER" columnHalignment="CENTER" />
+                  <FlowPane fx:id="checkoutFlowpane" alignment="TOP_CENTER" columnHalignment="CENTER" />
                </content>
             </MFXScrollPane>
          </center>
