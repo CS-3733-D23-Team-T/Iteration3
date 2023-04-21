@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
@@ -88,48 +89,83 @@
         </StackPane>
     </center>
     <left>
-        <FlowPane id="block" alignment="CENTER" columnHalignment="CENTER" prefHeight="600" prefWidth="250.0" BorderPane.alignment="CENTER">
+        <FlowPane id="block" alignment="CENTER" columnHalignment="CENTER" prefHeight="600" prefWidth="400.0" BorderPane.alignment="CENTER">
             <children>
-                <MFXTextField fx:id="userFirstField" floatingText="First Name" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="200.0">
+                <MFXTextField fx:id="userFirstField" floatingText="First Name" prefHeight="50.0" prefWidth="200.0">
                     <FlowPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" top="10.0" />
                     </FlowPane.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
                 </MFXTextField>
-                <MFXTextField fx:id="userLastField" floatingText="Last Name" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="200.0">
+                <MFXTextField fx:id="userLastField" floatingText="Last Name" prefHeight="50.0" prefWidth="200.0">
                     <FlowPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" top="10.0" />
                     </FlowPane.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
                 </MFXTextField>
-                <MFXTextField fx:id="patientFirstField" floatingText="Patient's First Name" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="200.0">
+                <MFXTextField fx:id="patientFirstField" floatingText="Patient's First Name" prefHeight="50.0" prefWidth="200.0">
                     <FlowPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" top="10.0" />
                     </FlowPane.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
                 </MFXTextField>
-                <MFXTextField fx:id="patientLastField" floatingText="Patient's Last Name" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="200.0">
+                <MFXTextField fx:id="patientLastField" floatingText="Patient's Last Name" prefHeight="50.0" prefWidth="200.0">
                     <FlowPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" top="10.0" />
                     </FlowPane.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
                 </MFXTextField>
                 <MFXFilterComboBox fx:id="assignedComboBox" floatingText="Assigned Staff" floatingTextGap="10.0" prefHeight="50.0" prefWidth="200.0">
                     <FlowPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" top="10.0" />
                     </FlowPane.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
                 </MFXFilterComboBox>
                 <MFXFilterComboBox fx:id="locationComboBox" floatingText="Search the map" prefHeight="50.0" prefWidth="200.0" searchText="">
                     <FlowPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" top="10.0" />
                     </FlowPane.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
                 </MFXFilterComboBox>
                 <MFXDatePicker fx:id="deliveryDateField" floatingText="Date" prefHeight="50.0" prefWidth="200.0">
                     <FlowPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </FlowPane.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
                 </MFXDatePicker>
-                <MFXTextField fx:id="deliveryTimeField" floatingText="Time" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="200.0">
-                    <FlowPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </FlowPane.margin>
-                </MFXTextField>
+            <FlowPane>
+               <children>
+                  <MFXComboBox fx:id="hourComboBox" floatingText="Hour">
+                     <FlowPane.margin>
+                        <Insets right="10.0" />
+                     </FlowPane.margin>
+                  </MFXComboBox>
+                  <MFXComboBox fx:id="minComboBox" floatingText="Minutes">
+                     <FlowPane.margin>
+                        <Insets right="10.0" />
+                     </FlowPane.margin>
+                  </MFXComboBox>
+                  <MFXComboBox fx:id="timeDayComboBox" floatingText="AM/PM">
+                     <FlowPane.margin>
+                        <Insets right="10.0" />
+                     </FlowPane.margin>
+                  </MFXComboBox>
+               </children>
+            </FlowPane>
                 <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="50.0" prefWidth="220.0">
                     <children>
                         <MFXButton id="cancelButton" fx:id="cancelButton" prefHeight="29.0" prefWidth="100.0" text="Cancel">
