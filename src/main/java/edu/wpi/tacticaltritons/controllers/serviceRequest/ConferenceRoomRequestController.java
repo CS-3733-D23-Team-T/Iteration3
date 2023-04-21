@@ -98,7 +98,7 @@ public class ConferenceRoomRequestController {
 
     public void initialize() throws SQLException{
 
-        java.util.Date today = new java.util.Date(2023, 4, 10);
+        Date today = new Date(2023, 4, 10);
         EffectGenerator.generateShadowEffect(basePane);
         firstName.setText(UserSessionToken.getUser().getFirstname());
         lastName.setText(UserSessionToken.getUser().getLastname());
@@ -329,6 +329,21 @@ public class ConferenceRoomRequestController {
         if(readyToSubmit){
             Conference conference = new Conference(uploadFirstName,uploadLastName,uploadDate,uploadAttendance,uploadExpectedSize,uploadConferenceRoom,RequestStatus.BLANK);
             DAOFacade.addConference(conference);
+            int mostRecentNum = 0;
+            for(Conference x : DAOFacade.getAllConference()){
+                if(x.getOrderNum()>mostRecentNum){
+                    mostRecentNum = x.getOrderNum();
+                }
+            }
+            for(String name: selectedAttendances) {
+                String[] split = name.split("/");
+                String value = split[0];
+                String[] split2 = value.split(" ");
+                String firstName = split2[0];
+                String lastName = split2[1];
+                Invitations invite = new Invitations(mostRecentNum, firstName,lastName,false, uploadDate,uploadConferenceRoom);
+                DAOFacade.addInvitation(invite);
+            }
             Navigation.navigate(Screen.HOME);
         }
     }

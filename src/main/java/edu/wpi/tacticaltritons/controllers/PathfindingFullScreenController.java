@@ -34,7 +34,7 @@ import net.kurobako.gesturefx.GesturePane;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 

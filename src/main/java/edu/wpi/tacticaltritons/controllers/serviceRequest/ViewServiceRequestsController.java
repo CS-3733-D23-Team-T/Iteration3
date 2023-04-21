@@ -121,9 +121,8 @@ public class ViewServiceRequestsController {
                       setText(null);
                       setGraphic(button2);
                       button2.setOnAction(event -> {
-                        //Meal meal = getTableView().getItems().get(getIndex());
-                        meal.setAssignedStaffLast("");
-                        meal.setAssignedStaffFirst("");
+                        meal.setAssignedStaffLast(null);
+                        meal.setAssignedStaffFirst(null);
                         meal.setStatus(RequestStatus.BLANK);
                         getTableView().refresh();
                         try {
@@ -238,9 +237,8 @@ public class ViewServiceRequestsController {
                       setText(null);
                       setGraphic(button2);
                       button2.setOnAction(event -> {
-                        //Meal meal = getTableView().getItems().get(getIndex());
-                        flower.setAssignedStaffLast("");
-                        flower.setAssignedStaffFirst("");
+                        flower.setAssignedStaffLast(null);
+                        flower.setAssignedStaffFirst(null);
                         flower.setStatus(RequestStatus.BLANK);
                         getTableView().refresh();
                         try {
@@ -387,9 +385,8 @@ public class ViewServiceRequestsController {
                       setText(null);
                       setGraphic(button2);
                       button2.setOnAction(event -> {
-                        //Meal meal = getTableView().getItems().get(getIndex());
-                        furniture.setAssignedStaffLast("");
-                        furniture.setAssignedStaffFirst("");
+                        furniture.setAssignedStaffLast(null);
+                        furniture.setAssignedStaffFirst(null);
                         furniture.setStatus(RequestStatus.BLANK);
                         getTableView().refresh();
                         try {
