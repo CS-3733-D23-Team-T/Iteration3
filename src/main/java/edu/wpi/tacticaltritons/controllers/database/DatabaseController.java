@@ -195,6 +195,7 @@ public class DatabaseController {
               Stage exportStage = new Stage();
               FileChooser fileChooser = new FileChooser();
               fileChooser.setTitle("Export");
+              fileChooser.setInitialFileName(tableName);
               fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
 
               File file = fileChooser.showSaveDialog(exportStage);
