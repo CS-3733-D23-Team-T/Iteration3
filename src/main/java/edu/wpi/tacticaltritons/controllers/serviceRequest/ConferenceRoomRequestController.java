@@ -98,7 +98,7 @@ public class ConferenceRoomRequestController {
 
     public void initialize() throws SQLException{
 
-        java.util.Date today = new java.util.Date(2023, 4, 10);
+        Date today = new Date(2023, 4, 10);
         EffectGenerator.generateShadowEffect(basePane);
         firstName.setText(UserSessionToken.getUser().getFirstname());
         lastName.setText(UserSessionToken.getUser().getLastname());

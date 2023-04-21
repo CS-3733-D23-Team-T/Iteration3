@@ -86,7 +86,7 @@ public class MoveController {
     @FXML
     public void initialize() throws SQLException {
 
-        java.util.Date today = new java.util.Date(2023, 4, 10);
+        Date today = new Date(2023, 4, 10);
         lowerLevel1Image.setImage(App.lowerlevel1);
         lowerLevel2Image.setImage(App.lowerlevel2);
         groundFloorImage.setImage(App.groundfloor);
