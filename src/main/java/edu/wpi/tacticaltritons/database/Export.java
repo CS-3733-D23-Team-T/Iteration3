@@ -32,6 +32,10 @@ public class Export {
       table = Export.locationNameData();
     } else if (tableName.equals("move")) {
       table = Export.moveData();
+    } else if (tableName.equals("login")) {
+      table = Export.loginData();
+    } else if (tableName.equals("meal")) {
+      table = Export.loginData();
     }
 
     table.stream().map(Export::convertToCSV).forEach(writer::println);
@@ -104,6 +108,79 @@ public class Export {
       dataRow[0] = Integer.toString(move.getNode().getNodeID());
       dataRow[1] = move.getLocation().getLongName();
       dataRow[2] = String.valueOf(move.getMoveDate());
+      table.add(dataRow);
+    }
+    return table;
+  }
+
+  public static List<String[]> loginData() throws SQLException {
+    DAOFacade data = new DAOFacade();
+    List<Login> allLogin = data.getAllLogins();
+    List<String[]> table = new ArrayList<>();
+
+    String[] header = {"user", "email", "firstname", "lastname", "admin"};
+    table.add(header);
+    for (Login login : allLogin) {
+      String[] dataRow = new String[5];
+      dataRow[0] = login.getUsername();
+      dataRow[1] = login.getEmail();
+      dataRow[2] = login.getFirstName();
+      dataRow[3] = login.getLastName();
+      dataRow[4] = String.valueOf(login.isAdmin());
+      table.add(dataRow);
+    }
+    return table;
+  }
+
+  public static List<String[]> mealData() throws SQLException {
+    DAOFacade data = new DAOFacade();
+    List<Meal> allMeal = data.getAllMeal();
+    List<String[]> table = new ArrayList<>();
+
+    String[] header = {"ordernum", "requesterfirst", "requesterlast", "patientfirst", "patientlast", "assignedstafffirst", "assignedstafflast", "deliverydate", "deliverytime", "location", "items", "total", "status"};
+    table.add(header);
+    for (Meal meal : allMeal) {
+      String[] dataRow = new String[13];
+      dataRow[0] = String.valueOf(meal.getOrderNum());
+      dataRow[1] = meal.getRequesterFirst();
+      dataRow[2] = meal.getRequesterLast();
+      dataRow[3] = meal.getPatientFirst();
+      dataRow[4] = meal.getPatientLast();
+      dataRow[5] = meal.getAssignedStaffFirst();
+      dataRow[6] = meal.getAssignedStaffLast();
+      dataRow[7] = String.valueOf(meal.getDeliveryDate());
+      dataRow[8] = String.valueOf(meal.getDeliveryTime());
+      dataRow[9] = meal.getLocation();
+      dataRow[10] = meal.getItems();
+      dataRow[11] = String.valueOf(meal.getTotal());
+      dataRow[12] = meal.getStatus().toString();
+      table.add(dataRow);
+    }
+    return table;
+  }
+
+  public static List<String[]> flowerData() throws SQLException {
+    DAOFacade data = new DAOFacade();
+    List<Flower> allFlower = data.getAllFlower();
+    List<String[]> table = new ArrayList<>();
+
+    String[] header = {"ordernum", "requesterfirst", "requesterlast", "patientfirst", "patientlast", "assignedstafffirst", "assignedstafflast", "deliverydate", "deliverytime", "location", "items", "total", "status"};
+    table.add(header);
+    for (Flower flower : allFlower) {
+      String[] dataRow = new String[13];
+      dataRow[0] = String.valueOf(flower.getOrderNum());
+      dataRow[1] = flower.getRequesterFirst();
+      dataRow[2] = flower.getRequesterLast();
+      dataRow[3] = flower.getPatientFirst();
+      dataRow[4] = flower.getPatientLast();
+      dataRow[5] = flower.getAssignedStaffFirst();
+      dataRow[6] = flower.getAssignedStaffLast();
+      dataRow[7] = String.valueOf(flower.getDeliveryDate());
+      dataRow[8] = String.valueOf(flower.getDeliveryTime());
+      dataRow[9] = flower.getLocation();
+      dataRow[10] = flower.getItems();
+      dataRow[11] = String.valueOf(flower.getTotal());
+      dataRow[12] = flower.getStatus().toString();
       table.add(dataRow);
     }
     return table;
