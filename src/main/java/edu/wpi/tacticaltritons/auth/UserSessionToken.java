@@ -24,6 +24,9 @@ public class UserSessionToken {
     private static boolean active_token;
 
     public static void revoke(){
+        adminProperty.set(false);
+        fullNameProperty.set("");
+        userTFA.set(false);
         user = null;
         active_token = false;
     }
@@ -46,9 +49,11 @@ public class UserSessionToken {
                 session_time,
                 UUID.randomUUID(),
                 login.getTwoFactor());
+
         adminProperty.set(user.isAdmin());
         userTFA.set(login.getTwoFactor());
         fullNameProperty.set(user.getFirstname() + " " + user.getLastname());
+
         Session oldSession = DAOFacade.getSession(login.getUsername());
         if(oldSession != null){
             DAOFacade.deleteSession(oldSession);
