@@ -13,23 +13,78 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 import java.sql.SQLException;
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class NewHomeController {
-    @FXML FlowPane requestsPane;
-    @FXML FlowPane movesPane;
-    @FXML FlowPane eventsPane;
-    @FXML GridPane tableGridPane;
+    @FXML
+    FlowPane requestsPane;
+    @FXML
+    FlowPane movesPane;
+    @FXML
+    FlowPane eventsPane;
+    @FXML
+    GridPane tableGridPane;
 
     TableView<HomeServiceRequests> tableServiceRequest = new TableView<>();
-    @FXML
-    public void initialize() {
 
+    @FXML
+    public void initialize() throws SQLException {
+        initMoveTable();
+        initServiceTable();
+    }
+
+    private void initMoveTable() throws SQLException {
+        Date currentDate = Date.valueOf(java.time.LocalDate.now());
+        List<Move> allMoves = DAOFacade.getAllMoves();
+        List<Move> allFutureMoves = DAOFacade.getAllFutureMoves(currentDate);
+        Collections.reverse(allFutureMoves);
+        List<Button> moveButtons = new ArrayList<>();
+
+        for(Move moveTo : allFutureMoves){
+            int counter = 0;
+            boolean check = false;
+            for(Move moveFrom : allMoves){
+                String moveFromLocation = moveFrom.getLocation().getLongName();
+                String moveToLocation = moveTo.getLocation().getLongName();
+                if(moveFromLocation.equals(moveToLocation) && moveFrom.getNode().getNodeID() == moveTo.getNode().getNodeID())
+                {
+                    System.out.println("TEST?");
+                    check = true;
+                }
+                if(check) {
+                    if (moveFromLocation.equals(moveToLocation)) {
+                        counter++;
+                    }
+                }
+                if(counter == 2){
+                    Button moveButton = new Button(moveFrom.getLocation().getLongName() + ": Node " + moveFrom.getNode().getNodeID() + " -> Node " + moveTo.getNode().getNodeID());
+                    moveButton.prefWidthProperty().bind(movesPane.widthProperty());
+                    moveButtons.add(moveButton);
+                    moveButton.setOnAction(event -> {
+                        System.out.println("WORKING");
+                    });
+                    counter = 0;
+                }
+            }
+        }
+        movesPane.getChildren().clear();
+        Collections.reverse(moveButtons);
+        for(Button button : moveButtons) {
+            movesPane.getChildren().add(button);
+        }
+    }
+
+    private void initServiceTable() {
         TableColumn<HomeServiceRequests, String> serviceType = new TableColumn<>("Service Type");
         serviceType.setCellValueFactory(new PropertyValueFactory<>("requestType"));
 
@@ -79,6 +134,7 @@ public class NewHomeController {
                     getTableView().refresh();
                 });
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -90,7 +146,7 @@ public class NewHomeController {
             }
         });
 
-        tableServiceRequest.getColumns().addAll(completed, serviceType,orderNum,deliveryDate,deliveryTime);
+        tableServiceRequest.getColumns().addAll(completed, serviceType, orderNum, deliveryDate, deliveryTime);
 
         tableServiceRequest.getItems().addAll(requestObservableList);
         tableServiceRequest.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -106,15 +162,15 @@ public class NewHomeController {
 
         requestsPane.widthProperty().addListener((observable, oldValue, newValue) -> {
             requestsPane.getChildren().clear();
-            tableServiceRequest.setMinWidth(requestsPane.getMinWidth()-1);
-            tableServiceRequest.setPrefWidth(newValue.doubleValue()-1);
+            tableServiceRequest.setMinWidth(requestsPane.getMinWidth() - 1);
+            tableServiceRequest.setPrefWidth(newValue.doubleValue() - 1);
             requestsPane.getChildren().add(tableServiceRequest);
         });
 
         requestsPane.heightProperty().addListener((observable, oldValue, newValue) -> {
             requestsPane.getChildren().clear();
-            tableServiceRequest.setMinWidth(newValue.doubleValue()-1);
-            tableServiceRequest.setPrefHeight(newValue.doubleValue()-1);
+            tableServiceRequest.setMinWidth(newValue.doubleValue() - 1);
+            tableServiceRequest.setPrefHeight(newValue.doubleValue() - 1);
             requestsPane.getChildren().add(tableServiceRequest);
         });
     }
