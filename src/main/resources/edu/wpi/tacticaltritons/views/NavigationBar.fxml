@@ -106,54 +106,7 @@
          </right>
         </BorderPane>
     </top>
-    <bottom>
-        <FlowPane fx:id="quickNavigationPane" alignment="CENTER" columnHalignment="CENTER" hgap="200.0" prefWrapLength="9999.0" style="-fx-background-color: #002D59">
-         <children>
-            <MenuButton fx:id="serviceRequestMenuButton" style="-fx-background-color: transparent;" text="Service Request">
-               <FlowPane.margin>
-                  <Insets />
-               </FlowPane.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <padding>
-                  <Insets bottom="5.0" top="5.0" />
-               </padding>
-            </MenuButton>
-            <MenuButton fx:id="hospitalMapMenuButton" style="-fx-background-color: transparent;" text="Hospital Map">
-               <FlowPane.margin>
-                  <Insets />
-               </FlowPane.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <padding>
-                  <Insets bottom="5.0" top="5.0" />
-               </padding>
-            </MenuButton>
-            <MenuButton fx:id="signageMenuButton" style="-fx-background-color: transparent;" text="Signage">
-               <FlowPane.margin>
-                  <Insets />
-               </FlowPane.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <padding>
-                  <Insets bottom="5.0" top="5.0" />
-               </padding>
-            </MenuButton>
-            <MenuButton fx:id="databaseMenuButton" style="-fx-background-color: transparent;" text="Database">
-               <FlowPane.margin>
-                  <Insets />
-               </FlowPane.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <padding>
-                  <Insets bottom="5.0" top="5.0" />
-               </padding>
-            </MenuButton>
-         </children>
-        </FlowPane>
-    </bottom>
+   <center>
+        <fx:include source="navigation/LoginQuickNavigation.fxml" />
+   </center>
 </BorderPane>

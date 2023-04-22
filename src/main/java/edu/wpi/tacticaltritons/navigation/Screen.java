@@ -12,6 +12,9 @@ public enum Screen {
   ROOT("views/Root.fxml"),
   HOME("views/NewHomePage.fxml"),
 
+  ABOUT("views/About.fxml"),
+  CREDITS("views/Credits.fxml"),
+
   SETTINGS("views/settings/Settings.fxml"),
   USER_OPTIONS("views/settings/UserOptions.fxml"),
   CREATE_ACCOUNT("views/settings/CreateAccount.fxml"),
