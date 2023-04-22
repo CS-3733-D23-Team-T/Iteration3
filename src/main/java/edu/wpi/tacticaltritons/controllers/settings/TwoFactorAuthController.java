@@ -2,18 +2,14 @@ package edu.wpi.tacticaltritons.controllers.settings;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.AuthenticationMethod;
-import edu.wpi.tacticaltritons.auth.Authenticator;
 import edu.wpi.tacticaltritons.auth.ConfirmApp;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.navigation.SettingsNavigation;
-import edu.wpi.tacticaltritons.navigation.TwoFactorNavigation;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
@@ -21,9 +17,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -41,37 +35,36 @@ public class TwoFactorAuthController {
         twoFactorOptions.put(AuthenticationMethod.PHONE.formalName(), Screen.TWO_FACTOR_PHONE);
 
         Login login = DAOFacade.getLogin(UserSessionToken.getUser().getUsername());
-        if(login.getTwoFactor()){
-            twoFactorButton.setText("Disable");
-            if(login.getTwoFactorMethods() != null){
-                System.out.println(login.getTwoFactorMethods()[0]);
-                twoFactorCombobox.setValue(AuthenticationMethod.parseAuthenticationMethod(
-                        login.getTwoFactorMethods()[0]).formalName());
-            }
-            else{
-                twoFactorCombobox.setValue(AuthenticationMethod.EMAIL.formalName());
-            }
-            Screen contentPage = null;
-            switch(AuthenticationMethod.parseAuthenticationMethod(
-                    login.getTwoFactorMethods()[0]
-            )){
-                case EMAIL -> contentPage = Screen.TWO_FACTOR_EMAIL;
-                case APP -> contentPage = Screen.TWO_FACTOR_APP;
-                case PHONE -> contentPage = Screen.TWO_FACTOR_PHONE;
-            }
-            FXMLLoader loader = new FXMLLoader(App.class.getResource(contentPage.getFilename()));
-            rootPane.setCenter(loader.load());
-        }
-        else{
-            twoFactorCombobox.setDisable(true);
-        }
+//        if(login.getTwoFactor()){
+//            twoFactorButton.setText("Disable");
+//            if(login.getTwoFactorMethods() != null){
+//                System.out.println(login.getTwoFactorMethods()[0]);
+//                twoFactorCombobox.setValue(AuthenticationMethod.parseAuthenticationMethod(
+//                        login.getTwoFactorMethods()[0]).formalName());
+//            }
+//            else{
+//                twoFactorCombobox.setValue(AuthenticationMethod.EMAIL.formalName());
+//            }
+//            Screen contentPage = null;
+//            switch(AuthenticationMethod.parseAuthenticationMethod(
+//                    login.getTwoFactorMethods()[0]
+//            )){
+//                case EMAIL -> contentPage = Screen.TWO_FACTOR_EMAIL;
+//                case APP -> contentPage = Screen.TWO_FACTOR_APP;
+//                case PHONE -> contentPage = Screen.TWO_FACTOR_PHONE;
+//            }
+//            FXMLLoader loader = new FXMLLoader(App.class.getResource(contentPage.getFilename()));
+//            rootPane.setCenter(loader.load());
+//        }
+//        else{
+//            twoFactorCombobox.setDisable(true);
+//        }
 
         twoFactorCombobox.setItems(FXCollections.observableList(twoFactorOptions.keySet().stream().toList()));
         twoFactorCombobox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
             AuthenticationMethod method = AuthenticationMethod.parseAuthenticationMethod(n);
             if(method != null && !Objects.equals(o, n)){
                 System.out.println(method);
-                TwoFactorNavigation.navigate(twoFactorOptions.get(method.formalName()));
             }
         });
 
@@ -134,5 +127,13 @@ public class TwoFactorAuthController {
             }
             SettingsNavigation.navigate(Screen.USER_OPTIONS);
         });
+    }
+    private void transitionMethod(Screen destination){
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(destination.getFilename()));
+        try {
+            rootPane.setCenter(loader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
