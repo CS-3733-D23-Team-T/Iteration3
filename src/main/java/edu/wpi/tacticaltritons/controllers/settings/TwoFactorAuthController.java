@@ -68,41 +68,57 @@ public class TwoFactorAuthController {
 
         twoFactorCombobox.setItems(FXCollections.observableList(twoFactorOptions.keySet().stream().toList()));
         twoFactorCombobox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
-            if(!Objects.equals(o, n) && n != null || !Objects.equals(n, "") ||
-                !TwoFactorNavigation.methodPage.get().formalName().equals(n)){
-
-                System.out.println(n);
-                TwoFactorNavigation.navigate(twoFactorOptions.get(AuthenticationMethod.parseAuthenticationMethod(n).formalName()));
+            AuthenticationMethod method = AuthenticationMethod.parseAuthenticationMethod(n);
+            if(method != null && !Objects.equals(o, n)){
+                System.out.println(method);
+                TwoFactorNavigation.navigate(twoFactorOptions.get(method.formalName()));
             }
         });
 
 
         twoFactorButton.setOnAction(event -> {
             if(login.getTwoFactor()){
+                System.out.println("hi mom");
                 twoFactorButton.setText("Enable");
                 login.setTwoFactor(false);
-                twoFactorCombobox.setValue("");
-                login.setTwoFactorMethods(null);
-                login.setLastLogin(null);
-                rootPane.setCenter(null);
+                UserSessionToken.userTFA.set(false);
+                twoFactorCombobox.getSelectionModel().clearSelection();
+                twoFactorCombobox.setDisable(true);
             }
             else{
+                System.out.println("bye mom");
                 twoFactorButton.setText("Disable");
-                twoFactorCombobox.setDisable(false);
                 login.setTwoFactor(true);
-                login.setLastLogin(LocalDateTime.now());
-                twoFactorCombobox.setValue(AuthenticationMethod.EMAIL.name());
-                login.setTwoFactorMethods(AuthenticationMethod.compileMethods(null,
-                        AuthenticationMethod.EMAIL.name()));
-
-                FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.TWO_FACTOR_EMAIL.getFilename()));
-                try {
-                    rootPane.setCenter(loader.load());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                UserSessionToken.userTFA.set(true);
+                twoFactorCombobox.getSelectionModel().select(
+                        AuthenticationMethod.parseAuthenticationMethod(login.getTwoFactorMethods()[0]).formalName());
+                twoFactorCombobox.setPromptText("Method");
+                twoFactorCombobox.setDisable(false);
             }
-            UserSessionToken.userTFA.set(login.getTwoFactor());
+//            if(login.getTwoFactor()){
+//                twoFactorButton.setText("Enable");
+//                login.setTwoFactor(false);
+//                twoFactorCombobox.setValue("");
+//                rootPane.setCenter(null);
+//            }
+//            else{
+//                twoFactorButton.setText("Disable");
+//                twoFactorCombobox.setDisable(false);
+//                twoFactorCombobox.setVisible(false);
+//                login.setTwoFactor(true);
+//                login.setLastLogin(LocalDateTime.now());
+//                twoFactorCombobox.setValue(AuthenticationMethod.EMAIL.name());
+//                login.setTwoFactorMethods(AuthenticationMethod.compileMethods(null,
+//                        AuthenticationMethod.EMAIL.name()));
+//
+//                FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.TWO_FACTOR_EMAIL.getFilename()));
+//                try {
+//                    rootPane.setCenter(loader.load());
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//            UserSessionToken.userTFA.set(login.getTwoFactor());
             new Thread(() -> {
                 try{
                     DAOFacade.updateLogin(login);
@@ -113,9 +129,9 @@ public class TwoFactorAuthController {
         });
 
         cancelButton.setOnAction(event -> {
-//            if(ConfirmApp.TOTPThread.isAlive()){
-//                ConfirmApp.TOTPThread.interrupt();
-//            }
+            if(ConfirmApp.getTOTPThread().isAlive()){
+                ConfirmApp.getTOTPThread().interrupt();
+            }
             SettingsNavigation.navigate(Screen.USER_OPTIONS);
         });
     }
