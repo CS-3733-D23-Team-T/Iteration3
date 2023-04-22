@@ -8,13 +8,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
+import java.util.stream.Collectors;
 
 public class Account {
     public static int createUser(
@@ -215,5 +212,51 @@ public class Account {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public static void resetPassword(String plainTextPassword, String email) {
+        Login user;
+        try {
+            user = DAOFacade.getAllLogins().parallelStream().filter(x -> x.getEmail().equals(email)).collect(
+                   Collectors.collectingAndThen(Collectors.toList(), list -> list.get(0)));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if(user == null){
+            throw new RuntimeException("Couldn't find user");
+        }
+
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            digest.reset();
+            byte[] salt = new byte[16];
+            SecureRandom random = new SecureRandom();
+            random.nextBytes(salt);
+
+            digest.update(salt);
+            byte[] encodedHash = digest.digest(plainTextPassword.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder builder = new StringBuilder();
+            for(byte b : salt){
+                builder.append(String.format("%02x", b));
+            }
+            user.setSalt(builder.toString());
+            builder = new StringBuilder();
+            for(byte b : encodedHash){
+                builder.append(String.format("%02x", b));
+            }
+            user.setPassword(builder.toString());
+
+            new Thread(() -> {
+                try {
+                    DAOFacade.updateLogin(user);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
+        }
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

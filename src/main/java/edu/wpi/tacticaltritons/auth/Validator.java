@@ -5,7 +5,9 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -15,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -215,6 +215,34 @@ public class Validator {
                     if(validatorNode.isVisible()){
                         validatorNode.setVisible(false);
                     }
+                }
+            }
+        };
+    }
+    public static ChangeListener<? super PasswordStrength> generatePasswordStrengthListener(
+            ProgressBar strengthBar,
+            Text strengthLabel) {
+        return (obs, o, n) -> {
+            switch(n){
+                case Weak -> {
+                    strengthBar.setStyle("-fx-accent: red");
+                    strengthLabel.setFill(Color.rgb(255,0,0));
+                    strengthBar.setProgress(.1);
+                }
+                case Basic -> {
+                    strengthBar.setStyle("-fx-accent: orange");
+                    strengthLabel.setFill(Color.rgb(255,165,0));
+                    strengthBar.setProgress(.25);
+                }
+                case Good -> {
+                    strengthBar.setStyle("-fx-accent: green");
+                    strengthLabel.setFill(Color.rgb(0,128,0));
+                    strengthBar.setProgress(.6);
+                }
+                case Strong -> {
+                    strengthBar.setStyle("-fx-accent: purple");
+                    strengthLabel.setFill(Color.rgb(128,0,128));
+                    strengthBar.setProgress(1);
                 }
             }
         };

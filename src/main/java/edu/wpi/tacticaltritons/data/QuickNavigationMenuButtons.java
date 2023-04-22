@@ -51,7 +51,6 @@ public class QuickNavigationMenuButtons {
             });
             case HOSPITAL_MAP -> hospitalMapNavigationMap.forEach((key, value) -> {
                 if(admin || !key.equals("Edit Hospital Map")) {
-                    System.out.println("hi");
                     MenuItem item = new MenuItem(key);
                     item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);
