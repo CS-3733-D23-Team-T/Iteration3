@@ -125,6 +125,13 @@ public class NewViewMapController extends MapSuperController {
     @FXML
     private void initialize() throws SQLException {
 
+        selectedFloor.FLOOR.floor = "1";
+
+        List<String> allNodeTypes = new ArrayList<>(List.of("REST", "ELEV", "STAI", "HALL", "DEPT", "LABS", "INFO", "CONF", "RETL", "SERV", "EXIT", "BATH"));
+
+
+        findAllNodes(allNodeTypes, selectedFloor.FLOOR.floor);
+
         initializeGesturePane();
         initializeImages();
         initializeSearch();
@@ -216,7 +223,6 @@ public class NewViewMapController extends MapSuperController {
                 nodeTypeList.add("BATH");
             }
 
-
             try {
                 findAllNodes(nodeTypeList, selectedFloor.FLOOR.floor);
             } catch (SQLException e) {
@@ -233,10 +239,7 @@ public class NewViewMapController extends MapSuperController {
         });
 
         this.searchOnMap.setOnAction(event -> {
-
             clearAllNodes();
-
-
             Circle circle = new Circle();
             final double[] circleCoord = new double[2];
             final String[] thisFloor = new String[1];

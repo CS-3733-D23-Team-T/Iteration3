@@ -5,11 +5,13 @@ import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import io.github.palexdev.materialfx.controls.*;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -35,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.wpi.tacticaltritons.styling.ThemeColors;
+import org.checkerframework.checker.units.qual.C;
 import org.controlsfx.control.PopOver;
 
 public class MapSuperController {
@@ -104,7 +107,6 @@ public class MapSuperController {
     public List<String> blank = new ArrayList<>();
 
 
-
     Date today = Date.valueOf(java.time.LocalDate.now());
 
     public MapSuperController() throws SQLException {
@@ -137,7 +139,7 @@ public class MapSuperController {
 
     public void initializeSearch() throws SQLException {
         getLocationNameHashMap().forEach(((key, value) -> {
-            if(!value.getNodeType().equals("HALL"))
+            if (!value.getNodeType().equals("HALL"))
                 searchOnMap.getItems().add(key);
         }));
     }
@@ -200,7 +202,7 @@ public class MapSuperController {
         floor3Image.setVisible(false);
     }
 
-    public void setClickedButton(){
+    public void setClickedButton() {
         switch (selectedFloor.FLOOR.floor) {
             case "L1":
                 resetButtons();
@@ -311,9 +313,9 @@ public class MapSuperController {
         return hash;
     }
 
-    public void initializeGesturePane(){
+    public void initializeGesturePane() {
         javafx.application.Platform.runLater(() -> {
-            gesturePane.centreOn(new Point2D(2500,1000));
+            gesturePane.centreOn(new Point2D(2500, 1000));
         });
         this.gesturePane.setVisible(true);
         gesturePane.toBack();
@@ -331,19 +333,16 @@ public class MapSuperController {
                         Circle circle;
                         Text longName = new Text();
 
-                        if(nodeTypeList.contains(getMoveHashMap().get(value.getNodeID()).getLocation().getNodeType()))
-                        {
+                        if (nodeTypeList.contains(getMoveHashMap().get(value.getNodeID()).getLocation().getNodeType())) {
                             circle = drawCircle(value.getXcoord(), value.getYcoord(), Color.RED, Color.BLACK);
                             longName.setFill(Color.BLACK);
-                        }
-                        else{
+                        } else {
                             circle = drawCircle(value.getXcoord(), value.getYcoord(), Color.GRAY, Color.DARKGRAY);
                             longName.setVisible(false);
                         }
 
 
-                        if(!getMoveHashMap().get(value.getNodeID()).getLocation().getNodeType().equals("HALL"))
-                        {
+                        if (!getMoveHashMap().get(value.getNodeID()).getLocation().getNodeType().equals("HALL")) {
                             longName.setText(getMoveHashMap().get(value.getNodeID()).getLocation().getShortName());
                         }
                         longName.setFont(Font.font("Ariel", FontWeight.BOLD, 15));
@@ -353,23 +352,23 @@ public class MapSuperController {
 
                         switch (selectedFloor.FLOOR.floor) {
                             case "L1":
-                                this.L1Group.getChildren().addAll(circle,longName);
+                                this.L1Group.getChildren().addAll(circle, longName);
                                 break;
                             case "L2":
-                                this.L2Group.getChildren().addAll(circle,longName);
+                                this.L2Group.getChildren().addAll(circle, longName);
                                 break;
                             case "1":
-                                this.floor1Group.getChildren().addAll(circle,longName);
+                                this.floor1Group.getChildren().addAll(circle, longName);
                                 break;
                             case "2":
-                                this.floor2Group.getChildren().addAll(circle,longName);
+                                this.floor2Group.getChildren().addAll(circle, longName);
                                 break;
                             case "3":
-                                this.floor3Group.getChildren().addAll(circle,longName);
+                                this.floor3Group.getChildren().addAll(circle, longName);
                                 break;
                         }
                         setClickedButton();
-                        clickCircle(circle , value);
+                        clickCircle(circle, value);
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -378,45 +377,56 @@ public class MapSuperController {
         }));
     }
 
-    public void clickCircle(Circle circle, Node node){
-        circle.setOnMouseClicked(event -> {
-            try {
-                if(getLocationNameHashMap().get(getMoveHashMap().get(node.getNodeID()).getLocation().getLongName()).getNodeType().equals("HALL")){
+    public void clickCircle(Circle circle, Node node) {
+            circle.setOnMouseClicked(event -> {
+                for(javafx.scene.Node nodes: floor1Group.getChildren()) {
+                    if(nodes instanceof Circle)
+                    {
+                        ((Circle) nodes).setFill(Color.GRAY);
+                        ((Circle) nodes).setStroke(Color.DARKGRAY);
+                    }
+                }
+                circle.setFill(Color.PINK);
+                circle.setStroke(Color.RED);
+                PopOver popover = new PopOver();
+                StackPane stackPane = new StackPane();
+                Text text = new Text();
+                try {
+                    text.setText("Long Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getLongName()+ "\n" + "Short Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getShortName() + "\n" + "Node Type: " + getMoveHashMap().get(node.getNodeID()).getLocation().getNodeType() + "\n" + "Node ID: " + node.getNodeID() + "\n" + "Coordinates (x,y): (" + node.getXcoord() + "," + node.getYcoord() + ")" + "\n" + "Floor: " + node.getFloor() + "\n" + "Building: " + node.getBuilding());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                popover.setDetachable(false);
+                popover.setCornerRadius(5);
+                popover.setAnimated(true);
+                popover.setCloseButtonEnabled(true);
+                popover.setPrefHeight(150);
+                text.setWrappingWidth(400);
 
-                }
-                else {
-                    try {
-                        this.searchOnMap.getSelectionModel().selectItem(getMoveHashMap().get(node.getNodeID()).getLocation().getLongName());
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    PopOver popover = new PopOver();
-                    FlowPane flowPane = new FlowPane();
-                    Text text = new Text();
-                    try {
-                        text.setText("Long Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getLongName() + "Short Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getShortName() + "\n" + "Node Type: " + getMoveHashMap().get(node.getNodeID()).getLocation().getNodeType() + "\n" + "Node ID: " + node.getNodeID() + "\n" + "Coordinates (x,y): (" + node.getXcoord() + "," + node.getYcoord() + ")" + "\n" + "Floor: " + node.getFloor() + "\n" + "Building: " + node.getBuilding());
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    popover.setDetachable(false);
-                    popover.setCornerRadius(5);
-                    popover.setAnimated(true);
-                    popover.setCloseButtonEnabled(true);
-                    popover.setPrefSize(300,300);
-                    flowPane.setPrefSize(popover.getPrefWidth(),popover.getPrefHeight());
-                    text.setFont(Font.font("Ariel", FontWeight.BOLD, 10));
-                    flowPane.getChildren().add(text);
-                    popover.setContentNode(flowPane);
-                    popover.setAutoFix(false);
-                    popover.setArrowLocation(PopOver.ArrowLocation.LEFT_CENTER);
-                    popover.setArrowSize(5);
-                    popover.show(floor1Group,circle.getCenterX(),circle.getCenterY());
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
+                popover.prefWidthProperty().bind(Bindings.add(10, text.wrappingWidthProperty()));
+                stackPane.setPrefSize(popover.getPrefWidth(), popover.getPrefHeight());
+
+                text.setFont(Font.font("Ariel", FontWeight.NORMAL, 15));
+                stackPane.getChildren().add(text);
+                stackPane.setAlignment(Pos.CENTER);
+                popover.setContentNode(stackPane);
+                popover.setArrowLocation(PopOver.ArrowLocation.LEFT_CENTER);
+                popover.show(circle);
+                setLocationSearch(node);
+            });
     }
+    public void setLocationSearch(Node node){
+        try {
+            if (getLocationNameHashMap().get(getMoveHashMap().get(node.getNodeID()).getLocation().getLongName()).getNodeType().equals("HALL")) {
+
+            } else {
+                this.searchOnMap.setText(getMoveHashMap().get(node.getNodeID()).getLocation().getLongName());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 }
