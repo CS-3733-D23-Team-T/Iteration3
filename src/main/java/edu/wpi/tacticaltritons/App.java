@@ -39,6 +39,7 @@ public class App extends Application {
   public static String invalidMFXTextField;
   public static QuickNavigationMenuButtons quickNavigationMenuButtons;
   public static HashMap<String, Image> flowerHashMap;
+  public static HashMap<String, Image> furnitureHashMap;
 
   @Override
   public void init() {
@@ -51,7 +52,7 @@ public class App extends Application {
     App.primaryStage = primaryStage;
     quickNavigationMenuButtons = new QuickNavigationMenuButtons();
     flowerHashMap = new FlowerHashMap();
-
+    furnitureHashMap = new FurnitureHashMap();
 
 
     groundfloor =
