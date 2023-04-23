@@ -1,5 +1,7 @@
 package edu.wpi.tacticaltritons;
 
+import edu.wpi.tacticaltritons.data.FlowerHashMap;
+import edu.wpi.tacticaltritons.data.FurnitureHashMap;
 import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
 import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.navigation.Screen;
@@ -15,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Objects;
 
 @Slf4j
@@ -35,6 +38,7 @@ public class App extends Application {
 
   public static String invalidMFXTextField;
   public static QuickNavigationMenuButtons quickNavigationMenuButtons;
+  public static HashMap<String, Image> flowerHashMap;
 
   @Override
   public void init() {
@@ -46,6 +50,8 @@ public class App extends Application {
     //    /* primaryStage is generally only used if one of your components require the stage to
     App.primaryStage = primaryStage;
     quickNavigationMenuButtons = new QuickNavigationMenuButtons();
+    flowerHashMap = new FlowerHashMap();
+
 
 
     groundfloor =
