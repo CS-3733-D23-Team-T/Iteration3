@@ -54,6 +54,17 @@ public class Navigation {
                 e.printStackTrace();
             } catch (ExceptionInInitializerError ignored) { }
 
+            if(UserSessionToken.getUser() == null){
+                App.getNavBar().setCenter(App.getLoginQuickNavigation());
+            }
+            else{
+                if(UserSessionToken.getUser().isAdmin()){
+                    App.getNavBar().setCenter(App.getAdminQuickNavigation());
+                }
+                else{
+                    App.getNavBar().setCenter(App.getStaffQuickNavigation());
+                }
+            }
             App.getRootPane().setTop(App.getNavBar());
         } catch (NullPointerException e) {
             e.printStackTrace();

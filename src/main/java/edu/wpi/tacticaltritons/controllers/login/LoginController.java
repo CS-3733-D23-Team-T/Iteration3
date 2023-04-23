@@ -1,7 +1,9 @@
 package edu.wpi.tacticaltritons.controllers.login;
 
-import edu.wpi.tacticaltritons.App;
-import edu.wpi.tacticaltritons.auth.*;
+import edu.wpi.tacticaltritons.auth.Account;
+import edu.wpi.tacticaltritons.auth.AuthenticationMethod;
+import edu.wpi.tacticaltritons.auth.UserSessionToken;
+import edu.wpi.tacticaltritons.auth.Validator;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.navigation.LoginNavigation;
@@ -11,15 +13,10 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
 import java.sql.SQLException;
@@ -30,6 +27,7 @@ public class LoginController {
     @FXML private MFXTextField passwordField;
     @FXML private Text passwordValidator;
     @FXML private MFXButton loginButton;
+    @FXML private Text resetPasswordLink;
 
     @FXML
     private void initialize() {
@@ -96,5 +94,15 @@ public class LoginController {
             }
         });
         this.passwordField.setOnKeyPressed(this.usernameField.getOnKeyPressed());
+
+        this.resetPasswordLink.addEventHandler(EventType.ROOT, event -> {
+            if(event.getEventType() == MouseEvent.MOUSE_ENTERED){
+                this.resetPasswordLink.setUnderline(true);
+            }
+            else if(event.getEventType() == MouseEvent.MOUSE_EXITED){
+                this.resetPasswordLink.setUnderline(false);
+            }
+        });
+        this.resetPasswordLink.setOnMouseClicked(event -> LoginNavigation.navigate(Screen.RESET_PASSWORD));
     }
 }
