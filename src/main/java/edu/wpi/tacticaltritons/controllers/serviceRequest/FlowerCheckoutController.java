@@ -120,7 +120,7 @@ public class FlowerCheckoutController {
             assignedComboBox.getItems().add(login.getFirstName() + " " + login.getLastName());
         }
 
-        java.util.Date today = new java.util.Date(2023, 4, 10);
+        Date today = new Date(2023, 4, 10);
         lowerLevel1Image.setImage(App.lowerlevel1);
         lowerLevel2Image.setImage(App.lowerlevel2);
         groundFloorImage.setImage(App.groundfloor);
@@ -344,9 +344,11 @@ public class FlowerCheckoutController {
             staffFirst = assignedComboBox.getSelectedItem().toString().substring(0, assignedComboBox.getSelectedItem().toString().indexOf(' '));
             staffLast = assignedComboBox.getSelectedItem().toString().substring(assignedComboBox.getSelectedItem().toString().indexOf(' ') + 1, assignedComboBox.getSelectedItem().toString().length());
             status = RequestStatus.PROCESSING;
-        } else {
-            staffFirst = "";
-            staffLast = "";
+        }
+        else
+        {
+            staffFirst = null;
+            staffLast = null;
         }
 
 

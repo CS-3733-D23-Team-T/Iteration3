@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<BorderPane prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.NewHomeController">
+    <top>
+        <FlowPane prefHeight="200.0" prefWidth="1280.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets left="20.0" right="20.0" top="20.0" />
+            </BorderPane.margin>
+        </FlowPane>
+    </top>
+    <center>
+        <GridPane fx:id="tableGridPane" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" minWidth="-Infinity" prefWidth="300.0" />
+                <ColumnConstraints hgrow="ALWAYS" minWidth="300.0" />
+                <ColumnConstraints halignment="CENTER" minWidth="-Infinity" prefWidth="300.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="500.0" valignment="CENTER" vgrow="ALWAYS" />
+            </rowConstraints>
+            <children>
+                  <FlowPane fx:id="eventsPane" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" style="-fx-background-color: white;">
+                      <GridPane.margin>
+                          <Insets bottom="20.0" />
+                      </GridPane.margin>
+                  </FlowPane>
+                <FlowPane fx:id="requestsPane" style="-fx-background-color: white;" GridPane.columnIndex="1">
+                    <GridPane.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" />
+                    </GridPane.margin>
+                </FlowPane>
+                  <FlowPane fx:id="movesPane" minHeight="-Infinity" minWidth="-Infinity" prefWidth="301.0" style="-fx-background-color: white;" GridPane.columnIndex="2">
+                      <GridPane.margin>
+                          <Insets bottom="20.0" />
+                      </GridPane.margin>
+                  </FlowPane>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </BorderPane.margin>
+        </GridPane>
+    </center>
+</BorderPane>
