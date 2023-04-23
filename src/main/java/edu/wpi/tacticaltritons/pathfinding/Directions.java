@@ -153,4 +153,47 @@ public class Directions {
 
     return textDirections;
   }
+
+  public List<String> printPositions(){
+    if (shortestPath == null || shortestPath.size() < 2) {
+    }
+    List<String> textDirections = new ArrayList<>();
+    for (int i = 0; i < shortestPath.size() - 1; i++) {
+      currentNode = shortestPath.get(i);
+      nextNode = shortestPath.get(i + 1);
+
+      int currentX = currentNode.getXcoord();
+      int nextX = nextNode.getXcoord();
+      int currentY = currentNode.getYcoord();
+      int nextY = nextNode.getYcoord();
+      int xDiff = currentX - nextX;
+      int yDiff = currentY - nextY;
+
+        System.out.println("Starting now");
+      String position = "";
+      if(xDiff < 0 ){
+        position += "West";
+
+      } else{
+        position += "East";
+      }
+
+      if (yDiff < 0){
+        position += "South";
+      }else {
+        position += "North";
+
+      }
+
+      if(xDiff != 0 && yDiff != 0){
+        if(yDiff < 0){
+          position += "West";
+        } else{
+          position += "East";
+        }
+      }
+      System.out.println("Go" + position);
+    }
+      return textDirections;
+  }
 }
