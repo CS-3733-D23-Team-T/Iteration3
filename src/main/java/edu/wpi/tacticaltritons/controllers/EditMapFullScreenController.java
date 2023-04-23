@@ -593,11 +593,21 @@ public class EditMapFullScreenController {
 
         this.importButton.setOnAction(
                 event -> {
+                    String tableName = null;
+                    if (selector.getValue().equals("Node")) {
+                        tableName = "node";
+                    } else if (selector.getValue().equals("Edge")) {
+                        tableName = "edge";
+                    } else if (selector.getValue().equals("Location Name")) {
+                        tableName = "locationname";
+                    } else if (selector.getValue().equals("Move")) {
+                        tableName = "move";
+                    }
                     Stage outStage = new Stage();
                     FileChooser fileChooser = new FileChooser();
                     File file = fileChooser.showOpenDialog(outStage);
                     try {
-                        Import.importFile(file);
+                        Import.importFile(file, tableName);
                     } catch (IOException | SQLException | ParseException e) {
                         throw new RuntimeException(e);
                     }
