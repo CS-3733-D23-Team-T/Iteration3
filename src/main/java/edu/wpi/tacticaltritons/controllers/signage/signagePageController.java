@@ -37,15 +37,15 @@ public class signagePageController {
 
     double seperatorRatio = 0.6;
     double arrowIconSize = 400;
-    int fontSize = 80;
-
+    int fontSize = 70;
+    double referenceWidth = 3840;
     VBox[] signageLocationBlocks;
 
     ArrayList<Label> locationLabels;
     public void initialize(){
         locationLabels = new ArrayList<>();
         signageLocationBlocks = new VBox[]{signageForwardLocations,signageLeftLocations,signageRightLocations,signageBackLocations};
-        verticallyResizing(App.getPrimaryStage().getWidth());
+        horizontalResizing(App.getPrimaryStage().getWidth());
         loadLocation(signageForwardLocations,signagePageInteractionClass.forwardLocations); // forward direction block is the default display area
         if(signagePageInteractionClass.signleDisplay){
             formatAsSingleDisplay();
@@ -60,9 +60,11 @@ public class signagePageController {
         setResize();
         if(basePane.getChildren().isEmpty()){
             Label askForSelection = new Label("no preset selected,\nplease select one preset in \n\"Edit Signage\" page");
-            askForSelection.setStyle("-fx-font-size: " + fontSize * 3);
+            askForSelection.setStyle("-fx-font-size: " + fontSize);
             basePane.getChildren().add(askForSelection);
+            locationLabels.add(askForSelection);
         }
+        resizeTexts(App.getPrimaryStage().getWidth());
     }
     // load all locations
     private void loadLocation(VBox target,String[] source){
@@ -76,9 +78,10 @@ public class signagePageController {
     // if assign as single display, reformat the block as a single display block
     private void formatAsSingleDisplay(){
         Label singleDisplayTitle = new Label("Stop Here For");
-        singleDisplayTitle.setStyle("-fx-text-fill: " + ThemeColors.YELLOW.getColor() + ";" + "-fx-font-size: " + (fontSize * 3 + 10));
+        fontSize *= 3;
+        singleDisplayTitle.setStyle("-fx-text-fill: " + ThemeColors.YELLOW.getColor() + ";" + "-fx-font-size: " + (fontSize + 10));
         for(int i = 0; i < signageForwardLocations.getChildren().size();i++){
-            signageForwardLocations.getChildren().get(i).setStyle("-fx-font-size: " + fontSize * 3);
+            signageForwardLocations.getChildren().get(i).setStyle("-fx-font-size: " + fontSize);
         }
         signageForwardLocations.getChildren().add(0,singleDisplayTitle);
         signageForwardBlock.getChildren().remove(0,2); // remove arrow and seperator
@@ -95,9 +98,8 @@ public class signagePageController {
         }
         // have enough space for big font size under 4K resolution
         if(locationLabels.size() < 13){
-            for(Label locaionLabel: locationLabels){
-                locaionLabel.setStyle("-fx-font-size: " + fontSize*2);
-            }
+            fontSize *= 2;
+            setFontSize(fontSize);
         }
     }
     // set the on actions
@@ -105,7 +107,8 @@ public class signagePageController {
         App.getPrimaryStage().widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                verticallyResizing(newValue);
+                horizontalResizing(newValue);
+                resizeTexts(newValue);
             }
         });
         signageForwardBlock.heightProperty().addListener(new ChangeListener<Number>() {
@@ -133,8 +136,16 @@ public class signagePageController {
             }
         });
     }
+    private void setFontSize(double fontSize){
+        for(Label locaionLabel: locationLabels){
+            locaionLabel.setStyle("-fx-font-size: " + fontSize);
+        }
+        if(signagePageInteractionClass.signleDisplay){
+            signageForwardLocations.getChildren().get(0).setStyle("-fx-text-fill: " + ThemeColors.YELLOW.getColor() + ";" + "-fx-font-size: " + (fontSize + 10));
+        }
+    }
     // do an initial resizing for fit the screen
-    private void verticallyResizing(Number newValue){
+    private void horizontalResizing(Number newValue){
         basePane.setPrefWidth(newValue.doubleValue());
         for(Node block: basePane.getChildren()){
             FlowPane pane = (FlowPane) block;
@@ -145,5 +156,10 @@ public class signagePageController {
                 }
             }
         }
+    }
+    // resize the text to fit the screen size
+    private void resizeTexts(Number newValue){
+        double newFontSize = newValue.doubleValue() / referenceWidth * fontSize;
+        setFontSize(newFontSize);
     }
 }
