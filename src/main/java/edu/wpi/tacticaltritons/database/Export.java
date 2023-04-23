@@ -3,6 +3,7 @@ package edu.wpi.tacticaltritons.database;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -118,15 +119,26 @@ public class Export {
     List<Login> allLogin = data.getAllLogins();
     List<String[]> table = new ArrayList<>();
 
-    String[] header = {"user", "email", "firstname", "lastname", "admin"};
+    String[] header = {"username", "email", "firstname", "lastname", "admin", "password", "salt", "lastlogin", "narration", "language", "twofactor", "darkmode", "twofactormethods", "twofactorfrequency", "tokentime", "algorithmpreference"};
     table.add(header);
     for (Login login : allLogin) {
-      String[] dataRow = new String[5];
+      String[] dataRow = new String[16];
       dataRow[0] = login.getUsername();
       dataRow[1] = login.getEmail();
       dataRow[2] = login.getFirstName();
       dataRow[3] = login.getLastName();
       dataRow[4] = String.valueOf(login.isAdmin());
+      dataRow[5] = login.getPassword();
+      dataRow[6] = login.getSalt();
+      dataRow[7] = String.valueOf(login.getLastLogin());
+      dataRow[8] = String.valueOf(login.getNarration());
+      dataRow[9] = login.getLanguage();
+      dataRow[10] = String.valueOf(login.getTwoFactor());
+      dataRow[11] = String.valueOf(login.getDarkMode());
+      dataRow[12] = Arrays.toString(login.getTwoFactorMethods());
+      dataRow[13] = login.getTwoFactorFrequency();
+      dataRow[14] = String.valueOf(login.getTokenTime());
+      dataRow[15] = login.getAlgorithmPreference();
       table.add(dataRow);
     }
     return table;
@@ -185,4 +197,107 @@ public class Export {
     }
     return table;
   }
+
+  public static List<String[]> furnitureData() throws SQLException {
+    DAOFacade data = new DAOFacade();
+    List<Furniture> allFurniture = data.getAllFurniture();
+    List<String[]> table = new ArrayList<>();
+
+    String[] header = {"ordernum", "firstname", "lastname", "assignedstafffirst", "assignedstafflast", "date", "location", "items", "status"};
+    table.add(header);
+    for (Furniture furniture : allFurniture) {
+      String[] dataRow = new String[9];
+      dataRow[0] = String.valueOf(furniture.getOrderNum());
+      dataRow[1] = furniture.getFirstName();
+      dataRow[2] = furniture.getLastName();
+      dataRow[3] = furniture.getAssignedStaffFirst();
+      dataRow[4] = furniture.getAssignedStaffLast();
+      dataRow[5] = String.valueOf(furniture.getDeliveryDate());
+      dataRow[6] = furniture.getLocation();
+      dataRow[7] = furniture.getItems();
+      dataRow[8] = furniture.getStatus().toString();
+      table.add(dataRow);
+    }
+    return table;
+  }
+
+  public static List<String[]> conferenceData() throws SQLException {
+    DAOFacade data = new DAOFacade();
+    List<Conference> allConference = data.getAllConference();
+    List<String[]> table = new ArrayList<>();
+
+    String[] header = {"ordernum", "firstname", "lastname", "date", "attendance", "expectedsize", "location", "status"};
+    table.add(header);
+    for (Conference conference : allConference) {
+      String[] dataRow = new String[8];
+      dataRow[0] = String.valueOf(conference.getOrderNum());
+      dataRow[1] = conference.getFirstName();
+      dataRow[2] = conference.getLastName();
+      dataRow[3] = String.valueOf(conference.getDate());
+      dataRow[4] = conference.getAttendance();
+      dataRow[5] = String.valueOf(conference.getExpectedSize());
+      dataRow[6] = conference.getLocation();
+      dataRow[7] = conference.getStatus().toString();
+      table.add(dataRow);
+    }
+    return table;
+  }
+
+  //TODO OfficeSupplies data when classes are made
+
+  public static List<String[]> mealOptionsData() throws SQLException {
+    DAOFacade data = new DAOFacade();
+    List<RequestOptions> allOptions = data.getAllOptions();
+    List<String[]> table = new ArrayList<>();
+
+    String[] header = {"itemname", "prices", "restaurant"};
+    table.add(header);
+    for (RequestOptions option : allOptions) {
+      String[] dataRow = new String[3];
+      dataRow[0] = option.getItemName();
+      dataRow[1] = String.valueOf(option.getPrice());
+      dataRow[2] = option.getRestaurant();
+      table.add(dataRow);
+    }
+    return table;
+  }
+
+  public static List<String[]> flowerOptionsData() throws SQLException {
+    DAOFacade data = new DAOFacade();
+    List<FlowerRequestOptions> allOptions = data.getAllFlowerRequestOptions();
+    List<String[]> table = new ArrayList<>();
+
+    String[] header = {"itemname", "prices", "shop", "shopdescription", "itemtype", "itemdescription"};
+    table.add(header);
+    for (FlowerRequestOptions option : allOptions) {
+      String[] dataRow = new String[6];
+      dataRow[0] = option.getItemName();
+      dataRow[1] = String.valueOf(option.getPrice());
+      dataRow[2] = option.getShop();
+      dataRow[3] = option.getShopDescription();
+      dataRow[4] = option.getItemType();
+      dataRow[5] = option.getItemDescription();
+      table.add(dataRow);
+    }
+    return table;
+  }
+
+  public static List<String[]> furnitureOptionsData() throws SQLException {
+    DAOFacade data = new DAOFacade();
+    List<FurnitureRequestOptions> allOptions = data.getAllFurnitureRequestOptions();
+    List<String[]> table = new ArrayList<>();
+
+    String[] header = {"itemname", "itemtype", "itemdescription"};
+    table.add(header);
+    for (FurnitureRequestOptions option : allOptions) {
+      String[] dataRow = new String[3];
+      dataRow[0] = option.getItemName();
+      dataRow[1] = option.getItemType();
+      dataRow[2] = option.getItemDescription();
+      table.add(dataRow);
+    }
+    return table;
+  }
+
+  //TODO officeOptions when completed
 }
