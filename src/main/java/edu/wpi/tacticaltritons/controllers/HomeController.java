@@ -80,7 +80,7 @@ public class HomeController {
     flowerRequestContainer.setOnMouseClicked(event -> Navigation.navigate(Screen.FLOWER_CHOICE));
 
     setContainerMouseEvents(signageContainer);
-    signageContainer.setOnMouseClicked(event -> Navigation.navigate(Screen.SIGNAGE));
+    signageContainer.setOnMouseClicked(event -> Navigation.navigate(Screen.EDIT_SIGNAGE));
 
     setContainerMouseEvents(mealRequestContainer);
     mealRequestContainer.setOnMouseClicked(event -> Navigation.navigate(Screen.MEAL_RESTAURANT));

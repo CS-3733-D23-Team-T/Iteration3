@@ -1,21 +1,18 @@
 package edu.wpi.tacticaltritons.controllers.signage;
 
 import edu.wpi.tacticaltritons.App;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import edu.wpi.tacticaltritons.styling.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 
@@ -40,36 +37,70 @@ public class signagePageController {
 
     double seperatorRatio = 0.6;
     double arrowIconSize = 400;
-    int fontSize = 150;
+    int fontSize = 80;
 
+    VBox[] signageLocationBlocks;
+
+    ArrayList<Label> locationLabels;
     public void initialize(){
+        locationLabels = new ArrayList<>();
+        signageLocationBlocks = new VBox[]{signageForwardLocations,signageLeftLocations,signageRightLocations,signageBackLocations};
         verticallyResizing(App.getPrimaryStage().getWidth());
-        for(int i = 0; i < 5; i++){
-            addForward("room room room " + i);
+        loadLocation(signageForwardLocations,signagePageInteractionClass.forwardLocations); // forward direction block is the default display area
+        if(signagePageInteractionClass.signleDisplay){
+            formatAsSingleDisplay();
+        }else{
+            loadLocation(signageLeftLocations,signagePageInteractionClass.leftLocations);
+            loadLocation(signageRightLocations,signagePageInteractionClass.rightLocations);
+            loadLocation(signageBackLocations,signagePageInteractionClass.backLocations);
+            removeEmpty();
         }
-        for(int i=0; i < 2; i++){
-            addLeft("room room room " + i);
-        }
-        removeEmpty();
         EffectGenerator.generateShadowEffect(basePane);
-        EffectGenerator.generateSpacing(basePane,15);
+        EffectGenerator.generateSpacing(basePane,20);
         setResize();
+        if(basePane.getChildren().isEmpty()){
+            Label askForSelection = new Label("no preset selected,\nplease select one preset in \n\"Edit Signage\" page");
+            askForSelection.setStyle("-fx-font-size: " + fontSize * 3);
+            basePane.getChildren().add(askForSelection);
+        }
     }
-
+    // load all locations
+    private void loadLocation(VBox target,String[] source){
+        for(String location: source){
+            Label locationLabel= new Label(location);
+            locationLabel.setStyle("-fx-font-size: " + fontSize);
+            target.getChildren().add(locationLabel);
+            locationLabels.add(locationLabel);
+        }
+    }
+    // if assign as single display, reformat the block as a single display block
+    private void formatAsSingleDisplay(){
+        Label singleDisplayTitle = new Label("Stop Here For");
+        singleDisplayTitle.setStyle("-fx-text-fill: " + ThemeColors.YELLOW.getColor() + ";" + "-fx-font-size: " + (fontSize * 3 + 10));
+        for(int i = 0; i < signageForwardLocations.getChildren().size();i++){
+            signageForwardLocations.getChildren().get(i).setStyle("-fx-font-size: " + fontSize * 3);
+        }
+        signageForwardLocations.getChildren().add(0,singleDisplayTitle);
+        signageForwardBlock.getChildren().remove(0,2); // remove arrow and seperator
+        basePane.getChildren().remove(1,4); // remove the rest four blocks
+        signageForwardBlock.setAlignment(Pos.CENTER); // make text center
+    }
+    //remove unfilled blocks
     private void removeEmpty(){
-        for(int i = 0; i < basePane.getChildren().size(); i++){
-            for(Node items: ((FlowPane)basePane.getChildren().get(i)).getChildren()){
-                if(items instanceof VBox){
-                    VBox box = (VBox) items;
-                    if(box.getChildren().size() == 0){
-                        basePane.getChildren().remove(i);
-                        i--;
-                    }
-                }
+        for(int i = 0,j = 0; i < basePane.getChildren().size() && j < signageLocationBlocks.length; i++,j++){
+            if(signageLocationBlocks[j].getChildren().isEmpty()){
+                basePane.getChildren().remove(i);
+                i--;
+            }
+        }
+        // have enough space for big font size under 4K resolution
+        if(locationLabels.size() < 13){
+            for(Label locaionLabel: locationLabels){
+                locaionLabel.setStyle("-fx-font-size: " + fontSize*2);
             }
         }
     }
-
+    // set the on actions
     private void setResize(){
         App.getPrimaryStage().widthProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -102,26 +133,17 @@ public class signagePageController {
             }
         });
     }
+    // do an initial resizing for fit the screen
     private void verticallyResizing(Number newValue){
         basePane.setPrefWidth(newValue.doubleValue());
         for(Node block: basePane.getChildren()){
             FlowPane pane = (FlowPane) block;
             pane.setPrefWidth(newValue.doubleValue());
             for(Node item: pane.getChildren()){
-                if(item instanceof VBox){
-                    VBox box = (VBox) item;
+                if(item instanceof VBox box){
                     box.setPrefWidth(newValue.doubleValue() - arrowIconSize);
                 }
             }
         }
     }
-    private void addSignage(VBox target,String text){
-        Label locationText = new Label(text);
-        locationText.setStyle("-fx-font-size: " + fontSize);
-        target.getChildren().add(locationText);
-    }
-    private void addForward(String text){addSignage(signageForwardLocations,text);}
-    private void addLeft(String text){addSignage(signageLeftLocations,text);}
-    private void addRight(String text){addSignage(signageRightLocations,text);}
-    private void addBack(String text){addSignage(signageBackLocations,text);}
 }
