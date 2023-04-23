@@ -14,6 +14,12 @@ public class Export {
   }
 
   private static String escapeSpecialCharacters(String data) {
+    if(data == null){
+      data = "";
+    }
+    if(data.equals("null")){
+      data = "";
+    }
     String escapedData = data.replaceAll("\\R", " ");
     if (data.matches(",\"'")) {
       data = data.replace("\"", "\"\"");
@@ -36,7 +42,23 @@ public class Export {
     } else if (tableName.equals("login")) {
       table = Export.loginData();
     } else if (tableName.equals("meal")) {
-      table = Export.loginData();
+      table = Export.mealData();
+    } else if (tableName.equals("flower")) {
+      table = Export.flowerData();
+    } else if (tableName.equals("furnitureforms")) {
+      table = Export.furnitureData();
+    } else if (tableName.equals("conference")) {
+      table = Export.conferenceData();
+    } else if (tableName.equals("officesuppliesform")) {
+      //table = Export.();
+    } else if (tableName.equals("requestoptions")) {
+      table = Export.mealOptionsData();
+    } else if (tableName.equals("flowererequestoptions")) {
+      table = Export.flowerOptionsData();
+    } else if (tableName.equals("furniturerequestoptions")) {
+      table = Export.furnitureOptionsData();
+    } else if (tableName.equals("officesuppliesrequestoptions")) {
+      //table = Export.();
     }
 
     table.stream().map(Export::convertToCSV).forEach(writer::println);

@@ -37,7 +37,7 @@ public class DatabaseController {
   public void initialize() throws SQLException, ClassNotFoundException {
 //     EffectGenerator.generateShadowEffect(basePane);
      this.selectTable.setItems(
-        FXCollections.observableArrayList("Node", "Edge", "Location Name", "Move"));
+        FXCollections.observableArrayList("Node", "Edge", "Location Name", "Move", "Login", "MealRequests", "FlowerRequests", "FurnitureRequests", "ConferenceRequests", "OfficeSuppliesRequest", "MealOptions", "FlowerOptions", "FurnitureOptions", "OfficeSuppliesOptions"));
 
      this.selectTable.setOnAction(
             event -> {
@@ -170,11 +170,41 @@ public class DatabaseController {
 
     this.importButton.setOnAction(
             event -> {
+                String tableName = null;
+                if (selectTable.getValue().equals("Node")) {
+                    tableName = "node";
+                } else if (selectTable.getValue().equals("Edge")) {
+                    tableName = "edge";
+                } else if (selectTable.getValue().equals("Location Name")) {
+                    tableName = "locationname";
+                } else if (selectTable.getValue().equals("Move")) {
+                    tableName = "move";
+                } else if (selectTable.getValue().equals("Login")) {
+                    tableName = "login";
+                } else if (selectTable.getValue().equals("MealRequests")) {
+                    tableName = "meal";
+                } else if (selectTable.getValue().equals("FlowerRequests")) {
+                    tableName = "flower";
+                } else if (selectTable.getValue().equals("FurnitureRequests")) {
+                    tableName = "furnitureforms";
+                } else if (selectTable.getValue().equals("ConferenceRequests")) {
+                    tableName = "conference";
+                } else if (selectTable.getValue().equals("OfficeSuppliesRequest")) {
+                    tableName = "officesuppliesform";
+                } else if (selectTable.getValue().equals("MealOptions")) {
+                    tableName = "requestoptions";
+                } else if (selectTable.getValue().equals("FlowerOptions")) {
+                    tableName = "flowererequestoptions";
+                } else if (selectTable.getValue().equals("FurnitureOptions")) {
+                    tableName = "furniturerequestoptions";
+                } else if (selectTable.getValue().equals("OfficeSuppliesOptions")) {
+                    tableName = "officesuppliesrequestoptions";
+                }
               Stage outStage = new Stage();
               FileChooser fileChooser = new FileChooser();
               File file = fileChooser.showOpenDialog(outStage);
               try {
-                Import.importFile(file);
+                Import.importFile(file, tableName);
               } catch (IOException | SQLException | ParseException e) {
                 throw new RuntimeException(e);
               }
@@ -183,15 +213,35 @@ public class DatabaseController {
     this.exportButton.setOnAction(
             event -> {
               String tableName = null;
-              if (selectTable.getValue().equals("Node")) {
-                tableName = "node";
-              } else if (selectTable.getValue().equals("Edge")) {
-                tableName = "edge";
-              } else if (selectTable.getValue().equals("Location Name")) {
-                tableName = "locationname";
-              } else if (selectTable.getValue().equals("Move")) {
-                tableName = "move";
-              }
+                if (selectTable.getValue().equals("Node")) {
+                    tableName = "node";
+                } else if (selectTable.getValue().equals("Edge")) {
+                    tableName = "edge";
+                } else if (selectTable.getValue().equals("Location Name")) {
+                    tableName = "locationname";
+                } else if (selectTable.getValue().equals("Move")) {
+                    tableName = "move";
+                } else if (selectTable.getValue().equals("Login")) {
+                    tableName = "login";
+                } else if (selectTable.getValue().equals("MealRequests")) {
+                    tableName = "meal";
+                } else if (selectTable.getValue().equals("FlowerRequests")) {
+                    tableName = "flower";
+                } else if (selectTable.getValue().equals("FurnitureRequests")) {
+                    tableName = "furnitureforms";
+                } else if (selectTable.getValue().equals("ConferenceRequests")) {
+                    tableName = "conference";
+                } else if (selectTable.getValue().equals("OfficeSuppliesRequest")) {
+                    tableName = "officesuppliesform";
+                } else if (selectTable.getValue().equals("MealOptions")) {
+                    tableName = "requestoptions";
+                } else if (selectTable.getValue().equals("FlowerOptions")) {
+                    tableName = "flowererequestoptions";
+                } else if (selectTable.getValue().equals("FurnitureOptions")) {
+                    tableName = "furniturerequestoptions";
+                } else if (selectTable.getValue().equals("OfficeSuppliesOptions")) {
+                    tableName = "officesuppliesrequestoptions";
+                }
               Stage exportStage = new Stage();
               FileChooser fileChooser = new FileChooser();
               fileChooser.setTitle("Export");
