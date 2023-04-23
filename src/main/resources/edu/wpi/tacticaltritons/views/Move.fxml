@@ -28,22 +28,14 @@
                           <MFXDatePicker fx:id="date" floatingText="Effective Date" promptText="Effective Date" />
                           <HBox spacing="20.0">
                               <children>
-                                  <Button fx:id="clearButton" mnemonicParsing="false" styleClass="button-cancel" text="Clear Form" />
-                                  <Button fx:id="previewButton" alignment="CENTER_RIGHT" mnemonicParsing="false" styleClass="button-clear" text="Preview Map" />
-                              </children>
-                          </HBox>
-                          <HBox>
-                              <children>
+                                  <Button fx:id="clearButton" mnemonicParsing="false" styleClass="button-clear" text="Clear Form" />
                                   <Button fx:id="cancelButton" mnemonicParsing="false" styleClass="button-cancel" text="Cancel Form" />
                                   <Button fx:id="submitButton" mnemonicParsing="false" styleClass="button-submit" text="Submit Form">
                                       <HBox.margin>
-                                          <Insets left="15.0" />
+                                          <Insets />
                                       </HBox.margin>
                                   </Button>
                               </children>
-                              <padding>
-                                  <Insets top="10.0" />
-                              </padding>
                           </HBox>
                       </children>
                <padding>
