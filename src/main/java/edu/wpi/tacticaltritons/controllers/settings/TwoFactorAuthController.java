@@ -35,6 +35,14 @@ public class TwoFactorAuthController {
         twoFactorOptions.put(AuthenticationMethod.PHONE.formalName(), Screen.TWO_FACTOR_PHONE);
 
         Login login = DAOFacade.getLogin(UserSessionToken.getUser().getUsername());
+        if(login.getTwoFactor()){
+            twoFactorButton.setText("Disable");
+            String method = AuthenticationMethod.parseAuthenticationMethod(login.getTwoFactorMethods()[0]).formalName();
+            twoFactorCombobox.getSelectionModel().select(method);
+        }
+        else{
+            twoFactorCombobox.setDisable(true);
+        }
 //        if(login.getTwoFactor()){
 //            twoFactorButton.setText("Disable");
 //            if(login.getTwoFactorMethods() != null){
@@ -64,61 +72,39 @@ public class TwoFactorAuthController {
         twoFactorCombobox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
             AuthenticationMethod method = AuthenticationMethod.parseAuthenticationMethod(n);
             if(method != null && !Objects.equals(o, n)){
-                System.out.println(method);
+                transitionMethod(twoFactorOptions.get(n));
             }
         });
 
 
         twoFactorButton.setOnAction(event -> {
             if(login.getTwoFactor()){
-                System.out.println("hi mom");
+//                System.out.println("hi mom");
                 twoFactorButton.setText("Enable");
                 login.setTwoFactor(false);
-                UserSessionToken.userTFA.set(false);
-                twoFactorCombobox.getSelectionModel().clearSelection();
+//                UserSessionToken.userTFA.set(false);
+//                twoFactorCombobox.getSelectionModel().clearSelection();
                 twoFactorCombobox.setDisable(true);
+                System.out.println(twoFactorCombobox.isDisable() + ", " + twoFactorCombobox.isDisabled());
             }
             else{
-                System.out.println("bye mom");
+//                System.out.println("bye mom");
                 twoFactorButton.setText("Disable");
                 login.setTwoFactor(true);
-                UserSessionToken.userTFA.set(true);
-                twoFactorCombobox.getSelectionModel().select(
-                        AuthenticationMethod.parseAuthenticationMethod(login.getTwoFactorMethods()[0]).formalName());
-                twoFactorCombobox.setPromptText("Method");
+//                UserSessionToken.userTFA.set(true);
+//                twoFactorCombobox.getSelectionModel().select(
+//                        AuthenticationMethod.parseAuthenticationMethod(login.getTwoFactorMethods()[0]).formalName());
+//                twoFactorCombobox.setPromptText("Method");
                 twoFactorCombobox.setDisable(false);
+                System.out.println(twoFactorCombobox.isDisable() + ", " + twoFactorCombobox.isDisabled());
             }
-//            if(login.getTwoFactor()){
-//                twoFactorButton.setText("Enable");
-//                login.setTwoFactor(false);
-//                twoFactorCombobox.setValue("");
-//                rootPane.setCenter(null);
-//            }
-//            else{
-//                twoFactorButton.setText("Disable");
-//                twoFactorCombobox.setDisable(false);
-//                twoFactorCombobox.setVisible(false);
-//                login.setTwoFactor(true);
-//                login.setLastLogin(LocalDateTime.now());
-//                twoFactorCombobox.setValue(AuthenticationMethod.EMAIL.name());
-//                login.setTwoFactorMethods(AuthenticationMethod.compileMethods(null,
-//                        AuthenticationMethod.EMAIL.name()));
-//
-//                FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.TWO_FACTOR_EMAIL.getFilename()));
-//                try {
-//                    rootPane.setCenter(loader.load());
-//                } catch (IOException e) {
+//            new Thread(() -> {
+//                try{
+//                    DAOFacade.updateLogin(login);
+//                } catch (SQLException e) {
 //                    throw new RuntimeException(e);
 //                }
-//            }
-//            UserSessionToken.userTFA.set(login.getTwoFactor());
-            new Thread(() -> {
-                try{
-                    DAOFacade.updateLogin(login);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }).start();
+//            }).start();
         });
 
         cancelButton.setOnAction(event -> {

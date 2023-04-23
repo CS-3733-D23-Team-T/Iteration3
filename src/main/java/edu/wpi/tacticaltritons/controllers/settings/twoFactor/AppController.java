@@ -1,25 +1,20 @@
 package edu.wpi.tacticaltritons.controllers.settings.twoFactor;
 
 import com.google.zxing.WriterException;
-import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.AuthenticationMethod;
 import edu.wpi.tacticaltritons.auth.ConfirmApp;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.navigation.Screen;
-import edu.wpi.tacticaltritons.navigation.TwoFactorNavigation;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class AppController {
     @FXML private ImageView qrCodeImage;
@@ -57,7 +52,6 @@ public class AppController {
                             user.getTwoFactorMethods(),
                             AuthenticationMethod.APP.name()
                     ));
-                    TwoFactorNavigation.navigate(Screen.TWO_FACTOR_APP);
                 }
                 new Thread(() -> {
                     try {
@@ -78,7 +72,6 @@ public class AppController {
                         throw new RuntimeException(e);
                     }
                 }).start();
-                TwoFactorNavigation.navigate(Screen.TWO_FACTOR_APP);
             }
         });
     }
