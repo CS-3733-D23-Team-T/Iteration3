@@ -5,7 +5,7 @@ import edu.wpi.tacticaltritons.database.Node;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AStarAlgorithmTest {
+public class DijkstraAlgorithmTest {
 
     public static void main(String[] args) {
         int startNodeId = 105;
@@ -18,7 +18,6 @@ public class AStarAlgorithmTest {
             startNode = DAOFacade.getNode(startNodeId);
             endNode = DAOFacade.getNode(endNodeId);
         } catch (SQLException e) {
-            System.out.println("Error fetching nodes:");
             e.printStackTrace();
         }
 
@@ -27,15 +26,14 @@ public class AStarAlgorithmTest {
             return;
         }
 
-        // Instantiate the AStarAlgorithm
-        AStarAlgorithm aStarAlgorithm = new AStarAlgorithm();
+        // Instantiate the DijkstraAlgorithm
+        DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm();
 
         // Call findShortestPath and store the result in a List
         List<Node> shortestPath = null;
         try {
-            shortestPath = aStarAlgorithm.findShortestPath(startNode, endNode);
+            shortestPath = dijkstraAlgorithm.findShortestPath(startNode, endNode);
         } catch (SQLException e) {
-            System.out.println("Error finding the shortest path:");
             e.printStackTrace();
         }
 

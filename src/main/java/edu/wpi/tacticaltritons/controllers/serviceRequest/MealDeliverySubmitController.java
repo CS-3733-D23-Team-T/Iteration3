@@ -10,16 +10,12 @@ import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -38,11 +34,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**
- * Controller for the meal delivery service form page. Collects info on the page and submits to db
+ * Controller for the meal delivery service checkout page. Collects info on the page and submits to db
  *
  * @author Mark Caleca
  */
@@ -52,8 +47,6 @@ public class MealDeliverySubmitController {
     @FXML
     BorderPane content;
     @FXML
-    GridPane gridMeal;
-    @FXML
     FlowPane formPane, orderPane;
     @FXML
     Label restaurantDisplayHeader1, priceDisplay;
@@ -62,7 +55,7 @@ public class MealDeliverySubmitController {
     @FXML
     StackPane orderPaneStack, formPaneStack;
     @FXML
-    Button clearButton, cancelButton, submitButton, clearFormButton, previewButton;
+    Button clearButton, cancelButton, submitButton, clearFormButton;
     @FXML
     VBox orderListPane;
 
@@ -93,7 +86,8 @@ public class MealDeliverySubmitController {
 
     @FXML public void initialize() throws SQLException {
 
-        Date today = new Date(2023, 4, 10);
+        //map config
+        Date today = new Date(2023,4,10);
         lowerLevel1Image.setImage(App.lowerlevel1);
         lowerLevel2Image.setImage(App.lowerlevel2);
         groundFloorImage.setImage(App.groundfloor);
@@ -101,6 +95,7 @@ public class MealDeliverySubmitController {
         floor2Image.setImage(App.secondfloor);
         floor3Image.setImage(App.thirdfloor);
 
+        //form text field config
         List<MFXTextField> nodes = new ArrayList<>();
         nodes.add(firstName);
         nodes.add(lastName);
@@ -110,23 +105,22 @@ public class MealDeliverySubmitController {
         nodes.add(room);
         nodes.add(date);
         nodes.add(time);
-        for (LocationName name : DAOFacade.getAllLocationNames()) {
+        for (LocationName name : DAOFacade.getAllLocationNames()) { //generate room list dropdown
             room.getItems().add(name.getLongName());
         }
         ArrayList<Login> allPeople = (ArrayList<Login>) DAOFacade.getAllLogins();
-        for(Login people: allPeople){
+        for(Login people: allPeople){ //generate staff list dropdown
             staffMemberName.getItems().add(people.getFirstName() + " " + people.getLastName() + "/" + people.getEmail());
         }
-
+        //date/time config
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         time.setText(formatter.format(LocalDateTime.now().plusMinutes(15)));
-
         formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
         date.setValue(LocalDate.from(formatter.parse(formatter.format(LocalDateTime.now()))));
 
         me = MealDeliveryRequestItemsController.me;
 
-        //TODO preview map
+        //init page layout and buttons
         me.initTextFields(firstName, lastName, patientFirstName, patientLastName, time, room, staffMemberName, date);
         me.initSubmitButton(submitButton);
         me.initClearButton(clearButton, orderListPane);
@@ -139,46 +133,20 @@ public class MealDeliverySubmitController {
                 }
             }
         });
+        me.initCheckout(App.getPrimaryStage(),scrollPane,orderListPane,nodes);
 
-        me.initCheckout(App.getPrimaryStage(),scrollPane,orderListPane,nodes,previewButton);
-
+        //bind panes to reactively resize
         formRectangle.widthProperty().bind(Bindings.max(220,me.imageViewWidth.add(20)));
         formRectangle.heightProperty().bind(Bindings.max(520,me.screenY.subtract(30)));
         restaurantDisplayHeader1.textProperty().bind(me.restaurant);
         priceDisplay.textProperty().bind(Bindings.format("$%.2f", me.price));
-
         orderPaneScroll.prefHeightProperty().bind(me.screenY.subtract(90));
-//        orderPaneScroll.prefWidthProperty().bind(me.screenX.subtract(formPane.widthProperty().add(530)));
         orderPaneScroll.prefWidthProperty().bind(Bindings.max(400,me.imageViewWidth.multiply(1.5)));
         orderPaneRectangle.widthProperty().bind(orderPaneScroll.widthProperty().subtract(40));
         orderPaneRectangle.heightProperty().bind(Bindings.max(80,orderListPane.heightProperty().subtract(2)));
-//        gesturePaneWidth.bind(me.screenX.subtract(orderPaneScroll.prefWidthProperty().add(scrollPane.prefWidthProperty())));
-
-//        gesturePaneWidth.set(200);
-//        System.out.println(gesturePaneWidth.get());
-//        scrollPane.setStyle("-fx-background-color: black");
-//        mapGesturePane.prefWidthProperty().bind(gesturePaneWidth.subtract(40));
-//        mapGesturePane.prefHeightProperty().bind(me.screenY);
-//        mapFlowPane.maxWidthProperty().bind(mapGesturePane.prefWidthProperty());
-//        mapFlowPane.prefHeightProperty().bind(mapGesturePane.prefHeightProperty());
-//        System.out.println(mapGesturePane.prefWidthProperty().get());
-//        System.out.println(mapFlowPane.prefWidthProperty().get());
-//        mapFlowPane.setPadding(new Insets(0));
-//        mapFlowPane.setHgap(0);
-//        scrollPane.setStyle("-fx-background-color: black");
-//        orderPane.setStyle("-fx-background-color: black");
-//        mapFlowPane.setStyle("-fx-background-color: blue");
-//        content.setStyle("-fx-background-color: green");
         content.setMargin(scrollPane,new Insets(0));
-//        formPane.setStyle("-fx-background-color: red");
 
-
-
-//        mapFlowPane.setStyle("-fx-background-color: black");
-//        orderListPane.getChildren().addAll(me.getVBox().getChildren());
-//        System.out.println(orderListPane.getChildren().size());
-//        System.out.println(me.getVBox().getChildren().size());
-
+        //map config
         groundFloor.setVisible(true);
         floor1Image.setVisible(true);
         this.room.setOnAction(event -> {
@@ -239,6 +207,9 @@ public class MealDeliverySubmitController {
 
     }
 
+    /**
+     * clear map selection view
+     */
     public void clearAllNodes() {
         floor1Group.getChildren().remove(1, floor1Group.getChildren().size());
         floor2Group.getChildren().remove(1, floor2Group.getChildren().size());
@@ -247,6 +218,12 @@ public class MealDeliverySubmitController {
         L2Group.getChildren().remove(1, L2Group.getChildren().size());
     }
 
+    /**
+     * draw a circle on the screen at the location selected by the user
+     * @param x the X coordinate to draw the circle at
+     * @param y the Y coordinate to draw the circle at
+     * @return draw a circle on the screen
+     */
     public Circle drawCircle(double x, double y) {
         Circle circle = new Circle();
         circle.setVisible(true);

@@ -117,6 +117,7 @@ public class SettingsController {
         algorithmList.add(AlgorithmSingleton.ASTAR.formalName());
         algorithmList.add(AlgorithmSingleton.BREADTH_FIRST_SEARCH.formalName());
         algorithmList.add(AlgorithmSingleton.DEPTH_FIRST_SEARCH.formalName());
+        algorithmList.add(AlgorithmSingleton.DIJKSTRA.formalName());
         if(user.getAlgorithmPreference() == null){
             user.setAlgorithmPreference(AlgorithmSingleton.ASTAR.name());
             DAOFacade.updateLogin(user);

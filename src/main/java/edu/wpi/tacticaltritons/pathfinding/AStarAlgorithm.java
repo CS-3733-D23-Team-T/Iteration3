@@ -7,7 +7,7 @@ import edu.wpi.tacticaltritons.database.Node;
 import java.sql.SQLException;
 import java.util.*;
 
-public class AStarAlgorithm implements PathFindingAlgorithm{
+public class AStarAlgorithm implements PathFindingAlgorithm {
 
   @Override
   public List<Node> findShortestPath(Node startNode, Node endNode) throws SQLException {
@@ -17,17 +17,16 @@ public class AStarAlgorithm implements PathFindingAlgorithm{
     Set<Node> visitedNodes = new HashSet<>();
     List<Move> allMoves = precomputeAllMoves();
 
-    HashMap <Integer, Move> moveHash = new HashMap<>();
-    for (Move move: allMoves){
+    HashMap<Integer, Move> moveHash = new HashMap<>();
+    for (Move move : allMoves) {
       moveHash.put(move.getNode().getNodeID(), move);
     }
-
 
     PriorityQueue<Node> openSet = new PriorityQueue<>(Comparator.comparingDouble(fScore::get));
 
     openSet.add(startNode);
     gScore.put(startNode, 0.0);
-    fScore.put(startNode, manhattanDistance(startNode, endNode));
+    fScore.put(startNode, euclideanDistance(startNode, endNode, moveHash));
 
     List<Edge> edges = DAOFacade.getAllEdges();
     Map<Node, Set<Node>> neighborMap = precomputeNeighbors(edges);
@@ -45,7 +44,7 @@ public class AStarAlgorithm implements PathFindingAlgorithm{
         }
 
         double tentativeGScore =
-                gScore.getOrDefault(current, Double.MAX_VALUE) + manhattanDistance(current, neighbor);
+                gScore.getOrDefault(current, Double.MAX_VALUE) + euclideanDistance(current, neighbor, moveHash);
         double tentativeFScore = tentativeGScore + manhattanDistance(neighbor, endNode);
 
         if (openSet.contains(neighbor) && tentativeFScore >= fScore.get(neighbor)) {
@@ -65,14 +64,6 @@ public class AStarAlgorithm implements PathFindingAlgorithm{
     return null;
   }
 
-  public Map<Node, Set<Node>> precomputeNeighbors(List<Edge> edges) {
-    Map<Node, Set<Node>> neighborMap = new HashMap<>();
-    for (Edge edge : edges) {
-      neighborMap.computeIfAbsent(edge.getStartNode(), k -> new HashSet<>()).add(edge.getEndNode());
-      neighborMap.computeIfAbsent(edge.getEndNode(), k -> new HashSet<>()).add(edge.getStartNode());
-    }
-    return neighborMap;
-  }
 
   private double euclideanDistance(Node a, Node b, HashMap<Integer,Move> hash) {
     int deltaX = a.getXcoord() - b.getXcoord();
