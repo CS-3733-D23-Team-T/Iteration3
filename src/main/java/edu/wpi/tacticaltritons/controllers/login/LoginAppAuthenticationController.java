@@ -12,9 +12,8 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 
 import java.sql.SQLException;
@@ -28,17 +27,17 @@ public class LoginAppAuthenticationController {
 
     @FXML
     private void initialize() throws SQLException {
-        cancelButton.setOnAction(event -> Navigation.navigate(Screen.LOGIN));
+        this.cancelButton.setOnAction(event -> Navigation.navigate(Screen.LOGIN));
         Login login = DAOFacade.getLogin(LoginNavigation.retrievePacket());
 
         BooleanProperty validConfirmationCode = new SimpleBooleanProperty(false);
-        confirmationCodeField.textProperty().addListener(Validator.generateRestrictiveValidatorListener(
+        this.confirmationCodeField.textProperty().addListener(Validator.generateRestrictiveValidatorListener(
                 validConfirmationCode, "[\\d]*", 6, confirmationCodeField));
 
         validConfirmationCode.addListener(Validator.generateFormListener(confirmCodeButton,
                 validConfirmationCode));
 
-        confirmCodeButton.setOnAction(event -> {
+        this.confirmCodeButton.setOnAction(event -> {
             if(ConfirmApp.APP_CODE.get().replace(" ", "").equals(confirmationCodeField.getText())){
                 login.setLastLogin(LocalDateTime.now());
                 try {
@@ -59,6 +58,17 @@ public class LoginAppAuthenticationController {
                     }
                     confirmationCodeValidator.setVisible(false);
                 }).start();
+            }
+        });
+
+        //usability
+        this.confirmationCodeField.requestFocus();
+        this.confirmationCodeField.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER){
+                confirmCodeButton.fire();
+            }
+            else if(event.getCode() == KeyCode.ESCAPE){
+                cancelButton.fire();
             }
         });
     }

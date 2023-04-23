@@ -1,23 +1,21 @@
 package edu.wpi.tacticaltritons;
 
+import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
 import edu.wpi.tacticaltritons.database.Tdb;
-import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Objects;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Objects;
 
 @Slf4j
 public class App extends Application {
@@ -25,6 +23,9 @@ public class App extends Application {
   @Getter private static Stage primaryStage;
   @Getter private static BorderPane rootPane;
   @Getter private static BorderPane navBar;
+  @Getter private static GridPane loginQuickNavigation;
+  @Getter private static GridPane staffQuickNavigation;
+  @Getter private static GridPane adminQuickNavigation;
   public static Image groundfloor;
   public static Image lowerlevel1;
   public static Image lowerlevel2;
@@ -33,6 +34,7 @@ public class App extends Application {
   public static Image thirdfloor;
 
   public static String invalidMFXTextField;
+  public static QuickNavigationMenuButtons quickNavigationMenuButtons;
 
   @Override
   public void init() {
@@ -43,6 +45,7 @@ public class App extends Application {
   public void start(Stage primaryStage) throws IOException {
     //    /* primaryStage is generally only used if one of your components require the stage to
     App.primaryStage = primaryStage;
+    quickNavigationMenuButtons = new QuickNavigationMenuButtons();
 
 
     groundfloor =
@@ -67,18 +70,19 @@ public class App extends Application {
     loader = new FXMLLoader(App.class.getResource("views/NavigationBar.fxml"));
     navBar = loader.load();
 
+    loader = new FXMLLoader(App.class.getResource("views/navigation/LoginQuickNavigation.fxml"));
+    loginQuickNavigation = loader.load();
+
+    loader = new FXMLLoader(App.class.getResource("views/navigation/StaffQuickNavigation.fxml"));
+    staffQuickNavigation = loader.load();
+
+    loader = new FXMLLoader(App.class.getResource("views/navigation/AdminQuickNavigation.fxml"));
+    adminQuickNavigation = loader.load();
+
     final Scene scene = new Scene(rootPane);
-    scene.setOnKeyPressed(event -> {
-      if(Navigation.screen.get().equals(Screen.CREATE_ACCOUNT) &&
-        event.getCode().equals(KeyCode.ESCAPE)){
-        Navigation.navigate(Screen.LOGIN);
-      }
-    });
     primaryStage.setScene(scene);
     primaryStage.show();
   }
-
-  public void load() {}
 
   @Override
   public void stop() throws SQLException, ClassNotFoundException {

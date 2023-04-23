@@ -6,7 +6,6 @@ import edu.wpi.tacticaltritons.database.FlowerRequestOptions;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -22,13 +21,13 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.*;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import java.sql.SQLException;
@@ -54,23 +53,23 @@ public class FlowerDeliveryController {
     private BorderPane infoBoardPane;
     @FXML
     private BorderPane basePane;
-    private TabPane tabPane = new TabPane();
+    private final TabPane tabPane = new TabPane();
 
     static public ObservableMap<String, Integer> checkoutItems = FXCollections.observableHashMap();
     static public double flowerTotal;
     public ObservableMap<String, Double> priceOfItems = FXCollections.observableHashMap();
     private List<FlowerRequestOptions> flowerRequestOptionsList;
 
-    private double noramlWidth = 1280;
-    private double normalHeight = 720;
-    private double defaultFlowPanePrefWidth = 200;
-    private double defaultFlowPanePrefHeight = 450;
-    private double defaultImageViewFitWidth = 150;
-    private double defaultImageViewFitHeight = 150;
-    private double defaultTitleFontSize = 20;
-    private double defaultTitleHeight = 100;
-    private double defaultDiscriptionFontSize = 15;
-    private double defaultDiscriptionHeight = 100;
+    private final double noramlWidth = 1280;
+    private final double normalHeight = 720;
+    private final double defaultFlowPanePrefWidth = 200;
+    private final double defaultFlowPanePrefHeight = 400;
+    private final double defaultImageViewFitWidth = 150;
+    private final double defaultImageViewFitHeight = 150;
+    private final double defaultTitleFontSize = 20;
+    private final double defaultTitleHeight = 50;
+    private final double defaultDiscriptionFontSize = 15;
+    private final double defaultDiscriptionHeight = 50;
 
     DoubleProperty childWidthProperty = new SimpleDoubleProperty();
     DoubleProperty childHeightProperty = new SimpleDoubleProperty();
@@ -168,8 +167,7 @@ public class FlowerDeliveryController {
 
         checkoutButton.setOnAction(event ->
         {
-            if(checkoutFlowpane.getChildren().size() > 0)
-            {
+            if (checkoutFlowpane.getChildren().size() > 0) {
                 flowerTotal = Double.parseDouble(priceLable.getText());
                 Navigation.navigate(Screen.FLOWER_CHECKOUT);
                 priceOfItems.clear();
@@ -181,6 +179,7 @@ public class FlowerDeliveryController {
         int counter = 0;
         MFXScrollPane scrollPane = new MFXScrollPane();
         scrollPane.setPrefWidth(600);
+
         FlowPane mainFlowPane = new FlowPane();
         mainFlowPane.setPrefHeight(150);
         mainFlowPane.setOrientation(Orientation.HORIZONTAL);
@@ -193,6 +192,7 @@ public class FlowerDeliveryController {
             if (options.getItemType().equals(value)) {
                 counter++;
                 // Creates the outer flowpane to hold all the infomation
+
                 FlowPane flowPane = new FlowPane();
                 flowPane.setPrefWidth(defaultFlowPanePrefWidth);
                 flowPane.setPrefHeight(defaultFlowPanePrefHeight);
@@ -200,16 +200,15 @@ public class FlowerDeliveryController {
                 flowPane.setRowValignment(VPos.CENTER);
                 flowPane.setColumnHalignment(HPos.CENTER);
                 flowPane.setAlignment(Pos.TOP_CENTER);
-                flowPane.setPadding(new Insets(20, 20, 20, 20));
-                flowPane.setMargin(flowPane, new Insets(20, 20, 20, 20));
                 flowPane.setBackground(Background.fill(Color.WHITE));
+                flowPane.setMargin(flowPane, new Insets(20, 20, 20, 20));
 
                 // Creates the image view
                 Image image = imageHashMap.get(options.getItemName());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(defaultImageViewFitWidth);
                 imageView.setFitHeight(defaultImageViewFitHeight);
-                imageView.setPreserveRatio(false);
+                imageView.setPreserveRatio(true);
 
                 // creates the Shope name lable
                 Label itemTitle = new Label();
@@ -218,7 +217,16 @@ public class FlowerDeliveryController {
                 itemTitle.setFont(new Font(defaultTitleFontSize));
                 itemTitle.setAlignment(Pos.CENTER);
                 itemTitle.setTextAlignment(TextAlignment.CENTER);
-                itemTitle.setMaxWidth(defaultFlowPanePrefWidth);
+                itemTitle.setPrefWidth(defaultFlowPanePrefWidth);
+
+                Label price = new Label();
+                price.setPrefWidth(flowPane.getPrefWidth());
+                price.setText(Double.toString(options.getPrice()));
+                price.setFont(new Font(defaultDiscriptionFontSize));
+                price.setWrapText(true);
+                price.setPadding(new Insets(10, 10, 10, 10));
+                price.setPrefWidth(defaultFlowPanePrefWidth);
+                price.setAlignment(Pos.CENTER);
 
                 //creates the discription label
                 Label discriptionLabel = new Label();
@@ -227,12 +235,13 @@ public class FlowerDeliveryController {
                 discriptionLabel.setFont(new Font(defaultDiscriptionFontSize));
                 discriptionLabel.setWrapText(true);
                 discriptionLabel.setPadding(new Insets(0, 10, 0, 10));
-                discriptionLabel.setMaxWidth(defaultFlowPanePrefWidth);
+                discriptionLabel.setPrefWidth(defaultFlowPanePrefWidth);
+                discriptionLabel.prefHeightProperty().bind(Bindings.divide(flowPane.heightProperty(), 5));
 
 
-
-                flowPane.getChildren().add(imageView);
                 flowPane.getChildren().add(itemTitle);
+                flowPane.getChildren().add(price);
+                flowPane.getChildren().add(imageView);
                 flowPane.getChildren().add(discriptionLabel);
 
                 flowPane.setOnMouseClicked(event ->
@@ -240,55 +249,45 @@ public class FlowerDeliveryController {
                     updatedCheckoutBox(options, imageHashMap);
                 });
                 mainFlowPane.getChildren().add(flowPane);
-                windowChangingSize(flowPane, imageView, itemTitle, discriptionLabel, mainFlowPane);
+
+                scrollPane.widthProperty().addListener((observable, oldValue, newValue) ->
+                {
+                    flowPane.setPrefWidth((defaultFlowPanePrefWidth * newValue.doubleValue()) / 700);
+                    price.setPrefWidth((defaultFlowPanePrefWidth * newValue.doubleValue()) / 700);
+                    itemTitle.setPrefWidth((defaultFlowPanePrefWidth * newValue.doubleValue()) / 700);
+                    discriptionLabel.setPrefWidth((defaultFlowPanePrefWidth * newValue.doubleValue()) / 700);
+                    imageView.setFitWidth(defaultFlowPanePrefWidth * newValue.doubleValue() / 700);
+
+                });
+
+                scrollPane.heightProperty().addListener((observable, oldValue, newValue) ->
+                {
+                    flowPane.setPrefHeight((defaultFlowPanePrefHeight * newValue.doubleValue()) / 680);
+                    price.setPrefHeight((defaultTitleHeight * newValue.doubleValue()) / 680);
+                    itemTitle.setPrefHeight((defaultTitleHeight * newValue.doubleValue()) / 680);
+                    discriptionLabel.prefHeightProperty().bind(Bindings.divide(flowPane.heightProperty(), 5));
+
+                    itemTitle.setText(options.getItemName());
+                    itemTitle.setFont(new Font((defaultTitleFontSize * newValue.doubleValue()) / 680));
+
+                    price.setText(Double.toString(options.getPrice()));
+                    price.setFont(new Font((defaultDiscriptionFontSize * newValue.doubleValue()) / 680));
+
+                    discriptionLabel.setText(options.getItemDescription());
+                    discriptionLabel.setFont(new Font((defaultDiscriptionFontSize * newValue.doubleValue()) / 680));
+                });
             }
         }
-
-        // this allows the
-        childWidthProperty.set((defaultFlowPanePrefWidth + 40)* counter);
-        mainFlowPane.prefWidthProperty().bind(childWidthProperty);
-//        childHeightProperty.set((defaultFlowPanePrefHeight + 50));
-//        mainFlowPane.prefHeightProperty().bind(childHeightProperty);
-
+        mainFlowPane.setPrefWidth((defaultFlowPanePrefWidth + 40) * counter);
+        scrollPane.widthProperty().addListener((observable, oldValue, newValue) ->
+        {
+            mainFlowPane.setPrefWidth(newValue.doubleValue());
+        });
         scrollPane.setContent(mainFlowPane);
         return scrollPane;
     }
 
-    private void windowChangingSize(FlowPane flowPane, ImageView imageView, Label itemTitle, Label discriptionLabel, FlowPane mainFlowPane) {
-
-        App.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) ->
-        {
-            if(oldValue != null && newValue != null && oldValue.doubleValue() != 0)
-            {
-                flowPane.setPrefWidth((newValue.doubleValue() * defaultFlowPanePrefWidth) / noramlWidth);
-                imageView.setFitWidth((newValue.doubleValue() * defaultImageViewFitWidth) / noramlWidth);
-                itemTitle.setMaxWidth(((newValue.doubleValue() * defaultFlowPanePrefWidth) / noramlWidth));
-                discriptionLabel.setMaxWidth(((newValue.doubleValue() * defaultFlowPanePrefWidth) / noramlWidth));
-                childWidthProperty.set((((newValue.doubleValue() * defaultFlowPanePrefWidth) / noramlWidth) + 200) * mainFlowPane.getChildren().size());
-            }
-        });
-
-//        App.getPrimaryStage().heightProperty().addListener((observable, oldValue, newValue) ->
-//        {
-//            if(oldValue != null && newValue != null && oldValue.doubleValue() != 0) {
-//                flowPane.setPrefHeight((newValue.doubleValue() * defaultFlowPanePrefHeight) / normalHeight);
-//                imageView.setFitHeight((newValue.doubleValue() * defaultImageViewFitHeight) / normalHeight);
-//
-//                itemTitle.setFont(new Font((defaultTitleFontSize * newValue.doubleValue()) / normalHeight));
-//                discriptionLabel.setFont(new Font(((defaultTitleFontSize * newValue.doubleValue()) / normalHeight) - 10));
-//                childHeightProperty.set((((newValue.doubleValue() * defaultFlowPanePrefHeight) / normalHeight) + 50));
-//            }
-//        });
-
-    }
-
     private void updatedCheckoutBox(FlowerRequestOptions options, HashMap<String, Image> imageHashMap) {
-    /*
-    Todo
-    when hit the flower in the main page it will update based on the checkout
-    when I get the q to 0 delete from the checkout box
-     */
-
         if (!checkoutItems.containsKey(options.getItemName())) {
             checkoutItems.put(options.getItemName(), 1);
             priceOfItems.put(options.getItemName(), options.getPrice());
@@ -307,8 +306,8 @@ public class FlowerDeliveryController {
         {
             totalPrice.set(totalPrice.get() + value * priceOfItems.get(key));
         });
+        priceLable.setText(String.format("%.2f", totalPrice.get()));
 
-        priceLable.setText(Double.toString(totalPrice.get()));
     }
 
     private FlowPane createCheckoutNode(FlowerRequestOptions options, Image flowerImage) {
@@ -320,7 +319,7 @@ public class FlowerDeliveryController {
         flowPane.setColumnHalignment(HPos.CENTER);
         flowPane.setAlignment(Pos.CENTER);
         flowPane.setPadding(new Insets(20, 20, 20, 20));
-        flowPane.setMargin(flowPane, new Insets(20, 20, 20, 20));
+        FlowPane.setMargin(flowPane, new Insets(20, 20, 20, 20));
         flowPane.setBackground(Background.fill(Color.WHITE));
 
         // Creates the image view
