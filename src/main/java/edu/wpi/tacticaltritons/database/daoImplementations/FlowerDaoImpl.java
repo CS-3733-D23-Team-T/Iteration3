@@ -210,7 +210,7 @@ public class FlowerDaoImpl implements FlowerDao {
     try {
       connection = Tdb.getConnection();
 
-      String sql = "SELECT * FROM Flower ORDER BY orderNum DESC;";
+      String sql = "SELECT * FROM Flower ORDER BY status, deliverydate, deliverytime;";
       statement = connection.createStatement();
       rs = statement.executeQuery(sql);
 

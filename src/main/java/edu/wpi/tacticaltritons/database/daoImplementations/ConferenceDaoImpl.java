@@ -189,7 +189,7 @@ public class ConferenceDaoImpl implements ConferenceDao {
         try {
             connection = Tdb.getConnection();
 
-            String sql = "SELECT * FROM Conference;";
+            String sql = "SELECT * FROM Conference ORDER BY status, date;";
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
 
