@@ -127,7 +127,7 @@ public class SupplyDeliveryController {
         checkoutLabel.setText(shopName);
 
         try {
-            supplyRequestOptionsList = DAOFacade.getAllsupplyRequestOptions();
+            supplyRequestOptionsList = DAOFacade.getAllSupplyRequestOptions();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

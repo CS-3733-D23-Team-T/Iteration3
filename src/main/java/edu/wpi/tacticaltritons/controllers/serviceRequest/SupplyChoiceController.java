@@ -249,7 +249,7 @@ public class SupplyChoiceController {
     private HashMap<String, SupplyRequestOptions> findNumberOfShops(List<SupplyRequestOptions> supplyRequestOptionsList) {
         HashMap<String, SupplyRequestOptions> hash = new HashMap<>();
 
-        for (SupllyRequestOptions options : supplyRequestOptionsList) {
+        for (SupplyRequestOptions options : supplyRequestOptionsList) {
             hash.putIfAbsent(options.getShop(), options);
         }
 

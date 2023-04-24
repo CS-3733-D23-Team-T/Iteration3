@@ -107,7 +107,7 @@ public class SupplyDaoImpl implements SupplyDao {
       ps.setString(4, supply.getPatientLast());
       ps.setString(5, supply.getAssignedStaffFirst());
       ps.setString(6, supply.getAssignedStaffLast());
-      ps.setDate(7, (Date) .getDeliveryDate());
+      ps.setDate(7, (java.sql.Date) supply.getDeliveryDate());
       ps.setTime(8, supply.getDeliveryTime());
       ps.setString(9, supply.getLocation());
       ps.setString(10, supply.getItems());
