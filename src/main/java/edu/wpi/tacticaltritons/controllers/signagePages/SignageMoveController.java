@@ -21,10 +21,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
@@ -34,10 +37,9 @@ import javafx.scene.text.Text;
 import net.kurobako.gesturefx.GesturePane;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.*;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
 
 public class SignageMoveController {
     @FXML
@@ -81,12 +83,13 @@ public class SignageMoveController {
 
     @FXML
     private Label locationNameDisplay, roomDisplay, floorDisplay, dateDisplay, signLocationDisplay;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML private VBox vBox;
 
-    Date today = new Date(2023, 04, 05);
-
-
-    int directionsCounter = 0;
-
+//    Date today = new Date(2023 - 1900, 4, 5);
+    LocalDate localDate = LocalDate.of(2023,4,24);
+    Date today = Date.valueOf(localDate);
     public void showDirections(boolean bool) {
         directionsPane.setVisible(bool);
         textDirections.setVisible(bool);
@@ -152,6 +155,11 @@ public class SignageMoveController {
         HashMap<Integer, Move> hash = new HashMap<>();
         for (Move move : allMoves) {
             hash.put(move.getNode().getNodeID(), move);
+            if(move.getMoveDate().getTime() > (today.getTime() - 2629746e3)){ //one month before today
+                Button button = new Button(move.getLocation().getLongName() + ": " + move.getMoveDate());
+                button.getStyleClass().add("button-submit");
+                vBox.getChildren().add(button);
+            }
         }
 
 //        showDirections(false);
@@ -331,7 +339,7 @@ public class SignageMoveController {
         }
         Point2D centerpoint = new Point2D(shortestPathMap.get(0).getXcoord(), shortestPathMap.get(0).getYcoord());
         gesturePane.zoomTo(2, centerpoint);
-        gesturePane.centreOn(centerpoint);
+        gesturePane.centreOn(centerpoint); //TODO fix
 
         this.gesturePane.setVisible(true);
         this.floor1Image.setVisible(true);
