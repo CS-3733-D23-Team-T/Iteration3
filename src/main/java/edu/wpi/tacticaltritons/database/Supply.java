@@ -8,8 +8,6 @@ public class Supply {
   private int orderNum;
   private String requesterFirst;
   private String requesterLast;
-  private String patientFirst;
-  private String patientLast;
   private String assignedStaffFirst;
   private String assignedStaffLast;
   private Date deliveryDate;
@@ -21,8 +19,6 @@ public class Supply {
 
   public Supply(String requesterFirst,
                 String requesterLast,
-                String patientFirst,
-                String patientLast,
                 String assignedStaffFirst,
                 String assignedStaffLast,
                 Date deliveryDate,
@@ -33,8 +29,6 @@ public class Supply {
                 RequestStatus status) {
     this.requesterFirst = requesterFirst;
     this.requesterLast = requesterLast;
-    this.patientFirst = patientFirst;
-    this.patientLast = patientLast;
     this.assignedStaffFirst = assignedStaffFirst;
     this.assignedStaffLast = assignedStaffLast;
     this.deliveryDate = deliveryDate;
@@ -48,8 +42,6 @@ public class Supply {
           int orderNum,
           String requesterFirst,
           String requesterLast,
-          String patientFirst,
-          String patientLast,
           String assignedStaffFirst,
           String assignedStaffLast,
           Date deliveryDate,
@@ -61,8 +53,6 @@ public class Supply {
     this.orderNum = orderNum;
     this.requesterFirst = requesterFirst;
     this.requesterLast = requesterLast;
-    this.patientFirst = patientFirst;
-    this.patientLast = patientLast;
     this.assignedStaffFirst = assignedStaffFirst;
     this.assignedStaffLast = assignedStaffLast;
     this.deliveryDate = deliveryDate;
@@ -90,22 +80,6 @@ public class Supply {
 
   public void setRequesterLast(String requesterLast) {
     this.requesterLast = requesterLast;
-  }
-
-  public String getPatientFirst() {
-    return patientFirst;
-  }
-
-  public void setPatientFirst(String patientFirst) {
-    this.patientFirst = patientFirst;
-  }
-
-  public String getPatientLast() {
-    return patientLast;
-  }
-
-  public void setPatientLast(String patientLast) {
-    this.patientLast = patientLast;
   }
 
   public String getAssignedStaffFirst() {

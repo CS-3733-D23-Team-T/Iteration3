@@ -21,7 +21,7 @@ public class SupplyDaoImpl implements SupplyDao {
       connection = Tdb.INSTANCE.getConnection();
 
 
-      String sql = "SELECT * FROM Supply WHERE orderNum = ?;";
+      String sql = "SELECT * FROM officesuppliesform WHERE orderNum = ?;";
       ps = connection.prepareStatement(sql);
       ps.setInt(1, orderNum);
 
@@ -30,8 +30,6 @@ public class SupplyDaoImpl implements SupplyDao {
         int orderN = rs.getInt("orderNum");
         String requesterFirst = rs.getString("requesterFirst");
         String requesterLast = rs.getString("requesterLast");
-        String patientFirst = rs.getString("patientFirst");
-        String patientLast = rs.getString("patientLast");
         String assignedStaffFirst = rs.getString("assignedStaffFirst");
         String assignedStaffLast = rs.getString("assignedStaffLast");
         Date deliveryDate = rs.getDate("deliveryDate");
@@ -46,8 +44,6 @@ public class SupplyDaoImpl implements SupplyDao {
                         orderN,
                         requesterFirst,
                         requesterLast,
-                        patientFirst,
-                        patientLast,
                         assignedStaffFirst,
                         assignedStaffLast,
                         deliveryDate,
@@ -83,11 +79,9 @@ public class SupplyDaoImpl implements SupplyDao {
     try {
       connection = Tdb.getConnection();
       String sql =
-              "UPDATE Supply SET "
+              "UPDATE officesuppliesform SET "
                       + "requesterFirst = ?,"
                       + "requesterLast = ?,"
-                      + "patientFirst = ?,"
-                      + "patientLast = ?,"
                       + "assignedStaffFirst = ?,"
                       + "assignedStaffLast = ?,"
                       + "deliveryDate = ?,"
@@ -100,19 +94,17 @@ public class SupplyDaoImpl implements SupplyDao {
 
       ps = connection.prepareStatement(sql);
 
-      ps.setInt(13, supply.getOrderNum());
+      ps.setInt(11, supply.getOrderNum());
       ps.setString(1, supply.getRequesterFirst());
       ps.setString(2, supply.getRequesterLast());
-      ps.setString(3, supply.getPatientFirst());
-      ps.setString(4, supply.getPatientLast());
-      ps.setString(5, supply.getAssignedStaffFirst());
-      ps.setString(6, supply.getAssignedStaffLast());
-      ps.setDate(7, (java.sql.Date) supply.getDeliveryDate());
-      ps.setTime(8, supply.getDeliveryTime());
-      ps.setString(9, supply.getLocation());
-      ps.setString(10, supply.getItems());
-      ps.setInt(11, supply.getTotal());
-      ps.setObject(12, supply.getStatus(), Types.OTHER);
+      ps.setString(3, supply.getAssignedStaffFirst());
+      ps.setString(4, supply.getAssignedStaffLast());
+      ps.setDate(5, supply.getDeliveryDate());
+      ps.setTime(6, supply.getDeliveryTime());
+      ps.setString(7, supply.getLocation());
+      ps.setString(8, supply.getItems());
+      ps.setInt(9, supply.getTotal());
+      ps.setObject(10, supply.getStatus(), Types.OTHER);
 
       int result = ps.executeUpdate();
     } catch (SQLException | ClassNotFoundException e){
@@ -138,24 +130,22 @@ public class SupplyDaoImpl implements SupplyDao {
     try {
       connection = Tdb.getConnection();
       String sql =
-              "INSERT INTO Supply (requesterFirst, requesterLast, patientFirst, patientLast,"
+              "INSERT INTO officesuppliesform (requesterFirst, requesterLast, "
                       + "assignedStaffFirst, assignedStaffLast, deliveryDate, deliveryTime, location, items, total, status) "
-                      + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                      + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
       ps = connection.prepareStatement(sql);
 
       ps.setString(1, supply.getRequesterFirst());
       ps.setString(2, supply.getRequesterLast());
-      ps.setString(3, supply.getPatientFirst());
-      ps.setString(4, supply.getPatientLast());
-      ps.setString(5, supply.getAssignedStaffFirst());
-      ps.setString(6, supply.getAssignedStaffLast());
-      ps.setDate(7, (Date) supply.getDeliveryDate());
-      ps.setTime(8, supply.getDeliveryTime());
-      ps.setString(9, supply.getLocation());
-      ps.setString(10, supply.getItems());
-      ps.setInt(11, supply.getTotal());
-      ps.setObject(12, supply.getStatus(), Types.OTHER);
+      ps.setString(3, supply.getAssignedStaffFirst());
+      ps.setString(4, supply.getAssignedStaffLast());
+      ps.setDate(5, supply.getDeliveryDate());
+      ps.setTime(6, supply.getDeliveryTime());
+      ps.setString(7, supply.getLocation());
+      ps.setString(8, supply.getItems());
+      ps.setInt(9, supply.getTotal());
+      ps.setObject(10, supply.getStatus(), Types.OTHER);
 
       int result = ps.executeUpdate();
     } catch (SQLException | ClassNotFoundException e){
@@ -180,7 +170,7 @@ public class SupplyDaoImpl implements SupplyDao {
     ResultSet rs = null;
     try {
       connection = Tdb.getConnection();
-      String sql = "DELETE FROM Supply WHERE orderNum = ?";
+      String sql = "DELETE FROM officesuppliesform WHERE orderNum = ?";
 
       ps = connection.prepareStatement(sql);
 
@@ -211,7 +201,7 @@ public class SupplyDaoImpl implements SupplyDao {
     try {
       connection = Tdb.getConnection();
 
-      String sql = "SELECT * FROM Supply ORDER BY orderNum DESC;";
+      String sql = "SELECT * FROM officesuppliesform ORDER BY orderNum DESC;";
       statement = connection.createStatement();
       rs = statement.executeQuery(sql);
 
@@ -219,8 +209,6 @@ public class SupplyDaoImpl implements SupplyDao {
         int orderNum = rs.getInt("orderNum");
         String requesterFirst = rs.getString("requesterFirst");
         String requesterLast = rs.getString("requesterLast");
-        String patientFirst = rs.getString("patientFirst");
-        String patientLast = rs.getString("patientLast");
         String assignedStaffFirst = rs.getString("assignedStaffFirst");
         String assignedStaffLast = rs.getString("assignedStaffLast");
         Date deliveryDate = rs.getDate("deliveryDate");
@@ -235,8 +223,6 @@ public class SupplyDaoImpl implements SupplyDao {
                         orderNum,
                         requesterFirst,
                         requesterLast,
-                        patientFirst,
-                        patientLast,
                         assignedStaffFirst,
                         assignedStaffLast,
                         deliveryDate,

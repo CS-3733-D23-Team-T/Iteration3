@@ -353,7 +353,7 @@ public class SupplyCheckoutController {
 
         deliveryTime = Time.valueOf(Integer.toString(hour) + ":" + min + ":00");
 
-        Supply supply = new Supply(userFirst, userLast, patientFirst, patientLast, staffFirst, staffLast, deliveryDate, deliveryTime, location, items.get(), total, status);
+        Supply supply = new Supply(userFirst, userLast, staffFirst, staffLast, deliveryDate, deliveryTime, location, items.get(), total, status);
         DAOFacade.addSupply(supply);
         SupplyDeliveryController.checkoutItems.clear();
     }

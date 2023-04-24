@@ -18,7 +18,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
         try {
             connection = Tdb.getConnection();
 
-            String sql = "SELECT * FROM SupplyRequestOptions WHERE itemName = ? AND shop  = ?;";
+            String sql = "SELECT * FROM officesuppliesrequestoptions WHERE itemName = ? AND shop  = ?;";
             ps = connection.prepareStatement(sql);
             ps.setString(1, itemName);
             ps.setString(2, shop);
@@ -54,7 +54,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
 
         try {
             connection = Tdb.getConnection();
-            String sql = "SELECT * FROM SupplyRequestOptions;";
+            String sql = "SELECT * FROM officesuppliesrequestoptions;";
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
 
@@ -92,7 +92,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
         ResultSet rs = null;
         try {
             connection = Tdb.getConnection();
-            String sql = "INSERT INTO SupplyRequestOptions (itemName, prices, shop, itemType, itemDescription) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO officesuppliesrequestoptions (itemName, prices, shop, itemType, itemDescription) VALUES (?, ?, ?, ?, ?, ?)";
 
             ps = connection.prepareStatement(sql);
 
@@ -125,7 +125,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
         ResultSet rs = null;
         try {
             connection = Tdb.getConnection();
-            String sql = "DELETE FROM SupplyRequestOptions WHERE (itemName = ? AND shop = ?)";
+            String sql = "DELETE FROM officesuppliesrequestoptions WHERE (itemName = ? AND shop = ?)";
 
             ps = connection.prepareStatement(sql);
 
@@ -156,7 +156,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
         try {
             connection = Tdb.getConnection();
 
-            String sql = "SELECT * FROM SupplyRequestOptions WHERE shop = ?;";
+            String sql = "SELECT * FROM officesuppliesrequestoptions WHERE shop = ?;";
             ps = connection.prepareStatement(sql);
             ps.setString(1, shop);
 
@@ -193,7 +193,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
         ResultSet rs = null;
         try {
             connection = Tdb.getConnection();
-            String sql = "UPDATE SupplyRequestOptions SET prices = ? where (itemName = ? AND shop = ?)";
+            String sql = "UPDATE officesuppliesrequestoptions SET prices = ? where (itemName = ? AND shop = ?)";
 
             ps = connection.prepareStatement(sql);
 
