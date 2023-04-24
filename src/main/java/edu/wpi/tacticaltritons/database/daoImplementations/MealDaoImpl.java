@@ -210,7 +210,7 @@ public class MealDaoImpl implements MealDao {
       connection = Tdb.getConnection();
 
 
-      String sql = "SELECT * FROM Meal ORDER BY orderNum DESC;";
+      String sql = "SELECT * FROM Meal ORDER BY status, deliverydate, deliverytime;";
       statement = connection.createStatement();
       rs = statement.executeQuery(sql);
 

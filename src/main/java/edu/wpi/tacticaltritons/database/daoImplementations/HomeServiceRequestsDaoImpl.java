@@ -25,15 +25,20 @@ public class HomeServiceRequestsDaoImpl implements HomeServiceRequestsDao {
         try {
             connection = Tdb.getConnection();
             String sql = "Select * FROM" +
-                            "(SELECT L.firstname, L.lastname, 'Meal' as requestType, M.ordernum, M.deliverydate, M.deliverytime, M.patientfirst, M.patientlast, M.items " +
+                            "(SELECT L.firstname, L.lastname, 'Meal' as requestType, M.ordernum, M.deliverydate, M.deliverytime, M.patientfirst, M.patientlast, M.items, M.location " +
                             "FROM Login L " +
                             "         JOIN meal M ON L.firstname = M.assignedstafffirst AND L.lastname = M.assignedstafflast " +
                             "WHERE M.status = 'Processing' " +
                             "UNION ALL " +
-                            "SELECT L.firstname, L.lastname, 'Flower' as requestType, F.ordernum, F.deliverydate, F.deliverytime, F.patientfirst, F.patientlast, F.items  " +
+                            "SELECT L.firstname, L.lastname, 'Flower' as requestType, F.ordernum, F.deliverydate, F.deliverytime, F.patientfirst, F.patientlast, F.items, F.location " +
                             "FROM Login L " +
                             "         JOIN flower F ON L.firstname = F.assignedstafffirst and L.lastname = F.assignedstafflast " +
-                            "WHERE F.status = 'Processing') as P " +
+                            "WHERE F.status = 'Processing' " +
+                            "UNION ALL " +
+                            "SELECT L.firstname, L.lastname, 'Furniture' as requestType, Fr.ordernum, Fr.date, '00:00:00' as deliveryTime, '' as patientFirst, '' as patientLast, Fr.items, Fr.location " +
+                            "FROM Login L " +
+                            "         JOIN furnitureforms Fr ON L.firstname = Fr.assignedstafffirst AND L.lastname = Fr.assignedstafflast " +
+                            "WHERE Fr.status = 'Processing') as P " +
                          "WHERE firstName = ? AND lastName = ? " +
                          "ORDER BY P.deliverydate, P.deliverytime;";
             ps = connection.prepareStatement(sql);
@@ -52,8 +57,9 @@ public class HomeServiceRequestsDaoImpl implements HomeServiceRequestsDao {
                 String patientFirst = rs.getString("patientFirst");
                 String patientLast = rs.getString("patientLast");
                 String items = rs.getString("items");
+                String location = rs.getString("location");
 
-                HomeServiceRequests request = new HomeServiceRequests(firstName,lastName,requestType,orderNum,deliveryDate,deliveryTime,patientFirst,patientLast,items);
+                HomeServiceRequests request = new HomeServiceRequests(firstName,lastName,requestType,orderNum,deliveryDate,deliveryTime,patientFirst,patientLast,items,location);
 
                 homeServiceRequests.add(request);
             }
