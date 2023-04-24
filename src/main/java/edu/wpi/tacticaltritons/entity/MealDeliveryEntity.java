@@ -255,7 +255,6 @@ public class MealDeliveryEntity {
             int quantity = orderList.get(item);
             double p = priceList.get(item);
             if (orderList.get(item) > 0) items.set(items.get() + item + " (" + orderList.get(item) + ")\n");
-            //TODO on click create new rectangle with item image, description, +/- buttons, and qty
             price.set(price.get() + p * quantity);
         }
     }
@@ -463,7 +462,7 @@ public class MealDeliveryEntity {
                     hBox.setPadding(new Insets(20, 0, 10, 20));
                     stackPane2 = new StackPane(rectangle, hBox);//combine them
                 } else { //meals
-                    orderList.put(title.get(i), 0);//TODO new
+                    orderList.put(title.get(i), 0);
                     rectangle.getStyleClass().add("rectangle-gray");
                     top.getStyleClass().add("text-general");
                     top.wrappingWidthProperty().bind(rectangle.widthProperty().divide(1.2));
