@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -36,11 +37,19 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" />
                     </GridPane.margin>
                 </FlowPane>
-                  <FlowPane fx:id="movesPane" minHeight="-Infinity" minWidth="-Infinity" prefWidth="301.0" style="-fx-background-color: white;" GridPane.columnIndex="2">
-                      <GridPane.margin>
-                          <Insets bottom="20.0" />
-                      </GridPane.margin>
-                  </FlowPane>
+            <FlowPane GridPane.columnIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="20.0" />
+               </GridPane.margin>
+               <children>
+                  <FlowPane fx:id="titleFlowPane" prefHeight="100.0" prefWidth="300.0" style="-fx-background-color: white;" />
+                  <MFXScrollPane>
+                     <content>
+                              <FlowPane fx:id="movesPane" minHeight="-Infinity" minWidth="-Infinity" prefWidth="301.0" style="-fx-background-color: white;" />
+                     </content>
+                  </MFXScrollPane>
+               </children>
+            </FlowPane>
             </children>
             <BorderPane.margin>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
