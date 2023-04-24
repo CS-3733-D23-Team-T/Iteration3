@@ -1,5 +1,6 @@
 package edu.wpi.tacticaltritons.controllers.serviceRequest;
 
+import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.Validator;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.FurnitureRequestOptions;
@@ -87,7 +88,7 @@ public class FurnitureDeliveryController {
         {
             Tab tab = new Tab(value);
             tab.setId(value);
-            ScrollPane scrollPane = createShopItems(shopItems, value);
+            ScrollPane scrollPane = createShopItems(shopItems, value, App.furnitureHashMap);
             tab.setContent(scrollPane);
             tabPane.getTabs().add(tab);
         });
@@ -110,7 +111,7 @@ public class FurnitureDeliveryController {
         });
     }
 
-    private ScrollPane createShopItems(ArrayList<FurnitureRequestOptions> furnitureRequestOptionsArrayList, String value) {
+    private ScrollPane createShopItems(ArrayList<FurnitureRequestOptions> furnitureRequestOptionsArrayList, String value, HashMap<String, Image> imageHashMap) {
         int counter = 0;
         MFXScrollPane scrollPane = new MFXScrollPane();
         scrollPane.setPrefWidth(600);
@@ -139,7 +140,7 @@ public class FurnitureDeliveryController {
 
 
                 // Creates the image view
-                Image image = new Image("/edu/wpi/tacticaltritons/images/flower_request/Boston Blossoms.jpg");
+                Image image = imageHashMap.get(options.getItemName());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(defaultImageViewFitWidth);
                 imageView.setFitHeight(defaultImageViewFitHeight);
@@ -172,7 +173,7 @@ public class FurnitureDeliveryController {
 
                 flowPane.setOnMouseClicked(event ->
                 {
-                    updatedCheckoutBox(options);
+                    updatedCheckoutBox(options, imageHashMap);
                 });
                 mainFlowPane.getChildren().add(flowPane);
 
@@ -208,10 +209,10 @@ public class FurnitureDeliveryController {
         return scrollPane;
     }
 
-    private void updatedCheckoutBox(FurnitureRequestOptions options) {
+    private void updatedCheckoutBox(FurnitureRequestOptions options,HashMap<String, Image> imageHashMap ) {
         if (!checkoutItems.containsKey(options.getItemName())) {
             checkoutItems.put(options.getItemName(), 1);
-            FlowPane flowPane = createCheckoutNode(options);
+            FlowPane flowPane = createCheckoutNode(options, imageHashMap.get(options.getItemName()));
             checkoutFlowpane.getChildren().add(flowPane);
         } else {
             checkoutItems.put(options.getItemName(), checkoutItems.get(options.getItemName()) + 1);
@@ -219,7 +220,7 @@ public class FurnitureDeliveryController {
     }
 
 
-    private FlowPane createCheckoutNode(FurnitureRequestOptions options) {
+    private FlowPane createCheckoutNode(FurnitureRequestOptions options, Image furnitureImage) {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(400);
         flowPane.setPrefHeight(100);
@@ -232,8 +233,7 @@ public class FurnitureDeliveryController {
         flowPane.setBackground(Background.fill(Color.WHITE));
 
         // Creates the image view
-        Image image = new Image("/edu/wpi/tacticaltritons/images/flower_request/Boston Blossoms.jpg");
-        ImageView imageView = new ImageView(image);
+        ImageView imageView = new ImageView(furnitureImage);
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
 

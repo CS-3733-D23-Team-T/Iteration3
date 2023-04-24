@@ -137,7 +137,7 @@ public class FurnitureCheckoutController {
 
         checkoutItems.forEach((key, value) ->
         {
-            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value));
+            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, App.furnitureHashMap.get(key)));
         });
         checkoutFlowplan.setAlignment(Pos.CENTER);
 
@@ -225,7 +225,7 @@ public class FurnitureCheckoutController {
 
     }
 
-    private FlowPane createCheckoutNode(String key, int value) {
+    private FlowPane createCheckoutNode(String key, int value, Image furnitureImage) {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(200);
         flowPane.setPrefHeight(100);
@@ -238,8 +238,7 @@ public class FurnitureCheckoutController {
         flowPane.setBackground(Background.fill(Color.WHITE));
 
         // Creates the image view
-        Image image = new Image("/edu/wpi/tacticaltritons/images/flower_request/Boston Blossoms.jpg");
-        ImageView imageView = new ImageView(image);
+        ImageView imageView = new ImageView(furnitureImage);
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
 
