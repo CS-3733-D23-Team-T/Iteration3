@@ -128,6 +128,7 @@ public class Directions {
       } else if (currentX == nextX && currentY == nextY) {
         textDirections.add("You are already Here");
       } else if(currentX > nextX && currentY == nextY){
+        //textDirections.add("Go Straight");
        if(compass.facingNorth()){
          textDirections.add("Turn Left");
          compass.setCompass(3);
@@ -154,7 +155,7 @@ public class Directions {
     return textDirections;
   }
 
-  public List<String> printDirections(){
+  public List<String> printDirections() {
     if (shortestPath == null || shortestPath.size() < 2) {
     }
     List<String> textDirections = new ArrayList<>();
@@ -166,35 +167,142 @@ public class Directions {
       int nextX = nextNode.getXcoord();
       int currentY = currentNode.getYcoord();
       int nextY = nextNode.getYcoord();
-      int xDiff = currentX - nextX;
-      int yDiff = currentY - nextY;
+      compass.setCompass(0);
 
-        System.out.println("Starting now");
-      String position = "";
-      if(xDiff < 0 ){
-        position += "West";
+      if(compass.facingNorth()){
+        if(currentX > nextX && currentY > nextY){
+          //turn Left
+          textDirections.add("Turn Left");
+          textDirections.add("Go Straight");
+          compass.setCompass(4);
+        }
+        if(currentX < nextX && currentY > nextY){
+          //turn Right
+          textDirections.add("Turn Right");
+          textDirections.add("Go Straight");
+          compass.setCompass(1);
+        }
+        if(currentX > nextX && currentY < nextY){
+          //turn left
+          textDirections.add("Turn Left");
+          textDirections.add("Go Straight");
+          compass.setCompass(3);
+        }
+        if(currentX < nextX && currentY < nextY){
+          textDirections.add("Turn Right");
+          textDirections.add("Go Straight");
+          compass.setCompass(1);
+        }
+        if(currentX == nextX && currentY > nextY){
+          textDirections.add("Go Straight");
+          compass.setCompass(0);
 
-      } else{
-        position += "East";
+        }
+        if(currentX == nextX && currentY < nextY){
+          textDirections.add("Go Straight");
+          compass.setCompass(0);
+        }
+        if(currentX > nextX && currentY == nextY){
+          textDirections.add("Go Straight");
+          compass.setCompass(0);
+        }
+        if(currentX < nextX && currentY == nextY){
+          textDirections.add("Go Straight");
+          compass.setCompass(0);
+        }
+
       }
+      if(compass.facingEast()){
+        if(currentX > nextX && currentY > nextY){
+          //turn Left
+          textDirections.add("Turn Left");
+          textDirections.add("Go Straight");
+          compass.setCompass(0);
 
-      if (yDiff < 0){
-        position += "South";
-      }else {
-        position += "North";
+        }
+        if(currentX < nextX && currentY > nextY){
+          textDirections.add("Turn Right");
+          textDirections.add("Go Straight");
+          compass.setCompass(2);
+        }
+        if(currentX > nextX && currentY < nextY){
+          textDirections.add("Turn Left");
+          textDirections.add("Go Straight");
+          compass.setCompass(0);
 
-      }
-
-      if(xDiff != 0 && yDiff != 0){
-        if(yDiff < 0){
-          position += "West";
-        } else{
-          position += "East";
+        }
+        if(currentX < nextX && currentY < nextY){
+          //turn right
+        }
+        if(currentX == nextX && currentY > nextY){
+            //go straight
+        }
+        if(currentX == nextX && currentY < nextY){
+            //go straight
+        }
+        if(currentX > nextX && currentY == nextY){
+            // go straight
+        }
+        if(currentX < nextX && currentY == nextY){
+            // go straight
         }
       }
-      System.out.println("Go" + position);
+      if (compass.facingSouth()){
+        if(currentX > nextX && currentY > nextY){
+
+        }
+        if(currentX < nextX && currentY > nextY){
+
+        }
+        if(currentX > nextX && currentY < nextY){
+
+        }
+        if(currentX < nextX && currentY < nextY){
+
+        }
+        if(currentX == nextX && currentY > nextY){
+
+        }
+        if(currentX == nextX && currentY < nextY){
+
+        }
+        if(currentX > nextX && currentY == nextY){
+
+        }
+        if(currentX < nextX && currentY == nextY){
+
+        }
+      }
+      if (compass.facingWest()){
+        if(currentX > nextX && currentY > nextY){
+          //turn right
+        }
+        if(currentX < nextX && currentY > nextY){
+          //turn left
+        }
+        if(currentX > nextX && currentY < nextY){
+          //turn right
+        }
+        if(currentX < nextX && currentY < nextY){
+
+        }
+        if(currentX == nextX && currentY > nextY){
+
+        }
+        if(currentX == nextX && currentY < nextY){
+
+        }
+        if(currentX > nextX && currentY == nextY){
+
+        }
+        if(currentX < nextX && currentY == nextY){
+
+        }
+      }
+
     }
       return textDirections;
+
   }
 
   public List<String> printPositions(){
@@ -212,28 +320,27 @@ public class Directions {
       int xDiff = currentX - nextX;
       int yDiff = currentY - nextY;
 
-        System.out.println("Starting now");
+
       String position = "";
-      if(xDiff < 0 ){
-        position += "West";
-      } else{
-        position += "East";
-      }
 
       if (yDiff < 0){
         position += "South";
-      }else {
+      }else if(yDiff > 0) {
         position += "North";
-
+      } else if(yDiff == 0){
+        position += "";
       }
 
-      if(xDiff != 0 && yDiff != 0){
-        if(yDiff < 0){
-          position += "West";
-        } else{
-          position += "East";
-        }
+      if(xDiff < 0 ){
+        position += "West";
+      } else if(xDiff > 0){
+        position += "East";
+      }else if(xDiff == 0){
+        position += "";
       }
+
+
+
       System.out.println("Go" + position);
       textDirections.add(position);
     }
