@@ -5,8 +5,7 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<GridPane id="block" fx:id="basePane" fx:controller="edu.wpi.tacticaltritons.controllers.signage.presetButtonController" alignment="CENTER" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="300" prefWidth="300">
-   <Label fx:id="presetName" text="Preset" style="-fx-font-size: 20" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+<GridPane id="block" fx:id="basePane" fx:controller="edu.wpi.tacticaltritons.controllers.signage.presetButtonController" alignment="CENTER" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="180" prefWidth="300">
+   <Label fx:id="presetName" text="Preset" style="-fx-font-size: 25; " GridPane.rowIndex="0" GridPane.columnIndex="0"/>
 </GridPane>

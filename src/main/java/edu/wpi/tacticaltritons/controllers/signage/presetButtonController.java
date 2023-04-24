@@ -2,6 +2,7 @@ package edu.wpi.tacticaltritons.controllers.signage;
 
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.styling.ThemeColors;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -28,6 +29,12 @@ public class presetButtonController {
                     }
                 }
         );
+        basePane.setOnMouseEntered(event -> {
+            presetName.setStyle("-fx-text-fill: " + ThemeColors.YELLOW.getColor()+ "; -fx-font-size: 25");
+        });
+        basePane.setOnMouseExited(event -> {
+           presetName.setStyle("-fx-text-fill: Black; -fx-font-size: 25");
+        });
     }
     public void setPresetName(String text){
         presetName.setText(text);
