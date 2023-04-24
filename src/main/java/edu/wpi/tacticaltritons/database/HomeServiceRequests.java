@@ -13,8 +13,9 @@ public class HomeServiceRequests {
         private String patientFirst;
         private String patientLast;
         private String items;
+        private String location;
 
-    public HomeServiceRequests(String firstName, String lastName, String requestType, int orderNum, Date deliveryDate, Time deliveryTime, String patientFirst, String patientLast, String items) {
+    public HomeServiceRequests(String firstName, String lastName, String requestType, int orderNum, Date deliveryDate, Time deliveryTime, String patientFirst, String patientLast, String items, String location) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.requestType = requestType;
@@ -24,6 +25,7 @@ public class HomeServiceRequests {
         this.patientFirst = patientFirst;
         this.patientLast = patientLast;
         this.items = items;
+        this.location = location;
     }
 
     public String getFirstName() {
@@ -96,5 +98,13 @@ public class HomeServiceRequests {
 
     public void setItems(String items) {
         this.items = items;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

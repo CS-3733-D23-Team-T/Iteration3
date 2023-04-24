@@ -245,14 +245,32 @@ public class NewHomeController {
         TableColumn<HomeServiceRequests, Date> deliveryDate = new TableColumn<>("Date");
         deliveryDate.setCellValueFactory(new PropertyValueFactory<>("deliveryDate"));
 
-        TableColumn<HomeServiceRequests, Time> deliveryTime = new TableColumn<>("Time");
-        deliveryTime.setCellValueFactory(new PropertyValueFactory<>("deliveryTime"));
+        TableColumn<HomeServiceRequests, String> deliveryTime = new TableColumn<>("Time");
+        deliveryTime.setCellValueFactory(cellData -> {
+            String time = cellData.getValue().getDeliveryTime().toString();
+            if (time.equals("00:00:00")) {
+                return new SimpleStringProperty("");
+            } else {
+                return new SimpleStringProperty(time);
+            }
+        });
 
         TableColumn<HomeServiceRequests, String> fullNameCol = new TableColumn<>("Patient");
-        fullNameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPatientLast() + ", " + cellData.getValue().getPatientFirst()));
+        fullNameCol.setCellValueFactory(cellData -> {
+            String lastName = cellData.getValue().getPatientLast();
+            String firstName = cellData.getValue().getPatientFirst();
+            if (lastName.isEmpty() && firstName.isEmpty()) {
+                return new SimpleStringProperty("");
+            } else {
+                return new SimpleStringProperty(lastName + ", " + firstName);
+            }
+        });
 
         TableColumn<HomeServiceRequests, String> items = new TableColumn<>("Item(s)");
         items.setCellValueFactory(new PropertyValueFactory<>("items"));
+
+        TableColumn<HomeServiceRequests, String> location = new TableColumn<>("Location");
+        location.setCellValueFactory(new PropertyValueFactory<>("location"));
 
         ObservableList<HomeServiceRequests> requestObservableList = null;
         try {
@@ -303,7 +321,7 @@ public class NewHomeController {
             }
         });
 
-        tableServiceRequest.getColumns().addAll(completed, serviceType, items, fullNameCol, deliveryDate, deliveryTime);
+        tableServiceRequest.getColumns().addAll(completed, serviceType, items,location, fullNameCol, deliveryDate, deliveryTime);
 
         tableServiceRequest.getItems().addAll(requestObservableList);
         tableServiceRequest.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);

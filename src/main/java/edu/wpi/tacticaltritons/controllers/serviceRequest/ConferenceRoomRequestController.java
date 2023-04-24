@@ -327,7 +327,7 @@ public class ConferenceRoomRequestController {
 
 
         if(readyToSubmit){
-            Conference conference = new Conference(uploadFirstName,uploadLastName,uploadDate,uploadAttendance,uploadExpectedSize,uploadConferenceRoom,RequestStatus.BLANK);
+            Conference conference = new Conference(uploadFirstName,uploadLastName,uploadDate,uploadAttendance,uploadExpectedSize,uploadConferenceRoom,RequestStatus.PROCESSING);
             DAOFacade.addConference(conference);
             int mostRecentNum = 0;
             for(Conference x : DAOFacade.getAllConference()){
