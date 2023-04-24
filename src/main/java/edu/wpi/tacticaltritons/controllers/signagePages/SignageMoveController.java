@@ -18,6 +18,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -137,6 +138,177 @@ public class SignageMoveController {
         dateDisplay.setText(move.getMoveDate().toString());
     }
 
+    private void setMapPath(Move move){
+        //TODO iterate through all moves with timer and animation with while-for each loops
+        List<Double> xCoord = new ArrayList<Double>(0);
+        List<Double> yCoord = new ArrayList<Double>(0);
+        List<Double> startEnd = new ArrayList<Double>(0);
+        setLabels(move);
+        xCoord.clear();
+        yCoord.clear();
+        startEnd.clear();
+        clearAllNodes();
+        int startNodeId = 1115; //TODO read sign location
+        signLocationDisplay.setText(Integer.toString(startNodeId));
+        int endNodeId = move.getNode().getNodeID();
+        Node endNode1 = null;
+        Node startNode1 = null;
+        List<Node> shortestPathMap = new ArrayList<>();
+        try {
+            AStarAlgorithm mapAlgorithm = new AStarAlgorithm();
+            startNode1 = DAOFacade.getNode(startNodeId);
+            endNode1 = DAOFacade.getNode(endNodeId);
+            shortestPathMap = AlgorithmSingleton.getInstance().algorithm.findShortestPath(startNode1, endNode1);
+            setTextDirections(shortestPathMap);
+            System.out.println(shortestPathMap.get(0).getXcoord() + "," + shortestPathMap.get(0).getYcoord());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        List<Double> polyList = new ArrayList<>();
+        Node lastNode = shortestPathMap.get(0);
+        Node finalNode = shortestPathMap.get(shortestPathMap.size() - 2);
+        int change = 0;
+        for (Node node : shortestPathMap) {
+            if ((!node.getFloor().equals(lastNode.getFloor())) || (node.getNodeID() == shortestPathMap.get(shortestPathMap.size() - 1).getNodeID())) {
+                change++;
+
+                Circle start = new Circle();
+                if (startNode1 == shortestPathMap.get(0)) {
+                    start = drawCircle(startNode1.getXcoord(), startNode1.getYcoord(), Color.GREEN);
+                } else {
+                    start = drawCircle(startNode1.getXcoord(), startNode1.getYcoord(), Color.BLUE);
+                    Node finalStartNode = lastNode;
+                }
+
+                Circle end;
+                if (node == shortestPathMap.get(shortestPathMap.size() - 1)) {
+                    end = drawCircle(node.getXcoord(), node.getYcoord(), Color.RED);
+                    finalNode = lastNode;
+                } else {
+                    end = drawCircle(node.getXcoord(), node.getYcoord(), Color.BLUE);
+
+                    Node finalEndNode = node;
+                    end.setOnMouseClicked(event1 -> {
+                        String endFloor = finalEndNode.getFloor();
+                    });
+                }
+                startNode1 = node;
+
+                Polyline path = new Polyline();
+                path.setStroke(Color.RED);
+                path.setOpacity(0.8);
+                path.setStrokeWidth(6.0f);
+                path.getPoints().addAll(polyList);
+
+                String startFloor = lastNode.getFloor();
+                if (startFloor != null) {
+                    switch (startFloor) {
+                        case "L1":
+                            this.L1Group.getChildren().add(path);
+                            this.L1Group.getChildren().add(start);
+                            this.L1Group.getChildren().add(end);
+                            break;
+                        case "L2":
+                            this.L2Group.getChildren().add(path);
+                            this.L2Group.getChildren().add(start);
+                            this.L2Group.getChildren().add(end);
+                            break;
+                        case "1":
+                            this.floor1Group.getChildren().add(path);
+                            this.floor1Group.getChildren().add(start);
+                            this.floor1Group.getChildren().add(end);
+                            break;
+                        case "2":
+                            this.floor2Group.getChildren().add(path);
+                            this.floor2Group.getChildren().add(start);
+                            this.floor2Group.getChildren().add(end);
+                            break;
+                        case "3":
+                            this.floor3Group.getChildren().add(path);
+                            this.floor3Group.getChildren().add(start);
+                            this.floor3Group.getChildren().add(end);
+                            break;
+                    }
+                }
+                polyList.clear();
+            }
+
+            polyList.add((double) node.getXcoord());
+            polyList.add((double) node.getYcoord());
+            lastNode = node;
+        }
+
+        polyList.add((double) finalNode.getXcoord());
+        polyList.add((double) finalNode.getYcoord());
+        Polyline path = new Polyline();
+        path.setStroke(Color.RED);
+        path.setOpacity(0.8);
+        path.setStrokeWidth(6.0f);
+        path.getPoints().addAll(polyList);
+
+        String startFloor = lastNode.getFloor();
+        if (startFloor != null) {
+            switch (startFloor) {
+                case "L1":
+                    this.L1Group.getChildren().add(path);
+                    break;
+                case "L2":
+                    this.L2Group.getChildren().add(path);
+                    break;
+                case "1":
+                    this.floor1Group.getChildren().add(path);
+                    break;
+                case "2":
+                    this.floor2Group.getChildren().add(path);
+                    break;
+                case "3":
+                    this.floor3Group.getChildren().add(path);
+                    break;
+            }
+        }
+        polyList.clear();
+
+        System.out.println(change);
+
+        String startingFloor = shortestPathMap.get(0).getFloor();
+        if (startingFloor != null) {
+
+            switch (startingFloor) {
+                case "L1":
+                    L1Group.setVisible(true);
+                    lowerLevel1Image.setVisible(true);
+                    break;
+                case "L2":
+                    L2Group.setVisible(true);
+                    lowerLevel2Image.setVisible(true);
+                    break;
+                case "1":
+                    floor1Group.setVisible(true);
+                    floor1Image.setVisible(true);
+                    break;
+                case "2":
+                    floor2Group.setVisible(true);
+                    floor2Image.setVisible(true);
+                    break;
+                case "3":
+                    floor3Group.setVisible(true);
+                    floor3Image.setVisible(true);
+                    break;
+            }
+        }
+        Point2D centerpoint = new Point2D(shortestPathMap.get(0).getXcoord() + 200, shortestPathMap.get(0).getYcoord());
+
+        gesturePane.zoomTo(1, centerpoint);
+        gesturePane.centreOn(centerpoint); //TODO fix
+
+        this.gesturePane.setVisible(true);
+        this.floor1Image.setVisible(true);
+        gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
+        gesturePane.reset();
+    }//TODO resume
+
     @FXML
     private void initialize() throws SQLException {
 
@@ -146,28 +318,35 @@ public class SignageMoveController {
         floor2Image.setImage(App.secondfloor);
         floor3Image.setImage(App.thirdfloor);
 
-        List<Double> xCoord = new ArrayList<Double>(0);
-        List<Double> yCoord = new ArrayList<Double>(0);
-        List<Double> startEnd = new ArrayList<Double>(0);
-        List<Integer> nodeIDs = new ArrayList<Integer>();
-        List<Move> allMoves = DAOFacade.getAllMoves();
+        List<Move> moves = DAOFacade.getAllMoves();
+        gesturePane.toBack();
+
 
         HashMap<Integer, Move> hash = new HashMap<>();
-        for (Move move : allMoves) {
+//        setMapPath(moves.get(0));
+//        setMapPath(moves.get(0));
+        Collections.sort(moves, new Comparator<Move>() {
+            @Override
+            public int compare(Move o1, Move o2) {
+                return o1.getMoveDate().compareTo(o2.getMoveDate());
+            }
+        });
+        for (Move move : moves) {
             hash.put(move.getNode().getNodeID(), move);
             if(move.getMoveDate().getTime() > (today.getTime() - 2629746e3)){ //one month before today
                 Button button = new Button(move.getLocation().getLongName() + ": " + move.getMoveDate());
                 button.getStyleClass().add("button-submit");
                 vBox.getChildren().add(button);
+                button.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setMapPath(move);
+                    }
+                });
             }
         }
 
-//        showDirections(false);
-        gesturePane.toBack();
-
-        List<Move> moves = DAOFacade.getAllMoves();
-
-        //TODO iterate through all moves with timer and animation with while-for each loops
+        /*//TODO iterate through all moves with timer and animation with while-for each loops
         Move move = moves.get(0);
         setLabels(move);
         xCoord.clear();
@@ -214,11 +393,11 @@ public class SignageMoveController {
                 } else {
                     start = drawCircle(startNode1.getXcoord(), startNode1.getYcoord(), Color.BLUE);
                     Node finalStartNode = lastNode;
-/*                    start.setOnMouseClicked(event1 -> {
+*//*                    start.setOnMouseClicked(event1 -> {
                         System.out.println("This button works");
                         System.out.println(finalStartNode.getFloor());
                         String finalStartFloor = finalStartNode.getFloor();
-                    });*/
+                    });*//*
                 }
 
                 Circle end;
@@ -346,7 +525,7 @@ public class SignageMoveController {
 
 
         gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
-        gesturePane.reset();
+        gesturePane.reset();*/
     }
 
 }
