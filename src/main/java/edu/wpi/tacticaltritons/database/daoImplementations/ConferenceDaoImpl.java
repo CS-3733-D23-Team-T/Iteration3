@@ -73,13 +73,13 @@ public class ConferenceDaoImpl implements ConferenceDao {
             connection = Tdb.getConnection();
             String sql =
                     "UPDATE Conference SET "
-                            + "firstName varchar(25), "
-                            + "lastName varchar(25), "
-                            + "Date date, "
-                            + "attendance varchar(225), "
-                            + "expectedSize numeric(5), "
-                            + "location varchar(50), "
-                            + "status varchar(50), "
+                            + "firstName = ?, "
+                            + "lastName = ?, "
+                            + "date = ?, "
+                            + "attendance = ?, "
+                            + "expectedSize = ?, "
+                            + "location = ?, "
+                            + "status = ? "
                             + "WHERE orderNum = ?;";
 
             ps = connection.prepareStatement(sql);
@@ -189,7 +189,7 @@ public class ConferenceDaoImpl implements ConferenceDao {
         try {
             connection = Tdb.getConnection();
 
-            String sql = "SELECT * FROM Conference;";
+            String sql = "SELECT * FROM Conference ORDER BY status, date;";
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
 
