@@ -520,8 +520,8 @@ public class MapSuperController {
                 circle.setOnMouseClicked(event -> {
                     circle.setFill(Color.GREEN);
                     pathfindingList.add(node);
+                    System.out.println(pathfindingList.size());
                     if(pathfindingList.size()==2){
-
                         System.out.println("pathfinding");
                         clearAllNodes();
                         try {
