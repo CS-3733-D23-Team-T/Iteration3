@@ -114,7 +114,7 @@
             </Rectangle>
             <VBox prefHeight="650.0" prefWidth="409.0" spacing="20.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-header" text="Information">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-header" text="Information:">
                      <VBox.margin>
                         <Insets left="30.0" top="30.0" />
                      </VBox.margin>
@@ -194,11 +194,7 @@
                      <content>
                         <VBox fx:id="vBox" alignment="TOP_CENTER" prefHeight="330.0" prefWidth="346.0" spacing="15.0" style="-fx-background-color: white;">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-header" text="All Moves:" wrappingWidth="331.9171813726425">
-                                 <VBox.margin>
-                                    <Insets left="10.0" />
-                                 </VBox.margin>
-                              </Text>
+                              <Label fx:id="bottomTextDisplay" prefHeight="36.0" prefWidth="320.0" styleClass="text-header" text="Label" />
                            </children></VBox>
                      </content>
                   </ScrollPane>
