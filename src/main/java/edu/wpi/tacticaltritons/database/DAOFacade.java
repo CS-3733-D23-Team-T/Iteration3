@@ -26,6 +26,7 @@ public class DAOFacade {
   static FurnitureRequestOptionsDaoImpl furnitureRequestOptionsDao = new FurnitureRequestOptionsDaoImpl();
   static HomeServiceRequestsDaoImpl homeServiceRequestsDao = new HomeServiceRequestsDaoImpl();
   static InvitationsDaoImpl invitationsDao = new InvitationsDaoImpl();
+  static SignageDaoImpl signageDao = new SignageDaoImpl();
 
   public static void addNode(Node node) throws SQLException {
     nodeDao.insert(node);
@@ -321,5 +322,25 @@ public class DAOFacade {
 
   public static void updateInvitation(Invitations invitation) throws SQLException {
     invitationsDao.update(invitation);
+  }
+
+  public static List<Signage> getAllSignage() throws SQLException {
+    return signageDao.getAll();
+  }
+
+  public static Signage getSignage(String title) throws SQLException {
+    return signageDao.get(title);
+  }
+
+  public static void insertSignage(Signage sign) throws SQLException{
+    signageDao.insert(sign);
+  }
+
+  public static void deleteSignage(Signage sign) throws SQLException{
+    signageDao.delete(sign);
+  }
+
+  public static void updateSignage(Signage sign) throws SQLException{
+    signageDao.update(sign);
   }
 }
