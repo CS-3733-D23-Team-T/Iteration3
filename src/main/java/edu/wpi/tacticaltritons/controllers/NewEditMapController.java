@@ -22,6 +22,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -83,6 +84,7 @@ public class NewEditMapController extends MapSuperController {
     Date today = new Date(2023, 4, 19);
 
     List<Node> clickNode = new ArrayList<>();
+    List<Line> lineList = new ArrayList<>();
 
     int firstFind = 1;
 
@@ -90,12 +92,25 @@ public class NewEditMapController extends MapSuperController {
     public NewEditMapController() throws SQLException {
     }
 
-    public void setLongNamePosition(Text longName,double xCoord, double yCoord){
+    public void setLongNamePosition(Text longName, double xCoord, double yCoord) {
         longName.setX(xCoord);
         longName.setY(yCoord);
     }
 
-    public void findAllEdges(String floor, String page) throws 
+
+    public Line drawLine(double startX, double startY, double endX, double endY, Color stroke) {
+        Line line = new Line();
+        line.setVisible(true);
+        line.setStroke(stroke);
+        line.setStrokeWidth(4.0f);
+        line.setStartX(startX);
+        line.setStartX(startX);
+        line.setEndX(endX);
+        line.setStartY(startY);
+        line.setEndY(endY);
+        return line;
+    }
+
 
     public void findAllNodesEdit(List<String> nodeTypeList, String floor, String page) throws SQLException {
         selectedFloor.FLOOR.floor = floor;
@@ -122,11 +137,11 @@ public class NewEditMapController extends MapSuperController {
                     longName.setFont(Font.font("Ariel", FontWeight.BOLD, 15));
                     longName.toFront();
 
-                    setLongNamePosition(longName,value.getXcoord() - (longName.getLayoutBounds().getWidth() / 2),value.getYcoord() + (circle.getRadius() * 2) + 5);
+                    setLongNamePosition(longName, value.getXcoord() - (longName.getLayoutBounds().getWidth() / 2), value.getYcoord() + (circle.getRadius() * 2) + 5);
 
 
-                    if(firstFind == 1){
-                        circleHashMap.put(value,circle);
+                    if (firstFind == 1) {
+                        circleHashMap.put(value, circle);
                     }
 
                     switch (value.getFloor()) {
@@ -162,6 +177,7 @@ public class NewEditMapController extends MapSuperController {
                 gesturePane.setGestureEnabled(false);
                 double offsetX = event.getSceneX() - circle.getCenterX();
                 double offsetY = event.getSceneY() - circle.getCenterY();
+
                 circle.setUserData(new double[]{offsetX, offsetY});
                 try {
                     setMenuBarAllText(getMoveHashMap().get(node.getNodeID()).getLocation().getLongName());
@@ -190,11 +206,10 @@ public class NewEditMapController extends MapSuperController {
         });
         circle.setOnMouseClicked(event -> {
 
-            if (event.isControlDown()){
+            if (event.isControlDown()) {
                 clickNode.add(node);
                 circle.setFill(Color.WHITE);
-            }
-            else{
+            } else {
                 try {
                     setMenuBarAllText(getMoveHashMap().get(node.getNodeID()).getLocation().getLongName());
                 } catch (SQLException e) {
@@ -203,7 +218,6 @@ public class NewEditMapController extends MapSuperController {
             }
         });
     }
-
 
 
     public void setMenuBarAllText(String longName) throws SQLException {
@@ -393,28 +407,27 @@ public class NewEditMapController extends MapSuperController {
         });
 
         this.gesturePane.setOnKeyPressed(ke -> {
-            if (ke.getCode().equals(KeyCode.ENTER))
-            {
+            if (ke.getCode().equals(KeyCode.ENTER)) {
                 System.out.println("enter");
                 Node startNode = clickNode.get(0);
-                Node endNode = clickNode.get(clickNode.size()-1);
-                int xInterval = (startNode.getXcoord() - endNode.getXcoord())/(clickNode.size()-1);
-                int yInterval = (startNode.getYcoord() - endNode.getYcoord())/(clickNode.size()-1);
+                Node endNode = clickNode.get(clickNode.size() - 1);
+                int xInterval = (startNode.getXcoord() - endNode.getXcoord()) / (clickNode.size() - 1);
+                int yInterval = (startNode.getYcoord() - endNode.getYcoord()) / (clickNode.size() - 1);
 
-                for(int i = 1; i<clickNode.size()-1; i++){
+                for (int i = 1; i < clickNode.size() - 1; i++) {
                     System.out.println(circleHashMap.get(clickNode.get(i)).getCenterX());
                     System.out.println(circleHashMap.get(clickNode.get(i)).getCenterY());
                     circleHashMap.get(clickNode.get(i)).setCenterX(startNode.getXcoord() - (i * xInterval));
                     circleHashMap.get(clickNode.get(i)).setCenterY(startNode.getYcoord() - (i * yInterval));
                     circleHashMap.get(clickNode.get(i)).setFill(Color.RED);
-                    circleHashMap.get(clickNode.get(i)).setStroke(Color.RED);
+                    circleHashMap.get(clickNode.get(i)).setStroke(Color.BLACK);
                 }
                 circleHashMap.get(clickNode.get(0)).setFill(Color.RED);
-                circleHashMap.get(clickNode.get(clickNode.size() - 1)).setFill(Color.BLACK);
+                circleHashMap.get(clickNode.get(clickNode.size() - 1)).setFill(Color.RED);
                 clearAllNodes();
                 firstFind = 2;
                 try {
-                    findAllNodesEdit(allNodeTypes,selectedFloor.FLOOR.floor, "ViewMap");
+                    findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "ViewMap");
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }

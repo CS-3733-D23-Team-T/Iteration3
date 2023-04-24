@@ -117,6 +117,7 @@ public class MapSuperController {
 
     public List<Node> allNodes = DAOFacade.getAllNodes();
     public List<Move> allMoves = DAOFacade.getAllMoves();
+    public List<Edge> allEdges = DAOFacade.getAllEdges();
     public List<LocationName> allLocationNames = DAOFacade.getAllLocationNames();
     public List<String> blank = new ArrayList<>();
 
@@ -132,6 +133,7 @@ public class MapSuperController {
     public List<Integer> nodeIDs = new ArrayList<Integer>();
 
     public HashMap<Node, Circle> circleHashMap = new HashMap<>();
+    public HashMap<Node, List<Line>> lineHashMap = new HashMap<>();
 
     Date today = Date.valueOf(java.time.LocalDate.now());
 
@@ -371,6 +373,15 @@ public class MapSuperController {
         }
         return hash;
     }
+
+    public HashMap<Integer, Edge> getEdgeHashMap() throws SQLException {
+        HashMap<Integer, Edge> hash = new HashMap<>();
+        for (Edge edge : allEdges) {
+            hash.put(edge.getStartNode().getNodeID(), edge);
+        }
+        return hash;
+    }
+
 
     public void initializeGesturePane() {
         javafx.application.Platform.runLater(() -> {
