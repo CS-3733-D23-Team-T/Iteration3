@@ -51,6 +51,7 @@ public enum Screen {
   OFFICE_SUPPLIES("views/OfficeSupplies.fxml"),
   VIEW_SERVICE_REQUEST("views/serviceRequest/ViewServiceRequests.fxml"),
   MOVE("views/Move.fxml"),
+  MOVE_SIGN("views/MoveSign.fxml"),
 
   TEST_1("views/test_pages/p1.fxml"),
   TEST_2("views/test_pages/p2.fxml"),

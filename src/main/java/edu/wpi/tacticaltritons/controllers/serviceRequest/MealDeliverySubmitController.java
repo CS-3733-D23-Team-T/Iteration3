@@ -152,7 +152,7 @@ public class MealDeliverySubmitController {
         this.room.setOnAction(event -> {
 
             clearAllNodes();
-            Circle circle = new Circle();
+            Circle circle = new Circle(); //TODO fix
 
             try {
                 circle = drawCircle(DAOFacade.getNode((String) this.room.getSelectedItem(), today).getXcoord(), DAOFacade.getNode((String) this.room.getSelectedItem(), today).getYcoord());
