@@ -5,18 +5,10 @@ import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.LocationName;
 import edu.wpi.tacticaltritons.database.Move;
 import edu.wpi.tacticaltritons.database.Node;
-import edu.wpi.tacticaltritons.navigation.Navigation;
-import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import edu.wpi.tacticaltritons.pathfinding.Directions;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,21 +19,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import net.kurobako.gesturefx.GesturePane;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
-import java.sql.Date;
 
 public class SignageMoveController {
     @FXML
@@ -85,18 +74,10 @@ public class SignageMoveController {
 
     @FXML
     private Label locationNameDisplay, roomDisplay, floorDisplay, dateDisplay, signLocationDisplay, bottomTextDisplay;
-    @FXML
-    private ScrollPane scrollPane;
     @FXML private VBox vBox;
 
-//    Date today = new Date(2023 - 1900, 4, 5);
     LocalDate localDate = LocalDate.of(2023,4,24);
     Date today = Date.valueOf(localDate);
-    public void showDirections(boolean bool) {
-        directionsPane.setVisible(bool);
-        textDirections.setVisible(bool);
-        textForDirections.setVisible(bool);
-    }
 
     public void clearAllNodes() {
         floor1Group.getChildren().remove(1, floor1Group.getChildren().size());
@@ -128,7 +109,6 @@ public class SignageMoveController {
             sb.append("\n");
         }
         String allPositions = sb.toString();
-        System.out.println(allPositions);
         textDirections.setText(allPositions);
     }
 
@@ -149,7 +129,7 @@ public class SignageMoveController {
         yCoord.clear();
         startEnd.clear();
         clearAllNodes();
-        int startNodeId = DAOFacade.getNode(display,today).getNodeID(); //TODO read sign location
+        int startNodeId = DAOFacade.getNode(display,today).getNodeID();
         signLocationDisplay.setText(Integer.toString(startNodeId));
         int endNodeId = move.getNode().getNodeID();
         Node endNode1 = null;
@@ -161,8 +141,6 @@ public class SignageMoveController {
             endNode1 = DAOFacade.getNode(endNodeId);
             shortestPathMap = AlgorithmSingleton.getInstance().algorithm.findShortestPath(startNode1, endNode1);
             setTextDirections(shortestPathMap);
-            System.out.println(shortestPathMap.get(0).getXcoord() + "," + shortestPathMap.get(0).getYcoord());
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -271,8 +249,6 @@ public class SignageMoveController {
         }
         polyList.clear();
 
-        System.out.println(change);
-
         String startingFloor = shortestPathMap.get(0).getFloor();
         if (startingFloor != null) {
 
@@ -323,23 +299,16 @@ public class SignageMoveController {
 
         bottomTextDisplay.setText("Choose display location");
         MFXFilterComboBox<String> displaySelect = new MFXFilterComboBox<>();
+        displaySelect.setPromptText("Display location");
+        displaySelect.setFloatingText("Display location");
+        displaySelect.prefWidthProperty().set(300);
         for(LocationName location:DAOFacade.getAllLocationNames()){
             displaySelect.getItems().add(location.getLongName());
         }
-/*        HBox displaySelect = new HBox();
-        displaySelect.setSpacing(15);
-        List<String> displays = new ArrayList<>();
-        displays.add("Location 1"); //TODO fix
-        displays.add("Location 2");*/
         vBox.getChildren().add(displaySelect);
-//        for(String display:displays){
-//            Button select = new Button(display);
-//            select.getStyleClass().add("button-submit");
-//            displaySelect.getChildren().add(select);
             displaySelect.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    System.out.println(displaySelect.getSelectedItem());
                     try {
                         setMapPath(moves.get(0),displaySelect.getSelectedItem());
                     } catch (SQLException e) {
