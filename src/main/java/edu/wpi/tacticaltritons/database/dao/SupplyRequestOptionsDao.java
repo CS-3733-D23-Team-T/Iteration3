@@ -10,5 +10,5 @@ public interface SupplyRequestOptionsDao extends IDao<SupplyRequestOptions>{
 
     List<SupplyRequestOptions> getFromShop(String shop) throws SQLException;
 
-    void updatePrice(SupplyRequestOptions flowerRequestOptions) throws SQLException;
+    void updatePrice(SupplyRequestOptions supplyRequestOptions) throws SQLException;
 }

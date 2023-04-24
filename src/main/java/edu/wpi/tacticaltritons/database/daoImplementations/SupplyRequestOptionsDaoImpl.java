@@ -1,24 +1,24 @@
 package edu.wpi.tacticaltritons.database.daoImplementations;
 
-import edu.wpi.tacticaltritons.database.FlowerRequestOptions;
+import edu.wpi.tacticaltritons.database.SupplyRequestOptions;
 import edu.wpi.tacticaltritons.database.Tdb;
-import edu.wpi.tacticaltritons.database.dao.FlowerRequestOptionsDao;
+import edu.wpi.tacticaltritons.database.dao.SupplyRequestOptionsDao;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupplyRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
+public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
     @Override
-    public FlowerRequestOptions get(String itemName, String shop) throws SQLException {
+    public SupplyRequestOptions get(String itemName, String shop) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        FlowerRequestOptions flowerRequestOptions = null;
+        SupplyRequestOptions supplyRequestOptions = null;
         try {
             connection = Tdb.getConnection();
 
-            String sql = "SELECT * FROM FlowerRequestOptions WHERE itemName = ? AND shop  = ?;";
+            String sql = "SELECT * FROM SupplyRequestOptions WHERE itemName = ? AND shop  = ?;";
             ps = connection.prepareStatement(sql);
             ps.setString(1, itemName);
             ps.setString(2, shop);
@@ -29,7 +29,7 @@ public class SupplyRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
                 String shopDescription = rs.getString("shopDescription");
                 String itemType = rs.getString("itemType");
                 String itemDescription = rs.getString("itemDescription");
-                flowerRequestOptions = new FlowerRequestOptions(itemName, price, shop, shopDescription, itemType, itemDescription);
+                supplyRequestOptions = new SupplyRequestOptions(itemName, price, shop, itemType, itemDescription);
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -43,18 +43,18 @@ public class SupplyRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
                 ps.close();
             }
         }
-        return flowerRequestOptions;
+        return supplyRequestOptions;
     }
     @Override
-    public List<FlowerRequestOptions> getAll() throws SQLException {
+    public List<SupplyRequestOptions> getAll() throws SQLException {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
-        List<FlowerRequestOptions> flowerRequestOptions = new ArrayList<>();
+        List<SupplyRequestOptions> supplyRequestOptions = new ArrayList<>();
 
         try {
             connection = Tdb.getConnection();
-            String sql = "SELECT * FROM FlowerRequestOptions;";
+            String sql = "SELECT * FROM SupplyRequestOptions;";
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
 
@@ -66,9 +66,9 @@ public class SupplyRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
                 String itemType = rs.getString("itemType");
                 String itemDescription = rs.getString("itemDescription");
 
-                FlowerRequestOptions option = new FlowerRequestOptions(itemName, prices, shop, shopDescription, itemType, itemDescription);
+                SupplyRequestOptions option = new SupplyRequestOptions(itemName, prices, shop, itemType, itemDescription);
 
-                flowerRequestOptions.add(option);
+                supplyRequestOptions.add(option);
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -82,26 +82,26 @@ public class SupplyRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
                 statement.close();
             }
         }
-        return flowerRequestOptions;
+        return supplyRequestOptions;
     }
 
     @Override
-    public void insert(FlowerRequestOptions flowerRequestOptions) throws SQLException {
+    public void insert(SupplyRequestOptions supplyRequestOptions) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             connection = Tdb.getConnection();
-            String sql = "INSERT INTO FlowerRequestOptions (itemName, prices, shop, shopDescription, itemType, itemDescription) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO SupplyRequestOptions (itemName, prices, shop, itemType, itemDescription) VALUES (?, ?, ?, ?, ?, ?)";
 
             ps = connection.prepareStatement(sql);
 
-            ps.setString(1, flowerRequestOptions.getItemName());
-            ps.setDouble(2, flowerRequestOptions.getPrice());
-            ps.setString(3, flowerRequestOptions.getShop());
-            ps.setString(4, flowerRequestOptions.getShopDescription());
-            ps.setString(5, flowerRequestOptions.getItemType());
-            ps.setString(6, flowerRequestOptions.getItemDescription());
+            ps.setString(1, supplyRequestOptions.getItemName());
+            ps.setDouble(2, supplyRequestOptions.getPrice());
+            ps.setString(3, supplyRequestOptions.getShop());
+            ps.setString(4, supplyRequestOptions.getShopDescription());
+            ps.setString(5, supplyRequestOptions.getItemType());
+            ps.setString(6, supplyRequestOptions.getItemDescription());
 
             int result = ps.executeUpdate();
         } catch (SQLException e){
@@ -119,18 +119,18 @@ public class SupplyRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
     }
 
     @Override
-    public void delete(FlowerRequestOptions flowerRequestOptions) throws SQLException {
+    public void delete(SupplyRequestOptions supplyRequestOptions) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             connection = Tdb.getConnection();
-            String sql = "DELETE FROM FlowerRequestOptions WHERE (itemName = ? AND shop = ?)";
+            String sql = "DELETE FROM SupplyRequestOptions WHERE (itemName = ? AND shop = ?)";
 
             ps = connection.prepareStatement(sql);
 
-            ps.setString(1, flowerRequestOptions.getItemName());
-            ps.setString(2, flowerRequestOptions.getShop());
+            ps.setString(1, supplyRequestOptions.getItemName());
+            ps.setString(2, supplyRequestOptions.getShop());
 
             int result = ps.executeUpdate();
         } catch (SQLException e){
@@ -148,15 +148,15 @@ public class SupplyRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
     }
 
     @Override
-    public List<FlowerRequestOptions> getFromShop(String shop) throws SQLException {
+    public List<SupplyRequestOptions> getFromShop(String shop) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<FlowerRequestOptions> flowerRequestOptions = new ArrayList<>();
+        List<SupplyRequestOptions> supplyRequestOptions = new ArrayList<>();
         try {
             connection = Tdb.getConnection();
 
-            String sql = "SELECT * FROM FlowerRequestOptions WHERE shop = ?;";
+            String sql = "SELECT * FROM SupplyRequestOptions WHERE shop = ?;";
             ps = connection.prepareStatement(sql);
             ps.setString(1, shop);
 
@@ -168,9 +168,9 @@ public class SupplyRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
                 String itemType = rs.getString("itemType");
                 String itemDescription = rs.getString("itemDescription");
 
-                FlowerRequestOptions option = new FlowerRequestOptions(itemName, prices, shop, shopDescription, itemType, itemDescription);
+                SupplyRequestOptions option = new SupplyRequestOptions(itemName, prices, shop, itemType, itemDescription);
 
-                flowerRequestOptions.add(option);
+                supplyRequestOptions.add(option);
             }
         }
         catch (SQLException | ClassNotFoundException e){
@@ -183,17 +183,17 @@ public class SupplyRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
                 ps.close();
             }
         }
-        return flowerRequestOptions;
+        return supplyRequestOptions;
     }
 
     @Override
-    public void updatePrice(FlowerRequestOptions shopOption) throws SQLException {
+    public void updatePrice(SupplyRequestOptions shopOption) throws SQLException {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             connection = Tdb.getConnection();
-            String sql = "UPDATE FlowerRequestOptions SET prices = ? where (itemName = ? AND shop = ?)";
+            String sql = "UPDATE SupplyRequestOptions SET prices = ? where (itemName = ? AND shop = ?)";
 
             ps = connection.prepareStatement(sql);
 

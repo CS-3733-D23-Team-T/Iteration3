@@ -292,7 +292,7 @@ public class DAOFacade {
   }
 
   public static void addSupplyRequestOption(SupplyRequestOptions supplyRequestOptions) throws SQLException {
-    supplyRequestOptionsDao.insert(SupplyRequestOptions);
+    supplyRequestOptionsDao.insert(supplyRequestOptions);
   }
 
   public static void updatePrice(SupplyRequestOptions supplyRequestOptions) throws SQLException {
