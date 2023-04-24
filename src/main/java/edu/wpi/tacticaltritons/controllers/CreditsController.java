@@ -13,18 +13,8 @@ public class CreditsController {
     public void initialize() {
         creditText.setFitToHeight(true);
         creditText.setFitToWidth(true);
-        App.getPrimaryStage().widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                creditText.setMinWidth(newValue.doubleValue());
-            }
-        });
-        App.getPrimaryStage().heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                creditText.setMinHeight(newValue.doubleValue());
-            }
-        });
+        App.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> creditText.setMinWidth(newValue.doubleValue()));
+        App.getPrimaryStage().heightProperty().addListener((observable, oldValue, newValue) -> creditText.setMinHeight(newValue.doubleValue()));
     }
     private void resize(){
     }
