@@ -7,7 +7,15 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class FlowerHashMap extends HashMap<String, Image> {
-    public FlowerHashMap(){
+    public FlowerHashMap() {
+        //logos
+        this.put("Blossom Path", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BlossomPath.png")).toString()));
+        this.put("Garden Grace", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GardenGrace.png")).toString()));
+        this.put("Tropical Blooms", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TropicalBlooms.png")).toString()));
+        this.put("Wildflower Emporium", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WildflowerEmporium.png")).toString()));
+        this.put("Petal Boutique", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PetalBoutique.png")).toString()));
+        this.put("Free Mont Flowers", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FreeMontFlowers.png")).toString()));
+
         //Free Mont Flowers
         this.put("Blushing Beauty Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFBlushingBeautyBouquet.png")).toString()));
         this.put("Elegance Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFEleganceBouquet.png")).toString()));
@@ -15,7 +23,7 @@ public class FlowerHashMap extends HashMap<String, Image> {
         this.put("Cherry Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFCherryBouquet.png")).toString()));
         this.put("Zen Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFZenBouquet.png")).toString()));
         this.put("What a Delight Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFWhataDelightBouquet.png")).toString()));
-        this.put("Girl Power Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFGirlPowerBouquet.png")).toString()));
+        this.put("Girl Power Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFGirlPowerBouquet.jpg")).toString()));
         this.put("Birds of Paradise Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFMinimalistBouquet.png")).toString()));
         this.put("Minimalist Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFMinimalistBouquet.png")).toString()));
         this.put("So Chic Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFSoChicBouquet.png")).toString()));
@@ -56,12 +64,5 @@ public class FlowerHashMap extends HashMap<String, Image> {
         this.put("Bold and Beautiful", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBBoldandBeautiful.png")).toString()));
         this.put("Garden Party", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBGardenParty.png")).toString()));
 
-        //logos
-        this.put("Blossom Path", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BlossomPath.png")).toString()));
-        this.put("Garden Grace", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GardenGrace.png")).toString()));
-        this.put("Tropical Blooms", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TropicalBlooms.png")).toString()));
-        this.put("Wildflower Emporium", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WildflowerEmporium.png")).toString()));
-        this.put("Petal Boutique", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PetalBoutique.png")).toString()));
-        this.put("Free Mont Flowers", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FreeMontFlowers.png")).toString()));
     }
 }

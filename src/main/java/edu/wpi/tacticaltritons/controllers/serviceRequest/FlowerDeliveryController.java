@@ -76,55 +76,6 @@ public class FlowerDeliveryController {
 
     @FXML
     public void initialize() {
-        //Hashmap for flower images
-        HashMap<String, Image> imageHashMap = new HashMap<>();
-        //Free Mont Flowers
-        imageHashMap.put("Blushing Beauty Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFBlushingBeautyBouquet.png")).toString()));
-        imageHashMap.put("Elegance Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFEleganceBouquet.png")).toString()));
-        imageHashMap.put("Charming Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFCharmingBouquet.png")).toString()));
-        imageHashMap.put("Cherry Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFCherryBouquet.png")).toString()));
-        imageHashMap.put("Zen Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFZenBouquet.png")).toString()));
-        imageHashMap.put("What a Delight Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFWhataDelightBouquet.png")).toString()));
-        imageHashMap.put("Girl Power Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFGirlPowerBouquet.png")).toString()));
-        imageHashMap.put("Birds of Paradise Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFMinimalistBouquet.png")).toString()));
-        imageHashMap.put("Minimalist Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFMinimalistBouquet.png")).toString()));
-        imageHashMap.put("So Chic Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFSoChicBouquet.png")).toString()));
-
-        // Blossoms Path
-        imageHashMap.put("Summer Garden Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPSummerGardenBouquet.png")).toString()));
-        imageHashMap.put("Easter Lily Arrangement", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPEasterLilyArrangement.png")).toString()));
-        imageHashMap.put("Tulip Trio", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPTulipTrio.png")).toString()));
-        imageHashMap.put("Springtime Garden Basket", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPSpringtimeGardenBasket.png")).toString()));
-        imageHashMap.put("Elegant Orchids", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPElegantOrchids.png")).toString()));
-        imageHashMap.put("Cherry Blossom Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPCherryBlossomBouquet.png")).toString()));
-        imageHashMap.put("Winter Garden Centerpiece", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPWinterGardenCenterpiece.png")).toString()));
-        imageHashMap.put("Rose Arrangement", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPRoseArrangement.png")).toString()));
-        imageHashMap.put("Springtime Succulent Garden", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPSpringtimeSucculentGarden.png")).toString()));
-        imageHashMap.put("Butterfly Garden Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPButterflyGardenBouquet.png")).toString()));
-
-        // Garden Grace
-        imageHashMap.put("Wonderland Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGWonderlandBouquet.png")).toString()));
-        imageHashMap.put("Sunny Morning Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGSunnyMorningBouquet.png")).toString()));
-        imageHashMap.put("Holiday Cheer Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGHolidayCheerBouquet.png")).toString()));
-        imageHashMap.put("Summer Solstice Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGSummerSolsticeBouquet.png")).toString()));
-        imageHashMap.put("Snowy Splendor Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGSnowySplendorBouquet.png")).toString()));
-        imageHashMap.put("Forest Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGForestBouquet.png")).toString()));
-        imageHashMap.put("Berries Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGBerriesBouquet.png")).toString()));
-        imageHashMap.put("Cozy Nights Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGCozyNightsBouquet.png")).toString()));
-        imageHashMap.put("Icy Elegance Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGIcyEleganceBouquet.png")).toString()));
-        imageHashMap.put("Cheer Up Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGCheerUpBouquet.png")).toString()));
-
-        // Petal Boutique
-        imageHashMap.put("Roses and Lilies", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBRosesandLilies.png")).toString()));
-        imageHashMap.put("Tropical Oasis", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBTropicalOasis.png")).toString()));
-        imageHashMap.put("Spring Fling", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBSpringFling.png")).toString()));
-        imageHashMap.put("Vintage Romance", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBVintageRomance.png")).toString()));
-        imageHashMap.put("Succulent Garden", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBSucculentGarden.png")).toString()));
-        imageHashMap.put("Enchanted Forest", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBEnchantedForest.png")).toString()));
-        imageHashMap.put("Orchid Delight", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBOrchidDelight.png")).toString()));
-        imageHashMap.put("Sunflower Surprise", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBSunflowerSurprise.png")).toString()));
-        imageHashMap.put("Bold and Beautiful", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBBoldandBeautiful.png")).toString()));
-        imageHashMap.put("Garden Party", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBGardenParty.png")).toString()));
 
 
 //        EffectGenerator.generateShadowEffect(basePane);
@@ -147,7 +98,7 @@ public class FlowerDeliveryController {
         {
             Tab tab = new Tab(value);
             tab.setId(value);
-            ScrollPane scrollPane = createShopIteams(shopItems, value, imageHashMap);
+            ScrollPane scrollPane = createShopIteams(shopItems, value, App.flowerHashMap);
             tab.setContent(scrollPane);
             tabPane.getTabs().add(tab);
         });
