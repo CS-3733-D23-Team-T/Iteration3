@@ -20,6 +20,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -280,6 +281,7 @@ public class NewHomeController {
     }
 
     private void initServiceTable() {
+
         TableColumn<HomeServiceRequests, String> serviceType = new TableColumn<>("Service Type");
         serviceType.setCellValueFactory(new PropertyValueFactory<>("requestType"));
 
@@ -365,7 +367,12 @@ public class NewHomeController {
             }
         });
 
+
+        TableColumn<HomeServiceRequests, String> title = new TableColumn<>("Service Request Table");
+
         tableServiceRequest.getColumns().addAll(completed, serviceType, items, location, fullNameCol, deliveryDate, deliveryTime);
+
+
 
         tableServiceRequest.getItems().addAll(requestObservableList);
         tableServiceRequest.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
