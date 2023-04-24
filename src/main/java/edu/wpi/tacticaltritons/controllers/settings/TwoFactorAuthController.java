@@ -38,6 +38,7 @@ public class TwoFactorAuthController {
         if(login.getTwoFactor()){
             twoFactorButton.setText("Disable");
             String method = AuthenticationMethod.parseAuthenticationMethod(login.getTwoFactorMethods()[0]).formalName();
+            System.out.println(method);
             twoFactorCombobox.getSelectionModel().select(method);
         }
         else{
@@ -72,6 +73,7 @@ public class TwoFactorAuthController {
         twoFactorCombobox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
             AuthenticationMethod method = AuthenticationMethod.parseAuthenticationMethod(n);
             if(method != null && !Objects.equals(o, n)){
+                System.out.println(method);
                 transitionMethod(twoFactorOptions.get(n));
             }
         });
@@ -83,8 +85,9 @@ public class TwoFactorAuthController {
                 twoFactorButton.setText("Enable");
                 login.setTwoFactor(false);
 //                UserSessionToken.userTFA.set(false);
-//                twoFactorCombobox.getSelectionModel().clearSelection();
+                twoFactorCombobox.getSelectionModel().clearSelection();
                 twoFactorCombobox.setDisable(true);
+                twoFactorCombobox.setPromptText("Method");
                 System.out.println(twoFactorCombobox.isDisable() + ", " + twoFactorCombobox.isDisabled());
             }
             else{
@@ -92,9 +95,8 @@ public class TwoFactorAuthController {
                 twoFactorButton.setText("Disable");
                 login.setTwoFactor(true);
 //                UserSessionToken.userTFA.set(true);
-//                twoFactorCombobox.getSelectionModel().select(
-//                        AuthenticationMethod.parseAuthenticationMethod(login.getTwoFactorMethods()[0]).formalName());
-//                twoFactorCombobox.setPromptText("Method");
+                twoFactorCombobox.getSelectionModel().select(
+                        AuthenticationMethod.parseAuthenticationMethod(login.getTwoFactorMethods()[0]).formalName());
                 twoFactorCombobox.setDisable(false);
                 System.out.println(twoFactorCombobox.isDisable() + ", " + twoFactorCombobox.isDisabled());
             }
