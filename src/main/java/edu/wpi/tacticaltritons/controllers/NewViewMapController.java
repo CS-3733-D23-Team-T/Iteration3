@@ -122,19 +122,17 @@ public class NewViewMapController extends MapSuperController {
 
 
 
+
     @FXML
     private void initialize() throws SQLException {
 
         selectedFloor.FLOOR.floor = "1";
 
-        List<String> allNodeTypes = new ArrayList<>(List.of("REST", "ELEV", "STAI", "HALL", "DEPT", "LABS", "INFO", "CONF", "RETL", "SERV", "EXIT", "BATH"));
-
-
-        findAllNodes(allNodeTypes, selectedFloor.FLOOR.floor);
+        findAllNodes(allNodeTypes, selectedFloor.FLOOR.floor, "ViewMap");
 
         initializeGesturePane();
         initializeImages();
-        initializeSearch();
+        initializeSearch("ViewMap");
 
         this.floor1Group.setVisible(true);
         this.floor1Image.setVisible(true);
@@ -169,7 +167,7 @@ public class NewViewMapController extends MapSuperController {
             }
         });
 
-        initializeMenuButton();
+        initializeMenuButton("ViewMap");
 
         this.applyFilter.setOnAction(event -> {
             clearAllNodes();
@@ -224,7 +222,7 @@ public class NewViewMapController extends MapSuperController {
             }
 
             try {
-                findAllNodes(nodeTypeList, selectedFloor.FLOOR.floor);
+                findAllNodes(nodeTypeList, selectedFloor.FLOOR.floor, "ViewMap");
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -262,7 +260,7 @@ public class NewViewMapController extends MapSuperController {
             }
 
             try {
-                findAllNodes(blank, thisFloor[0]);
+                findAllNodes(blank, thisFloor[0], "ViewMap");
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -315,7 +313,7 @@ public class NewViewMapController extends MapSuperController {
                         this.floor3Group.getChildren().addAll(circle, longName);
                         break;
                 }
-                setClickedButton();
+                setClickedButton(selectedFloor.FLOOR.floor);
             }
             Point2D centrePoint = new Point2D(circle.getCenterX(), circle.getCenterY());
             gesturePane.centreOn(centrePoint);

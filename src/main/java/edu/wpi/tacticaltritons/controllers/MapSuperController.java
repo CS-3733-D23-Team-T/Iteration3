@@ -4,6 +4,8 @@ import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
+import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import io.github.palexdev.materialfx.controls.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
@@ -19,6 +21,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polyline;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -41,6 +44,8 @@ import org.checkerframework.checker.units.qual.C;
 import org.controlsfx.control.PopOver;
 
 public class MapSuperController {
+    @FXML protected ImageView importExport;
+
     @FXML
     protected GesturePane gesturePane;
 
@@ -101,11 +106,32 @@ public class MapSuperController {
     @FXML
     protected MFXButton floor3;
 
+    @FXML protected MFXButton viewNodes = new MFXButton();
+
+
+    @FXML
+    protected MFXFilterComboBox<String> startLocation = new MFXFilterComboBox<>();
+
+    @FXML
+    protected MFXFilterComboBox<String> endLocation = new MFXFilterComboBox<>();
+
     public List<Node> allNodes = DAOFacade.getAllNodes();
     public List<Move> allMoves = DAOFacade.getAllMoves();
     public List<LocationName> allLocationNames = DAOFacade.getAllLocationNames();
     public List<String> blank = new ArrayList<>();
 
+    public List<Node> pathfindingList = new ArrayList<>();
+    public List<Node> editMapList = new ArrayList<>();
+
+    public List<String> allNodeTypes = new ArrayList<>(List.of("REST", "ELEV", "STAI", "HALL", "DEPT", "LABS", "INFO", "CONF", "RETL", "SERV", "EXIT", "BATH"));
+
+
+    public List<Double> xCoord = new ArrayList<Double>(0);
+    public List<Double> yCoord = new ArrayList<Double>(0);
+    public List<Double> startEnd = new ArrayList<Double>(0);
+    public List<Integer> nodeIDs = new ArrayList<Integer>();
+
+    public HashMap<Node, Circle> circleHashMap = new HashMap<>();
 
     Date today = Date.valueOf(java.time.LocalDate.now());
 
@@ -129,6 +155,7 @@ public class MapSuperController {
         return hash;
     }
 
+
     public HashMap<String, LocationName> getLocationNameHashMap() throws SQLException {
         HashMap<String, LocationName> hash = new HashMap<>();
         for (LocationName locationName : allLocationNames) {
@@ -137,22 +164,50 @@ public class MapSuperController {
         return hash;
     }
 
-    public void initializeSearch() throws SQLException {
-        getLocationNameHashMap().forEach(((key, value) -> {
-            if (!value.getNodeType().equals("HALL"))
-                searchOnMap.getItems().add(key);
-        }));
+    public void initializeSearch(String page) throws SQLException {
+        switch(page){
+            case "ViewMap":
+                getLocationNameHashMap().forEach(((key, value) -> {
+                    if (!value.getNodeType().equals("HALL"))
+                        searchOnMap.getItems().add(key);
+                }));
+                break;
+            case "Pathfinding":
+                getLocationNameHashMap().forEach(((key, value) -> {
+                    if (!value.getNodeType().equals("HALL")){
+                        startLocation.getItems().add(key);
+                        endLocation.getItems().add(key);
+                    }
+                }));
+                break;
+        }
+
     }
 
-    public void initializeMenuButton() {
+    public void initializeMenuButton(String page) {
         this.menuBar.setOnMouseClicked(event -> {
+
             if (!menuPane.isVisible()) {
                 menuPane.setVisible(true);
-                componentShift(210);
+                switch (page){
+                    case"ViewMap":
+                        componentShift(210);
+                        break;
+                    case"Pathfinding":
+                        componentShift(210);
+                        break;
+                    case"EditMap":
+                        componentShift(340);
+                        break;
+
+                }
             } else {
                 menuPane.setVisible(false);
                 componentShift(0);
             }
+        });
+        this.editMap.setOnAction(event -> {
+            Navigation.navigate(Screen.EDIT_MAP);
         });
     }
 
@@ -165,6 +220,10 @@ public class MapSuperController {
         floor1.setTranslateX(translate);
         floor2.setTranslateX(translate);
         floor3.setTranslateX(translate);
+        startLocation.setTranslateX(translate);
+        endLocation.setTranslateX(translate);
+        viewNodes.setTranslateX(translate);
+        importExport.setTranslateX(translate);
     }
 
     public void initializeImages() {
@@ -202,8 +261,8 @@ public class MapSuperController {
         floor3Image.setVisible(false);
     }
 
-    public void setClickedButton() {
-        switch (selectedFloor.FLOOR.floor) {
+    public void setClickedButton(String thisFloor) {
+        switch (thisFloor) {
             case "L1":
                 resetButtons();
                 this.lowerLevel1.setStyle("-fx-background-color: BLUE");
@@ -322,10 +381,9 @@ public class MapSuperController {
         gesturePane.reset();
     }
 
-    public void findAllNodes(List<String> nodeTypeList, String floor) throws SQLException {
+    public void findAllNodes(List<String> nodeTypeList, String floor, String page) throws SQLException {
         selectedFloor.FLOOR.floor = floor;
         getNodeHashMap().forEach(((key, value) -> {
-            if (value.getFloor().equals(floor)) {
                 try {
                     if (getMoveHashMap().get(key) == null) {
 
@@ -350,70 +408,135 @@ public class MapSuperController {
                         longName.setX(value.getXcoord() - (longName.getLayoutBounds().getWidth() / 2));
                         longName.setY(value.getYcoord() + (circle.getRadius() * 2) + 5);
 
-                        switch (selectedFloor.FLOOR.floor) {
+                        circleHashMap.put(value,circle);
+
+                        switch (value.getFloor()) {
                             case "L1":
-                                this.L1Group.getChildren().addAll(circle, longName);
+                                this.L1Group.getChildren().addAll(circleHashMap.get(value), longName);
                                 break;
                             case "L2":
-                                this.L2Group.getChildren().addAll(circle, longName);
+                                this.L2Group.getChildren().addAll(circleHashMap.get(value), longName);
                                 break;
                             case "1":
-                                this.floor1Group.getChildren().addAll(circle, longName);
+                                this.floor1Group.getChildren().addAll(circleHashMap.get(value), longName);
                                 break;
                             case "2":
-                                this.floor2Group.getChildren().addAll(circle, longName);
+                                this.floor2Group.getChildren().addAll(circleHashMap.get(value), longName);
                                 break;
                             case "3":
-                                this.floor3Group.getChildren().addAll(circle, longName);
+                                this.floor3Group.getChildren().addAll(circleHashMap.get(value), longName);
                                 break;
                         }
-                        setClickedButton();
-                        clickCircle(circle, value);
+                        setClickedButton(selectedFloor.FLOOR.floor);
+                        clickCircle(circle, value, page);
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-            }
         }));
     }
 
-    public void clickCircle(Circle circle, Node node) {
-            circle.setOnMouseClicked(event -> {
-                for(javafx.scene.Node nodes: floor1Group.getChildren()) {
-                    if(nodes instanceof Circle)
-                    {
-                        ((Circle) nodes).setFill(Color.GRAY);
-                        ((Circle) nodes).setStroke(Color.DARKGRAY);
+    public void clickCircle(Circle circle, Node node, String page) {
+        switch(page){
+            case "ViewMap":
+                circle.setOnMouseClicked(event -> {
+                    switch(node.getFloor()){
+                        case "L1":
+                            for(javafx.scene.Node nodes: L1Group.getChildren()) {
+                                if(nodes instanceof Circle)
+                                {
+                                    ((Circle) nodes).setFill(Color.GRAY);
+                                    ((Circle) nodes).setStroke(Color.DARKGRAY);
+                                }
+                            }
+                            break;
+                        case "L2":
+                            for(javafx.scene.Node nodes: L2Group.getChildren()) {
+                                if(nodes instanceof Circle)
+                                {
+                                    ((Circle) nodes).setFill(Color.GRAY);
+                                    ((Circle) nodes).setStroke(Color.DARKGRAY);
+                                }
+                            }
+                            break;
+                        case "1":
+                            for(javafx.scene.Node nodes: floor1Group.getChildren()) {
+                                if(nodes instanceof Circle)
+                                {
+                                    ((Circle) nodes).setFill(Color.GRAY);
+                                    ((Circle) nodes).setStroke(Color.DARKGRAY);
+                                }
+                            }
+                            break;
+                        case "2":
+                            for(javafx.scene.Node nodes: floor2Group.getChildren()) {
+                                if(nodes instanceof Circle)
+                                {
+                                    ((Circle) nodes).setFill(Color.GRAY);
+                                    ((Circle) nodes).setStroke(Color.DARKGRAY);
+                                }
+                            }
+                            break;
+                        case "3":
+                            for(javafx.scene.Node nodes: floor3Group.getChildren()) {
+                                if(nodes instanceof Circle)
+                                {
+                                    ((Circle) nodes).setFill(Color.GRAY);
+                                    ((Circle) nodes).setStroke(Color.DARKGRAY);
+                                }
+                            }
+                            break;
                     }
-                }
-                circle.setFill(Color.PINK);
-                circle.setStroke(Color.RED);
-                PopOver popover = new PopOver();
-                StackPane stackPane = new StackPane();
-                Text text = new Text();
-                try {
-                    text.setText("Long Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getLongName()+ "\n" + "Short Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getShortName() + "\n" + "Node Type: " + getMoveHashMap().get(node.getNodeID()).getLocation().getNodeType() + "\n" + "Node ID: " + node.getNodeID() + "\n" + "Coordinates (x,y): (" + node.getXcoord() + "," + node.getYcoord() + ")" + "\n" + "Floor: " + node.getFloor() + "\n" + "Building: " + node.getBuilding());
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                popover.setDetachable(false);
-                popover.setCornerRadius(5);
-                popover.setAnimated(true);
-                popover.setCloseButtonEnabled(true);
-                popover.setPrefHeight(150);
-                text.setWrappingWidth(400);
+                    circle.setFill(Color.PINK);
+                    circle.setStroke(Color.RED);
+                    PopOver popover = new PopOver();
+                    StackPane stackPane = new StackPane();
+                    Text text = new Text();
+                    try {
+                        text.setText("Long Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getLongName()+ "\n" + "Short Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getShortName() + "\n" + "Node Type: " + getMoveHashMap().get(node.getNodeID()).getLocation().getNodeType() + "\n" + "Node ID: " + node.getNodeID() + "\n" + "Coordinates (x,y): (" + node.getXcoord() + "," + node.getYcoord() + ")" + "\n" + "Floor: " + node.getFloor() + "\n" + "Building: " + node.getBuilding());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    popover.setDetachable(false);
+                    popover.setCornerRadius(5);
+                    popover.setAnimated(true);
+                    popover.setCloseButtonEnabled(true);
+                    popover.setPrefHeight(150);
+                    text.setWrappingWidth(400);
 
-                popover.prefWidthProperty().bind(Bindings.add(10, text.wrappingWidthProperty()));
-                stackPane.setPrefSize(popover.getPrefWidth(), popover.getPrefHeight());
+                    popover.prefWidthProperty().bind(Bindings.add(10, text.wrappingWidthProperty()));
+                    stackPane.setPrefSize(popover.getPrefWidth(), popover.getPrefHeight());
 
-                text.setFont(Font.font("Ariel", FontWeight.NORMAL, 15));
-                stackPane.getChildren().add(text);
-                stackPane.setAlignment(Pos.CENTER);
-                popover.setContentNode(stackPane);
-                popover.setArrowLocation(PopOver.ArrowLocation.LEFT_CENTER);
-                popover.show(circle);
-                setLocationSearch(node);
-            });
+                    text.setFont(Font.font("Ariel", FontWeight.NORMAL, 15));
+                    stackPane.getChildren().add(text);
+                    stackPane.setAlignment(Pos.CENTER);
+                    popover.setContentNode(stackPane);
+                    popover.setArrowLocation(PopOver.ArrowLocation.LEFT_CENTER);
+                    popover.show(circle);
+                    setLocationSearch(node);
+                });
+                break;
+            case "Pathfinding":
+                circle.setOnMouseClicked(event -> {
+                    circle.setFill(Color.GREEN);
+                    pathfindingList.add(node);
+                    if(pathfindingList.size()==2){
+
+                        System.out.println("pathfinding");
+                        clearAllNodes();
+                        try {
+                            this.startLocation.getSelectionModel().selectItem(getMoveHashMap().get(pathfindingList.get(0).getNodeID()).getLocation().getLongName());
+                            this.endLocation.getSelectionModel().selectItem(getMoveHashMap().get(pathfindingList.get(1).getNodeID()).getLocation().getLongName());
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        pathfinding(pathfindingList.get(0).getNodeID(),pathfindingList.get(1).getNodeID());
+                        pathfindingList.clear();
+                    }
+                });
+                break;
+        }
+
     }
     public void setLocationSearch(Node node){
         try {
@@ -425,6 +548,157 @@ public class MapSuperController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void pathfinding(int startNodeID, int endNodeID){
+        xCoord.clear();
+        yCoord.clear();
+        startEnd.clear();
+        clearAllNodes();
+        int startNodeId;
+        int endNodeId;
+        Node endNode1 = null;
+        Node startNode1 = null;
+        startNodeId = startNodeID;
+        endNodeId = endNodeID;
+        List<Node> shortestPathMap = new ArrayList<>();
+        try {
+            AStarAlgorithm mapAlgorithm = new AStarAlgorithm();
+            startNode1 = DAOFacade.getNode(startNodeId);
+            endNode1 = DAOFacade.getNode(endNodeId);
+            //shortestPathMap = mapAlgorithm.findShortestPath(startNode1, endNode1);
+            shortestPathMap = AlgorithmSingleton.getInstance().algorithm.findShortestPath(startNode1, endNode1);
+            System.out.println(shortestPathMap.get(0).getXcoord() + "," + shortestPathMap.get(0).getYcoord());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        List<Double> polyList = new ArrayList<>();
+        Node lastNode = shortestPathMap.get(0);
+        Node finalNode = shortestPathMap.get(shortestPathMap.size() - 2);
+        int change = 0;
+        for (Node node : shortestPathMap) {
+
+
+            System.out.println("new Node: " + node.getFloor());
+            System.out.println("old Node: " + lastNode.getFloor());
+
+            if ((!node.getFloor().equals(lastNode.getFloor())) || (node.getNodeID() == shortestPathMap.get(shortestPathMap.size() - 1).getNodeID())) {
+
+                System.out.println("change: " + change);
+
+                change++;
+
+                Circle start = new Circle();
+                if (startNode1 == shortestPathMap.get(0)) {
+                    start = drawCircle(startNode1.getXcoord(), startNode1.getYcoord(), Color.GREEN, Color.BLACK);
+                } else {
+                    start = drawCircle(startNode1.getXcoord(), startNode1.getYcoord(), Color.BLUE, Color.BLACK);
+                    Node finalStartNode = lastNode;
+                    start.setOnMouseClicked(event1 -> {
+                        System.out.println("This button works");
+                        System.out.println(finalStartNode.getFloor());
+                        String finalStartFloor = finalStartNode.getFloor();
+                        setClickedButton(finalStartFloor);
+                    });
+                }
+
+                Circle end = new Circle();
+                if (node == shortestPathMap.get(shortestPathMap.size() - 1)) {
+                    end = drawCircle(node.getXcoord(), node.getYcoord(), Color.RED, Color.BLACK);
+                    finalNode = lastNode;
+                } else {
+                    end = drawCircle(node.getXcoord(), node.getYcoord(), Color.BLUE, Color.BLACK);
+
+                    Node finalEndNode = node;
+                    end.setOnMouseClicked(event1 -> {
+                        String endFloor = finalEndNode.getFloor();
+                        setClickedButton(endFloor);
+                    });
+                }
+                startNode1 = node;
+
+                Polyline path = new Polyline();
+                path.setStroke(Color.RED);
+                path.setOpacity(0.8);
+                path.setStrokeWidth(6.0f);
+                path.getPoints().addAll(polyList);
+
+                String startFloor = lastNode.getFloor();
+                if (startFloor != null) {
+                    switch (startFloor) {
+                        case "L1":
+                            this.L1Group.getChildren().add(path);
+                            this.L1Group.getChildren().add(start);
+                            this.L1Group.getChildren().add(end);
+                            break;
+                        case "L2":
+                            this.L2Group.getChildren().add(path);
+                            this.L2Group.getChildren().add(start);
+                            this.L2Group.getChildren().add(end);
+                            break;
+                        case "1":
+                            this.floor1Group.getChildren().add(path);
+                            this.floor1Group.getChildren().add(start);
+                            this.floor1Group.getChildren().add(end);
+                            break;
+                        case "2":
+                            this.floor2Group.getChildren().add(path);
+                            this.floor2Group.getChildren().add(start);
+                            this.floor2Group.getChildren().add(end);
+                            break;
+                        case "3":
+                            this.floor3Group.getChildren().add(path);
+                            this.floor3Group.getChildren().add(start);
+                            this.floor3Group.getChildren().add(end);
+                            break;
+                    }
+                }
+                polyList.clear();
+            }
+            polyList.add((double) node.getXcoord());
+            polyList.add((double) node.getYcoord());
+            lastNode = node;
+        }
+
+        polyList.add((double) finalNode.getXcoord());
+        polyList.add((double) finalNode.getYcoord());
+        Polyline path = new Polyline();
+        path.setStroke(Color.RED);
+        path.setOpacity(0.8);
+        path.setStrokeWidth(6.0f);
+        path.getPoints().addAll(polyList);
+
+        String startFloor = lastNode.getFloor();
+        if (startFloor != null) {
+            switch (startFloor) {
+                case "L1":
+                    this.L1Group.getChildren().add(path);
+                    break;
+                case "L2":
+                    this.L2Group.getChildren().add(path);
+                    break;
+                case "1":
+                    this.floor1Group.getChildren().add(path);
+                    break;
+                case "2":
+                    this.floor2Group.getChildren().add(path);
+                    break;
+                case "3":
+                    this.floor3Group.getChildren().add(path);
+                    break;
+            }
+        }
+        polyList.clear();
+
+        System.out.println(change);
+
+        String startingFloor = shortestPathMap.get(0).getFloor();
+        setClickedButton(startingFloor);
+        Point2D centerpoint = new Point2D(shortestPathMap.get(0).getXcoord(), shortestPathMap.get(0).getYcoord());
+        gesturePane.zoomTo(1, centerpoint);
+        gesturePane.centreOn(centerpoint);
     }
 
 
