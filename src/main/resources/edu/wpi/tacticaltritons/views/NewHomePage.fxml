@@ -44,11 +44,7 @@
                   </Text>
                </top>
                <center>
-                  <MFXScrollPane BorderPane.alignment="CENTER">
-                     <content>
-                              <FlowPane fx:id="eventsPane" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" style="-fx-background-color: white;" />
-                     </content>
-                  </MFXScrollPane>
+                        <FlowPane fx:id="eventsPane" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
             <BorderPane style="-fx-background-color: white; -fx-background-radius: 10;" GridPane.columnIndex="1">
