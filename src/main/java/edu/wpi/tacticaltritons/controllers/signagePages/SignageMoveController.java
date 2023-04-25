@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import net.kurobako.gesturefx.GesturePane;
 
@@ -288,6 +289,19 @@ public class SignageMoveController {
 
     @FXML
     private void initialize() throws SQLException {
+        floor1Group.setVisible(true);
+        floor1Image.setVisible(true);
+        Point2D point2D = new Point2D(floor1Image.getFitWidth()/2,floor1Image.getFitHeight()/2);
+        gesturePane.zoomTo(0.25,point2D);
+
+        lowerLevel1Image.setImage(App.lowerlevel1);
+        lowerLevel2Image.setImage(App.lowerlevel2);
+        floor1Image.setImage(App.firstfloor);
+        floor2Image.setImage(App.secondfloor);
+        floor3Image.setImage(App.thirdfloor);
+
+        gesturePane.toBack();
+
         List<Move> moves = DAOFacade.getAllMoves();
         HashMap<Integer, Move> hash = new HashMap<>();
         Collections.sort(moves, new Comparator<Move>() {
@@ -321,6 +335,9 @@ public class SignageMoveController {
                         if(move.getMoveDate().getTime() > (today.getTime() - 2629746e3)){ //one month before today
                             Button button = new Button(move.getLocation().getLongName() + ": " + move.getMoveDate());
                             button.getStyleClass().add("button-submit");
+                            button.setPrefWidth(325);
+                            button.setPrefHeight(30);
+                            button.setFont(new Font(15));
                             vBox.getChildren().add(button);
                             button.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
@@ -337,14 +354,6 @@ public class SignageMoveController {
                 }
             });
 //        }
-
-        lowerLevel1Image.setImage(App.lowerlevel1);
-        lowerLevel2Image.setImage(App.lowerlevel2);
-        floor1Image.setImage(App.firstfloor);
-        floor2Image.setImage(App.secondfloor);
-        floor3Image.setImage(App.thirdfloor);
-
-        gesturePane.toBack();
     }
 
 }
