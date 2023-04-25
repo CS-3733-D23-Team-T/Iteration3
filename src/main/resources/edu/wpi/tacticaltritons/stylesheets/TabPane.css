@@ -1,0 +1,17 @@
+.tab-pane{
+    -fx-font-size: 20;
+}
+
+.tab {
+    -fx-background-color: white;
+
+    -fx-fit-to-width: true;
+    -fx-fit-to-height: true;
+    -fx-tab-min-height: 100;
+    -fx-tab-min-width: 150;
+}
+
+#normalTab:hover
+{
+    -fx-background-color: rgba(160,160,160,0.6);
+}
