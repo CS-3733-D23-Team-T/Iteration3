@@ -6,22 +6,28 @@ import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.styling.ThemeColors;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import net.kurobako.gesturefx.GesturePane;
@@ -33,6 +39,8 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Flow;
+
 
 public class NewHomeController {
     @FXML
@@ -43,18 +51,32 @@ public class NewHomeController {
     FlowPane eventsPane;
     @FXML
     GridPane tableGridPane;
-    @FXML private Group L1Group;
-    @FXML private Group L2Group;
-    @FXML private Group floor1Group;
-    @FXML private Group floor2Group;
-    @FXML private Group floor3Group;
-    @FXML private ImageView lowerLevel1Image;
-    @FXML private ImageView lowerLevel2Image;
-    @FXML private ImageView floor1Image;
-    @FXML private ImageView floor2Image;
-    @FXML private ImageView floor3Image;
-    @FXML private GesturePane gesturePane = new GesturePane();
-    @FXML private StackPane stackPane = new StackPane();
+    @FXML
+    private Group L1Group;
+    @FXML
+    private Group L2Group;
+    @FXML
+    private Group floor1Group;
+    @FXML
+    private Group floor2Group;
+    @FXML
+    private Group floor3Group;
+    @FXML
+    private ImageView lowerLevel1Image;
+    @FXML
+    private ImageView lowerLevel2Image;
+    @FXML
+    private ImageView floor1Image;
+    @FXML
+    private ImageView floor2Image;
+    @FXML
+    private ImageView floor3Image;
+    @FXML
+    private GesturePane gesturePane = new GesturePane();
+    @FXML
+    private StackPane stackPane = new StackPane();
+    @FXML
+    private FlowPane titleFlowPane;
 
     TableView<HomeServiceRequests> tableServiceRequest = new TableView<>();
     TableView<Invitations> tableInvitation = new TableView<>();
@@ -66,7 +88,7 @@ public class NewHomeController {
         initServiceTable();
     }
 
-    private void initEventTable() throws SQLException {
+    private void initEventTable() {
         TableColumn<Invitations, String> location = new TableColumn<>("Location");
         location.setCellValueFactory(new PropertyValueFactory<>("location"));
         location.setPrefWidth(150);
@@ -109,6 +131,7 @@ public class NewHomeController {
         accepted.setPrefWidth(74);
         accepted.setCellFactory(event -> new TableCell<>() {
             private final MFXButton button = new MFXButton();
+
             {
                 button.setOnAction(event -> {
                     Invitations invitation = getTableView().getItems().get(getIndex());
@@ -128,6 +151,7 @@ public class NewHomeController {
                     }
                 });
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -172,6 +196,13 @@ public class NewHomeController {
     }
 
     private void initMoveTable() throws SQLException {
+
+        Line line = new Line(0, 0, 250, 0);
+        line.setVisible(true);
+        line.setStrokeWidth(1);
+        line.setStroke(Color.BLACK);
+        titleFlowPane.getChildren().add(line);
+
         lowerLevel1Image = new ImageView(App.lowerlevel1);
         lowerLevel2Image = new ImageView(App.lowerlevel2);
         floor1Image = new ImageView(App.firstfloor);
@@ -191,51 +222,67 @@ public class NewHomeController {
         List<Move> allMoves = DAOFacade.getAllMoves();
         List<Move> allFutureMoves = DAOFacade.getAllFutureMoves(currentDate);
         Collections.reverse(allFutureMoves);
-        List<Button> moveButtons = new ArrayList<>();
+        List<FlowPane> moveButtons = new ArrayList<>();
 
-        for(Move moveTo : allFutureMoves){
+        for (Move moveTo : allFutureMoves) {
             int counter = 0;
             boolean check = false;
-            for(Move moveFrom : allMoves){
+            for (Move moveFrom : allMoves) {
                 String moveFromLocation = moveFrom.getLocation().getLongName();
                 String moveToLocation = moveTo.getLocation().getLongName();
-                if(moveFromLocation.equals(moveToLocation) && moveFrom.getNode().getNodeID() == moveTo.getNode().getNodeID())
-                {
+                if (moveFromLocation.equals(moveToLocation) && moveFrom.getNode().getNodeID() == moveTo.getNode().getNodeID()) {
                     check = true;
                 }
-                if(check) {
+                if (check) {
                     if (moveFromLocation.equals(moveToLocation)) {
                         counter++;
                     }
                 }
-                if(counter == 2){
+                if (counter == 2) {
+                    FlowPane flowPane = new FlowPane();
                     MFXButton moveButton = new MFXButton(moveFrom.getLocation().getLongName() + "\nNode " + moveFrom.getNode().getNodeID() + " -> Node " + moveTo.getNode().getNodeID() + "\n" + moveTo.getMoveDate());
                     moveButton.setTextAlignment(TextAlignment.CENTER);
-                    moveButton.prefWidthProperty().bind(movesPane.widthProperty());
-                    moveButtons.add(moveButton);
+                    moveButton.prefWidthProperty().bind(Bindings.subtract(movesPane.widthProperty(), 20));
+                    flowPane.getChildren().add(moveButton);
+                    moveButton.setStyle("-fx-border-radius: 10; -fx-border-color: black; -fx-background-radius: 10");
+                    flowPane.setMargin(flowPane, new Insets(10, 10, 0, 10));
+                    moveButtons.add(flowPane);
 
                     moveButton.setOnAction(event -> {
-                        gesturePane.setPrefSize(popOver.getPrefWidth(),popOver.getPrefHeight());
+                        gesturePane.setPrefSize(popOver.getPrefWidth(), popOver.getPrefHeight());
                         stackPane.getChildren().clear();
-                        stackPane.getChildren().addAll(L1Group,L2Group,floor1Group,floor2Group,floor3Group);
+                        stackPane.getChildren().addAll(L1Group, L2Group, floor1Group, floor2Group, floor3Group);
                         gesturePane.setContent(stackPane);
                         displayNode(moveTo, gesturePane);
                         popOver.setContentNode(gesturePane);
                         popOver.show(moveButton);
+                    });
+
+                    moveButton.setOnMouseEntered(event ->
+                    {
+                        moveButton.setStyle("-fx-border-radius: 10; -fx-border-color: black; -fx-background-color: rgba(160,160,160,0.6); -fx-background-radius: 10");
+                    });
+
+                    moveButton.setOnMouseExited(event ->
+                    {
+                        moveButton.setStyle("-fx-border-radius: 10; -fx-border-color: black; -fx-background-color: white; -fx-background-radius: 10");
                     });
                     gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
                     counter = 0;
                 }
             }
         }
-        movesPane.getChildren().clear();
         Collections.reverse(moveButtons);
-        for(Button button : moveButtons) {
+
+        for (FlowPane button : moveButtons) {
+            button.setAlignment(Pos.CENTER);
             movesPane.getChildren().add(button);
+
         }
     }
 
     private void initServiceTable() {
+
         TableColumn<HomeServiceRequests, String> serviceType = new TableColumn<>("Service Type");
         serviceType.setCellValueFactory(new PropertyValueFactory<>("requestType"));
 
@@ -321,7 +368,12 @@ public class NewHomeController {
             }
         });
 
-        tableServiceRequest.getColumns().addAll(completed, serviceType, items,location, fullNameCol, deliveryDate, deliveryTime);
+
+        TableColumn<HomeServiceRequests, String> title = new TableColumn<>("Service Request Table");
+
+        tableServiceRequest.getColumns().addAll(completed, serviceType, items, location, fullNameCol, deliveryDate, deliveryTime);
+
+
 
         tableServiceRequest.getItems().addAll(requestObservableList);
         tableServiceRequest.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -350,7 +402,6 @@ public class NewHomeController {
         });
         tableServiceRequest.setFocusTraversable(false);
     }
-
 
     public void displayNode(Move moveFrom, GesturePane gesturePane) {
         L1Group.setVisible(false);
