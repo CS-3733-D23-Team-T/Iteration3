@@ -85,6 +85,9 @@ public class NewEditMapController extends MapSuperController {
 
     List<Node> clickNode = new ArrayList<>();
 
+    int firstFindEdge = 1;
+
+
 
     int firstFind = 1;
 
@@ -114,20 +117,21 @@ public class NewEditMapController extends MapSuperController {
     public void findAllEdges(String floor) throws SQLException {
         selectedFloor.FLOOR.floor = floor;
 
-
-        getNeighbourHashMap().forEach((key, value) -> {
-            List<Line> lineList = new ArrayList<>();
-            for(int i = 0; i < value.size();i++){
-                Line line;
-                try {
-                    line = drawLine(getNodeHashMap().get(key).getXcoord(), getNodeHashMap().get(key).getYcoord(), value.get(i).getXcoord(), value.get(i).getYcoord(), Color.GREEN);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+        if(firstFindEdge == 1) {
+            getNeighbourHashMap().forEach((key, value) -> {
+                List<Line> lineList = new ArrayList<>();
+                for (int i = 0; i < value.size(); i++) {
+                    Line line;
+                    try {
+                        line = drawLine(getNodeHashMap().get(key).getXcoord(), getNodeHashMap().get(key).getYcoord(), value.get(i).getXcoord(), value.get(i).getYcoord(), Color.GREEN);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    lineList.add(line);
                 }
-                lineList.add(line);
-            }
-            lineHashMap.put(key, lineList);
-        });
+                lineHashMap.put(key, lineList);
+            });
+        }
         lineHashMap.forEach((key, value) -> {
             try {
                 switch (getNodeHashMap().get(key).getFloor()) {
@@ -151,6 +155,7 @@ public class NewEditMapController extends MapSuperController {
                 throw new RuntimeException(e);
             }
         });
+        firstFindEdge = 2;
     }
 
     public void findAllNodesEdit(List<String> nodeTypeList, String floor, String page) throws SQLException {
@@ -209,6 +214,7 @@ public class NewEditMapController extends MapSuperController {
                 throw new RuntimeException(e);
             }
         }));
+        firstFind = 2;
     }
 
     public void clickEditCircle(Circle circle, Node node, Text text) {
@@ -218,8 +224,6 @@ public class NewEditMapController extends MapSuperController {
                 gesturePane.setGestureEnabled(false);
                 double offsetX = event.getSceneX() - circle.getCenterX();
                 double offsetY = event.getSceneY() - circle.getCenterY();
-
-
                 circle.setUserData(new double[]{offsetX, offsetY});
                 try {
                     setMenuBarAllText(getMoveHashMap().get(node.getNodeID()).getLocation().getLongName());
@@ -234,6 +238,8 @@ public class NewEditMapController extends MapSuperController {
                 double offsetY = ((double[]) circle.getUserData())[1];
                 circle.setCenterX(event.getSceneX() - offsetX);
                 circle.setCenterY(event.getSceneY() - offsetY);
+                lineHashMap.get(node.getNodeID()).get(0).setStartX(event.getSceneX() - offsetX);
+                lineHashMap.get(node.getNodeID()).get(0).setStartY(event.getSceneY() - offsetY);
                 text.setX(circle.getCenterX() - (text.getLayoutBounds().getWidth() / 2));
                 text.setY(circle.getCenterY() + (circle.getRadius() * 2));
                 xCoordinate.setText(String.valueOf((int) circle.getCenterX()));
@@ -247,7 +253,6 @@ public class NewEditMapController extends MapSuperController {
             }
         });
         circle.setOnMouseClicked(event -> {
-
             componentShift(340);
             menuPane.setVisible(true);
             if (event.isControlDown()) {
@@ -466,13 +471,16 @@ public class NewEditMapController extends MapSuperController {
                     circleHashMap.get(clickNode.get(i)).setCenterY(startNode.getYcoord() - (i * yInterval));
                     circleHashMap.get(clickNode.get(i)).setFill(Color.RED);
                     circleHashMap.get(clickNode.get(i)).setStroke(Color.BLACK);
+//                    lineHashMap.get(clickNode.get(i)).get(i).setStartX(startNode.getXcoord() - (i * xInterval));
+//                    lineHashMap.get(clickNode.get(i)).get(i).setStartY(startNode.getYcoord() - (i * yInterval));
                 }
                 circleHashMap.get(clickNode.get(0)).setFill(Color.RED);
                 circleHashMap.get(clickNode.get(clickNode.size() - 1)).setFill(Color.RED);
+
                 clearAllNodes();
-                firstFind = 2;
                 try {
                     findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "ViewMap");
+                    findAllEdges(selectedFloor.FLOOR.floor);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
