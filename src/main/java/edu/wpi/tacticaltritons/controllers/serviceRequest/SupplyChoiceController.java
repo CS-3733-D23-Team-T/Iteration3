@@ -2,20 +2,16 @@ package edu.wpi.tacticaltritons.controllers.serviceRequest;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.database.DAOFacade;
-import edu.wpi.tacticaltritons.database.FlowerRequestOptions;
+import edu.wpi.tacticaltritons.database.SupplyRequestOptions;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
+import javafx.geometry.*;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -23,9 +19,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Flow;
 
-public class FlowerChoiceController {
+public class SupplyChoiceController {
 
     @FXML
     FlowPane leftFlowPane;
@@ -65,22 +60,22 @@ public class FlowerChoiceController {
 
         // This gets all the entrys in the database into a list locally so it is only one database call
 
-        HashMap<String, FlowerRequestOptions> uniqueShops = new HashMap<>();
-        List<FlowerRequestOptions> flowerRequestOptionsList;
+        HashMap<String, SupplyRequestOptions> uniqueShops = new HashMap<>();
+        List<SupplyRequestOptions> supplyRequestOptionsList;
         try {
-            flowerRequestOptionsList = DAOFacade.getAllFlowerRequestOptions();
+            supplyRequestOptionsList = DAOFacade.getAllSupplyRequestOptions();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        uniqueShops = findNumberOfShops(flowerRequestOptionsList);
+        uniqueShops = findNumberOfShops(supplyRequestOptionsList);
 
         uniqueShops.forEach((key, value) -> {
-            createFlowerShopButton(value, imageHashMap.get(value.getShop()));
+            createSupplyShopButton(value, imageHashMap.get(value.getShop()));
         });
     }
 
-    private void createFlowerShopButton(FlowerRequestOptions value, Image shopImage) {
+    private void createSupplyShopButton(SupplyRequestOptions value, Image shopImage) {
         // created the outer flow pane
         FlowPane flowPaneOuter = new FlowPane();
         flowPaneOuter.setPrefWidth(defaultOuterFlowPanePrefWidth);
@@ -133,13 +128,12 @@ public class FlowerChoiceController {
         flowPaneOuter.getChildren().add(flowPaneInner);
 
         // addes things to the main flow pane
-        flowPaneOuter.setStyle("-fx-background-radius: 10; -fx-background-color: white");
         leftFlowPane.getChildren().add(flowPaneOuter);
 
         flowPaneOuter.setOnMouseClicked(event ->
         {
             name = value.getShop();
-            Navigation.navigate(Screen.FLOWER_REQUEST);
+            Navigation.navigate(Screen.SUPPLY_REQUEST);
         });
 
         startUpSize(flowPaneOuter, flowPaneInner, imageView, shopNameLabel, discriptionLabel);
@@ -252,10 +246,10 @@ public class FlowerChoiceController {
 
 //    private ChangeListener<? super Number> generateWidthScaler(Map<Node, Map<Class<?>, List<Double> nodes)
 
-    private HashMap<String, FlowerRequestOptions> findNumberOfShops(List<FlowerRequestOptions> flowerRequestOptionsList) {
-        HashMap<String, FlowerRequestOptions> hash = new HashMap<>();
+    private HashMap<String, SupplyRequestOptions> findNumberOfShops(List<SupplyRequestOptions> supplyRequestOptionsList) {
+        HashMap<String, SupplyRequestOptions> hash = new HashMap<>();
 
-        for (FlowerRequestOptions options : flowerRequestOptionsList) {
+        for (SupplyRequestOptions options : supplyRequestOptionsList) {
             hash.putIfAbsent(options.getShop(), options);
         }
 

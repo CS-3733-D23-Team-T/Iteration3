@@ -142,6 +142,7 @@ public class Account {
         MessageDigest digest;
         try {
             Login user = DAOFacade.getLogin(username);
+            if(user == null) return false;
             digest = MessageDigest.getInstance("SHA-256");
 
             byte[] salt = new byte[user.getSalt().length() / 2];
