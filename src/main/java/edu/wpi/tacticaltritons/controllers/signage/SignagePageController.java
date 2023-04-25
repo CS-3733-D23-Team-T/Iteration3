@@ -1,6 +1,8 @@
 package edu.wpi.tacticaltritons.controllers.signage;
 
 import edu.wpi.tacticaltritons.App;
+import edu.wpi.tacticaltritons.database.DAOFacade;
+import edu.wpi.tacticaltritons.database.Signage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -13,7 +15,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import edu.wpi.tacticaltritons.styling.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class SignagePageController {
@@ -42,10 +46,24 @@ public class SignagePageController {
     VBox[] signageLocationBlocks;
 
     ArrayList<Label> locationLabels;
-    public void initialize(){
+    public void initialize() throws SQLException {
+        List<Signage> signageList = DAOFacade.getAllSignage();
+        SignagePageInteraction.forwardLocations = signageList.get(0).getForwarddir();
+        SignagePageInteraction.leftLocations = signageList.get(0).getLeftdir();
+        SignagePageInteraction.rightLocations = signageList.get(0).getRightdir();
+        SignagePageInteraction.backLocations = signageList.get(0).getBackdir();
+        SignagePageInteraction.signleDisplay = signageList.get(0).isSingleDisplay();
         locationLabels = new ArrayList<>();
         signageLocationBlocks = new VBox[]{signageForwardLocations,signageLeftLocations,signageRightLocations,signageBackLocations};
         horizontalResizing(App.getPrimaryStage().getWidth());
+        generatePage();
+        EffectGenerator.generateShadowEffect(basePane);
+        EffectGenerator.generateSpacing(basePane,20);
+        setResize();
+        resizeTexts(App.getPrimaryStage().getWidth());
+    }
+
+    private void generatePage(){
         loadLocation(signageForwardLocations, SignagePageInteraction.forwardLocations); // forward direction block is the default display area
         if(SignagePageInteraction.signleDisplay){
             formatAsSingleDisplay();
@@ -55,16 +73,6 @@ public class SignagePageController {
             loadLocation(signageBackLocations, SignagePageInteraction.backLocations);
             removeEmpty();
         }
-        EffectGenerator.generateShadowEffect(basePane);
-        EffectGenerator.generateSpacing(basePane,20);
-        setResize();
-        if(basePane.getChildren().isEmpty()){
-            Label askForSelection = new Label("no preset selected,\nplease select one preset in \n\"Edit Signage\" page");
-            askForSelection.setStyle("-fx-font-size: " + fontSize);
-            basePane.getChildren().add(askForSelection);
-            locationLabels.add(askForSelection);
-        }
-        resizeTexts(App.getPrimaryStage().getWidth());
     }
     // load all locations
     private void loadLocation(VBox target,String[] source){

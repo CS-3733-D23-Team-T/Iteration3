@@ -15,14 +15,13 @@ import java.util.List;
 
 public class SignageEditController {
     @FXML private FlowPane basePane;
-    private final URL presetButtonPath = this.getClass().getResource("../../views/signagePages/SSignagePresetButton.fxml");
+    private final URL presetButtonPath = this.getClass().getResource("../../views/signagePages/SignagePresetButton.fxml");
     public void initialize() throws IOException, SQLException {
 
         List<Signage> signageList = DAOFacade.getAllSignage();
         for(Signage signage: signageList){
             addPreset(signage.getTitle(), signage.isSingleDisplay(),signage.getForwarddir(),signage.getLeftdir(),signage.getRightdir(),signage.getBackdir());
         }
-
 
         EffectGenerator.generateShadowEffect(basePane);
         EffectGenerator.generateSpacing(basePane,20);
