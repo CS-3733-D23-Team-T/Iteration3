@@ -85,6 +85,7 @@ public class NewEditMapController extends MapSuperController {
 
     List<Node> clickNode = new ArrayList<>();
 
+
     int firstFind = 1;
 
 
@@ -112,13 +113,18 @@ public class NewEditMapController extends MapSuperController {
 
     public void findAllEdges(String floor) throws SQLException {
         selectedFloor.FLOOR.floor = floor;
-        getNodeHashMap().forEach((key, value) -> {
+
+
+        getNeighbourHashMap().forEach((key, value) -> {
             List<Line> lineList = new ArrayList<>();
-            for (Edge edge : allEdges) {
-                if (edge.getStartNode().getNodeID() == key) {
-                    Line line = drawLine(value.getXcoord(), value.getYcoord(), edge.getEndNode().getXcoord(), edge.getEndNode().getYcoord(), Color.GREEN);
-                    lineList.add(line);
+            for(int i = 0; i < value.size();i++){
+                Line line;
+                try {
+                    line = drawLine(getNodeHashMap().get(key).getXcoord(), getNodeHashMap().get(key).getYcoord(), value.get(i).getXcoord(), value.get(i).getYcoord(), Color.GREEN);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
+                lineList.add(line);
             }
             lineHashMap.put(key, lineList);
         });

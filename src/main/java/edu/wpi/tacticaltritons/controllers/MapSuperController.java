@@ -44,7 +44,8 @@ import org.checkerframework.checker.units.qual.C;
 import org.controlsfx.control.PopOver;
 
 public class MapSuperController {
-    @FXML protected ImageView importExport;
+    @FXML
+    protected ImageView importExport;
 
     @FXML
     protected GesturePane gesturePane;
@@ -106,7 +107,8 @@ public class MapSuperController {
     @FXML
     protected MFXButton floor3;
 
-    @FXML protected MFXButton viewNodes = new MFXButton();
+    @FXML
+    protected MFXButton viewNodes = new MFXButton();
 
 
     @FXML
@@ -115,8 +117,10 @@ public class MapSuperController {
     @FXML
     protected MFXFilterComboBox<String> endLocation = new MFXFilterComboBox<>();
 
+    Date today = Date.valueOf(java.time.LocalDate.now());
+
     public List<Node> allNodes = DAOFacade.getAllNodes();
-    public List<Move> allMoves = DAOFacade.getAllMoves();
+    public List<Move> allMoves = DAOFacade.getAllCurrentMoves(today);
     public List<Edge> allEdges = DAOFacade.getAllEdges();
     public List<LocationName> allLocationNames = DAOFacade.getAllLocationNames();
     public List<String> blank = new ArrayList<>();
@@ -135,7 +139,7 @@ public class MapSuperController {
     public HashMap<Node, Circle> circleHashMap = new HashMap<>();
     public HashMap<Integer, List<Line>> lineHashMap = new HashMap<>();
 
-    Date today = Date.valueOf(java.time.LocalDate.now());
+
 
     public MapSuperController() throws SQLException {
     }
@@ -157,6 +161,12 @@ public class MapSuperController {
         return hash;
     }
 
+    public HashMap<Integer, ArrayList<Node>> getNeighbourHashMap() throws SQLException {
+        HashMap<Integer, ArrayList<Node>> hash = new HashMap<>();
+        hash = DAOFacade.getAllNeighbors();
+        return hash;
+    }
+
 
     public HashMap<String, LocationName> getLocationNameHashMap() throws SQLException {
         HashMap<String, LocationName> hash = new HashMap<>();
@@ -167,7 +177,7 @@ public class MapSuperController {
     }
 
     public void initializeSearch(String page) throws SQLException {
-        switch(page){
+        switch (page) {
             case "ViewMap":
                 getLocationNameHashMap().forEach(((key, value) -> {
                     if (!value.getNodeType().equals("HALL"))
@@ -176,7 +186,7 @@ public class MapSuperController {
                 break;
             case "Pathfinding":
                 getLocationNameHashMap().forEach(((key, value) -> {
-                    if (!value.getNodeType().equals("HALL")){
+                    if (!value.getNodeType().equals("HALL")) {
                         startLocation.getItems().add(key);
                         endLocation.getItems().add(key);
                     }
@@ -191,14 +201,14 @@ public class MapSuperController {
 
             if (!menuPane.isVisible()) {
                 menuPane.setVisible(true);
-                switch (page){
-                    case"ViewMap":
+                switch (page) {
+                    case "ViewMap":
                         componentShift(210);
                         break;
-                    case"Pathfinding":
+                    case "Pathfinding":
                         componentShift(210);
                         break;
-                    case"EditMap":
+                    case "EditMap":
                         componentShift(340);
                         break;
 
@@ -395,103 +405,98 @@ public class MapSuperController {
     public void findAllNodes(List<String> nodeTypeList, String floor, String page) throws SQLException {
         selectedFloor.FLOOR.floor = floor;
         getNodeHashMap().forEach(((key, value) -> {
-                try {
-                    if (getMoveHashMap().get(key) == null) {
+            try {
+                if (getMoveHashMap().get(key) == null) {
 
+                } else {
+                    Circle circle;
+                    Text longName = new Text();
+
+                    if (nodeTypeList.contains(getMoveHashMap().get(value.getNodeID()).getLocation().getNodeType())) {
+                        circle = drawCircle(value.getXcoord(), value.getYcoord(), Color.RED, Color.BLACK);
+                        longName.setFill(Color.BLACK);
                     } else {
-                        Circle circle;
-                        Text longName = new Text();
-
-                        if (nodeTypeList.contains(getMoveHashMap().get(value.getNodeID()).getLocation().getNodeType())) {
-                            circle = drawCircle(value.getXcoord(), value.getYcoord(), Color.RED, Color.BLACK);
-                            longName.setFill(Color.BLACK);
-                        } else {
-                            circle = drawCircle(value.getXcoord(), value.getYcoord(), Color.GRAY, Color.DARKGRAY);
-                            longName.setVisible(false);
-                        }
-
-
-                        if (!getMoveHashMap().get(value.getNodeID()).getLocation().getNodeType().equals("HALL")) {
-                            longName.setText(getMoveHashMap().get(value.getNodeID()).getLocation().getShortName());
-                        }
-                        longName.setFont(Font.font("Ariel", FontWeight.BOLD, 15));
-                        longName.toFront();
-                        longName.setX(value.getXcoord() - (longName.getLayoutBounds().getWidth() / 2));
-                        longName.setY(value.getYcoord() + (circle.getRadius() * 2) + 5);
-
-                        circleHashMap.put(value,circle);
-
-                        switch (value.getFloor()) {
-                            case "L1":
-                                this.L1Group.getChildren().addAll(circleHashMap.get(value), longName);
-                                break;
-                            case "L2":
-                                this.L2Group.getChildren().addAll(circleHashMap.get(value), longName);
-                                break;
-                            case "1":
-                                this.floor1Group.getChildren().addAll(circleHashMap.get(value), longName);
-                                break;
-                            case "2":
-                                this.floor2Group.getChildren().addAll(circleHashMap.get(value), longName);
-                                break;
-                            case "3":
-                                this.floor3Group.getChildren().addAll(circleHashMap.get(value), longName);
-                                break;
-                        }
-                        setClickedButton(selectedFloor.FLOOR.floor);
-                        clickCircle(circle, value, page);
+                        circle = drawCircle(value.getXcoord(), value.getYcoord(), Color.GRAY, Color.DARKGRAY);
+                        longName.setVisible(false);
                     }
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+
+
+                    if (!getMoveHashMap().get(value.getNodeID()).getLocation().getNodeType().equals("HALL")) {
+                        longName.setText(getMoveHashMap().get(value.getNodeID()).getLocation().getShortName());
+                    }
+                    longName.setFont(Font.font("Ariel", FontWeight.BOLD, 15));
+                    longName.toFront();
+                    longName.setX(value.getXcoord() - (longName.getLayoutBounds().getWidth() / 2));
+                    longName.setY(value.getYcoord() + (circle.getRadius() * 2) + 5);
+
+                    circleHashMap.put(value, circle);
+
+                    switch (value.getFloor()) {
+                        case "L1":
+                            this.L1Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            break;
+                        case "L2":
+                            this.L2Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            break;
+                        case "1":
+                            this.floor1Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            break;
+                        case "2":
+                            this.floor2Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            break;
+                        case "3":
+                            this.floor3Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            break;
+                    }
+                    setClickedButton(selectedFloor.FLOOR.floor);
+                    clickCircle(circle, value, page);
                 }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }));
     }
 
     public void clickCircle(Circle circle, Node node, String page) {
-        switch(page){
+        switch (page) {
             case "ViewMap":
                 circle.setOnMouseClicked(event -> {
-                    switch(node.getFloor()){
+                    switch (node.getFloor()) {
                         case "L1":
-                            for(javafx.scene.Node nodes: L1Group.getChildren()) {
-                                if(nodes instanceof Circle)
-                                {
+                            for (javafx.scene.Node nodes : L1Group.getChildren()) {
+                                if (nodes instanceof Circle) {
                                     ((Circle) nodes).setFill(Color.GRAY);
                                     ((Circle) nodes).setStroke(Color.DARKGRAY);
                                 }
                             }
                             break;
                         case "L2":
-                            for(javafx.scene.Node nodes: L2Group.getChildren()) {
-                                if(nodes instanceof Circle)
-                                {
+                            for (javafx.scene.Node nodes : L2Group.getChildren()) {
+                                if (nodes instanceof Circle) {
                                     ((Circle) nodes).setFill(Color.GRAY);
                                     ((Circle) nodes).setStroke(Color.DARKGRAY);
                                 }
                             }
                             break;
                         case "1":
-                            for(javafx.scene.Node nodes: floor1Group.getChildren()) {
-                                if(nodes instanceof Circle)
-                                {
+                            for (javafx.scene.Node nodes : floor1Group.getChildren()) {
+                                if (nodes instanceof Circle) {
                                     ((Circle) nodes).setFill(Color.GRAY);
                                     ((Circle) nodes).setStroke(Color.DARKGRAY);
                                 }
                             }
                             break;
                         case "2":
-                            for(javafx.scene.Node nodes: floor2Group.getChildren()) {
-                                if(nodes instanceof Circle)
-                                {
+                            for (javafx.scene.Node nodes : floor2Group.getChildren()) {
+                                if (nodes instanceof Circle) {
                                     ((Circle) nodes).setFill(Color.GRAY);
                                     ((Circle) nodes).setStroke(Color.DARKGRAY);
                                 }
                             }
                             break;
                         case "3":
-                            for(javafx.scene.Node nodes: floor3Group.getChildren()) {
-                                if(nodes instanceof Circle)
-                                {
+                            for (javafx.scene.Node nodes : floor3Group.getChildren()) {
+                                if (nodes instanceof Circle) {
                                     ((Circle) nodes).setFill(Color.GRAY);
                                     ((Circle) nodes).setStroke(Color.DARKGRAY);
                                 }
@@ -504,7 +509,7 @@ public class MapSuperController {
                     StackPane stackPane = new StackPane();
                     Text text = new Text();
                     try {
-                        text.setText("Long Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getLongName()+ "\n" + "Short Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getShortName() + "\n" + "Node Type: " + getMoveHashMap().get(node.getNodeID()).getLocation().getNodeType() + "\n" + "Node ID: " + node.getNodeID() + "\n" + "Coordinates (x,y): (" + node.getXcoord() + "," + node.getYcoord() + ")" + "\n" + "Floor: " + node.getFloor() + "\n" + "Building: " + node.getBuilding());
+                        text.setText("Long Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getLongName() + "\n" + "Short Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getShortName() + "\n" + "Node Type: " + getMoveHashMap().get(node.getNodeID()).getLocation().getNodeType() + "\n" + "Node ID: " + node.getNodeID() + "\n" + "Coordinates (x,y): (" + node.getXcoord() + "," + node.getYcoord() + ")" + "\n" + "Floor: " + node.getFloor() + "\n" + "Building: " + node.getBuilding());
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
@@ -532,7 +537,7 @@ public class MapSuperController {
                     circle.setFill(Color.GREEN);
                     pathfindingList.add(node);
                     System.out.println(pathfindingList.size());
-                    if(pathfindingList.size()==2){
+                    if (pathfindingList.size() == 2) {
                         System.out.println("pathfinding");
                         clearAllNodes();
                         try {
@@ -541,7 +546,7 @@ public class MapSuperController {
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
-                        pathfinding(pathfindingList.get(0).getNodeID(),pathfindingList.get(1).getNodeID());
+                        pathfinding(pathfindingList.get(0).getNodeID(), pathfindingList.get(1).getNodeID());
                         pathfindingList.clear();
                     }
                 });
@@ -549,7 +554,8 @@ public class MapSuperController {
         }
 
     }
-    public void setLocationSearch(Node node){
+
+    public void setLocationSearch(Node node) {
         try {
             if (getLocationNameHashMap().get(getMoveHashMap().get(node.getNodeID()).getLocation().getLongName()).getNodeType().equals("HALL")) {
 
@@ -561,7 +567,7 @@ public class MapSuperController {
         }
     }
 
-    public void pathfinding(int startNodeID, int endNodeID){
+    public void pathfinding(int startNodeID, int endNodeID) {
         xCoord.clear();
         yCoord.clear();
         startEnd.clear();
@@ -711,7 +717,6 @@ public class MapSuperController {
         gesturePane.zoomTo(1, centerpoint);
         gesturePane.centreOn(centerpoint);
     }
-
 
 
 }
