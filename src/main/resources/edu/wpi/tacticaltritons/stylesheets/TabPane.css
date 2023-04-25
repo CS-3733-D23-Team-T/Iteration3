@@ -1,18 +1,17 @@
 .tab-pane{
-    -fx-tab-max-width: 300;
-    -fx-tab-max-height: 100;
-}
-#normalTabPane{
-
+    -fx-font-size: 20;
 }
 
-.tab{
+.tab {
     -fx-background-color: white;
-    -fx-min-width: 200;
-    -fx-min-height: 100;
-    -fx-font-size: 25;
+
+    -fx-fit-to-width: true;
+    -fx-fit-to-height: true;
+    -fx-tab-min-height: 100;
+    -fx-tab-min-width: 150;
 }
+
 #normalTab:hover
 {
-    -fx-background-color: gray;
+    -fx-background-color: rgba(160,160,160,0.6);
 }

@@ -165,6 +165,8 @@ public class ViewServiceRequestsController {
 
         tableMeal.setPrefWidth(App.getPrimaryStage().widthProperty().get());
         tableMeal.setPrefHeight(App.getPrimaryStage().heightProperty().get());
+        tableMeal.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableMeal.getStyleClass().add("table-view");
         mealRequests.getChildren().add(tableMeal);
     }
 
@@ -273,6 +275,8 @@ public class ViewServiceRequestsController {
 
         tableFurniture.setPrefWidth(App.getPrimaryStage().widthProperty().get());
         tableFurniture.setPrefHeight(App.getPrimaryStage().heightProperty().get());
+        tableFurniture.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableFurniture.getStyleClass().add("table-view");
         furnitureRequest.getChildren().add(tableFurniture);
     }
 
@@ -389,6 +393,8 @@ public class ViewServiceRequestsController {
 
         tableFlower.setPrefWidth(App.getPrimaryStage().widthProperty().get());
         tableFlower.setPrefHeight(App.getPrimaryStage().heightProperty().get());
+        tableFlower.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableFlower.getStyleClass().add("table-view");
         flowerRequests.getChildren().add(tableFlower);
     }
 
@@ -462,11 +468,10 @@ public class ViewServiceRequestsController {
 
         tableConference.getItems().addAll(conferenceObservableList);
         Platform.runLater(() -> {
-            tableConference.setPrefWidth(App.getPrimaryStage().widthProperty().get());
-            //tableConference.setPrefHeight(basePane.heightProperty().get());
-            tableConference.setPrefHeight(300);
-
+            tableConference.setPrefWidth(App.getPrimaryStage().widthProperty().get() - 15);
+            tableConference.setPrefHeight(basePane.heightProperty().get());
             tableConference.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            tableConference.getStyleClass().add("table-view");
             conferenceRoomRequest.getChildren().add(tableConference);
         });
     }
