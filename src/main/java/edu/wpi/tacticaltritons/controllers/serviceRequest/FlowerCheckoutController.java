@@ -234,15 +234,43 @@ public class FlowerCheckoutController {
                     if (formComplete()) {
                         try {
                             sendToDatabase();
-                            confermation();
-                            Thread.sleep(5000);
+                            //confermation();
                         } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
                         clearForm();
-                        Navigation.navigate(Screen.HOME);
+
+                        MFXGenericDialog content = new MFXGenericDialog();
+                        MFXStageDialog stageDialog = new MFXStageDialog();
+                        stageDialog = MFXGenericDialogBuilder.build(content)
+                                .toStageDialogBuilder()
+                                .initOwner(App.getPrimaryStage())
+                                .initModality(Modality.APPLICATION_MODAL)
+                                .setDraggable(true)
+                                .setTitle("Dialogs Preview")
+                                .setOwnerNode(basePane)
+                                .setScrimPriority(ScrimPriority.WINDOW)
+                                .setScrimOwner(true)
+                                .get();
+
+                        content.setContent(new Text("Order Confirmed"));
+                        content.setShowClose(false);
+                        content.setShowMinimize(false);
+                        content.setShowAlwaysOnTop(false);
+                        stageDialog.setContent(content);
+                        stageDialog.setOwnerNode(basePane);
+                        stageDialog.setOverlayClose(true);
+                        stageDialog.toFront();
+                        stageDialog.setAlwaysOnTop(true);
+                        stageDialog.setDraggable(false);
+
+                        MFXStageDialog finalStageDialog = stageDialog;
+                        finalStageDialog.show();
+                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), event1 -> {
+                            finalStageDialog.close();
+                            Navigation.navigate(Screen.HOME);
+                        }));
+                        timeline.play();
                     } else {
                         System.out.println("Form cannot submit");
                         //TODO do something when not filled
@@ -311,24 +339,7 @@ public class FlowerCheckoutController {
     }
 
     private void confermation() throws InterruptedException {
-        MFXGenericDialog content = new MFXGenericDialog();
-        MFXStageDialog stageDialog = new MFXStageDialog();
 
-        content.setContent(new Text("Order Confirmed"));
-        content.setShowClose(false);
-        content.setShowMinimize(false);
-        stageDialog.setContent(content);
-        stageDialog.setOwnerNode(basePane);
-        stageDialog.setOverlayClose(true);
-        stageDialog.toFront();
-        stageDialog.setAlwaysOnTop(true);
-
-        MFXStageDialog finalStageDialog = stageDialog;
-        finalStageDialog.show();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> {
-            finalStageDialog.close();
-        }));
-        timeline.play();
     }
 
     private FlowPane createCheckoutNode(String key, int value, Image flowerImage) {
