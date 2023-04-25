@@ -280,8 +280,8 @@ public class NewEditMapController extends MapSuperController {
 
         this.add.setOnAction(event -> {
             System.out.println("this button works");
-            Node node = new Node(0, 0, 0, "", "");
-            LocationName locationName = new LocationName("", "", "");
+            Node node;
+            LocationName locationName;
             if (!nodeID.getText().equals("")) {
                 node = new Node(Integer.parseInt(nodeID.getText()), Integer.parseInt(xCoordinate.getText()), Integer.parseInt(yCoordinate.getText()), floor.getSelectedItem() + "", building.getSelectedItem() + "");
                 try {
