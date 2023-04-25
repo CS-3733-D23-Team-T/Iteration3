@@ -157,7 +157,7 @@ public class FlowerDeliveryController {
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         infoBoardPane.setCenter(tabPane);
 
-
+        //clears
         clearButton.setOnAction(event ->
         {
             priceOfItems.clear();
