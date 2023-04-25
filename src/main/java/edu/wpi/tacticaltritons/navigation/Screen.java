@@ -46,13 +46,17 @@ public enum Screen {
   SUPPLY_CHOICE("views/serviceRequest/SupplyChoice.fxml"),
   SUPPLY_CHECKOUT("views/serviceRequest/SupplyCheckout.fxml"),
 
-  SIGNAGE("views/signagePages/Signage.fxml"),
+  SIGNAGE("views/signagePages/SignagePage.fxml"),
+  EDIT_SIGNAGE("views/signagePages/SignageEditPage.fxml"),
+
   PATHFINDING("views/NewPathfinding.fxml"),
   EDIT_MAP("views/NewEditMap.fxml"),
   VIEW_MAP("views/NewViewMap.fxml"),
+
   DATABASE("views/database/Database.fxml"),
   DATABASE_HELP("views/database/DatabaseHelp.fxml"),
   EDIT_DATABASE("views/database/EditDatabase.fxml"),
+
   FURNITURE_DELIVERY("views/serviceRequest/FurnitureDelivery.fxml"),
   FURNITURE_CHECKOUT("views/serviceRequest/FurnitureCheckout.fxml"),
   CONFERENCE_ROOM("views/serviceRequest/ConferenceRoomRequest.fxml"),
@@ -64,8 +68,8 @@ public enum Screen {
   TEST_2("views/test_pages/p2.fxml"),
   TEST_3("views/test_pages/p3.fxml"),
   TEST_4("views/test_pages/p4.fxml"),
-  TEST_5("views/test_pages/p5.fxml")
-  ;
+  TEST_5("views/test_pages/p5.fxml");
+
   private final String filename;
 
   Screen(String filename) {
