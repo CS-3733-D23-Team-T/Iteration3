@@ -52,6 +52,15 @@ public class presetButtonController {
         forwardLocations = content;
         singleDisplay = true;
     }
+
+    public void setPresetContents(Boolean singleDisplay, String[] forward, String[] left, String[] right, String[] back){
+        forwardLocations = forward;
+        leftLocations = left;
+        rightLocations = right;
+        backLocations = back;
+        this.singleDisplay = singleDisplay;
+    }
+
     private void loadData(){
         System.out.println("clicked");
         signagePageInteractionClass.forwardLocations = forwardLocations;

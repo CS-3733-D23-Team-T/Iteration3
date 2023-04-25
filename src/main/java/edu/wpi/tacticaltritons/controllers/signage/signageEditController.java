@@ -1,5 +1,7 @@
 package edu.wpi.tacticaltritons.controllers.signage;
 
+import edu.wpi.tacticaltritons.database.DAOFacade;
+import edu.wpi.tacticaltritons.database.Signage;
 import edu.wpi.tacticaltritons.styling.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.fxml.FXML;
@@ -12,14 +14,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Array;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.concurrent.Flow;
 
 public class signageEditController {
     @FXML private FlowPane basePane;
     private final URL presetButtonPath = this.getClass().getResource("../../views/signagePages/signagePresetButton.fxml");
-    public void initialize() throws IOException {
+    public void initialize() throws IOException, SQLException {
 
-        //TODO move these four preset to database, and enable function for load database information to this page
+        List<Signage> signageList = DAOFacade.getAllSignage();
+        for(Signage signage: signageList){
+            addPreset(signage.getTitle(), signage.isSingleDisplay(),signage.getForwarddir(),signage.getLeftdir(),signage.getRightdir(),signage.getBackdir());
+        }
 
         //preset 1
         addPreset("May 2023 \nWatkins A",
@@ -59,7 +65,6 @@ public class signageEditController {
         controller.setPresetContents(forward,left,right,back);
         basePane.getChildren().add(presetButton);
     }
-
     //add the single signage (NOT equivalent to only fill the fist list of the method above!)
     private void addPreset(String presetName, String[] singleDisplayContent) throws IOException {
         FXMLLoader loader = new FXMLLoader(presetButtonPath);
@@ -67,6 +72,15 @@ public class signageEditController {
         presetButtonController controller = loader.getController();
         controller.setPresetName(presetName);
         controller.setPresetContents(singleDisplayContent);
+        basePane.getChildren().add(presetButton);
+    }
+
+    private void addPreset(String presetName, boolean singleDisplay, String[] forward, String[] left, String[] right, String[] back) throws IOException {
+        FXMLLoader loader = new FXMLLoader(presetButtonPath);
+        GridPane presetButton = loader.load();
+        presetButtonController controller = loader.getController();
+        controller.setPresetName(presetName);
+        controller.setPresetContents(singleDisplay,forward,left,right,back);
         basePane.getChildren().add(presetButton);
     }
 }

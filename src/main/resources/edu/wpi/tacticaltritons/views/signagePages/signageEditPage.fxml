@@ -5,7 +5,9 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<FlowPane fx:id="basePane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.wpi.tacticaltritons.controllers.signage.signageEditController" prefHeight="650" prefWidth="1280">
-
-</FlowPane>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.wpi.tacticaltritons.controllers.signage.signageEditController" prefHeight="650" prefWidth="1280">
+    <MFXButton fx:id="addPresetButton" id="normalButton" text="+" style="-fx-background-radius: 20"/>
+    <FlowPane fx:id="basePane" >
+    </FlowPane>
+</StackPane>
