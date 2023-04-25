@@ -32,10 +32,10 @@ import net.kurobako.gesturefx.GesturePane;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -81,7 +81,7 @@ public class NewEditMapController extends MapSuperController {
     private Node oldNode;
     private LocationName oldLocationName;
     private boolean clicked = false;
-    Date today = new Date(2023, 4, 19);
+    java.sql.Date today = new Date(2023, 4, 19);
 
     List<Node> clickNode = new ArrayList<>();
     List<Line> lineList = new ArrayList<>();
@@ -499,7 +499,7 @@ public class NewEditMapController extends MapSuperController {
                     FileChooser fileChooser = new FileChooser();
                     File file = fileChooser.showOpenDialog(outStage);
                     try {
-                        Import.importFile(file);
+                        Import.importFile(file, selector.getText());
                     } catch (IOException | SQLException | ParseException e) {
                         throw new RuntimeException(e);
                     }
