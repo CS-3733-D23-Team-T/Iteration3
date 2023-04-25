@@ -1,6 +1,18 @@
-.tab-pane > tab {
-    -fx-background-color: rgba(0, 60, 136, 0.5);
-    -fx-border-color: rgba(0, 60, 136, 0.8);
-    -fx-font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
-    -fx-font-size: 1.2em;
+.tab-pane{
+    -fx-tab-max-width: 300;
+    -fx-tab-max-height: 100;
+}
+#normalTabPane{
+
+}
+
+.tab{
+    -fx-background-color: white;
+    -fx-min-width: 200;
+    -fx-min-height: 100;
+    -fx-font-size: 25;
+}
+#normalTab:hover
+{
+    -fx-background-color: gray;
 }

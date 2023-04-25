@@ -461,11 +461,13 @@ public class ViewServiceRequestsController {
         });
 
         tableConference.getItems().addAll(conferenceObservableList);
-      Platform.runLater(()->{
-        tableConference.setPrefWidth(App.getPrimaryStage().widthProperty().get());
-        tableConference.setPrefHeight(basePane.heightProperty().get());
-        tableConference.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        conferenceRoomRequest.getChildren().add(tableConference);
-      });
+        Platform.runLater(() -> {
+            tableConference.setPrefWidth(App.getPrimaryStage().widthProperty().get());
+            //tableConference.setPrefHeight(basePane.heightProperty().get());
+            tableConference.setPrefHeight(300);
+
+            tableConference.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            conferenceRoomRequest.getChildren().add(tableConference);
+        });
     }
 }

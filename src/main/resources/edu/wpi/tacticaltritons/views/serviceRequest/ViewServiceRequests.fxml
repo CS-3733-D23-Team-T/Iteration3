@@ -8,29 +8,29 @@
 
 <BorderPane fx:id="basePane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.ViewServiceRequestsController">
    <center>
-      <TabPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 10;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane id="normalTabPane" prefHeight="500.0" style="-fx-background-color: white; -fx-background-radius: 10;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab closable="false" text="Conference Room Request">
+          <Tab id="normalTab" closable="false" text="Conference Room Request">
                <content>
                   <FlowPane fx:id="conferenceRoomRequest" />
                </content>
           </Tab>
-          <Tab closable="false" text="Flower Requests">
+          <Tab id="normalTab" closable="false" text="Flower Requests">
                <content>
                   <FlowPane fx:id="flowerRequests" />
                </content>
           </Tab>
-            <Tab closable="false" text="Furniture Request">
+            <Tab id="normalTab" closable="false" text="Furniture Request">
                <content>
                   <FlowPane fx:id="furnitureRequest" />
                </content>
             </Tab>
-            <Tab closable="false" text="Office Supply Request">
+            <Tab id="normalTab" closable="false" text="Office Supply Request">
                <content>
                   <FlowPane fx:id="officeSupplyRequest" />
                </content>
             </Tab>
-            <Tab closable="false" text="Meal Requests">
+            <Tab id="normalTab" closable="false" text="Meal Requests">
                <content>
                   <FlowPane fx:id="mealRequests" />
                </content>
