@@ -1,8 +1,9 @@
-package edu.wpi.tacticaltritons.controllers;
+package edu.wpi.tacticaltritons.controllers.home;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.database.*;
+import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.styling.ThemeColors;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
@@ -10,6 +11,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -17,7 +19,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -27,22 +28,19 @@ import javafx.scene.text.TextAlignment;
 import net.kurobako.gesturefx.GesturePane;
 import org.controlsfx.control.PopOver;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class NewHomeController {
-    @FXML
-    FlowPane requestsPane;
-    @FXML
-    FlowPane movesPane;
-    @FXML
-    FlowPane eventsPane;
-    @FXML
-    GridPane tableGridPane;
+public class HomeController {
+    @FXML private FlowPane requestsPane;
+    @FXML private FlowPane movesPane;
+    @FXML private FlowPane eventsPane;
+    @FXML private GridPane tableGridPane;
+    @FXML private BorderPane announcementsPane;
     @FXML private Group L1Group;
     @FXML private Group L2Group;
     @FXML private Group floor1Group;
@@ -60,7 +58,10 @@ public class NewHomeController {
     TableView<Invitations> tableInvitation = new TableView<>();
 
     @FXML
-    public void initialize() throws SQLException {
+    public void initialize() throws SQLException, IOException {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT_ROOT.getFilename()));
+        announcementsPane.setCenter(loader.load());
+
         initEventTable();
         initMoveTable();
         initServiceTable();

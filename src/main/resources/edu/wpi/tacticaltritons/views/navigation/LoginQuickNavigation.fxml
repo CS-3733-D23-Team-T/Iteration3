@@ -8,10 +8,12 @@
 <?import javafx.scene.text.Font?>
 
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <GridPane alignment="CENTER" prefWidth="1280.0" style="-fx-background-color: #002D59;" stylesheets="@../../stylesheets/NavigationBar.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.navigation.LoginQuickNavigationController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="ALWAYS"  />
+      <ColumnConstraints hgrow="ALWAYS"  />
+    <ColumnConstraints hgrow="ALWAYS"  />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -25,7 +27,15 @@
             <Insets bottom="5.0" top="5.0" />
          </padding>
       </MenuButton>
-      <MenuButton fx:id="signageMenuButton" style="-fx-background-color: transparent;" text="Signage" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+       <MenuButton fx:id="loginButton" alignment="CENTER" style="-fx-background-color: transparent;" text="Login" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+           <font>
+               <Font size="16.0" />
+           </font>
+           <padding>
+               <Insets bottom="5.0" top="5.0" />
+           </padding>
+       </MenuButton>
+      <MenuButton fx:id="signageMenuButton" style="-fx-background-color: transparent;" text="Signage" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
          <font>
             <Font size="16.0" />
          </font>

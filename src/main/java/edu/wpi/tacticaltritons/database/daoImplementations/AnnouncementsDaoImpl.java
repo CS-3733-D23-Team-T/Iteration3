@@ -1,7 +1,6 @@
 package edu.wpi.tacticaltritons.database.daoImplementations;
 
 import edu.wpi.tacticaltritons.database.Announcements;
-import edu.wpi.tacticaltritons.database.Session;
 import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.database.dao.AnnouncementsDao;
 
@@ -12,17 +11,19 @@ import java.util.UUID;
 
 public class AnnouncementsDaoImpl implements AnnouncementsDao {
     @Override
-    public List<Announcements> getAll() throws SQLException {
+    public List<Announcements> getAll(Timestamp currentDate) throws SQLException {
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         ResultSet rs = null;
         List<Announcements> announcements = new ArrayList<>();
         try {
             connection = Tdb.getConnection();
 
-            String sql = "SELECT * FROM announcements;";
-            statement = connection.createStatement();
-            rs = statement.executeQuery(sql);
+            String sql = "SELECT * FROM announcements WHERE effectiveDate >= ? ORDER BY effectiveDate;";
+
+            statement = connection.prepareStatement(sql);
+            statement.setTimestamp(1, currentDate);
+            rs = statement.executeQuery();
 
             while (rs.next()) {
                 UUID id = rs.getObject("id", UUID.class);
@@ -52,6 +53,11 @@ public class AnnouncementsDaoImpl implements AnnouncementsDao {
             }
         }
         return announcements;
+    }
+
+    @Override
+    public List<Announcements> getAll() throws SQLException {
+        return null;
     }
 
     @Override

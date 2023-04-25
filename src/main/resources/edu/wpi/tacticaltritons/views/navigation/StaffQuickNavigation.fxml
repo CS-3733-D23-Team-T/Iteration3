@@ -4,14 +4,14 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<GridPane prefWidth="1280.0" style="-fx-background-color: #002D59;" stylesheets="@../../stylesheets/NavigationBar.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.navigation.StaffQuickNavigationController">
+<GridPane alignment="CENTER" prefWidth="1280.0" style="-fx-background-color: #002D59;" stylesheets="@../../stylesheets/NavigationBar.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.navigation.StaffQuickNavigationController">
    <columnConstraints>
-      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS"  />
+      <ColumnConstraints hgrow="ALWAYS" />
+      <ColumnConstraints hgrow="ALWAYS" />
    </columnConstraints>
    <children>
       <MenuButton fx:id="signageMenuButton" style="-fx-background-color: transparent;" text="Signage" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
@@ -39,4 +39,7 @@
          </padding>
       </MenuButton>
    </children>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
 </GridPane>

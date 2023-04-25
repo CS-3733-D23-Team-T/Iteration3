@@ -6,9 +6,11 @@ import edu.wpi.tacticaltritons.database.daoImplementations.*;
 import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class DAOFacade {
   static NodeDaoImpl nodeDao = new NodeDaoImpl();
@@ -27,6 +29,7 @@ public class DAOFacade {
   static HomeServiceRequestsDaoImpl homeServiceRequestsDao = new HomeServiceRequestsDaoImpl();
   static InvitationsDaoImpl invitationsDao = new InvitationsDaoImpl();
   static SignageDaoImpl signageDao = new SignageDaoImpl();
+  static AnnouncementsDaoImpl announcementsDao = new AnnouncementsDaoImpl();
 
   public static void addNode(Node node) throws SQLException {
     nodeDao.insert(node);
@@ -342,5 +345,21 @@ public class DAOFacade {
 
   public static void updateSignage(Signage sign) throws SQLException{
     signageDao.update(sign);
+  }
+
+  public static List<Announcements> getAllAnnouncements(Timestamp timestamp) throws SQLException {
+    return announcementsDao.getAll(timestamp);
+  }
+  public static void updateAnnouncements(Announcements announcements) throws SQLException {
+    announcementsDao.update(announcements);
+  }
+  public static void insertAnnouncements(Announcements announcements) throws SQLException {
+    announcementsDao.insert(announcements);
+  }
+  public static void deleteAnnouncements(Announcements announcements) throws SQLException {
+    announcementsDao.delete(announcements);
+  }
+  public static Announcements getAnnouncement(UUID id) throws SQLException {
+    return announcementsDao.get(id);
   }
 }
