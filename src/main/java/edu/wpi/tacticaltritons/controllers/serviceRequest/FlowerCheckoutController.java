@@ -14,6 +14,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Objects;
 
+import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
+import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
@@ -31,11 +33,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import net.kurobako.gesturefx.GesturePane;
 
 import edu.wpi.tacticaltritons.styling.*;
 
 public class FlowerCheckoutController {
+
+
+    @FXML
+    private BorderPane basePane;
     @FXML
     private MFXTextField userFirstField;
     @FXML
@@ -176,7 +183,6 @@ public class FlowerCheckoutController {
         imageHashMap.put("Bold and Beautiful", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBBoldandBeautiful.png")).toString()));
         imageHashMap.put("Garden Party", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBGardenParty.png")).toString()));
 
-//    EffectGenerator.generateShadowEffect(basePane); //shadow generator
         lowerLevel1Image.setImage(App.lowerlevel1);
         lowerLevel2Image.setImage(App.lowerlevel2);
         groundFloorImage.setImage(App.groundfloor);
@@ -222,7 +228,10 @@ public class FlowerCheckoutController {
                     if (formComplete()) {
                         try {
                             sendToDatabase();
+                            confermation();
                         } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
                         clearForm();
@@ -292,6 +301,22 @@ public class FlowerCheckoutController {
         groundFloor.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
 
 
+    }
+
+    private void confermation() throws InterruptedException {
+        MFXGenericDialog content = new MFXGenericDialog();
+        MFXStageDialog stageDialog = new MFXStageDialog();
+
+        content.setContent(new Text("Order Confirmed"));
+        content.setShowAlwaysOnTop(false);
+        content.setShowClose(false);
+        content.setShowMinimize(false);
+        stageDialog.setContent(content);
+        stageDialog.setOwnerNode(basePane);
+        stageDialog.setOverlayClose(true);
+        stageDialog.show();
+        Thread.sleep(2 * 1000);
+        stageDialog.dispose();
     }
 
     private FlowPane createCheckoutNode(String key, int value, Image flowerImage) {
