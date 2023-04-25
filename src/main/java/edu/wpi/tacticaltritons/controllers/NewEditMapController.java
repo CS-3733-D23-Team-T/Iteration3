@@ -88,7 +88,6 @@ public class NewEditMapController extends MapSuperController {
     int firstFindEdge = 1;
 
 
-
     int firstFind = 1;
 
 
@@ -117,7 +116,7 @@ public class NewEditMapController extends MapSuperController {
     public void findAllEdges(String floor) throws SQLException {
         selectedFloor.FLOOR.floor = floor;
 
-        if(firstFindEdge == 1) {
+        if (firstFindEdge == 1) {
             getNeighbourHashMap().forEach((key, value) -> {
                 List<Line> lineList = new ArrayList<>();
                 for (int i = 0; i < value.size(); i++) {
@@ -238,8 +237,22 @@ public class NewEditMapController extends MapSuperController {
                 double offsetY = ((double[]) circle.getUserData())[1];
                 circle.setCenterX(event.getSceneX() - offsetX);
                 circle.setCenterY(event.getSceneY() - offsetY);
-                lineHashMap.get(node.getNodeID()).get(0).setStartX(event.getSceneX() - offsetX);
-                lineHashMap.get(node.getNodeID()).get(0).setStartY(event.getSceneY() - offsetY);
+
+                if (lineHashMap.get(node.getNodeID()) != null) {
+                    for(int i = 0; i<lineHashMap.get(node.getNodeID()).size(); i++) {
+                        lineHashMap.get(node.getNodeID()).get(i).startXProperty().bind(circle.centerXProperty());
+                        lineHashMap.get(node.getNodeID()).get(i).startYProperty().bind(circle.centerYProperty());
+                    }
+                } else {
+                    lineHashMap.forEach((key, value) -> {
+                        for (Line line : value) {
+                            if ((line.getEndX() == node.getXcoord() && line.getEndY() == node.getYcoord())) {
+                                line.endXProperty().bind(circle.centerXProperty());
+                                line.endYProperty().bind(circle.centerYProperty());
+                            }
+                        }
+                    });
+                }
                 text.setX(circle.getCenterX() - (text.getLayoutBounds().getWidth() / 2));
                 text.setY(circle.getCenterY() + (circle.getRadius() * 2));
                 xCoordinate.setText(String.valueOf((int) circle.getCenterX()));
