@@ -6,6 +6,7 @@ import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
+import edu.wpi.tacticaltritons.pathfinding.CongestionController;
 import io.github.palexdev.materialfx.controls.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
@@ -666,7 +667,8 @@ public class MapSuperController {
         endNodeId = endNodeID;
         List<Node> shortestPathMap = new ArrayList<>();
         try {
-            AStarAlgorithm mapAlgorithm = new AStarAlgorithm();
+            CongestionController congestionController = new CongestionController();
+            AStarAlgorithm mapAlgorithm = new AStarAlgorithm(congestionController);
             startNode1 = DAOFacade.getNode(startNodeId);
             endNode1 = DAOFacade.getNode(endNodeId);
             //shortestPathMap = mapAlgorithm.findShortestPath(startNode1, endNode1);

@@ -5,21 +5,9 @@ import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.styling.EffectGenerator;
+import edu.wpi.tacticaltritons.styling.ThemeColors;
 import io.github.palexdev.materialfx.controls.*;
-
-import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Objects;
-
-import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
-import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
-import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
-import io.github.palexdev.materialfx.enums.ScrimPriority;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
@@ -30,25 +18,23 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Popup;
-import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
-import edu.wpi.tacticaltritons.styling.*;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Objects;
 
-public class FlowerCheckoutController {
-
-
-    @FXML
-    private BorderPane basePane;
+public class SupplyCheckoutController {
     @FXML
     private MFXTextField userFirstField;
     @FXML
@@ -120,7 +106,7 @@ public class FlowerCheckoutController {
     private int min;
     private String location;
     RequestStatus status = RequestStatus.BLANK;
-    private double flowerTotal;
+    private double supplyTotal;
     private ObservableMap<String, Integer> checkoutItems = FXCollections.observableHashMap();
 
 
@@ -189,6 +175,7 @@ public class FlowerCheckoutController {
         imageHashMap.put("Bold and Beautiful", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBBoldandBeautiful.png")).toString()));
         imageHashMap.put("Garden Party", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBGardenParty.png")).toString()));
 
+//    EffectGenerator.generateShadowEffect(basePane); //shadow generator
         lowerLevel1Image.setImage(App.lowerlevel1);
         lowerLevel2Image.setImage(App.lowerlevel2);
         groundFloorImage.setImage(App.groundfloor);
@@ -199,9 +186,9 @@ public class FlowerCheckoutController {
         groundFloor.setVisible(true);
         floor1Image.setVisible(true);
 
-        this.checkoutItems = FlowerDeliveryController.checkoutItems;
-        this.flowerTotal = FlowerDeliveryController.flowerTotal;
-        priceText.setText(Double.toString(flowerTotal));
+        this.checkoutItems = SupplyDeliveryController.checkoutItems;
+        this.supplyTotal = SupplyDeliveryController.supplyTotal;
+        priceText.setText(Double.toString(supplyTotal));
 
 
         checkoutItems.forEach((key, value) ->
@@ -211,7 +198,7 @@ public class FlowerCheckoutController {
         checkoutFlowplan.setAlignment(Pos.CENTER);
         ;
 
-        shopName.setText(FlowerChoiceController.name);
+        shopName.setText(SupplyChoiceController.name);
 
         clearButton.setOnMouseClicked(event -> clearForm());
 
@@ -237,44 +224,8 @@ public class FlowerCheckoutController {
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
-                        MFXGenericDialog content = new MFXGenericDialog();
-                        MFXStageDialog stageDialog = new MFXStageDialog();
-                        stageDialog = MFXGenericDialogBuilder.build(content)
-                                .toStageDialogBuilder()
-                                .initOwner(App.getPrimaryStage())
-                                .initModality(Modality.APPLICATION_MODAL)
-                                .setDraggable(false)
-                                .setTitle("Dialogs Preview")
-                                .setOwnerNode(basePane)
-                                .setScrimPriority(ScrimPriority.WINDOW)
-                                .setScrimOwner(true)
-                                .get();
-                        FlowPane flowPane = new FlowPane();
-                        flowPane.setAlignment(Pos.CENTER);
-                        flowPane.setRowValignment(VPos.CENTER);
-                        flowPane.setColumnHalignment(HPos.CENTER);
-                        Text text = new Text();
-                        text.setText("Your order has been confirmed");
-                        text.setFont(new Font(20));
-                        text.setStyle("-fx-text-fill: black");
-                        flowPane.getChildren().add(text);
-                        content.setContent(flowPane);
-
-                        content.setShowClose(false);
-                        content.setShowMinimize(false);
-                        content.setShowAlwaysOnTop(false);
-
-                        stageDialog.setContent(content);
-
-                        MFXStageDialog finalStageDialog = stageDialog;
-                        finalStageDialog.show();
-                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event1 -> {
-                            finalStageDialog.close();
-                            clearForm();
-                            Navigation.navigate(Screen.HOME);
-                        }));
-                        timeline.play();
-
+                        clearForm();
+                        Navigation.navigate(Screen.HOME);
                     } else {
                         System.out.println("Form cannot submit");
                         //TODO do something when not filled
@@ -342,7 +293,7 @@ public class FlowerCheckoutController {
 
     }
 
-    private FlowPane createCheckoutNode(String key, int value, Image flowerImage) {
+    private FlowPane createCheckoutNode(String key, int value, Image supplyImage) {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(200);
         flowPane.setPrefHeight(100);
@@ -355,7 +306,7 @@ public class FlowerCheckoutController {
         flowPane.setBackground(Background.fill(Color.WHITE));
 
         // Creates the image view
-        Image image = flowerImage;
+        Image image = supplyImage;
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
@@ -387,12 +338,14 @@ public class FlowerCheckoutController {
         {
             items.set(items.get() + key + "(" + value + ")\n");
         });
-        int total = (int) flowerTotal;
+        int total = (int) supplyTotal;
         if (assignedComboBox.getSelectedItem() != null) {
             staffFirst = assignedComboBox.getSelectedItem().toString().substring(0, assignedComboBox.getSelectedItem().toString().indexOf(' '));
             staffLast = assignedComboBox.getSelectedItem().toString().substring(assignedComboBox.getSelectedItem().toString().indexOf(' ') + 1, assignedComboBox.getSelectedItem().toString().length());
             status = RequestStatus.PROCESSING;
-        } else {
+        }
+        else
+        {
             staffFirst = null;
             staffLast = null;
         }
@@ -400,9 +353,9 @@ public class FlowerCheckoutController {
 
         deliveryTime = Time.valueOf(Integer.toString(hour) + ":" + min + ":00");
 
-        Flower flower = new Flower(userFirst, userLast, patientFirst, patientLast, staffFirst, staffLast, deliveryDate, deliveryTime, location, items.get(), total, status);
-        DAOFacade.addFlower(flower);
-        FlowerDeliveryController.checkoutItems.clear();
+        Supply supply = new Supply(userFirst, userLast, staffFirst, staffLast, deliveryDate, deliveryTime, location, items.get(), total, status);
+        DAOFacade.addSupply(supply);
+        SupplyDeliveryController.checkoutItems.clear();
     }
 
     private boolean formComplete() {
