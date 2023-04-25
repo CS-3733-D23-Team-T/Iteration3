@@ -272,10 +272,10 @@ public class NodeDaoImpl implements NodeDao {
 
       String sql = "SELECT n.nodeid, " +
               "       string_agg(CAST(e.endnode AS TEXT), ',') AS neighbors, " +
-              "       array_agg(n2.xcoord) AS xcoords, " +
-              "       array_agg(n2.ycoord) AS ycoords, " +
-              "       array_agg(n2.floor) AS floors, " +
-              "       array_agg(n2.building) AS buildings " +
+              "       string_agg(CAST(n2.xcoord AS TEXT), ',') AS xcoords, " +
+              "       string_agg(CAST(n2.ycoord AS TEXT), ',') AS ycoords, " +
+              "       string_agg(CAST(n2.floor AS TEXT), ',') AS floors, " +
+              "       string_agg(CAST(n2.building AS TEXT), ',') AS buildings " +
               "FROM node n " +
               "         JOIN edge e ON n.nodeid = e.startnode " +
               "         JOIN node n2 ON e.endnode = n2.nodeid " +

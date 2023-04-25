@@ -58,10 +58,7 @@ public class QuickNavigationMenuButtons {
 
                 if(admin || !key.equals("Edit Hospital Map")) {
                     MenuItem item = new MenuItem(key);
-                    item.setOnAction(event -> {
-                        System.out.println("this happens: " + value.getFilename());
-                        Navigation.navigate(value);
-                    });
+                    item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);
                 }
             });

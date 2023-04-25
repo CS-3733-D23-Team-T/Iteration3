@@ -32,6 +32,9 @@ public class App extends Application {
   public static Image firstfloor;
   public static Image secondfloor;
   public static Image thirdfloor;
+  public static Image menuBar;
+  public static Image pathfinding;
+  public static Image importExport;
 
   public static String invalidMFXTextField;
   public static QuickNavigationMenuButtons quickNavigationMenuButtons;
@@ -61,6 +64,15 @@ public class App extends Application {
     thirdfloor = new Image(Objects.requireNonNull(
                     getClass().getResource("images/map_page/03_thethirdfloor.png")).toString());
 
+    menuBar =
+            new Image(Objects.requireNonNull(getClass().getResource("images/map_page/menu_icon.png")).toString());
+
+    pathfinding =
+            new Image(Objects.requireNonNull(getClass().getResource("images/map_page/pathfindingButton.png")).toString());
+
+    importExport = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/export.png")).toString());
+
+
     invalidMFXTextField =
             Objects.requireNonNull(getClass().getResource("stylesheets/InvalidMFXTextFields.css")).toString();
 
@@ -81,6 +93,7 @@ public class App extends Application {
 
     final Scene scene = new Scene(rootPane);
     primaryStage.setScene(scene);
+    primaryStage.setTitle("CS3733 - Tactical Tritons");
     primaryStage.show();
   }
 

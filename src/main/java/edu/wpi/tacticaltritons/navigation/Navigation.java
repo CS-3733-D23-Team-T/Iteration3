@@ -25,6 +25,7 @@ public class Navigation {
                 && destination != Screen.PATHFINDING){
             destination = DEFAULT_SCREEN;
         }
+        if(destination.equals(screen.get())) return;
         if(destination.equals(DEFAULT_SCREEN)){
             history.clear();
             forwardHistory.clear();
