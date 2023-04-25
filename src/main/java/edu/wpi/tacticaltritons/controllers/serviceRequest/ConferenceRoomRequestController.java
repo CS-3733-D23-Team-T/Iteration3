@@ -6,16 +6,30 @@ import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import io.github.palexdev.materialfx.controls.*;
+import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
+import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
+import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
+import io.github.palexdev.materialfx.enums.ScrimPriority;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
 import java.sql.Date;
@@ -40,7 +54,6 @@ public class ConferenceRoomRequestController {
     @FXML private MFXTextField lastName;
     @FXML private MFXDatePicker date;
 
-    //private MFXTextField[] textFields= {firstName,lastName,date,roomSelection,peopleSearchBar,};
     ObservableList<String> conferenceRooms;
     ObservableList<String> attendances;
     ObservableList<String> selectedAttendances;
@@ -53,52 +66,25 @@ public class ConferenceRoomRequestController {
     Date uploadDate;
     String uploadAttendance = "";
 
-    String alertColor = "-fx-border-color:#c00b0b;";
-    String normalColor = "-fx-border-color:#002d59;";
-
-    @FXML
-    private GesturePane groundFloor;
-
-    @FXML
-    private ImageView groundFloorImage;
-
-    @FXML
-    private ImageView lowerLevel1Image;
-
-    @FXML
-    private ImageView lowerLevel2Image;
-
-    @FXML
-    private ImageView floor1Image;
-
-    @FXML
-    private ImageView floor2Image;
-
-    @FXML
-    private ImageView floor3Image;
-
+    @FXML private GesturePane groundFloor;
+    @FXML private ImageView groundFloorImage;
+    @FXML private ImageView lowerLevel1Image;
+    @FXML private ImageView lowerLevel2Image;
+    @FXML private ImageView floor1Image;
+    @FXML private ImageView floor2Image;
+    @FXML private ImageView floor3Image;
     @FXML private MFXButton preview;
-
-    @FXML
-    private Group groundGroup;
-    @FXML
-    private Group L1Group;
-    @FXML
-    private Group L2Group;
-    @FXML
-    private Group floor1Group;
-    @FXML
-    private Group floor2Group;
-    @FXML
-    private Group floor3Group;
-
+    @FXML private Group groundGroup;
+    @FXML private Group L1Group;
+    @FXML private Group L2Group;
+    @FXML private Group floor1Group;
+    @FXML private Group floor2Group;
+    @FXML private Group floor3Group;
     @FXML private StackPane selectedFloorPane;
-
     @FXML private BorderPane basePane;
 
     public void initialize() throws SQLException{
 
-        Date today = new Date(2023, 4, 10);
         EffectGenerator.generateShadowEffect(basePane);
         firstName.setText(UserSessionToken.getUser().getFirstname());
         lastName.setText(UserSessionToken.getUser().getLastname());
@@ -118,73 +104,72 @@ public class ConferenceRoomRequestController {
 
         this.preview.setOnAction(event -> {
             clearAllNodes();
-            Circle circle = new Circle();
+            new Circle();
+            Circle circle;
 
             try {
-                circle = drawCircle(DAOFacade.getNode(this.roomSelection.getText(), today).getXcoord(), DAOFacade.getNode(this.roomSelection.getText(), today).getYcoord());
+                circle = drawCircle(DAOFacade.getNode(this.roomSelection.getText(),
+                        Date.valueOf(LocalDate.now())).getXcoord(),
+                        DAOFacade.getNode(this.roomSelection.getText(),
+                        Date.valueOf(LocalDate.now())).getYcoord());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
 
             String endFloor = null;
             try {
-                endFloor = DAOFacade.getNode(this.roomSelection.getText(), today).getFloor();
+                endFloor = DAOFacade.getNode(this.roomSelection.getText(), Date.valueOf(LocalDate.now())).getFloor();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
 
             if (endFloor != null) {
                 switch (endFloor) {
-                    case "L1":
+                    case "L1" -> {
                         L2Group.setVisible(false);
                         floor1Group.setVisible(false);
                         floor2Group.setVisible(false);
                         floor3Group.setVisible(false);
-
                         L1Group.setVisible(true);
                         lowerLevel1Image.setVisible(true);
                         this.L1Group.getChildren().add(circle);
-                        break;
-                    case "L2":
+                    }
+                    case "L2" -> {
                         L1Group.setVisible(false);
                         floor1Group.setVisible(false);
                         floor2Group.setVisible(false);
                         floor3Group.setVisible(false);
-
                         L2Group.setVisible(true);
                         lowerLevel2Image.setVisible(true);
                         this.L2Group.getChildren().add(circle);
-                        break;
-                    case "1":
+                    }
+                    case "1" -> {
                         L1Group.setVisible(false);
                         L2Group.setVisible(false);
                         floor2Group.setVisible(false);
                         floor3Group.setVisible(false);
-
                         floor1Group.setVisible(true);
                         floor1Image.setVisible(true);
                         this.floor1Group.getChildren().add(circle);
-                        break;
-                    case "2":
+                    }
+                    case "2" -> {
                         L1Group.setVisible(false);
                         L2Group.setVisible(false);
                         floor1Group.setVisible(false);
                         floor3Group.setVisible(false);
-
                         floor2Group.setVisible(true);
                         floor2Image.setVisible(true);
                         this.floor2Group.getChildren().add(circle);
-                        break;
-                    case "3":
+                    }
+                    case "3" -> {
                         L1Group.setVisible(false);
                         L2Group.setVisible(false);
                         floor2Group.setVisible(false);
                         floor1Group.setVisible(false);
-
                         floor3Group.setVisible(true);
                         floor3Image.setVisible(true);
                         this.floor3Group.getChildren().add(circle);
-                        break;
+                    }
                 }
             }
             Point2D centerpoint = new Point2D(circle.getCenterX(), circle.getCenterY());
@@ -344,7 +329,43 @@ public class ConferenceRoomRequestController {
                 Invitations invite = new Invitations(mostRecentNum, firstName,lastName,false, uploadDate,uploadConferenceRoom);
                 DAOFacade.addInvitation(invite);
             }
-            Navigation.navigate(Screen.HOME);
+            MFXGenericDialog content = new MFXGenericDialog();
+            new MFXStageDialog();
+            MFXStageDialog stageDialog;
+            stageDialog = MFXGenericDialogBuilder.build(content)
+                    .toStageDialogBuilder()
+                    .initOwner(App.getPrimaryStage())
+                    .initModality(Modality.APPLICATION_MODAL)
+                    .setDraggable(false)
+                    .setTitle("Dialogs Preview")
+                    .setOwnerNode(basePane)
+                    .setScrimPriority(ScrimPriority.WINDOW)
+                    .setScrimOwner(true)
+                    .get();
+            FlowPane flowPane = new FlowPane();
+            flowPane.setAlignment(Pos.CENTER);
+            flowPane.setRowValignment(VPos.CENTER);
+            flowPane.setColumnHalignment(HPos.CENTER);
+            Text text = new Text();
+            text.setText("Your order has been confirmed");
+            text.setFont(new Font(20));
+            text.setStyle("-fx-text-fill: black");
+            flowPane.getChildren().add(text);
+            content.setContent(flowPane);
+
+            content.setShowClose(false);
+            content.setShowMinimize(false);
+            content.setShowAlwaysOnTop(false);
+
+            stageDialog.setContent(content);
+
+            MFXStageDialog finalStageDialog = stageDialog;
+            finalStageDialog.show();
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event1 -> {
+                finalStageDialog.close();
+                Navigation.navigate(Screen.HOME);
+            }));
+            timeline.play();
         }
     }
 

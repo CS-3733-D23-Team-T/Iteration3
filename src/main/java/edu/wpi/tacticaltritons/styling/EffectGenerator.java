@@ -53,12 +53,12 @@ public class EffectGenerator {
     }
 
     public static void alertOn(MFXTextField target,String alertText){
-        target.getStylesheets().add(StylingParameters.invalid);
+        target.setStyle("-fx-border-color: " + ThemeColors.ALERT.getColor());
         target.setFloatingText(alertText);
     }
 
     public static void alertOff(MFXTextField target,String normalText){
-        target.getStylesheets().remove(StylingParameters.invalid);
+        target.setStyle("-fx-border-color: "+ ThemeColors.NAVY.getColor());
         target.setFloatingText(normalText);
     }
 
