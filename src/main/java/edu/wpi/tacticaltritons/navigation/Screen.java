@@ -42,6 +42,9 @@ public enum Screen {
   FLOWER_REQUEST("views/serviceRequest/FlowerDelivery.fxml"),
   FLOWER_CHOICE("views/serviceRequest/FlowerChoice.fxml"),
   FLOWER_CHECKOUT("views/serviceRequest/FlowerCheckout.fxml"),
+  SUPPLY_REQUEST("views/serviceRequest/SupplyDelivery.fxml"),
+  SUPPLY_CHOICE("views/serviceRequest/SupplyChoice.fxml"),
+  SUPPLY_CHECKOUT("views/serviceRequest/SupplyCheckout.fxml"),
 
   SIGNAGE("views/signagePages/Signage.fxml"),
   PATHFINDING("views/NewPathfinding.fxml"),
