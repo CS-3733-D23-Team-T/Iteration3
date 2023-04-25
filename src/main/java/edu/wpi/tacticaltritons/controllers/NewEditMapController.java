@@ -145,19 +145,19 @@ public class NewEditMapController extends MapSuperController {
             try {
                 switch (getNodeHashMap().get(key).getFloor()) {
                     case "L1":
-                        this.L1Group.getChildren().addAll(value);
+                        this.L1Group.getChildren().addAll(1,value);
                         break;
                     case "L2":
-                        this.L2Group.getChildren().addAll(value);
+                        this.L2Group.getChildren().addAll(1,value);
                         break;
                     case "1":
-                        this.floor1Group.getChildren().addAll(value);
+                        this.floor1Group.getChildren().addAll(1,value);
                         break;
                     case "2":
-                        this.floor2Group.getChildren().addAll(value);
+                        this.floor2Group.getChildren().addAll(1,value);
                         break;
                     case "3":
-                        this.floor3Group.getChildren().addAll(value);
+                        this.floor3Group.getChildren().addAll(1,value);
                         break;
                 }
             } catch (SQLException e) {
