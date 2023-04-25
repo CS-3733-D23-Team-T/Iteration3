@@ -37,6 +37,14 @@ public class NavigationBarController {
     @FXML
     private void initialize() {
         nameDisplay.textProperty().bind(UserSessionToken.fullNameProperty);
+        UserSessionToken.adminProperty.addListener((obs, o, n) -> {
+            if(n){
+                accountTypeDisplay.setText("Admin");
+            }
+            else{
+                accountTypeDisplay.setText("Staff");
+            }
+        });
 
         Navigation.screen.addListener((obs, o ,n) -> {
             if(n != null) {

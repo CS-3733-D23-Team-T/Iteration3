@@ -44,10 +44,9 @@ public enum Screen {
   FLOWER_CHECKOUT("views/serviceRequest/FlowerCheckout.fxml"),
 
   SIGNAGE("views/signagePages/Signage.fxml"),
-  PATHFINDING("views/PathfindingFullScreen.fxml"),
-  EDIT_MAP("views/EditMapFullScreen.fxml"),
-  VIEW_MAP("views/ViewMapFullScreen.fxml"),
-
+  PATHFINDING("views/NewPathfinding.fxml"),
+  EDIT_MAP("views/NewEditMap.fxml"),
+  VIEW_MAP("views/NewViewMap.fxml"),
   DATABASE("views/database/Database.fxml"),
   DATABASE_HELP("views/database/DatabaseHelp.fxml"),
   EDIT_DATABASE("views/database/EditDatabase.fxml"),

@@ -351,6 +351,10 @@ public class DAOFacade {
   public static List<Announcements> getAllAnnouncements(Timestamp timestamp) throws SQLException {
     return announcementsDao.getAll(timestamp);
   }
+
+  public static List<Announcements> getAllAnnouncements() throws SQLException {
+    return announcementsDao.getAll();
+  }
   public static void updateAnnouncements(Announcements announcements) throws SQLException {
     announcementsDao.update(announcements);
   }
