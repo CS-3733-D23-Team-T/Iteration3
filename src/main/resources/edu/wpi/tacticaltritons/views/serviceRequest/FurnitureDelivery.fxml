@@ -11,13 +11,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.FurnitureDeliveryController">
+<BorderPane prefHeight="650.0" prefWidth="1280.0" stylesheets="@../../stylesheets/TabPane.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.FurnitureDeliveryController">
    <right>
       <BorderPane prefWidth="500.0" style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
          <top>
             <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="100.0" prefWidth="500.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets />
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                </BorderPane.margin>
                <children>
                   <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0">
@@ -41,15 +41,21 @@
          <bottom>
             <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="50.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXButton id="clearButton" fx:id="clearButton" prefHeight="50.0" prefWidth="125.0" text="Clear">
+                  <MFXButton id="clearButton" fx:id="clearButton" prefHeight="50.0" prefWidth="200.0" text="Clear">
                      <FlowPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </MFXButton>
-                  <MFXButton id="normalButton" fx:id="checkoutButton" disable="true" prefHeight="50.0" prefWidth="125.0" text="Checkout">
+                  <MFXButton id="normalButton" fx:id="checkoutButton" disable="true" prefHeight="50.0" prefWidth="200.0" text="Checkout">
                      <FlowPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </MFXButton>
                </children>
                <BorderPane.margin>
@@ -80,7 +86,7 @@
       </BorderPane>
    </right>
    <center>
-      <BorderPane fx:id="infoBoardPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-radius: 10;" BorderPane.alignment="CENTER">
+      <BorderPane fx:id="infoBoardPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-radius: 10;" stylesheets="@../../stylesheets/TabPane.css" BorderPane.alignment="CENTER">
          <effect>
             <DropShadow>
                <color>

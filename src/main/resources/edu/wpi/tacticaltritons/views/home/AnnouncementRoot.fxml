@@ -3,19 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane prefHeight="200.0" prefWidth="1240.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.home.AnnouncementRootController">
+<BorderPane prefHeight="150.0" prefWidth="1240.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.home.AnnouncementRootController">
     <BorderPane.margin>
         <Insets left="20.0" right="20.0" top="20.0" />
     </BorderPane.margin>
-    <bottom>
-        <FlowPane prefHeight="50.0" style="-fx-background-color: lightgrey;">
-
-        </FlowPane>
-    </bottom>
    <center>
         <GridPane alignment="CENTER" BorderPane.alignment="CENTER">
          <columnConstraints>

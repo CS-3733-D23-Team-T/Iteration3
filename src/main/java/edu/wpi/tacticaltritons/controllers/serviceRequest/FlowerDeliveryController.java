@@ -150,13 +150,14 @@ public class FlowerDeliveryController {
             ScrollPane scrollPane = createShopIteams(shopItems, value, imageHashMap);
             tab.setContent(scrollPane);
             tabPane.getTabs().add(tab);
+            tabPane.getStyleClass().add("tab-pane");
         });
 
         // this makes it so that the user can not close any of the tabs then addeds it to the boardpane for resizeablity
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         infoBoardPane.setCenter(tabPane);
 
-
+        //clears
         clearButton.setOnAction(event ->
         {
             priceOfItems.clear();
@@ -243,6 +244,7 @@ public class FlowerDeliveryController {
                 flowPane.getChildren().add(price);
                 flowPane.getChildren().add(imageView);
                 flowPane.getChildren().add(discriptionLabel);
+                flowPane.setStyle("-fx-background-radius: 10; -fx-background-color: white");
 
                 flowPane.setOnMouseClicked(event ->
                 {
