@@ -234,7 +234,6 @@ public class FlowerCheckoutController {
                     if (formComplete()) {
                         try {
                             sendToDatabase();
-                            //confermation();
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
@@ -246,27 +245,32 @@ public class FlowerCheckoutController {
                                 .toStageDialogBuilder()
                                 .initOwner(App.getPrimaryStage())
                                 .initModality(Modality.APPLICATION_MODAL)
-                                .setDraggable(true)
+                                .setDraggable(false)
                                 .setTitle("Dialogs Preview")
                                 .setOwnerNode(basePane)
                                 .setScrimPriority(ScrimPriority.WINDOW)
                                 .setScrimOwner(true)
                                 .get();
+                        FlowPane flowPane = new FlowPane();
+                        flowPane.setAlignment(Pos.CENTER);
+                        flowPane.setRowValignment(VPos.CENTER);
+                        flowPane.setColumnHalignment(HPos.CENTER);
+                        Text text = new Text();
+                        text.setText("Your order has been confirmed");
+                        text.setFont(new Font(20));
+                        text.setStyle("-fx-text-fill: black");
+                        flowPane.getChildren().add(text);
+                        content.setContent(flowPane);
 
-                        content.setContent(new Text("Order Confirmed"));
                         content.setShowClose(false);
                         content.setShowMinimize(false);
                         content.setShowAlwaysOnTop(false);
+
                         stageDialog.setContent(content);
-                        stageDialog.setOwnerNode(basePane);
-                        stageDialog.setOverlayClose(true);
-                        stageDialog.toFront();
-                        stageDialog.setAlwaysOnTop(true);
-                        stageDialog.setDraggable(false);
 
                         MFXStageDialog finalStageDialog = stageDialog;
                         finalStageDialog.show();
-                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), event1 -> {
+                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event1 -> {
                             finalStageDialog.close();
                             Navigation.navigate(Screen.HOME);
                         }));
@@ -338,10 +342,6 @@ public class FlowerCheckoutController {
 
     }
 
-    private void confermation() throws InterruptedException {
-
-    }
-
     private FlowPane createCheckoutNode(String key, int value, Image flowerImage) {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(200);
@@ -392,9 +392,7 @@ public class FlowerCheckoutController {
             staffFirst = assignedComboBox.getSelectedItem().toString().substring(0, assignedComboBox.getSelectedItem().toString().indexOf(' '));
             staffLast = assignedComboBox.getSelectedItem().toString().substring(assignedComboBox.getSelectedItem().toString().indexOf(' ') + 1, assignedComboBox.getSelectedItem().toString().length());
             status = RequestStatus.PROCESSING;
-        }
-        else
-        {
+        } else {
             staffFirst = null;
             staffLast = null;
         }
