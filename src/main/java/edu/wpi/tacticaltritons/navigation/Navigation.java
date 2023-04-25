@@ -19,7 +19,10 @@ public class Navigation {
     public static SimpleObjectProperty<Screen> screen = new SimpleObjectProperty<>(DEFAULT_SCREEN);
 
     public static void navigate(Screen destination) {
-        if(UserSessionToken.getUser() == null){
+        if(UserSessionToken.getUser() == null
+                && destination != Screen.SIGNAGE
+                && destination != Screen.VIEW_MAP
+                && destination != Screen.PATHFINDING){
             destination = DEFAULT_SCREEN;
         }
         if(destination.equals(DEFAULT_SCREEN)){

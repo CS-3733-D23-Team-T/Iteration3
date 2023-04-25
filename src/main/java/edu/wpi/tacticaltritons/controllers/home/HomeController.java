@@ -1,8 +1,9 @@
-package edu.wpi.tacticaltritons.controllers;
+package edu.wpi.tacticaltritons.controllers.home;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.database.*;
+import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.styling.ThemeColors;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
@@ -12,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -33,18 +35,17 @@ import javafx.scene.text.TextAlignment;
 import net.kurobako.gesturefx.GesturePane;
 import org.controlsfx.control.PopOver;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Flow;
 
 
-public class NewHomeController {
-    @FXML
-    FlowPane requestsPane;
+public class HomeController {
+    @FXML FlowPane requestsPane;
     @FXML
     FlowPane movesPane;
     @FXML
@@ -78,11 +79,16 @@ public class NewHomeController {
     @FXML
     private FlowPane titleFlowPane;
 
+    @FXML private BorderPane announcementsPane;
+
     TableView<HomeServiceRequests> tableServiceRequest = new TableView<>();
     TableView<Invitations> tableInvitation = new TableView<>();
 
     @FXML
-    public void initialize() throws SQLException {
+    public void initialize() throws SQLException, IOException {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT_ROOT.getFilename()));
+        announcementsPane.setCenter(loader.load());
+
         initEventTable();
         initMoveTable();
         initServiceTable();
@@ -402,6 +408,7 @@ public class NewHomeController {
         });
         tableServiceRequest.setFocusTraversable(false);
     }
+
 
     public void displayNode(Move moveFrom, GesturePane gesturePane) {
         L1Group.setVisible(false);
