@@ -7,7 +7,15 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class FlowerHashMap extends HashMap<String, Image> {
-    public FlowerHashMap(){
+    public FlowerHashMap() {
+        //logos
+        this.put("Blossom Path", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BlossomPath.png")).toString()));
+        this.put("Garden Grace", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GardenGrace.png")).toString()));
+        this.put("Tropical Blooms", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TropicalBlooms.png")).toString()));
+        this.put("Wildflower Emporium", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WildflowerEmporium.png")).toString()));
+        this.put("Petal Boutique", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PetalBoutique.png")).toString()));
+        this.put("Free Mont Flowers", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FreeMontFlowers.png")).toString()));
+
         //Free Mont Flowers
         this.put("Blushing Beauty Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFBlushingBeautyBouquet.png")).toString()));
         this.put("Elegance Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFEleganceBouquet.png")).toString()));
@@ -15,8 +23,8 @@ public class FlowerHashMap extends HashMap<String, Image> {
         this.put("Cherry Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFCherryBouquet.png")).toString()));
         this.put("Zen Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFZenBouquet.png")).toString()));
         this.put("What a Delight Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFWhataDelightBouquet.png")).toString()));
-        this.put("Girl Power Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFGirlPowerBouquet.png")).toString()));
-        this.put("Birds of Paradise Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFMinimalistBouquet.png")).toString()));
+        this.put("Girl Power Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFGirlPowerBouquet.jpg")).toString()));
+        this.put("Birds of Paradise Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFBirdsofParadiseBouquet.png")).toString()));
         this.put("Minimalist Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFMinimalistBouquet.png")).toString()));
         this.put("So Chic Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFSoChicBouquet.png")).toString()));
 
@@ -56,12 +64,30 @@ public class FlowerHashMap extends HashMap<String, Image> {
         this.put("Bold and Beautiful", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBBoldandBeautiful.png")).toString()));
         this.put("Garden Party", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBGardenParty.png")).toString()));
 
-        //logos
-        this.put("Blossom Path", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BlossomPath.png")).toString()));
-        this.put("Garden Grace", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GardenGrace.png")).toString()));
-        this.put("Tropical Blooms", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TropicalBlooms.png")).toString()));
-        this.put("Wildflower Emporium", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WildflowerEmporium.png")).toString()));
-        this.put("Petal Boutique", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PetalBoutique.png")).toString()));
-        this.put("Free Mont Flowers", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FreeMontFlowers.png")).toString()));
+        // Tropical Blooms
+        this.put("Utopian Birds", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TBUtopianBirds.png")).toString()));
+        this.put("Pink Pineapple", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TBPinkPineapple.png")).toString()));
+        this.put("Blue Hydrangeas", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TBBlueHydrangeas.png")).toString()));
+        this.put("Orange Lilies", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TBOrangeLilies.png")).toString()));
+        this.put("Golden Sunflowers", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TBGoldenSunflowers.png")).toString()));
+        this.put("Purple Passion", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TBPurplePassion.png")).toString()));
+        this.put("Succulent Surprise", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TBSucculentSurprise.png")).toString()));
+        this.put("Rainbow Roses", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TBRainbowRoses.png")).toString()));
+        this.put("Tropical Breeze", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TBTropicalBreeze.png")).toString()));
+        this.put("Pure White Lilies", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TBPureWhiteLilies.png")).toString()));
+
+        // Wildflower Emporium
+        this.put("Butterfly Garden", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WEButterflyGarden.png")).toString()));
+        this.put("Sunflower Fields", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WESunflowerFields.png")).toString()));
+        this.put("Wildflower Mix", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WEWildflowerMix.png")).toString()));
+        this.put("Purple Haze", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WEPurpleHaze.png")).toString()));
+        this.put("Garden Party", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WEGardenParty.png")).toString()));
+        this.put("Vintage Charm", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WEVintageCharm.png")).toString()));
+        this.put("Summer Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WESummerBouquet.png")).toString()));
+        this.put("Country Garden", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WECountryGarden.png")).toString()));
+        this.put("Sunny Day", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WESunnyDay.png")).toString()));
+        this.put("Blooming Love", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WEBloomingLove.png")).toString()));
+
+
     }
 }

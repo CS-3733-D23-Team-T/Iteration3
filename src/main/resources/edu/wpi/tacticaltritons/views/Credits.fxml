@@ -1,9 +1,256 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.wpi.tacticaltritons.controllers.CreditsController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.geometry.Insets?>
+<Accordion fx:id="accordion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.CreditsController">
 
-</AnchorPane>
+    <BorderPane.margin>
+        <Insets top="20.0" left="20.0" right="20.0" bottom="20.0" />
+    </BorderPane.margin>
+
+    <panes>
+        <TitledPane prefHeight="823.0" prefWidth="2157.0" text="API">
+            <content>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tactical Tiritons used a couple API, including Google QR code API.">
+                    <font>
+                        <Font size="27.0" />
+                    </font>
+                </Text>
+            </content>
+        </TitledPane>
+        <TitledPane text="Furniture Request">
+            <content>
+                <GridPane alignment="CENTER" hgap="10" vgap="10">
+                    <Label text="Office Depot:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <font>
+                            <Font size="27.0" />
+                        </font>
+                    </Label>
+                    <Text fx:id="furnitureClickable1" style="-fx-fill: blue; -fx-font-size: 20;" text="All Furniture items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                    </rowConstraints>
+                </GridPane>
+            </content>
+        </TitledPane>
+        <TitledPane text="Meal Request">
+            <content>
+                <GridPane alignment="center" hgap="10" vgap="10">
+                    <Label text="Pretzel Shop:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <font>
+                            <Font size="27.0" />
+                        </font>
+                    </Label>
+                    <Text fx:id="mealClickable15" style="-fx-fill: blue; -fx-font-size: 20; -fx-font-size: 20;" text="Pretzel" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <font>
+                            <Font size="20.0" />
+                        </font>
+                    </Text>
+
+                    <Label text="Au Bon Pain:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <font>
+                            <Font size="27.0" />
+                        </font>
+                    </Label>
+                    <Text fx:id="mealClickable8" style="-fx-fill: blue; -fx-font-size: 20;" text="Sandwich" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Text fx:id="mealClickable9" style="-fx-fill: blue; -fx-font-size: 20;" text="Water bottle" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                    <Label text="Pizzeria:" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                        <font>
+                            <Font size="27.0" />
+                        </font>
+                    </Label>
+                    <Text fx:id="mealClickable5" style="-fx-fill: blue; -fx-font-size: 20;" text="Pepperoni pizza" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <Text fx:id="mealClickable6" style="-fx-fill: blue; -fx-font-size: 20;" text="Regular pizza" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <Text fx:id="mealClickable7" style="-fx-fill: blue; -fx-font-size: 20;" text="Glass of Water" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+
+                    <Label text="Cafe:" GridPane.columnIndex="0" GridPane.rowIndex="6">
+                        <font>
+                            <Font size="27.0" />
+                        </font>
+                    </Label>
+                    <Text fx:id="mealClickable10" style="-fx-fill: blue; -fx-font-size: 20;" text="Brownie" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                    <Text fx:id="mealClickable11" style="-fx-fill: blue; -fx-font-size: 20;" text="Cookie" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                    <Text fx:id="mealClickable12" style="-fx-fill: blue; -fx-font-size: 20;" text="Hot chocolate" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                    <Text fx:id="mealClickable13" style="-fx-fill: blue; -fx-font-size: 20;" text="Milk" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                    <Text fx:id="mealClickable14" style="-fx-fill: blue; -fx-font-size: 20;" text="Coffee" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+
+                    <Label text="Logos:" GridPane.columnIndex="0" GridPane.rowIndex="8">
+                        <font>
+                            <Font size="27.0" />
+                        </font>
+                    </Label>
+                    <Text fx:id="mealClickable4" style="-fx-fill: blue; -fx-font-size: 20;" text="Pretzels Shop" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                    <Text fx:id="mealClickable1" style="-fx-fill: blue; -fx-font-size: 20;" text="Pizzeria" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                    <Text fx:id="mealClickable2" style="-fx-fill: blue; -fx-font-size: 20;" text="Au Bon Pain" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                    <Text fx:id="mealClickable3" style="-fx-fill: blue; -fx-font-size: 20;" text="Cafe" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                    <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                </GridPane>
+            </content>
+        </TitledPane>
+        <TitledPane layoutX="10.0" layoutY="60.0" text="Flower Request">
+            <MFXScrollPane>
+                <content>
+                    <GridPane alignment="center" hgap="10" vgap="10">
+                        <Label text="Logos:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <font>
+                                <Font size="27.0" />
+                            </font></Label>
+                        <Text fx:id="flowerClickable61" style="-fx-fill: blue; -fx-font-size: 20;" text="All Flower Request Logos" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Text fx:id="flowerClickable62" style="-fx-fill: blue; -fx-font-size: 20;" text="were created with this website" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="Free Mont Flowers:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="27.0" />
+                            </font></Label>
+                        <Text fx:id="flowerClickable11" style="-fx-fill: blue; -fx-font-size: 20;" text="So Chic Bouquet" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Text fx:id="flowerClickable12" style="-fx-fill: blue; -fx-font-size: 20;" text="Zen Bouquet" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Text fx:id="flowerClickable13" style="-fx-fill: blue; -fx-font-size: 20;" text="Minimalist Bouquet" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Text fx:id="flowerClickable14" style="-fx-fill: blue; -fx-font-size: 20;" text="Birds of Paradise Bouquet" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <Text fx:id="flowerClickable15" style="-fx-fill: blue; -fx-font-size: 20;" text="Blushing Beauty Bouquet" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                        <Text fx:id="flowerClickable16" style="-fx-fill: blue; -fx-font-size: 20;" text="Charming Bouquet" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                        <Text fx:id="flowerClickable17" style="-fx-fill: blue; -fx-font-size: 20;" text="Cherry Bouquet" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                        <Text fx:id="flowerClickable18" style="-fx-fill: blue; -fx-font-size: 20;" text="Elegance Bouquet" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+                        <Text fx:id="flowerClickable19" style="-fx-fill: blue; -fx-font-size: 20;" text="Girl Power Bouquet" GridPane.columnIndex="8" GridPane.rowIndex="3" />
+                        <Text fx:id="flowerClickable20" style="-fx-fill: blue; -fx-font-size: 20;" text="What a Delight Bouquet" GridPane.columnIndex="9" GridPane.rowIndex="3" />
+
+                        <Label text="Blossom Path:" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                            <font>
+                                <Font size="27.0" />
+                            </font></Label>
+                        <Text fx:id="flowerClickable21" style="-fx-fill: blue; -fx-font-size: 20;" text="Winter Garden Centerpiece" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <Text fx:id="flowerClickable22" style="-fx-fill: blue; -fx-font-size: 20;" text="Tulip Trio" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Text fx:id="flowerClickable23" style="-fx-fill: blue; -fx-font-size: 20;" text="Summer Garden Bouquet" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                        <Text fx:id="flowerClickable24" style="-fx-fill: blue; -fx-font-size: 20;" text="Springtime Garden Basket" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                        <Text fx:id="flowerClickable25" style="-fx-fill: blue; -fx-font-size: 20;" text="Springtime Succulent Garden" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                        <Text fx:id="flowerClickable26" style="-fx-fill: blue; -fx-font-size: 20;" text="Rose Arrangement" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                        <Text fx:id="flowerClickable27" style="-fx-fill: blue; -fx-font-size: 20;" text="Elegant Orchids" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                        <Text fx:id="flowerClickable28" style="-fx-fill: blue; -fx-font-size: 20;" text="Easter Lily Arrangement" GridPane.columnIndex="7" GridPane.rowIndex="5" />
+                        <Text fx:id="flowerClickable29" style="-fx-fill: blue; -fx-font-size: 20;" text="Cherry Blossom Bouquet" GridPane.columnIndex="8" GridPane.rowIndex="5" />
+                        <Text fx:id="flowerClickable30" style="-fx-fill: blue; -fx-font-size: 20;" text="Butterfly Garden Bouquet" GridPane.columnIndex="9" GridPane.rowIndex="5" />
+
+                        <Label text="Wildflower Emporium:" GridPane.columnIndex="0" GridPane.rowIndex="6">
+                            <font>
+                                <Font size="27.0" />
+                            </font></Label>
+                        <Text fx:id="flowerClickable31" style="-fx-fill: blue; -fx-font-size: 20;" text="Wildflower Mix" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <Text fx:id="flowerClickable32" style="-fx-fill: blue; -fx-font-size: 20;" text="Sunflower Fields" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <Text fx:id="flowerClickable33" style="-fx-fill: blue; -fx-font-size: 20;" text="Butterfly Garden" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                        <Text fx:id="flowerClickable34" style="-fx-fill: blue; -fx-font-size: 20;" text="Vintage Charm" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                        <Text fx:id="flowerClickable35" style="-fx-fill: blue; -fx-font-size: 20;" text="Purple Haze" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+                        <Text fx:id="flowerClickable36" style="-fx-fill: blue; -fx-font-size: 20;" text="Garden Party" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+                        <Text fx:id="flowerClickable37" style="-fx-fill: blue; -fx-font-size: 20;" text="Sunny Day" GridPane.columnIndex="6" GridPane.rowIndex="7" />
+                        <Text fx:id="flowerClickable38" style="-fx-fill: blue; -fx-font-size: 20;" text="Country Garden" GridPane.columnIndex="7" GridPane.rowIndex="7" />
+                        <Text fx:id="flowerClickable39" style="-fx-fill: blue; -fx-font-size: 20;" text="Summer Bouquet" GridPane.columnIndex="8" GridPane.rowIndex="7" />
+                        <Text fx:id="flowerClickable40" style="-fx-fill: blue; -fx-font-size: 20;" text="Blooming Love" GridPane.columnIndex="9" GridPane.rowIndex="7" />
+
+                        <Label text="Tropical Blooms:" GridPane.columnIndex="0" GridPane.rowIndex="8">
+                            <font>
+                                <Font size="27.0" />
+                            </font></Label>
+                        <Text fx:id="flowerClickable41" style="-fx-fill: blue; -fx-font-size: 20;" text="Orange Lilies" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                        <Text fx:id="flowerClickable42" style="-fx-fill: blue; -fx-font-size: 20;" text="Blue Hydrangeas" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <Text fx:id="flowerClickable43" style="-fx-fill: blue; -fx-font-size: 20;" text="Pink Pineapple" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                        <Text fx:id="flowerClickable44" style="-fx-fill: blue; -fx-font-size: 20;" text="Utopian Birds" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                        <Text fx:id="flowerClickable45" style="-fx-fill: blue; -fx-font-size: 20;" text="Golden Sunflowers" GridPane.columnIndex="4" GridPane.rowIndex="9" />
+                        <Text fx:id="flowerClickable46" style="-fx-fill: blue; -fx-font-size: 20;" text="Purple Passion" GridPane.columnIndex="5" GridPane.rowIndex="9" />
+                        <Text fx:id="flowerClickable47" style="-fx-fill: blue; -fx-font-size: 20;" text="Rainbow Roses" GridPane.columnIndex="6" GridPane.rowIndex="9" />
+                        <Text fx:id="flowerClickable48" style="-fx-fill: blue; -fx-font-size: 20;" text="Succulent Surprise" GridPane.columnIndex="7" GridPane.rowIndex="9" />
+                        <Text fx:id="flowerClickable49" style="-fx-fill: blue; -fx-font-size: 20;" text="Tropical Breeze" GridPane.columnIndex="8" GridPane.rowIndex="9" />
+                        <Text fx:id="flowerClickable50" style="-fx-fill: blue; -fx-font-size: 20;" text="Pure White Lilies" GridPane.columnIndex="9" GridPane.rowIndex="9" />
+
+                        <Label text="Petal Boutique:" GridPane.columnIndex="0" GridPane.rowIndex="10">
+                            <font>
+                                <Font size="27.0" />
+                            </font></Label>
+                        <Text fx:id="flowerClickable51" style="-fx-fill: blue; -fx-font-size: 20;" text="Bold and Beautiful:" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+                        <Text fx:id="flowerClickable52" style="-fx-fill: blue; -fx-font-size: 20;" text="Enchanted Forest" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <Text fx:id="flowerClickable53" style="-fx-fill: blue; -fx-font-size: 20;" text="Garden Party" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+                        <Text fx:id="flowerClickable54" style="-fx-fill: blue; -fx-font-size: 20;" text="Orchid Delight" GridPane.columnIndex="3" GridPane.rowIndex="11" />
+                        <Text fx:id="flowerClickable55" style="-fx-fill: blue; -fx-font-size: 20;" text="Spring Fling" GridPane.columnIndex="4" GridPane.rowIndex="11" />
+                        <Text fx:id="flowerClickable56" style="-fx-fill: blue; -fx-font-size: 20;" text="Roses and Lilies" GridPane.columnIndex="5" GridPane.rowIndex="11" />
+                        <Text fx:id="flowerClickable57" style="-fx-fill: blue; -fx-font-size: 20;" text="Succulent Garden" GridPane.columnIndex="6" GridPane.rowIndex="11" />
+                        <Text fx:id="flowerClickable58" style="-fx-fill: blue; -fx-font-size: 20;" text="Sunflower Surprise" GridPane.columnIndex="7" GridPane.rowIndex="11" />
+                        <Text fx:id="flowerClickable59" style="-fx-fill: blue; -fx-font-size: 20;" text="Tropical Oasis" GridPane.columnIndex="8" GridPane.rowIndex="11" />
+                        <Text fx:id="flowerClickable60" style="-fx-fill: blue; -fx-font-size: 20;" text="Vintage Romance" GridPane.columnIndex="9" GridPane.rowIndex="11" />
+
+                        <Label text="Garden Grace:" GridPane.columnIndex="0" GridPane.rowIndex="12">
+                            <font>
+                                <Font size="27.0" />
+                            </font></Label>
+                        <Text fx:id="flowerClickable1" style="-fx-fill: blue; -fx-font-size: 20;" text="Berries Bouquet" GridPane.columnIndex="0" GridPane.rowIndex="13" />
+                        <Text fx:id="flowerClickable2" style="-fx-fill: blue; -fx-font-size: 20;" text="Cheer Up Bouquet" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                        <Text fx:id="flowerClickable3" style="-fx-fill: blue; -fx-font-size: 20;" text="Cozy Night" GridPane.columnIndex="2" GridPane.rowIndex="13" />
+                        <Text fx:id="flowerClickable4" style="-fx-fill: blue; -fx-font-size: 20;" text="Forest Bouquet" GridPane.columnIndex="3" GridPane.rowIndex="13" />
+                        <Text fx:id="flowerClickable5" style="-fx-fill: blue; -fx-font-size: 20;" text="Icy Elegance" GridPane.columnIndex="4" GridPane.rowIndex="13" />
+                        <Text fx:id="flowerClickable6" style="-fx-fill: blue; -fx-font-size: 20;" text="Snowy Splendor" GridPane.columnIndex="5" GridPane.rowIndex="13" />
+                        <Text fx:id="flowerClickable7" style="-fx-fill: blue; -fx-font-size: 20;" text="Holiday Cheer" GridPane.columnIndex="6" GridPane.rowIndex="13" />
+                        <Text fx:id="flowerClickable8" style="-fx-fill: blue; -fx-font-size: 20;" text="Sunny Morning" GridPane.columnIndex="7" GridPane.rowIndex="13" />
+                        <Text fx:id="flowerClickable9" style="-fx-fill: blue; -fx-font-size: 20;" text="Summer Solstice" GridPane.columnIndex="8" GridPane.rowIndex="13" />
+                        <Text fx:id="flowerClickable10" style="-fx-fill: blue; -fx-font-size: 20;" text="Wonderland Bouquet" GridPane.columnIndex="9" GridPane.rowIndex="13" />
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+
+                    </GridPane>
+                </content>
+            </MFXScrollPane>
+        </TitledPane>
+    </panes>
+</Accordion>
