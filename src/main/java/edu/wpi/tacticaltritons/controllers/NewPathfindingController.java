@@ -51,8 +51,8 @@ public class NewPathfindingController extends MapSuperController {
         floor1.setStyle("-fx-background-color: BLUE");
 
         this.viewNodes.setOnAction(event -> {
+            clearAllNodes();
             try {
-                clearAllNodes();
                 findAllNodes(allNodeTypes,selectedFloor.FLOOR.floor, "Pathfinding");
             } catch (SQLException e) {
                 throw new RuntimeException(e);

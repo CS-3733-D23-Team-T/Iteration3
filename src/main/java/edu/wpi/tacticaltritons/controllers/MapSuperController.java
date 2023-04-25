@@ -369,11 +369,97 @@ public class MapSuperController {
     }
 
     public void clearAllNodes() {
+        L1Group.getChildren().remove(1, L1Group.getChildren().size());
+        L2Group.getChildren().remove(1, L2Group.getChildren().size());
         floor1Group.getChildren().remove(1, floor1Group.getChildren().size());
         floor2Group.getChildren().remove(1, floor2Group.getChildren().size());
         floor3Group.getChildren().remove(1, floor3Group.getChildren().size());
-        L1Group.getChildren().remove(1, L1Group.getChildren().size());
-        L2Group.getChildren().remove(1, L2Group.getChildren().size());
+    }
+
+    public void clearAllCircles() {
+        List<javafx.scene.Node> nodesList = new ArrayList<>();
+        for (javafx.scene.Node nodes : L1Group.getChildren()) {
+            if (nodes instanceof Circle) {
+                nodesList.add(nodes);
+            }
+        }
+        L1Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : L2Group.getChildren()) {
+            if (nodes instanceof Circle) {
+                nodesList.add(nodes);
+            }
+        }
+        L2Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : floor1Group.getChildren()) {
+            if (nodes instanceof Circle) {
+                nodesList.add(nodes);
+            }
+        }
+        floor1Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : floor2Group.getChildren()) {
+            if (nodes instanceof Circle) {
+                nodesList.add(nodes);
+            }
+        }
+        floor2Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : floor3Group.getChildren()) {
+            if (nodes instanceof Circle) {
+                nodesList.add(nodes);
+            }
+        }
+        floor3Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+    }
+
+    public void clearAllLines() {
+        List<javafx.scene.Node> nodesList = new ArrayList<>();
+        for (javafx.scene.Node nodes : L1Group.getChildren()) {
+            if (nodes instanceof Line) {
+                nodesList.add(nodes);
+            }
+        }
+        L1Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : L2Group.getChildren()) {
+            if (nodes instanceof Line) {
+                nodesList.add(nodes);
+            }
+        }
+        L2Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : floor1Group.getChildren()) {
+            if (nodes instanceof Line) {
+                nodesList.add(nodes);
+            }
+        }
+        floor1Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : floor2Group.getChildren()) {
+            if (nodes instanceof Line) {
+                nodesList.add(nodes);
+            }
+        }
+        floor2Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : floor3Group.getChildren()) {
+            if (nodes instanceof Line) {
+                nodesList.add(nodes);
+            }
+        }
+        floor3Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
     }
 
     public HashMap<Integer, Move> getMoveHashMap() throws SQLException {
@@ -539,7 +625,7 @@ public class MapSuperController {
                     System.out.println(pathfindingList.size());
                     if (pathfindingList.size() == 2) {
                         System.out.println("pathfinding");
-                        clearAllNodes();
+                        clearAllCircles();
                         try {
                             this.startLocation.getSelectionModel().selectItem(getMoveHashMap().get(pathfindingList.get(0).getNodeID()).getLocation().getLongName());
                             this.endLocation.getSelectionModel().selectItem(getMoveHashMap().get(pathfindingList.get(1).getNodeID()).getLocation().getLongName());
@@ -571,7 +657,7 @@ public class MapSuperController {
         xCoord.clear();
         yCoord.clear();
         startEnd.clear();
-        clearAllNodes();
+        clearAllCircles();
         int startNodeId;
         int endNodeId;
         Node endNode1 = null;
