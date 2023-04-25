@@ -12,11 +12,11 @@
       <RowConstraints valignment="CENTER" />
    </rowConstraints>
    <columnConstraints>
-      <ColumnConstraints hgrow="ALWAYS" />
-      <ColumnConstraints hgrow="ALWAYS" />
-      <ColumnConstraints hgrow="ALWAYS" />
-      <ColumnConstraints hgrow="ALWAYS" />
-      <ColumnConstraints hgrow="ALWAYS" />
+      <ColumnConstraints hgrow="ALWAYS" percentWidth="20"/>
+      <ColumnConstraints hgrow="ALWAYS" percentWidth="20"/>
+      <ColumnConstraints hgrow="ALWAYS" percentWidth="20"/>
+      <ColumnConstraints hgrow="ALWAYS" percentWidth="20"/>
+      <ColumnConstraints hgrow="ALWAYS" percentWidth="20"/>
    </columnConstraints>
    <children>
       <MenuButton fx:id="serviceRequestMenuButton" style="-fx-background-color: transparent;" text="Service Request" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">

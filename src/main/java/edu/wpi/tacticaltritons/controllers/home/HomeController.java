@@ -44,9 +44,8 @@ import java.util.List;
 import java.util.concurrent.Flow;
 
 
-public class NewHomeController {
-    @FXML
-    FlowPane requestsPane;
+public class HomeController {
+    @FXML FlowPane requestsPane;
     @FXML
     FlowPane movesPane;
     @FXML
@@ -79,24 +78,8 @@ public class NewHomeController {
     private StackPane stackPane = new StackPane();
     @FXML
     private FlowPane titleFlowPane;
-public class HomeController {
-    @FXML private FlowPane requestsPane;
-    @FXML private FlowPane movesPane;
-    @FXML private FlowPane eventsPane;
-    @FXML private GridPane tableGridPane;
+
     @FXML private BorderPane announcementsPane;
-    @FXML private Group L1Group;
-    @FXML private Group L2Group;
-    @FXML private Group floor1Group;
-    @FXML private Group floor2Group;
-    @FXML private Group floor3Group;
-    @FXML private ImageView lowerLevel1Image;
-    @FXML private ImageView lowerLevel2Image;
-    @FXML private ImageView floor1Image;
-    @FXML private ImageView floor2Image;
-    @FXML private ImageView floor3Image;
-    @FXML private GesturePane gesturePane = new GesturePane();
-    @FXML private StackPane stackPane = new StackPane();
 
     TableView<HomeServiceRequests> tableServiceRequest = new TableView<>();
     TableView<Invitations> tableInvitation = new TableView<>();

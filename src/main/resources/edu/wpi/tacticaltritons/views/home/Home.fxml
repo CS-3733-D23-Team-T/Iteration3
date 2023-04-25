@@ -87,7 +87,7 @@
                <center>
                   <MFXScrollPane BorderPane.alignment="CENTER">
                      <content>
-                              <FlowPane fx:id="movesPane" alignment="TOP_CENTER" columnHalignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefWidth="301.0" style="-fx-background-color: white;" />
+                              <FlowPane fx:id="movesPane" alignment="TOP_CENTER" columnHalignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefWidth="298.0" style="-fx-background-color: white;" />
                      </content>
                   </MFXScrollPane>
                </center>
