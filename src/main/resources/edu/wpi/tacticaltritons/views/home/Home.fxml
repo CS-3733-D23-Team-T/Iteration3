@@ -10,13 +10,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.NewHomeController">
+<BorderPane prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.home.HomeController">
     <top>
-        <FlowPane prefHeight="200.0" prefWidth="1280.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-            <BorderPane.margin>
-                <Insets left="20.0" right="20.0" top="20.0" />
-            </BorderPane.margin>
-        </FlowPane>
+        <BorderPane fx:id="announcementsPane">
+
+        </BorderPane>
     </top>
     <center>
         <GridPane fx:id="tableGridPane" BorderPane.alignment="CENTER">
@@ -89,7 +87,7 @@
                <center>
                   <MFXScrollPane BorderPane.alignment="CENTER">
                      <content>
-                              <FlowPane fx:id="movesPane" alignment="TOP_CENTER" columnHalignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefWidth="301.0" style="-fx-background-color: white;" />
+                              <FlowPane fx:id="movesPane" alignment="TOP_CENTER" columnHalignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefWidth="298.0" style="-fx-background-color: white;" />
                      </content>
                   </MFXScrollPane>
                </center>
