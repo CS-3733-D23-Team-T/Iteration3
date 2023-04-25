@@ -215,7 +215,7 @@ public class PathfindingFullScreenController {
     public void setTextDirections(List<Node> shortestPathMap) throws SQLException {
         Directions directions = new Directions(shortestPathMap);
 
-        List<String> position = directions.printPositions();
+        List<String> position = directions.printDirections();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < position.size(); i++) {
             sb.append(position.get(i));
