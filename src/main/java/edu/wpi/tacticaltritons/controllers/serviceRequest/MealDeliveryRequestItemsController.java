@@ -59,8 +59,8 @@ public class MealDeliveryRequestItemsController {
         restaurantRectangle.heightProperty().bind(restaurantPane.heightProperty());
         orderPaneScroll.prefHeightProperty().bind(me.screenY.subtract(90));
         orderPaneScroll.prefWidthProperty().bind(me.screenX.subtract(restaurantPane.widthProperty().add(80)));
-        orderPaneRectangle.widthProperty().bind(orderPaneScroll.widthProperty().subtract(40));
-        orderPaneRectangle.heightProperty().bind(Bindings.max(80,orderListPane.heightProperty().subtract(2)));
+//        orderPaneRectangle.widthProperty().bind(orderPaneScroll.widthProperty().subtract(40));
+//        orderPaneRectangle.heightProperty().bind(Bindings.max(80,orderListPane.heightProperty().subtract(2)));
 
         //set onscreen text to observable properties
         restaurantDisplayHeader.textProperty().bind(me.restaurant);
