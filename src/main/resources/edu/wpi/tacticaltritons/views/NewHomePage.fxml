@@ -29,45 +29,75 @@
                 <RowConstraints minHeight="10.0" prefHeight="500.0" valignment="CENTER" vgrow="ALWAYS" />
             </rowConstraints>
             <children>
-            <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" style="-fx-background-color: white;">
+            <BorderPane style="-fx-background-color: white; -fx-background-radius: 10;">
                <GridPane.margin>
                   <Insets bottom="20.0" />
                </GridPane.margin>
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Upcoming Events">
+               <top>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Upcoming Events" BorderPane.alignment="CENTER">
                      <font>
                         <Font size="30.0" />
                      </font>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </BorderPane.margin>
                   </Text>
-                        <FlowPane fx:id="eventsPane" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" style="-fx-background-color: white;" />
-               </children>
-            </FlowPane>
-            <FlowPane alignment="TOP_CENTER" style="-fx-background-color: white;" GridPane.columnIndex="1">
+               </top>
+               <center>
+                  <MFXScrollPane BorderPane.alignment="CENTER">
+                     <content>
+                              <FlowPane fx:id="eventsPane" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" style="-fx-background-color: white;" />
+                     </content>
+                  </MFXScrollPane>
+               </center>
+            </BorderPane>
+            <BorderPane style="-fx-background-color: white; -fx-background-radius: 10;" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" />
                </GridPane.margin>
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Assiged Service Request">
+               <top>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Assigned Service Request" BorderPane.alignment="CENTER">
                      <font>
                         <Font size="30.0" />
                      </font>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </BorderPane.margin>
                   </Text>
-                      <FlowPane fx:id="requestsPane" style="-fx-background-color: white;" />
-               </children>
-            </FlowPane>
-            <FlowPane GridPane.columnIndex="2">
+               </top>
+               <center>
+                      <FlowPane fx:id="requestsPane" style="-fx-background-color: white;" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+            <BorderPane style="-fx-background-color: white; -fx-background-radius: 10;" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets bottom="20.0" />
                </GridPane.margin>
-               <children>
-                  <FlowPane fx:id="titleFlowPane" prefHeight="100.0" prefWidth="300.0" style="-fx-background-color: white;" />
-                  <MFXScrollPane>
+               <top>
+                  <FlowPane fx:id="titleFlowPane" alignment="TOP_CENTER" columnHalignment="CENTER" prefWidth="300.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Upcoming Moves">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                           <FlowPane.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </FlowPane.margin>
+                        </Text>
+                     </children>
+                  </FlowPane>
+               </top>
+               <center>
+                  <MFXScrollPane BorderPane.alignment="CENTER">
                      <content>
-                              <FlowPane fx:id="movesPane" minHeight="-Infinity" minWidth="-Infinity" prefWidth="301.0" style="-fx-background-color: white;" />
+                              <FlowPane fx:id="movesPane" alignment="TOP_CENTER" columnHalignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefWidth="301.0" style="-fx-background-color: white;" />
                      </content>
                   </MFXScrollPane>
-               </children>
-            </FlowPane>
+               </center>
+            </BorderPane>
             </children>
             <BorderPane.margin>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

@@ -88,7 +88,7 @@ public class NewHomeController {
         initServiceTable();
     }
 
-    private void initEventTable() throws SQLException {
+    private void initEventTable() {
         TableColumn<Invitations, String> location = new TableColumn<>("Location");
         location.setCellValueFactory(new PropertyValueFactory<>("location"));
         location.setPrefWidth(150);
@@ -201,16 +201,7 @@ public class NewHomeController {
         line.setVisible(true);
         line.setStrokeWidth(1);
         line.setStroke(Color.BLACK);
-
-        Text title = new Text();
-        Text click = new Text();
-        title.setText("Upcoming Moves");
-        title.setFont(new Font(30));
-        click.setText("(Click for Details)");
-        click.setFont(new Font(15));
-        titleFlowPane.getChildren().add(title);
         titleFlowPane.getChildren().add(line);
-        titleFlowPane.getChildren().add(click);
 
         lowerLevel1Image = new ImageView(App.lowerlevel1);
         lowerLevel2Image = new ImageView(App.lowerlevel2);
@@ -253,7 +244,7 @@ public class NewHomeController {
                     moveButton.setTextAlignment(TextAlignment.CENTER);
                     moveButton.prefWidthProperty().bind(Bindings.subtract(movesPane.widthProperty(), 20));
                     flowPane.getChildren().add(moveButton);
-                    moveButton.setStyle("-fx-border-radius: 10; -fx-border-color: black;");
+                    moveButton.setStyle("-fx-border-radius: 10; -fx-border-color: black; -fx-background-radius: 10");
                     flowPane.setMargin(flowPane, new Insets(10, 10, 0, 10));
                     moveButtons.add(flowPane);
 
@@ -265,6 +256,16 @@ public class NewHomeController {
                         displayNode(moveTo, gesturePane);
                         popOver.setContentNode(gesturePane);
                         popOver.show(moveButton);
+                    });
+
+                    moveButton.setOnMouseEntered(event ->
+                    {
+                        moveButton.setStyle("-fx-border-radius: 10; -fx-border-color: black; -fx-background-color: rgba(160,160,160,0.6); -fx-background-radius: 10");
+                    });
+
+                    moveButton.setOnMouseExited(event ->
+                    {
+                        moveButton.setStyle("-fx-border-radius: 10; -fx-border-color: black; -fx-background-color: white; -fx-background-radius: 10");
                     });
                     gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
                     counter = 0;
