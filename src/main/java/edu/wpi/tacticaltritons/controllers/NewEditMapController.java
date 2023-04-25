@@ -119,14 +119,24 @@ public class NewEditMapController extends MapSuperController {
         if (firstFindEdge == 1) {
             getNeighbourHashMap().forEach((key, value) -> {
                 List<Line> lineList = new ArrayList<>();
-                for (int i = 0; i < value.size(); i++) {
-                    Line line;
+                for (Node node : value) {
                     try {
-                        line = drawLine(getNodeHashMap().get(key).getXcoord(), getNodeHashMap().get(key).getYcoord(), value.get(i).getXcoord(), value.get(i).getYcoord(), Color.GREEN);
+                        if(node.getFloor().equals(getNodeHashMap().get(key).getFloor())){
+                            Line line;
+                            try {
+                                line = drawLine(getNodeHashMap().get(key).getXcoord(), getNodeHashMap().get(key).getYcoord(), node.getXcoord(), node.getYcoord(), Color.GREEN);
+                                line.startXProperty().bind(circleHashMap.get(key).centerXProperty());
+                                line.startYProperty().bind(circleHashMap.get(key).centerYProperty());
+                                line.endXProperty().bind(circleHashMap.get(node.getNodeID()).centerXProperty());
+                                line.endYProperty().bind(circleHashMap.get(node.getNodeID()).centerYProperty());
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                            lineList.add(line);
+                        }
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
-                    lineList.add(line);
                 }
                 lineHashMap.put(key, lineList);
             });
@@ -186,24 +196,24 @@ public class NewEditMapController extends MapSuperController {
 
 
                     if (firstFind == 1) {
-                        circleHashMap.put(value, circle);
+                        circleHashMap.put(value.getNodeID(), circle);
                     }
 
                     switch (value.getFloor()) {
                         case "L1":
-                            this.L1Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            this.L1Group.getChildren().addAll(circleHashMap.get(value.getNodeID()), longName);
                             break;
                         case "L2":
-                            this.L2Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            this.L2Group.getChildren().addAll(circleHashMap.get(value.getNodeID()), longName);
                             break;
                         case "1":
-                            this.floor1Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            this.floor1Group.getChildren().addAll(circleHashMap.get(value.getNodeID()), longName);
                             break;
                         case "2":
-                            this.floor2Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            this.floor2Group.getChildren().addAll(circleHashMap.get(value.getNodeID()), longName);
                             break;
                         case "3":
-                            this.floor3Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            this.floor3Group.getChildren().addAll(circleHashMap.get(value.getNodeID()), longName);
                             break;
                     }
                     setClickedButton(selectedFloor.FLOOR.floor);
@@ -238,21 +248,7 @@ public class NewEditMapController extends MapSuperController {
                 circle.setCenterX(event.getSceneX() - offsetX);
                 circle.setCenterY(event.getSceneY() - offsetY);
 
-                if (lineHashMap.get(node.getNodeID()) != null) {
-                    for(int i = 0; i<lineHashMap.get(node.getNodeID()).size(); i++) {
-                        lineHashMap.get(node.getNodeID()).get(i).startXProperty().bind(circle.centerXProperty());
-                        lineHashMap.get(node.getNodeID()).get(i).startYProperty().bind(circle.centerYProperty());
-                    }
-                } else {
-                    lineHashMap.forEach((key, value) -> {
-                        for (Line line : value) {
-                            if ((line.getEndX() == node.getXcoord() && line.getEndY() == node.getYcoord())) {
-                                line.endXProperty().bind(circle.centerXProperty());
-                                line.endYProperty().bind(circle.centerYProperty());
-                            }
-                        }
-                    });
-                }
+
                 text.setX(circle.getCenterX() - (text.getLayoutBounds().getWidth() / 2));
                 text.setY(circle.getCenterY() + (circle.getRadius() * 2));
                 xCoordinate.setText(String.valueOf((int) circle.getCenterX()));
@@ -478,17 +474,16 @@ public class NewEditMapController extends MapSuperController {
                 int yInterval = (startNode.getYcoord() - endNode.getYcoord()) / (clickNode.size() - 1);
 
                 for (int i = 1; i < clickNode.size() - 1; i++) {
-                    System.out.println(circleHashMap.get(clickNode.get(i)).getCenterX());
-                    System.out.println(circleHashMap.get(clickNode.get(i)).getCenterY());
-                    circleHashMap.get(clickNode.get(i)).setCenterX(startNode.getXcoord() - (i * xInterval));
-                    circleHashMap.get(clickNode.get(i)).setCenterY(startNode.getYcoord() - (i * yInterval));
-                    circleHashMap.get(clickNode.get(i)).setFill(Color.RED);
-                    circleHashMap.get(clickNode.get(i)).setStroke(Color.BLACK);
-//                    lineHashMap.get(clickNode.get(i)).get(i).setStartX(startNode.getXcoord() - (i * xInterval));
-//                    lineHashMap.get(clickNode.get(i)).get(i).setStartY(startNode.getYcoord() - (i * yInterval));
+                    System.out.println(circleHashMap.get(clickNode.get(i).getNodeID()).getCenterX());
+                    System.out.println(circleHashMap.get(clickNode.get(i).getNodeID()).getCenterY());
+                    circleHashMap.get(clickNode.get(i).getNodeID()).setCenterX(startNode.getXcoord() - (i * xInterval));
+                    circleHashMap.get(clickNode.get(i).getNodeID()).setCenterY(startNode.getYcoord() - (i * yInterval));
+                    circleHashMap.get(clickNode.get(i).getNodeID()).setFill(Color.RED);
+                    circleHashMap.get(clickNode.get(i).getNodeID()).setStroke(Color.BLACK);
+
                 }
-                circleHashMap.get(clickNode.get(0)).setFill(Color.RED);
-                circleHashMap.get(clickNode.get(clickNode.size() - 1)).setFill(Color.RED);
+                circleHashMap.get(clickNode.get(0).getNodeID()).setFill(Color.RED);
+                circleHashMap.get(clickNode.get(clickNode.size() - 1).getNodeID()).setFill(Color.RED);
 
                 clearAllNodes();
                 try {

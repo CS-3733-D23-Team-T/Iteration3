@@ -136,7 +136,7 @@ public class MapSuperController {
     public List<Double> startEnd = new ArrayList<Double>(0);
     public List<Integer> nodeIDs = new ArrayList<Integer>();
 
-    public HashMap<Node, Circle> circleHashMap = new HashMap<>();
+    public HashMap<Integer, Circle> circleHashMap = new HashMap<>();
     public HashMap<Integer, List<Line>> lineHashMap = new HashMap<>();
 
 
@@ -429,23 +429,23 @@ public class MapSuperController {
                     longName.setX(value.getXcoord() - (longName.getLayoutBounds().getWidth() / 2));
                     longName.setY(value.getYcoord() + (circle.getRadius() * 2) + 5);
 
-                    circleHashMap.put(value, circle);
+                    circleHashMap.put(value.getNodeID(), circle);
 
                     switch (value.getFloor()) {
                         case "L1":
-                            this.L1Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            this.L1Group.getChildren().addAll(circleHashMap.get(value.getNodeID()), longName);
                             break;
                         case "L2":
-                            this.L2Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            this.L2Group.getChildren().addAll(circleHashMap.get(value.getNodeID()), longName);
                             break;
                         case "1":
-                            this.floor1Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            this.floor1Group.getChildren().addAll(circleHashMap.get(value.getNodeID()), longName);
                             break;
                         case "2":
-                            this.floor2Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            this.floor2Group.getChildren().addAll(circleHashMap.get(value.getNodeID()), longName);
                             break;
                         case "3":
-                            this.floor3Group.getChildren().addAll(circleHashMap.get(value), longName);
+                            this.floor3Group.getChildren().addAll(circleHashMap.get(value.getNodeID()), longName);
                             break;
                     }
                     setClickedButton(selectedFloor.FLOOR.floor);
