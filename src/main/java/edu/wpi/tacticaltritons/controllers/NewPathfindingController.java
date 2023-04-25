@@ -8,6 +8,7 @@ import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class NewPathfindingController extends MapSuperController {
 
-
+    @FXML private MFXDatePicker date;
 
     public NewPathfindingController() throws SQLException {
     }
@@ -61,13 +62,12 @@ public class NewPathfindingController extends MapSuperController {
 
         this.pathfinding.setOnMouseClicked(
                 event -> {
+                    java.sql.Date sqlDate = java.sql.Date.valueOf(date.getValue());
                     try {
-                        pathfinding(DAOFacade.getNode(startLocation.getSelectedItem(), today).getNodeID(), DAOFacade.getNode(endLocation.getSelectedItem(), today).getNodeID());
+                        pathfinding(DAOFacade.getNode(startLocation.getSelectedItem(), sqlDate).getNodeID(), DAOFacade.getNode(endLocation.getSelectedItem(), sqlDate).getNodeID());
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
                 });
     }
-
-
 }
