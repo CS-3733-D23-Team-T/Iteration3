@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -361,5 +362,9 @@ public class DAOFacade {
   }
   public static Announcements getAnnouncement(UUID id) throws SQLException {
     return announcementsDao.get(id);
+  }
+
+  public static HashMap<Integer, ArrayList<Node>> getAllNeighbors() throws SQLException {
+    return nodeDao.getAllNeighbors();
   }
 }
