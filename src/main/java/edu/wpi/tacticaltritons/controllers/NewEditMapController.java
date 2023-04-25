@@ -211,6 +211,8 @@ public class NewEditMapController extends MapSuperController {
         });
         circle.setOnMouseClicked(event -> {
 
+            componentShift(340);
+            menuPane.setVisible(true);
             if (event.isControlDown()) {
                 clickNode.add(node);
                 circle.setFill(Color.WHITE);
