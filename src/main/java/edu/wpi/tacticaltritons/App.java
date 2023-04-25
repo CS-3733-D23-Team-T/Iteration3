@@ -93,6 +93,7 @@ public class App extends Application {
 
     final Scene scene = new Scene(rootPane);
     primaryStage.setScene(scene);
+    primaryStage.setTitle("CS3733 - Tactical Tritons");
     primaryStage.show();
   }
 

@@ -24,6 +24,7 @@
 
 .menu-item .label {
     -fx-text-fill: -button-font-color;
+    -fx-font-size: 16;
     -fx-background-color: -button-background-color;
 }
 

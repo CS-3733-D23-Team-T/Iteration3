@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TestDirections {
 
-  public void testPosition() throws SQLException {
+  public void testprintPosition() throws SQLException {
     AStarAlgorithm algorithm = new AStarAlgorithm();
 
     // Use node IDs 105 and 135 for testing

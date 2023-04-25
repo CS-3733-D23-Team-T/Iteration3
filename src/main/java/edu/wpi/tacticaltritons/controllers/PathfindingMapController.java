@@ -166,7 +166,7 @@ public class PathfindingMapController {
 
                         Directions directions = new Directions(shortestPathMap);
 
-                        List<String> position = directions.position();
+                        List<String> position = directions.printDirections();
                         StringBuilder sb = new StringBuilder();
                         for (int i = 0; i < position.size(); i++) {
                             sb.append(position.get(i));
