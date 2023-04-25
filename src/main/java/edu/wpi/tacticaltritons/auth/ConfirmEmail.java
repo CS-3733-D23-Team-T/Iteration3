@@ -1,12 +1,10 @@
 package edu.wpi.tacticaltritons.auth;
 
-import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -80,7 +78,41 @@ public class ConfirmEmail {
             com.google.api.services.gmail.model.Message msg = new com.google.api.services.gmail.model.Message();
             msg.setRaw(encodedMessage);
 
-            msg = service.users().messages().send("me", msg).execute();
+            service.users().messages().send("me", msg).execute();
+//            System.out.println("Message ID: " + msg.getId());
+//            System.out.println(msg.toPrettyString());
+        } catch (IOException | MessagingException | GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+
+        return code;
+    }
+
+    public static String sendRestEmail(String address){
+        String code = String.valueOf(Math.abs(new Random().nextInt() % 1000000));
+
+        try {
+            final NetHttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
+            Gmail service = new Gmail.Builder(transport, JSON_FACTORY, getCredentials(transport))
+                    .setApplicationName("CS3733").build();
+
+
+            Properties properties = new Properties();
+            Session session = Session.getDefaultInstance(properties, null);
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(EMAIL_ADDRESS));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(address));
+            message.setSubject("Password Reset Email");
+            message.setText("Your Password Reset Code is: " + code);
+
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            message.writeTo(buffer);
+            byte[] rawMessage = buffer.toByteArray();
+            String encodedMessage = Base64.encodeBase64URLSafeString(rawMessage);
+            com.google.api.services.gmail.model.Message msg = new com.google.api.services.gmail.model.Message();
+            msg.setRaw(encodedMessage);
+
+            service.users().messages().send("me", msg).execute();
 //            System.out.println("Message ID: " + msg.getId());
 //            System.out.println(msg.toPrettyString());
         } catch (IOException | MessagingException | GeneralSecurityException e) {

@@ -35,4 +35,5 @@ public interface PathFindingAlgorithm {
         return DAOFacade.getAllMoves();
     }
 
+
 }

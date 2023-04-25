@@ -190,7 +190,7 @@ public class FurnitureDaoImpl implements FurnitureDao {
         try {
             connection = Tdb.getConnection();
 
-            String sql = "SELECT * FROM FurnitureForms;";
+            String sql = "SELECT * FROM FurnitureForms ORDER BY status, date;";
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
 

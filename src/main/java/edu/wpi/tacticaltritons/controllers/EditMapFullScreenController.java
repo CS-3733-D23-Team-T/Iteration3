@@ -25,11 +25,11 @@ import net.kurobako.gesturefx.GesturePane;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -593,11 +593,21 @@ public class EditMapFullScreenController {
 
         this.importButton.setOnAction(
                 event -> {
+                    String tableName = null;
+                    if (selector.getValue().equals("Node")) {
+                        tableName = "node";
+                    } else if (selector.getValue().equals("Edge")) {
+                        tableName = "edge";
+                    } else if (selector.getValue().equals("Location Name")) {
+                        tableName = "locationname";
+                    } else if (selector.getValue().equals("Move")) {
+                        tableName = "move";
+                    }
                     Stage outStage = new Stage();
                     FileChooser fileChooser = new FileChooser();
                     File file = fileChooser.showOpenDialog(outStage);
                     try {
-                        Import.importFile(file);
+                        Import.importFile(file, tableName);
                     } catch (IOException | SQLException | ParseException e) {
                         throw new RuntimeException(e);
                     }
@@ -617,6 +627,7 @@ public class EditMapFullScreenController {
             Stage exportStage = new Stage();
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Export");
+            fileChooser.setInitialFileName(tableName);
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
 
             File file = fileChooser.showSaveDialog(exportStage);

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -878,18 +878,6 @@ public class EditMapController {
         importButton.setPrefHeight(33.0);
         importButton.setPrefWidth(133.0);
 
-        importButton.setOnAction(
-                event -> {
-                    Stage outStage = new Stage();
-                    FileChooser fileChooser = new FileChooser();
-                    File file = fileChooser.showOpenDialog(outStage);
-                    try {
-                        Import.importFile(file);
-                    } catch (IOException | SQLException | ParseException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-
         MFXComboBox<String> selector = new MFXComboBox<>();
 
         selector.setItems(FXCollections.observableArrayList("Node", "Edge", "Location Name", "Move"));
@@ -905,6 +893,28 @@ public class EditMapController {
         exportButton.setTextFill(Color.WHITE);
         exportButton.setPrefHeight(33.0);
         exportButton.setPrefWidth(133.0);
+
+        importButton.setOnAction(
+                event -> {
+                    String tableName = null;
+                    if (selector.getValue().equals("Node")) {
+                        tableName = "node";
+                    } else if (selector.getValue().equals("Edge")) {
+                        tableName = "edge";
+                    } else if (selector.getValue().equals("Location Name")) {
+                        tableName = "locationname";
+                    } else if (selector.getValue().equals("Move")) {
+                        tableName = "move";
+                    }
+                    Stage outStage = new Stage();
+                    FileChooser fileChooser = new FileChooser();
+                    File file = fileChooser.showOpenDialog(outStage);
+                    try {
+                        Import.importFile(file, tableName);
+                    } catch (IOException | SQLException | ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
         exportButton.setOnAction(event -> {
             String tableName = null;

@@ -15,12 +15,12 @@ class StylingParameters {
      static final String noLastName = "Please input last name ";
      static final String noDate = "Please select date";
      static final String noRoom = "Please select room";
-     static final String noTime = "please provide time";
+     static final String noTime = "Provide Time";
      static final String FirstName = "First name";
      static final String LastName = "Last name ";
-     static final String Date = "select date";
-     static final String Room = "search for room";
-     static final String Time = "select time";
+     static final String Date = "Select date";
+     static final String Room = "Search for room";
+     static final String Time = "Select time";
      static final String assignedComboBox = "Select a staff member";
 
 }

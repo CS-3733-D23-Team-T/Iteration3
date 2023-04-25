@@ -1,13 +1,13 @@
 package edu.wpi.tacticaltritons.auth;
 
-import lombok.Getter;
+import io.github.palexdev.materialfx.controls.MFXPasswordField;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 public class PasswordGenerator {
     protected static final char[] ACCEPTED_SYMBOLS = {'!', '@', '#', '$', '%', '^', '&', '*', '?'};
@@ -126,5 +126,17 @@ public class PasswordGenerator {
             }
         }
         return nextChar;
+    }
+
+    public static EventHandler<ActionEvent> generatePasswordEvent(
+            MFXPasswordField passwordField,
+            MFXPasswordField confirmPasswordField){
+        return event -> {
+            String generatedPassword = PasswordGenerator.generatePassword();
+            passwordField.setText(generatedPassword);
+            passwordField.setShowPassword(true);
+            confirmPasswordField.setText(generatedPassword);
+            confirmPasswordField.setShowPassword(true);
+        };
     }
 }

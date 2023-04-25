@@ -2,7 +2,6 @@ package edu.wpi.tacticaltritons.controllers.login;
 
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 
 public class LoginRootController {
@@ -11,7 +10,6 @@ public class LoginRootController {
 
     @FXML
     private void initialize(){
-        //This is method 1 but it can stretch
         loginImageView.setFitWidth(loginCeneterFlowPane.getWidth());
         loginImageView.setFitHeight(loginCeneterFlowPane.getHeight());
 

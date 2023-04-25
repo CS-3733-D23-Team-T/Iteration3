@@ -18,6 +18,7 @@ public class AStarAlgorithmTest {
             startNode = DAOFacade.getNode(startNodeId);
             endNode = DAOFacade.getNode(endNodeId);
         } catch (SQLException e) {
+            System.out.println("Error fetching nodes:");
             e.printStackTrace();
         }
 
@@ -34,6 +35,7 @@ public class AStarAlgorithmTest {
         try {
             shortestPath = aStarAlgorithm.findShortestPath(startNode, endNode);
         } catch (SQLException e) {
+            System.out.println("Error finding the shortest path:");
             e.printStackTrace();
         }
 

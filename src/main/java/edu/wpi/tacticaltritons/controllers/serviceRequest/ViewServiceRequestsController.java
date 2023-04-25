@@ -121,9 +121,8 @@ public class ViewServiceRequestsController {
                       setText(null);
                       setGraphic(button2);
                       button2.setOnAction(event -> {
-                        //Meal meal = getTableView().getItems().get(getIndex());
-                        meal.setAssignedStaffLast("");
-                        meal.setAssignedStaffFirst("");
+                        meal.setAssignedStaffLast(null);
+                        meal.setAssignedStaffFirst(null);
                         meal.setStatus(RequestStatus.BLANK);
                         getTableView().refresh();
                         try {
@@ -238,9 +237,8 @@ public class ViewServiceRequestsController {
                       setText(null);
                       setGraphic(button2);
                       button2.setOnAction(event -> {
-                        //Meal meal = getTableView().getItems().get(getIndex());
-                        flower.setAssignedStaffLast("");
-                        flower.setAssignedStaffFirst("");
+                        flower.setAssignedStaffLast(null);
+                        flower.setAssignedStaffFirst(null);
                         flower.setStatus(RequestStatus.BLANK);
                         getTableView().refresh();
                         try {
@@ -306,6 +304,39 @@ public class ViewServiceRequestsController {
             } catch (SQLException e) {
               throw new RuntimeException(e);
             }
+
+            status.setCellFactory(column -> {
+              return new TableCell<Conference, RequestStatus>() {
+                private final MFXButton button = new MFXButton("Confirm");
+                protected void updateItem(RequestStatus item, boolean empty) {
+                  super.updateItem(item, empty);
+                  if (item == null) {
+                    setText(null);
+                    setGraphic(null);
+                  } else if (item.toString().equals("Processing") && UserSessionToken.getUser().isAdmin()) {
+                    button.setStyle("-fx-background-color: green;");
+                    setText(null);
+                    setGraphic(button);
+                    button.setOnAction(event -> {
+                      Conference conference = getTableView().getItems().get(getIndex());
+                      conference.setStatus(RequestStatus.DONE);
+                      getTableView().refresh();
+                      try {
+                        DAOFacade.updateConference(conference);
+                      } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                      }
+                    });
+                  }
+                  else {
+                    setText(item.toString());
+                    setGraphic(null);
+                  }
+                }
+              };
+            });
+
+
             tableConference.getItems().addAll(conferenceObservableList);
 
             tableConference.setPrefWidth(tableInsert.getWidth());
@@ -387,9 +418,8 @@ public class ViewServiceRequestsController {
                       setText(null);
                       setGraphic(button2);
                       button2.setOnAction(event -> {
-                        //Meal meal = getTableView().getItems().get(getIndex());
-                        furniture.setAssignedStaffLast("");
-                        furniture.setAssignedStaffFirst("");
+                        furniture.setAssignedStaffLast(null);
+                        furniture.setAssignedStaffFirst(null);
                         furniture.setStatus(RequestStatus.BLANK);
                         getTableView().refresh();
                         try {
