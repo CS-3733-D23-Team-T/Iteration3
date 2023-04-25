@@ -21,84 +21,7 @@
     <center>
         <StackPane BorderPane.alignment="CENTER">
             <children>
-                <GesturePane fx:id="gesturePane">
-                    <StackPane fx:id="selectedFloorPane">
-                        <children>
-                            <Group fx:id="L1Group">
-                                <children>
-                                    <ImageView fx:id="lowerLevel1Image" pickOnBounds="true" preserveRatio="true" visible="false">
-                                        <image>
-                                        </image>
-                                    </ImageView>
-                                </children>
-                            </Group>
-
-                            <Group fx:id="L2Group">
-                                <children>
-                                    <ImageView fx:id="lowerLevel2Image" pickOnBounds="true" preserveRatio="true" visible="false">
-                                        <image>
-                                        </image>
-                                    </ImageView>
-                                </children>
-                            </Group>
-
-                            <Group fx:id="floor1Group">
-                                <children>
-                                    <ImageView fx:id="floor1Image" pickOnBounds="true" preserveRatio="true" visible="false">
-                                        <image>
-                                        </image>
-                                    </ImageView>
-                                </children>
-                            </Group>
-
-                            <Group fx:id="floor2Group">
-                                <children>
-                                    <ImageView fx:id="floor2Image" pickOnBounds="true" preserveRatio="true" visible="false">
-                                        <image>
-                                        </image>
-                                    </ImageView>
-                                </children>
-                            </Group>
-
-                            <Group fx:id="floor3Group">
-                                <children>
-                                    <ImageView fx:id="floor3Image" pickOnBounds="true" preserveRatio="true" visible="false">
-                                        <image>
-                                        </image>
-                                    </ImageView>
-                                </children>
-                            </Group>
-                        </children>
-                    </StackPane>
-                </GesturePane>
-                <StackPane fx:id="directionsPane" maxHeight="450.0" maxWidth="200.0" style="-fx-background-color: ffffff; -fx-background-radius: 10;" StackPane.alignment="TOP_RIGHT">
-                    <StackPane.margin>
-                        <Insets right="20.0" top="20.0" />
-                    </StackPane.margin>
-                    <effect>
-                        <DropShadow>
-                            <color>
-                                <Color opacity="0.3499999940395355" />
-                            </color>
-                        </DropShadow>
-                    </effect>
-                    <children>
-                        <TextArea fx:id="textDirections" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
-                            <StackPane.margin>
-                                <Insets bottom="10.0" left="10.0" right="10.0" top="70.0" />
-                            </StackPane.margin>
-                        </TextArea>
-                        <Text fx:id="textForDirections" strokeType="OUTSIDE" strokeWidth="0.0" text="DIRECTIONS" StackPane.alignment="TOP_CENTER">
-                            <StackPane.margin>
-                                <Insets top="40.0" />
-                            </StackPane.margin>
-                            <font>
-                                <Font name="Open Sans Regular" size="18.0" />
-                            </font>
-                        </Text>
-                    </children>
-                </StackPane>
-            <StackPane fx:id="infoStackPane" prefHeight="650.0" prefWidth="391.0">
+            <StackPane fx:id="infoStackPane" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" StackPane.alignment="TOP_LEFT">
                <children>
                   <Rectangle fx:id="infoRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="650.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle" width="356.0" StackPane.alignment="CENTER_LEFT">
                      <StackPane.margin>
@@ -201,6 +124,83 @@
                   </VBox>
                </children>
             </StackPane>
+                <StackPane fx:id="directionsPane" maxHeight="450.0" maxWidth="200.0" style="-fx-background-color: ffffff; -fx-background-radius: 10;" StackPane.alignment="TOP_RIGHT">
+                    <StackPane.margin>
+                        <Insets right="20.0" top="20.0" />
+                    </StackPane.margin>
+                    <effect>
+                        <DropShadow>
+                            <color>
+                                <Color opacity="0.3499999940395355" />
+                            </color>
+                        </DropShadow>
+                    </effect>
+                    <children>
+                        <TextArea fx:id="textDirections" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
+                            <StackPane.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="70.0" />
+                            </StackPane.margin>
+                        </TextArea>
+                        <Text fx:id="textForDirections" strokeType="OUTSIDE" strokeWidth="0.0" text="DIRECTIONS" StackPane.alignment="TOP_CENTER">
+                            <StackPane.margin>
+                                <Insets top="40.0" />
+                            </StackPane.margin>
+                            <font>
+                                <Font name="Open Sans Regular" size="18.0" />
+                            </font>
+                        </Text>
+                    </children>
+                </StackPane>
+                <GesturePane fx:id="gesturePane">
+                    <StackPane fx:id="selectedFloorPane">
+                        <children>
+                            <Group fx:id="L1Group">
+                                <children>
+                                    <ImageView fx:id="lowerLevel1Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="L2Group">
+                                <children>
+                                    <ImageView fx:id="lowerLevel2Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="floor1Group">
+                                <children>
+                                    <ImageView fx:id="floor1Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="floor2Group">
+                                <children>
+                                    <ImageView fx:id="floor2Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="floor3Group">
+                                <children>
+                                    <ImageView fx:id="floor3Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+                        </children>
+                    </StackPane>
+                </GesturePane>
             </children>
             <BorderPane.margin>
                 <Insets />

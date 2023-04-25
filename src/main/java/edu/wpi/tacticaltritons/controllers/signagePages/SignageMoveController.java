@@ -7,7 +7,7 @@ import edu.wpi.tacticaltritons.database.Move;
 import edu.wpi.tacticaltritons.database.Node;
 import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
-import edu.wpi.tacticaltritons.pathfinding.Directions;
+import edu.wpi.tacticaltritons.pathfinding.CongestionController;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,7 +16,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -101,7 +100,8 @@ public class SignageMoveController {
     }
 
     public void setTextDirections(List<Node> shortestPathMap) throws SQLException {
-        Directions directions = new Directions(shortestPathMap);
+        textDirections.setText("Left");
+/*        Directions directions = new Directions(shortestPathMap);
 
         List<String> position = directions.position();
         StringBuilder sb = new StringBuilder();
@@ -110,7 +110,7 @@ public class SignageMoveController {
             sb.append("\n");
         }
         String allPositions = sb.toString();
-        textDirections.setText(allPositions);
+        textDirections.setText(allPositions);*/
     }
 
     private void setLabels(Move move, String room) {
@@ -137,7 +137,7 @@ public class SignageMoveController {
         Node startNode1 = null;
         List<Node> shortestPathMap = new ArrayList<>();
         try {
-            AStarAlgorithm mapAlgorithm = new AStarAlgorithm();
+            AStarAlgorithm mapAlgorithm = new AStarAlgorithm(new CongestionController());
             startNode1 = DAOFacade.getNode(startNodeId);
             endNode1 = DAOFacade.getNode(endNodeId);
             shortestPathMap = AlgorithmSingleton.getInstance().algorithm.findShortestPath(startNode1, endNode1);
@@ -279,7 +279,7 @@ public class SignageMoveController {
         Point2D centerpoint = new Point2D(shortestPathMap.get(0).getXcoord() + 200, shortestPathMap.get(0).getYcoord());
 
         gesturePane.zoomTo(1, centerpoint);
-        gesturePane.centreOn(centerpoint); //TODO fix
+        gesturePane.centreOn(centerpoint);
 
         this.gesturePane.setVisible(true);
         this.floor1Image.setVisible(true);
