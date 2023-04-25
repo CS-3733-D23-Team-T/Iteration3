@@ -6,6 +6,7 @@ import edu.wpi.tacticaltritons.database.dao.NodeDao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class NodeDaoImpl implements NodeDao {
@@ -257,5 +258,58 @@ public class NodeDaoImpl implements NodeDao {
         ps.close();
       }
     }
+  }
+
+  @Override
+  public HashMap<Integer, ArrayList<Node>> getAllNeighbors() throws SQLException {
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet rs = null;
+    HashMap<Integer, ArrayList<Node>> hash = new HashMap<>();
+    try {
+      connection = Tdb.getConnection();
+
+
+      String sql = "SELECT n.nodeid, " +
+              "       string_agg(CAST(e.endnode AS TEXT), ',') AS neighbors, " +
+              "       array_agg(n2.xcoord) AS xcoords, " +
+              "       array_agg(n2.ycoord) AS ycoords, " +
+              "       array_agg(n2.floor) AS floors, " +
+              "       array_agg(n2.building) AS buildings " +
+              "FROM node n " +
+              "         JOIN edge e ON n.nodeid = e.startnode " +
+              "         JOIN node n2 ON e.endnode = n2.nodeid " +
+              "GROUP BY n.nodeid;";
+      statement = connection.createStatement();
+      rs = statement.executeQuery(sql);
+
+      while (rs.next()) {
+        int nodeID = rs.getInt("nodeID");
+        String[] neighbors = rs.getString("neighbors").split(",");
+        String[] xcoords = rs.getString("xcoords").split(",");
+        String[] ycoords = rs.getString("ycoords").split(",");
+        String[] floors = rs.getString("floors").split(",");
+        String[] buildings = rs.getString("buildings").split(",");
+        ArrayList<Node> nodes = new ArrayList<>();
+        for(int i = 0; i<neighbors.length; i++){
+            Node node = new Node(Integer.parseInt(neighbors[i]), Integer.parseInt(xcoords[i]), Integer.parseInt(ycoords[i]), floors[i], buildings[i]);
+            nodes.add(node);
+        }
+
+        hash.put(nodeID, nodes);
+      }
+    } catch (SQLException e){
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    } finally {
+      if(rs != null){
+        rs.close();
+      }
+      if(statement != null){
+        statement.close();
+      }
+    }
+    return hash;
   }
 }
