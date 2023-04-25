@@ -6,10 +6,12 @@ import edu.wpi.tacticaltritons.database.daoImplementations.*;
 import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class DAOFacade {
   static NodeDaoImpl nodeDao = new NodeDaoImpl();
@@ -19,15 +21,18 @@ public class DAOFacade {
   static LoginDaoImpl loginDao = new LoginDaoImpl();
   static RequestOptionsDaoImpl requestOptionsDao = new RequestOptionsDaoImpl();
   static FlowerDaoImpl flowerDao = new FlowerDaoImpl();
+  static SupplyDaoImpl supplyDao = new SupplyDaoImpl();
   static MealDaoImpl mealDao = new MealDaoImpl();
   static SessionDaoImpl sessionDao = new SessionDaoImpl();
   static ConferenceDaoImpl conferenceDao = new ConferenceDaoImpl();
   static FlowerRequestOptionsDaoImpl flowerRequestOptionsDao = new FlowerRequestOptionsDaoImpl();
+  static SupplyRequestOptionsDaoImpl supplyRequestOptionsDao = new SupplyRequestOptionsDaoImpl();
   static FurnitureDaoImpl furnitureDao = new FurnitureDaoImpl();
   static FurnitureRequestOptionsDaoImpl furnitureRequestOptionsDao = new FurnitureRequestOptionsDaoImpl();
   static HomeServiceRequestsDaoImpl homeServiceRequestsDao = new HomeServiceRequestsDaoImpl();
   static InvitationsDaoImpl invitationsDao = new InvitationsDaoImpl();
   static SignageDaoImpl signageDao = new SignageDaoImpl();
+  static AnnouncementsDaoImpl announcementsDao = new AnnouncementsDaoImpl();
 
   public static void addNode(Node node) throws SQLException {
     nodeDao.insert(node);
@@ -51,6 +56,9 @@ public class DAOFacade {
 
   public static void addFlower(Flower flower) throws SQLException {
     flowerDao.insert(flower);
+  }
+  public static void addSupply(Supply supply) throws SQLException {
+    supplyDao.insert(supply);
   }
 
   public static void addMeal(Meal meal) throws SQLException {
@@ -80,6 +88,9 @@ public class DAOFacade {
   public static void deleteFlower(Flower flower) throws SQLException {
     flowerDao.delete(flower);
   }
+  public static void deleteSupply(Supply supply) throws SQLException {
+    supplyDao.delete(supply);
+  }
 
   public static void deleteMeal(Meal meal) throws SQLException {
     mealDao.delete(meal);
@@ -108,6 +119,9 @@ public class DAOFacade {
   public static void updateFlower(Flower flower) throws SQLException {
     flowerDao.update(flower);
   }
+  public static void updateSupply(Supply supply) throws SQLException {
+    supplyDao.update(supply);
+  }
 
   public static void updateMeal(Meal meal) throws SQLException {
     mealDao.update(meal);
@@ -135,6 +149,9 @@ public class DAOFacade {
 
   public static List<Flower> getAllFlower() throws SQLException {
     return flowerDao.getAll();
+  }
+  public static List<Supply> getAllSupply() throws SQLException {
+    return supplyDao.getAll();
   }
 
   public static List<Meal> getAllMeal() throws SQLException {
@@ -179,6 +196,9 @@ public class DAOFacade {
 
   public static Flower getFlower(int orderNum) throws SQLException {
     return flowerDao.get(orderNum);
+  }
+  public static Supply getSupply(int orderNum) throws SQLException {
+    return supplyDao.get(orderNum);
   }
 
   public static LocationName getLocationName(String locationName) throws SQLException {
@@ -264,6 +284,29 @@ public class DAOFacade {
   public static void deleteRequestOption(FlowerRequestOptions flowerRequestOptions) throws SQLException {
     flowerRequestOptionsDao.delete(flowerRequestOptions);
   }
+  public static SupplyRequestOptions getSupplyRequestOptions(String itemName, String shop)
+          throws SQLException {
+    return supplyRequestOptionsDao.get(itemName, shop);
+  }
+  public static List<SupplyRequestOptions> getAllShopSupplyRequestOptions(String shop) throws SQLException {
+    return supplyRequestOptionsDao.getFromShop(shop);
+  }
+
+  public static List<SupplyRequestOptions> getAllSupplyRequestOptions() throws SQLException {
+    return supplyRequestOptionsDao.getAll();
+  }
+
+  public static void addSupplyRequestOption(SupplyRequestOptions supplyRequestOptions) throws SQLException {
+    supplyRequestOptionsDao.insert(supplyRequestOptions);
+  }
+
+  public static void updatePrice(SupplyRequestOptions supplyRequestOptions) throws SQLException {
+    supplyRequestOptionsDao.updatePrice(supplyRequestOptions);
+  }
+
+  public static void deleteRequestOption(SupplyRequestOptions supplyRequestOptions) throws SQLException {
+    supplyRequestOptionsDao.delete(supplyRequestOptions);
+  }
   public static FurnitureRequestOptions getFurnitureRequestOptions(String itemName)
           throws SQLException {
     return furnitureRequestOptionsDao.get(itemName);
@@ -343,6 +386,26 @@ public class DAOFacade {
 
   public static void updateSignage(Signage sign) throws SQLException{
     signageDao.update(sign);
+  }
+
+  public static List<Announcements> getAllAnnouncements(Timestamp timestamp) throws SQLException {
+    return announcementsDao.getAll(timestamp);
+  }
+
+  public static List<Announcements> getAllAnnouncements() throws SQLException {
+    return announcementsDao.getAll();
+  }
+  public static void updateAnnouncements(Announcements announcements) throws SQLException {
+    announcementsDao.update(announcements);
+  }
+  public static void insertAnnouncements(Announcements announcements) throws SQLException {
+    announcementsDao.insert(announcements);
+  }
+  public static void deleteAnnouncements(Announcements announcements) throws SQLException {
+    announcementsDao.delete(announcements);
+  }
+  public static Announcements getAnnouncement(UUID id) throws SQLException {
+    return announcementsDao.get(id);
   }
 
   public static HashMap<Integer, ArrayList<Node>> getAllNeighbors() throws SQLException {

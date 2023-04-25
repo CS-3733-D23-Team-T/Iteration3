@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" maxHeight="150.0" maxWidth="248.0" orientation="VERTICAL" prefHeight="150.0" prefWidth="248.0" prefWrapLength="150.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.home.AnnouncementController">
+
+          <FlowPane alignment="CENTER" columnHalignment="CENTER" maxWidth="248.0" orientation="VERTICAL" prefWrapLength="90.0">
+      <FlowPane.margin>
+         <Insets />
+      </FlowPane.margin>
+      <children>
+          <Text fx:id="title" text="Title" textAlignment="CENTER" wrappingWidth="248.0">
+            <FlowPane.margin>
+               <Insets bottom="5.0" top="5.0" />
+            </FlowPane.margin>
+            <font>
+               <Font size="28.0" />
+            </font>
+         </Text>
+      </children>
+    </FlowPane>
+   <FlowPane alignment="CENTER" columnHalignment="CENTER" maxHeight="60.0" maxWidth="248.0" orientation="VERTICAL" prefWrapLength="40.0" style="-fx-background-color: #002D59;" vgap="5.0">
+      <children>
+          <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="20.0" maxWidth="248.0" prefWrapLength="248.0">
+              <Text fx:id="creator" style="-fx-fill: white;" text="From: Creator" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fx:id="separator" style="-fx-fill: white;" text="-" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+              <Text fx:id="effectiveDate" style="-fx-fill: white;" text="12-30-23">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+          </FlowPane>
+           <Text fx:id="type" style="-fx-fill: white;" text="General">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Text>
+      </children>
+      <padding>
+         <Insets bottom="10.0" top="10.0" />
+      </padding>
+   </FlowPane>
+
+</FlowPane>

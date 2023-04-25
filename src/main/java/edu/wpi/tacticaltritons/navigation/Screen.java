@@ -10,10 +10,16 @@ public enum Screen {
   LOGIN_CONTAINER("views/login/LoginContainer.fxml"),
 
   ROOT("views/Root.fxml"),
-  HOME("views/NewHomePage.fxml"),
+  HOME("views/home/Home.fxml"),
 
   ABOUT("views/About.fxml"),
   CREDITS("views/Credits.fxml"),
+
+  ANNOUNCEMENT_ROOT("views/home/AnnouncementRoot.fxml"),
+  ANNOUNCEMENT("views/home/Announcement.fxml"),
+  VIEW_ANNOUNCEMENTS("views/announcements/ViewAnnouncements.fxml"),
+  CREATE_ANNOUNCEMENTS("views/announcements/CreateAnnouncements.fxml"),
+  EDIT_ANNOUNCEMENTS("views/announcements/EditAnnouncements.fxml"),
 
   SETTINGS("views/settings/Settings.fxml"),
   USER_OPTIONS("views/settings/UserOptions.fxml"),
@@ -36,13 +42,14 @@ public enum Screen {
   FLOWER_REQUEST("views/serviceRequest/FlowerDelivery.fxml"),
   FLOWER_CHOICE("views/serviceRequest/FlowerChoice.fxml"),
   FLOWER_CHECKOUT("views/serviceRequest/FlowerCheckout.fxml"),
+  SUPPLY_REQUEST("views/serviceRequest/SupplyDelivery.fxml"),
+  SUPPLY_CHOICE("views/serviceRequest/SupplyChoice.fxml"),
+  SUPPLY_CHECKOUT("views/serviceRequest/SupplyCheckout.fxml"),
 
-  SIGNAGE("views/signagePages/signagePage.fxml"),
-  EDIT_SIGNAGE("views/signagePages/signageEditPage.fxml"),
-  PATHFINDING("views/PathfindingFullScreen.fxml"),
-  EDIT_MAP("views/EditMapFullScreen.fxml"),
-  VIEW_MAP("views/ViewMapFullScreen.fxml"),
-
+  SIGNAGE("views/signagePages/Signage.fxml"),
+  PATHFINDING("views/NewPathfinding.fxml"),
+  EDIT_MAP("views/NewEditMap.fxml"),
+  VIEW_MAP("views/NewViewMap.fxml"),
   DATABASE("views/database/Database.fxml"),
   DATABASE_HELP("views/database/DatabaseHelp.fxml"),
   EDIT_DATABASE("views/database/EditDatabase.fxml"),

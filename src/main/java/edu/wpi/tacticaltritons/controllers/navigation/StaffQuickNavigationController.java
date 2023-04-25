@@ -14,17 +14,17 @@ public class StaffQuickNavigationController {
     @FXML
     private void initialize(){
         signageMenuButton.getItems().addAll(App.quickNavigationMenuButtons
-                .generateServiceRequestItems(false, QuickNavigationMenuButtons.QuickNavigationMenu.SIGNAGE));
+                .generateMenuButton(false, QuickNavigationMenuButtons.QuickNavigationMenu.SIGNAGE));
         signageMenuButton.addEventHandler(EventType.ROOT,
                 QuickNavigationMenuButtons.generateQuickNavEventHandler());
 
         hospitalMapMenuButton.getItems().addAll(App.quickNavigationMenuButtons
-                .generateServiceRequestItems(false, QuickNavigationMenuButtons.QuickNavigationMenu.HOSPITAL_MAP));
+                .generateMenuButton(false, QuickNavigationMenuButtons.QuickNavigationMenu.HOSPITAL_MAP));
         hospitalMapMenuButton.addEventHandler(EventType.ROOT,
                 QuickNavigationMenuButtons.generateQuickNavEventHandler());
 
         serviceRequestMenuButton.getItems().addAll(App.quickNavigationMenuButtons
-                .generateServiceRequestItems(false, QuickNavigationMenuButtons.QuickNavigationMenu.SERVICE_REQUEST));
+                .generateMenuButton(false, QuickNavigationMenuButtons.QuickNavigationMenu.SERVICE_REQUEST));
         serviceRequestMenuButton.addEventHandler(EventType.ROOT,
                 QuickNavigationMenuButtons.generateQuickNavEventHandler());
     }

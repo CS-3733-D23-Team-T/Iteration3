@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 public enum AlgorithmSingleton {
-    ASTAR(new AStarAlgorithm()),
+    ASTAR(new AStarAlgorithm(new CongestionController())),
     DEPTH_FIRST_SEARCH(new DepthFirstSearchAlgorithm()),
     BREADTH_FIRST_SEARCH(new BreadthFirstSearchAlgorithm()),
     DIJKSTRA(new DijkstraAlgorithm());

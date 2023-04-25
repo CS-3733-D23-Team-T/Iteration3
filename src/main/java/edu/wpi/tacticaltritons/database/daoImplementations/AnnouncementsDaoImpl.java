@@ -1,7 +1,6 @@
 package edu.wpi.tacticaltritons.database.daoImplementations;
 
 import edu.wpi.tacticaltritons.database.Announcements;
-import edu.wpi.tacticaltritons.database.Session;
 import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.database.dao.AnnouncementsDao;
 
@@ -12,6 +11,54 @@ import java.util.UUID;
 
 public class AnnouncementsDaoImpl implements AnnouncementsDao {
     @Override
+    public List<Announcements> getAll(Timestamp currentDate) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        List<Announcements> announcements = new ArrayList<>();
+        try {
+            connection = Tdb.getConnection();
+
+            String sql = "SELECT * FROM announcements " +
+                    "WHERE effectiveDate >= ? " +
+                    "ORDER BY effectiveDate " +
+                    "LIMIT 5;";
+
+            statement = connection.prepareStatement(sql);
+            statement.setTimestamp(1, currentDate);
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                UUID id = rs.getObject("id", UUID.class);
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                String creator = rs.getString("creator");
+                Timestamp creationDate = rs.getTimestamp("creationDate");
+                Timestamp effectiveDate = rs.getTimestamp("effectiveDate");
+                String type = rs.getString("type");
+                String audience = rs.getString("audience");
+                int urgency = rs.getInt("urgency");
+
+                Announcements announcement = new Announcements(id,title,content,creator,creationDate,effectiveDate,type,audience,urgency);
+                announcements.add(announcement);
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if(rs != null){
+                rs.close();
+            }
+            if(statement != null){
+                statement.close();
+            }
+        }
+        return announcements;
+    }
+
+    @Override
     public List<Announcements> getAll() throws SQLException {
         Connection connection = null;
         Statement statement = null;
@@ -21,6 +68,7 @@ public class AnnouncementsDaoImpl implements AnnouncementsDao {
             connection = Tdb.getConnection();
 
             String sql = "SELECT * FROM announcements;";
+
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
 
