@@ -84,6 +84,9 @@ public class NewEditMapController extends MapSuperController {
     java.sql.Date today = new Date(2023, 4, 19);
 
     List<Node> clickNode = new ArrayList<>();
+    List<Node> deleteLine = new ArrayList<>();
+
+    Circle addCircle = new Circle();
 
     int firstFindEdge = 1;
 
@@ -121,7 +124,7 @@ public class NewEditMapController extends MapSuperController {
                 List<Line> lineList = new ArrayList<>();
                 for (Node node : value) {
                     try {
-                        if(node.getFloor().equals(getNodeHashMap().get(key).getFloor())){
+                        if (node.getFloor().equals(getNodeHashMap().get(key).getFloor())) {
                             Line line;
                             try {
                                 line = drawLine(getNodeHashMap().get(key).getXcoord(), getNodeHashMap().get(key).getYcoord(), node.getXcoord(), node.getYcoord(), Color.GREEN);
@@ -132,6 +135,10 @@ public class NewEditMapController extends MapSuperController {
                             } catch (SQLException e) {
                                 throw new RuntimeException(e);
                             }
+                            line.setOnContextMenuRequested(event -> {
+                                line.setStroke(Color.RED);
+                                deleteLine.add(node);
+                            });
                             lineList.add(line);
                         }
                     } catch (SQLException e) {
@@ -145,19 +152,19 @@ public class NewEditMapController extends MapSuperController {
             try {
                 switch (getNodeHashMap().get(key).getFloor()) {
                     case "L1":
-                        this.L1Group.getChildren().addAll(1,value);
+                        this.L1Group.getChildren().addAll(1, value);
                         break;
                     case "L2":
-                        this.L2Group.getChildren().addAll(1,value);
+                        this.L2Group.getChildren().addAll(1, value);
                         break;
                     case "1":
-                        this.floor1Group.getChildren().addAll(1,value);
+                        this.floor1Group.getChildren().addAll(1, value);
                         break;
                     case "2":
-                        this.floor2Group.getChildren().addAll(1,value);
+                        this.floor2Group.getChildren().addAll(1, value);
                         break;
                     case "3":
-                        this.floor3Group.getChildren().addAll(1,value);
+                        this.floor3Group.getChildren().addAll(1, value);
                         break;
                 }
             } catch (SQLException e) {
@@ -227,7 +234,6 @@ public class NewEditMapController extends MapSuperController {
     }
 
     public void clickEditCircle(Circle circle, Node node, Text text) {
-
         circle.setOnMousePressed(event -> {
             if (event.isShiftDown()) {
                 gesturePane.setGestureEnabled(false);
@@ -326,7 +332,30 @@ public class NewEditMapController extends MapSuperController {
 
         gesturePane.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                componentShift(340);
+                menuPane.setVisible(true);
+                System.out.println(event.getX());
+                System.out.println(event.getY());
 
+                System.out.println(gesturePane.getScrollZoomFactor());
+                addCircle = drawCircle(event.getX(), event.getY(), Color.PINK, Color.RED);
+                switch (selectedFloor.FLOOR.floor) {
+                    case "L1":
+                        this.L1Group.getChildren().add(addCircle);
+                        break;
+                    case "L2":
+                        this.L2Group.getChildren().add(addCircle);
+                        break;
+                    case "1":
+                        this.floor1Group.getChildren().add(addCircle);
+                        break;
+                    case "2":
+                        this.floor2Group.getChildren().add(addCircle);
+                        break;
+                    case "3":
+                        this.floor3Group.getChildren().add(addCircle);
+                        break;
+                }
             }
         });
 
@@ -336,6 +365,9 @@ public class NewEditMapController extends MapSuperController {
             LocationName locationName;
             if (!nodeID.getText().equals("")) {
                 node = new Node(Integer.parseInt(nodeID.getText()), Integer.parseInt(xCoordinate.getText()), Integer.parseInt(yCoordinate.getText()), floor.getSelectedItem() + "", building.getSelectedItem() + "");
+                addCircle.setStroke(Color.BLACK);
+                addCircle.setFill(Color.RED);
+                circleHashMap.put(node.getNodeID(), addCircle);
                 try {
                     DAOFacade.addNode(node);
                 } catch (SQLException e) {
@@ -350,6 +382,13 @@ public class NewEditMapController extends MapSuperController {
                     throw new RuntimeException(e);
                 }
             }
+            try {
+                findAllNodes(allNodeTypes,selectedFloor.FLOOR.floor, "EditMap");
+                findAllEdges(selectedFloor.FLOOR.floor);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
 
         });
 
@@ -468,6 +507,11 @@ public class NewEditMapController extends MapSuperController {
         this.gesturePane.setOnKeyPressed(ke -> {
             if (ke.getCode().equals(KeyCode.ENTER)) {
                 System.out.println("enter");
+
+                for (int i = 0; i < deleteLine.size() - 1; i++) {
+                    lineHashMap.remove(deleteLine.get(i).getNodeID());
+                }
+
                 Node startNode = clickNode.get(0);
                 Node endNode = clickNode.get(clickNode.size() - 1);
                 int xInterval = (startNode.getXcoord() - endNode.getXcoord()) / (clickNode.size() - 1);
@@ -492,6 +536,7 @@ public class NewEditMapController extends MapSuperController {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+                clickNode.clear();
             }
         });
 
