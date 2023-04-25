@@ -97,6 +97,10 @@ public class NewEditMapController extends MapSuperController {
         longName.setY(yCoord);
     }
 
+    public void findAllEdges(){
+
+    }
+
 
     public Line drawLine(double startX, double startY, double endX, double endY, Color stroke) {
         Line line = new Line();
@@ -177,6 +181,7 @@ public class NewEditMapController extends MapSuperController {
                 gesturePane.setGestureEnabled(false);
                 double offsetX = event.getSceneX() - circle.getCenterX();
                 double offsetY = event.getSceneY() - circle.getCenterY();
+
 
                 circle.setUserData(new double[]{offsetX, offsetY});
                 try {
@@ -479,7 +484,6 @@ public class NewEditMapController extends MapSuperController {
         });
 
         this.viewNodes.setOnAction(event -> {
-
             try {
                 findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "EditMap");
             } catch (SQLException e) {
