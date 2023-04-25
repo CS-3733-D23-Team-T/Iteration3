@@ -46,6 +46,7 @@ import java.util.concurrent.Flow;
 
 public class HomeController {
     @FXML FlowPane requestsPane;
+    @FXML BorderPane borderPaneHome;
     @FXML
     FlowPane movesPane;
     @FXML
@@ -86,9 +87,12 @@ public class HomeController {
 
     @FXML
     public void initialize() throws SQLException, IOException {
+        announcementsPane.maxWidthProperty().bind(App.getPrimaryStage().widthProperty());
+        App.getNavBar().maxWidthProperty().bind(App.getPrimaryStage().widthProperty());
+        borderPaneHome.maxWidthProperty().bind(App.getPrimaryStage().widthProperty());
+        tableGridPane.maxWidthProperty().bind(App.getPrimaryStage().widthProperty());
         FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT_ROOT.getFilename()));
         announcementsPane.setCenter(loader.load());
-
         initEventTable();
         initMoveTable();
         initServiceTable();

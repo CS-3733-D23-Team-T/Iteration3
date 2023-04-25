@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AnnouncementRootController {
     @FXML private BorderPane announcementCol0;
@@ -48,7 +49,8 @@ public class AnnouncementRootController {
             for(i = 0; i < 5 && i < announcementMap.size(); i++){
                 FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
                 FlowPane content = loader.load();
-                recursiveAnnouncementSetter(content, announcementMap.get(announcementMap.keySet().stream().toList().get(i)));
+//                recursiveAnnouncementSetter(content, announcementMap.get(announcementMap.keySet().stream().toList().get(i)));
+                recursiveAnnouncementSetter(content, announcementMap.get(announcementMap.keySet().stream().collect(Collectors.toList()).get(i)));
                 if(i == 0) announcementCol0.setCenter(content);
                 else if(i == 1) announcementCol1.setCenter(content);
                 else if(i == 2) announcementCol2.setCenter(content);
