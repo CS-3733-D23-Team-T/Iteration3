@@ -25,7 +25,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
 
             rs = ps.executeQuery();
             if (rs.next()) {
-                double price = rs.getDouble("prices");
+                double price = rs.getDouble("price");
                 String shopDescription = rs.getString("shopDescription");
                 String itemType = rs.getString("itemType");
                 String itemDescription = rs.getString("itemDescription");
@@ -60,7 +60,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
 
             while (rs.next()) {
                 String itemName = rs.getString("itemName");
-                double prices = rs.getDouble("prices");
+                double prices = rs.getDouble("price");
                 String shop = rs.getString("shop");
                 String shopDescription = rs.getString("shopDescription");
                 String itemType = rs.getString("itemType");
@@ -163,7 +163,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
             rs = ps.executeQuery();
             while (rs.next()) {
                 String itemName = rs.getString("itemName");
-                double prices = rs.getDouble("prices");
+                double prices = rs.getDouble("price");
                 String shopDescription = rs.getString("shopDescription");
                 String itemType = rs.getString("itemType");
                 String itemDescription = rs.getString("itemDescription");
@@ -193,7 +193,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
         ResultSet rs = null;
         try {
             connection = Tdb.getConnection();
-            String sql = "UPDATE officesuppliesrequestoptions SET prices = ? where (itemName = ? AND shop = ?)";
+            String sql = "UPDATE officesuppliesrequestoptions SET price = ? where (itemName = ? AND shop = ?)";
 
             ps = connection.prepareStatement(sql);
 
