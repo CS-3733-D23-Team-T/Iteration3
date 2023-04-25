@@ -8,6 +8,7 @@ import java.util.List;
 public class AStarAlgorithmTest {
 
     public static void main(String[] args) {
+
         int startNodeId = 105;
         int endNodeId = 980;
 
@@ -27,8 +28,11 @@ public class AStarAlgorithmTest {
             return;
         }
 
-        // Instantiate the AStarAlgorithm
-        AStarAlgorithm aStarAlgorithm = new AStarAlgorithm();
+        // Create a CongestionController instance
+        CongestionController congestionController = new CongestionController();
+
+        // Instantiate the AStarAlgorithm with the CongestionController instance
+        AStarAlgorithm aStarAlgorithm = new AStarAlgorithm(congestionController);
 
         // Call findShortestPath and store the result in a List
         List<Node> shortestPath = null;

@@ -7,6 +7,12 @@ import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import io.github.palexdev.materialfx.controls.*;
+import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
+import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
+import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
+import io.github.palexdev.materialfx.enums.ScrimPriority;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,12 +25,15 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
 import java.sql.Date;
@@ -74,7 +83,8 @@ public class FurnitureCheckoutController {
     private MFXFilterComboBox<String> locationComboBox;
     @FXML
     private Text shopName;
-
+@FXML
+private BorderPane basePane;
     @FXML
     private GesturePane groundFloor;
 
@@ -196,8 +206,43 @@ public class FurnitureCheckoutController {
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
-                    clearForm();
-                    Navigation.navigate(Screen.HOME);
+                    MFXGenericDialog content = new MFXGenericDialog();
+                    MFXStageDialog stageDialog = new MFXStageDialog();
+                    stageDialog = MFXGenericDialogBuilder.build(content)
+                            .toStageDialogBuilder()
+                            .initOwner(App.getPrimaryStage())
+                            .initModality(Modality.APPLICATION_MODAL)
+                            .setDraggable(false)
+                            .setTitle("Dialogs Preview")
+                            .setOwnerNode(basePane)
+                            .setScrimPriority(ScrimPriority.WINDOW)
+                            .setScrimOwner(true)
+                            .get();
+                    FlowPane flowPane = new FlowPane();
+                    flowPane.setAlignment(Pos.CENTER);
+                    flowPane.setRowValignment(VPos.CENTER);
+                    flowPane.setColumnHalignment(HPos.CENTER);
+                    Text text = new Text();
+                    text.setText("Your order has been confirmed");
+                    text.setFont(new Font(20));
+                    text.setStyle("-fx-text-fill: black");
+                    flowPane.getChildren().add(text);
+                    content.setContent(flowPane);
+
+                    content.setShowClose(false);
+                    content.setShowMinimize(false);
+                    content.setShowAlwaysOnTop(false);
+
+                    stageDialog.setContent(content);
+
+                    MFXStageDialog finalStageDialog = stageDialog;
+                    finalStageDialog.show();
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event1 -> {
+                        finalStageDialog.close();
+                        clearForm();
+                        Navigation.navigate(Screen.HOME);
+                    }));
+                    timeline.play();
                 });
 
         validUserFirstName.addListener(Validator.generateFormListener(submitButton,
