@@ -26,7 +26,7 @@ public class QuickNavigationMenuButtons {
         serviceRequestNavigationMap.put("Meal Request", Screen.MEAL_RESTAURANT);
         serviceRequestNavigationMap.put("Flower Request", Screen.FLOWER_CHOICE);
         serviceRequestNavigationMap.put("Furniture Request", Screen.FURNITURE_DELIVERY);
-        serviceRequestNavigationMap.put("Office Supply Request", Screen.OFFICE_SUPPLIES);
+        serviceRequestNavigationMap.put("Office Supply Request", Screen.SUPPLY_CHOICE);
         serviceRequestNavigationMap.put("Conference Room Request", Screen.CONFERENCE_ROOM);
         serviceRequestNavigationMap.put("View Service Request", Screen.VIEW_SERVICE_REQUEST);
 
@@ -57,10 +57,7 @@ public class QuickNavigationMenuButtons {
 
                 if(admin || !key.equals("Edit Hospital Map")) {
                     MenuItem item = new MenuItem(key);
-                    item.setOnAction(event -> {
-                        System.out.println("this happens: " + value.getFilename());
-                        Navigation.navigate(value);
-                    });
+                    item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);
                 }
             });

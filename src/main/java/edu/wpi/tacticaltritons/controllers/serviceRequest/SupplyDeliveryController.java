@@ -2,7 +2,7 @@ package edu.wpi.tacticaltritons.controllers.serviceRequest;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.database.DAOFacade;
-import edu.wpi.tacticaltritons.database.FlowerRequestOptions;
+import edu.wpi.tacticaltritons.database.SupplyRequestOptions;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -14,20 +14,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.geometry.*;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
-
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import java.sql.SQLException;
@@ -36,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class FlowerDeliveryController {
+public class SupplyDeliveryController {
 
     private String shopName;
     @FXML
@@ -56,9 +50,9 @@ public class FlowerDeliveryController {
     private final TabPane tabPane = new TabPane();
 
     static public ObservableMap<String, Integer> checkoutItems = FXCollections.observableHashMap();
-    static public double flowerTotal;
+    static public double supplyTotal;
     public ObservableMap<String, Double> priceOfItems = FXCollections.observableHashMap();
-    private List<FlowerRequestOptions> flowerRequestOptionsList;
+    private List<SupplyRequestOptions> supplyRequestOptionsList;
 
     private final double noramlWidth = 1280;
     private final double normalHeight = 720;
@@ -128,17 +122,17 @@ public class FlowerDeliveryController {
 
 
 //        EffectGenerator.generateShadowEffect(basePane);
-        this.shopName = FlowerChoiceController.name;
+        this.shopName = SupplyChoiceController.name;
         // Sets the label to the name of the shop that was selected
         checkoutLabel.setText(shopName);
 
         try {
-            flowerRequestOptionsList = DAOFacade.getAllFlowerRequestOptions();
+            supplyRequestOptionsList = DAOFacade.getAllSupplyRequestOptions();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        ArrayList<FlowerRequestOptions> shopItems = getFlowerItems(flowerRequestOptionsList);
+        ArrayList<SupplyRequestOptions> shopItems = getSupplyItems(supplyRequestOptionsList);
         HashMap<String, String> numberOfTabs = getNumberOfTables(shopItems);
 
 
@@ -150,33 +144,32 @@ public class FlowerDeliveryController {
             ScrollPane scrollPane = createShopIteams(shopItems, value, imageHashMap);
             tab.setContent(scrollPane);
             tabPane.getTabs().add(tab);
-            tabPane.getStyleClass().add("tab-pane");
         });
 
         // this makes it so that the user can not close any of the tabs then addeds it to the boardpane for resizeablity
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         infoBoardPane.setCenter(tabPane);
 
-        //clears
+
         clearButton.setOnAction(event ->
         {
             priceOfItems.clear();
             checkoutItems.clear();
-            updatePriceFlowerRequest();
+            updatePriceSupplyRequest();
             checkoutFlowpane.getChildren().clear();
         });
 
         checkoutButton.setOnAction(event ->
         {
             if (checkoutFlowpane.getChildren().size() > 0) {
-                flowerTotal = Double.parseDouble(priceLable.getText());
-                Navigation.navigate(Screen.FLOWER_CHECKOUT);
+                supplyTotal = Double.parseDouble(priceLable.getText());
+                Navigation.navigate(Screen.SUPPLY_CHECKOUT);
                 priceOfItems.clear();
             }
         });
     }
 
-    private MFXScrollPane createShopIteams(ArrayList<FlowerRequestOptions> flowerRequestOptionsArrayList, String value, HashMap<String, Image> imageHashMap) {
+    private MFXScrollPane createShopIteams(ArrayList<SupplyRequestOptions> supplyRequestOptionsArrayList, String value, HashMap<String, Image> imageHashMap) {
         int counter = 0;
         MFXScrollPane scrollPane = new MFXScrollPane();
         scrollPane.setPrefWidth(600);
@@ -189,7 +182,7 @@ public class FlowerDeliveryController {
         mainFlowPane.setAlignment(Pos.TOP_LEFT);
 
 
-        for (FlowerRequestOptions options : flowerRequestOptionsArrayList) {
+        for (SupplyRequestOptions options : supplyRequestOptionsArrayList) {
             if (options.getItemType().equals(value)) {
                 counter++;
                 // Creates the outer flowpane to hold all the infomation
@@ -244,7 +237,6 @@ public class FlowerDeliveryController {
                 flowPane.getChildren().add(price);
                 flowPane.getChildren().add(imageView);
                 flowPane.getChildren().add(discriptionLabel);
-                flowPane.setStyle("-fx-background-radius: 10; -fx-background-color: white");
 
                 flowPane.setOnMouseClicked(event ->
                 {
@@ -289,7 +281,7 @@ public class FlowerDeliveryController {
         return scrollPane;
     }
 
-    private void updatedCheckoutBox(FlowerRequestOptions options, HashMap<String, Image> imageHashMap) {
+    private void updatedCheckoutBox(SupplyRequestOptions options, HashMap<String, Image> imageHashMap) {
         if (!checkoutItems.containsKey(options.getItemName())) {
             checkoutItems.put(options.getItemName(), 1);
             priceOfItems.put(options.getItemName(), options.getPrice());
@@ -298,10 +290,10 @@ public class FlowerDeliveryController {
         } else {
             checkoutItems.put(options.getItemName(), checkoutItems.get(options.getItemName()) + 1);
         }
-        updatePriceFlowerRequest();
+        updatePriceSupplyRequest();
     }
 
-    private void updatePriceFlowerRequest() {
+    private void updatePriceSupplyRequest() {
         DoubleProperty totalPrice = new SimpleDoubleProperty();
 
         checkoutItems.forEach((key, value) ->
@@ -312,7 +304,7 @@ public class FlowerDeliveryController {
 
     }
 
-    private FlowPane createCheckoutNode(FlowerRequestOptions options, Image flowerImage) {
+    private FlowPane createCheckoutNode(SupplyRequestOptions options, Image supplyImage) {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(400);
         flowPane.setPrefHeight(100);
@@ -325,7 +317,7 @@ public class FlowerDeliveryController {
         flowPane.setBackground(Background.fill(Color.WHITE));
 
         // Creates the image view
-        Image image = flowerImage;
+        Image image = supplyImage;
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
@@ -362,7 +354,7 @@ public class FlowerDeliveryController {
                 checkoutItems.remove(options.getItemName());
                 priceOfItems.remove(options.getItemName());
             }
-            updatePriceFlowerRequest();
+            updatePriceSupplyRequest();
         });
 
         Button add = new Button();
@@ -376,7 +368,7 @@ public class FlowerDeliveryController {
         add.setOnMouseClicked(event ->
         {
             checkoutItems.put(options.getItemName(), checkoutItems.get(options.getItemName()) + 1);
-            updatePriceFlowerRequest();
+            updatePriceSupplyRequest();
         });
 
         flowPane.getChildren().add(imageView);
@@ -387,9 +379,9 @@ public class FlowerDeliveryController {
         return flowPane;
     }
 
-    private HashMap<String, String> getNumberOfTables(ArrayList<FlowerRequestOptions> shopItems) {
+    private HashMap<String, String> getNumberOfTables(ArrayList<SupplyRequestOptions> shopItems) {
         HashMap<String, String> numberOfTabs = new HashMap<>();
-        for (FlowerRequestOptions options : shopItems) {
+        for (SupplyRequestOptions options : shopItems) {
             if (options.getShop().equals(shopName)) {
                 numberOfTabs.putIfAbsent(options.getItemType(), options.getItemType());
             }
@@ -397,10 +389,10 @@ public class FlowerDeliveryController {
         return numberOfTabs;
     }
 
-    private ArrayList<FlowerRequestOptions> getFlowerItems(List<FlowerRequestOptions> flowerRequestOptionsList) {
-        ArrayList<FlowerRequestOptions> shopIteams = new ArrayList<>();
+    private ArrayList<SupplyRequestOptions> getSupplyItems(List<SupplyRequestOptions> supplyRequestOptionsList) {
+        ArrayList<SupplyRequestOptions> shopIteams = new ArrayList<>();
 
-        for (FlowerRequestOptions options : flowerRequestOptionsList) {
+        for (SupplyRequestOptions options : supplyRequestOptionsList) {
             if (options.getShop().equals(shopName)) {
                 shopIteams.add(options);
             }

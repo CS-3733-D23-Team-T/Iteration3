@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -16,10 +17,10 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AnnouncementRootController {
     @FXML private BorderPane announcementCol0;
@@ -48,7 +49,8 @@ public class AnnouncementRootController {
             for(i = 0; i < 5 && i < announcementMap.size(); i++){
                 FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
                 FlowPane content = loader.load();
-                recursiveAnnouncementSetter(content, announcementMap.get(announcementMap.keySet().stream().toList().get(i)));
+//                recursiveAnnouncementSetter(content, announcementMap.get(announcementMap.keySet().stream().toList().get(i)));
+                recursiveAnnouncementSetter(content, announcementMap.get(announcementMap.keySet().stream().collect(Collectors.toList()).get(i)));
                 if(i == 0) announcementCol0.setCenter(content);
                 else if(i == 1) announcementCol1.setCenter(content);
                 else if(i == 2) announcementCol2.setCenter(content);
@@ -69,11 +71,11 @@ public class AnnouncementRootController {
         if(announcementsList == null || announcementsList.size() == 0){
             Map<String, String> info = new HashMap<>();
             info.put("title", "No Announcements");
+            info.put("titleSize", "18");
             info.put("creator", "");
             info.put("effectiveDate", "");
             info.put("type", "");
 
-            System.out.println("hi");
             FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
             FlowPane content = loader.load();
             recursiveAnnouncementSetter(content, info);
@@ -88,7 +90,10 @@ public class AnnouncementRootController {
             }
             else if(node.getClass().equals(Text.class) && node.getId() != null){
                 switch (node.getId()){
-                    case "title" -> ((Text) node).setText(info.get("title"));
+                    case "title" -> {
+                        ((Text) node).setText(info.get("title"));
+                        if(info.containsKey("titleSize")) ((Text) node).setFont(new Font(Double.parseDouble(info.get("titleSize"))));
+                    }
                     case "creator" -> ((Text) node).setText(info.get("creator"));
                     case "effectiveDate" -> ((Text) node).setText(info.get("effectiveDate"));
                     case "type" -> ((Text) node).setText(info.get("type"));
