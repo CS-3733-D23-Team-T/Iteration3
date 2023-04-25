@@ -15,10 +15,10 @@ public class Directions {
 
     public Node futureNode;
     // public List<Node> nodeList;
-    AStarAlgorithm algorithm = new AStarAlgorithm();
+    PathFindingAlgorithm algorithm = AlgorithmSingleton.getInstance().algorithm;
     // Use node IDs 105 and 135 for testing
-    int startNodeId = 840;
-    int endNodeId = 640;
+    int startNodeId;
+    int endNodeId;
     Node startNode = DAOFacade.getNode(startNodeId);
     Node endNode = DAOFacade.getNode(endNodeId);
     List<Move> allMoves = DAOFacade.getAllMoves();
