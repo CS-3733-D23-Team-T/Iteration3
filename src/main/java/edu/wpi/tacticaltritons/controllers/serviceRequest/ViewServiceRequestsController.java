@@ -421,8 +421,6 @@ public class ViewServiceRequestsController {
 
 
         tableConference.getColumns().addAll(orderNumber, status, firstName, lastName, date, attendance, expectedSize, location);
-        tableConference
-
 
         ObservableList<Conference> conferenceObservableList = null;
         try {
