@@ -6,6 +6,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.control.Accordion;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
@@ -18,7 +19,7 @@ import java.util.Map;
 
 public class CreditsController {
 
-    @FXML private MFXScrollPane creditText;
+    @FXML private Accordion accordion;
     @FXML private Text furnitureClickable1;
     @FXML private Text mealClickable1;
     @FXML private Text mealClickable2;
@@ -95,6 +96,9 @@ public class CreditsController {
     @FXML private Text flowerClickable58;
     @FXML private Text flowerClickable59;
     @FXML private Text flowerClickable60;
+    @FXML private Text flowerClickable61;
+    @FXML private Text flowerClickable62;
+
 
 
     private Map<String, String> furnitureMap = new HashMap<>();
@@ -102,10 +106,8 @@ public class CreditsController {
     private Map<String, String> flowerMap = new HashMap<>();
     @FXML
     public void initialize() {
-        /*creditText.setFitToHeight(true);
-        creditText.setFitToWidth(true);
-        App.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> creditText.setMinWidth(newValue.doubleValue()));
-        App.getPrimaryStage().heightProperty().addListener((observable, oldValue, newValue) -> creditText.setMinHeight(newValue.doubleValue()));*/
+        App.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> accordion.setMinWidth(newValue.doubleValue()));
+        App.getPrimaryStage().heightProperty().addListener((observable, oldValue, newValue) -> accordion.setMinHeight(newValue.doubleValue()));
 
         //furniture request
         furnitureMap.put("Office Depot", "https://www.officedepot.com/");
@@ -286,6 +288,13 @@ public class CreditsController {
         flowerClickable59.addEventHandler(EventType.ROOT, addEventHandler(flowerClickable59, flowerMap.get("Tropical Oasis")));
         flowerMap.put("Vintage Romance", "https://www.mcflor.com/Forever_Love?AspxAutoDetectCookieSupport=1");
         flowerClickable60.addEventHandler(EventType.ROOT, addEventHandler(flowerClickable60, flowerMap.get("Vintage Romance")));
+
+        //Logos
+        flowerMap.put("Logos", "https://www.freelogodesign.org/");
+        flowerClickable61.addEventHandler(EventType.ROOT, addEventHandler(flowerClickable61, flowerMap.get("Logos")));
+        flowerMap.put("Logos", "https://www.freelogodesign.org/");
+        flowerClickable62.addEventHandler(EventType.ROOT, addEventHandler(flowerClickable62, flowerMap.get("Logos")));
+
 
     }
     private void resize(){
