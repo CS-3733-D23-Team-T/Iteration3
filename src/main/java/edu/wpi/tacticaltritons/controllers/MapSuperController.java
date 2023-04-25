@@ -133,7 +133,7 @@ public class MapSuperController {
     public List<Integer> nodeIDs = new ArrayList<Integer>();
 
     public HashMap<Node, Circle> circleHashMap = new HashMap<>();
-    public HashMap<Node, List<Line>> lineHashMap = new HashMap<>();
+    public HashMap<Integer, List<Line>> lineHashMap = new HashMap<>();
 
     Date today = Date.valueOf(java.time.LocalDate.now());
 

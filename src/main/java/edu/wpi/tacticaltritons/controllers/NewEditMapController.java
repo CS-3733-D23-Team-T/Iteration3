@@ -84,7 +84,6 @@ public class NewEditMapController extends MapSuperController {
     java.sql.Date today = new Date(2023, 4, 19);
 
     List<Node> clickNode = new ArrayList<>();
-    List<Line> lineList = new ArrayList<>();
 
     int firstFind = 1;
 
@@ -95,10 +94,6 @@ public class NewEditMapController extends MapSuperController {
     public void setLongNamePosition(Text longName, double xCoord, double yCoord) {
         longName.setX(xCoord);
         longName.setY(yCoord);
-    }
-
-    public void findAllEdges(){
-
     }
 
 
@@ -115,6 +110,42 @@ public class NewEditMapController extends MapSuperController {
         return line;
     }
 
+    public void findAllEdges(String floor) throws SQLException {
+        selectedFloor.FLOOR.floor = floor;
+        getNodeHashMap().forEach((key, value) -> {
+            List<Line> lineList = new ArrayList<>();
+            for (Edge edge : allEdges) {
+                if (edge.getStartNode().getNodeID() == key) {
+                    Line line = drawLine(value.getXcoord(), value.getYcoord(), edge.getEndNode().getXcoord(), edge.getEndNode().getYcoord(), Color.GREEN);
+                    lineList.add(line);
+                }
+            }
+            lineHashMap.put(key, lineList);
+        });
+        lineHashMap.forEach((key, value) -> {
+            try {
+                switch (getNodeHashMap().get(key).getFloor()) {
+                    case "L1":
+                        this.L1Group.getChildren().addAll(value);
+                        break;
+                    case "L2":
+                        this.L2Group.getChildren().addAll(value);
+                        break;
+                    case "1":
+                        this.floor1Group.getChildren().addAll(value);
+                        break;
+                    case "2":
+                        this.floor2Group.getChildren().addAll(value);
+                        break;
+                    case "3":
+                        this.floor3Group.getChildren().addAll(value);
+                        break;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
 
     public void findAllNodesEdit(List<String> nodeTypeList, String floor, String page) throws SQLException {
         selectedFloor.FLOOR.floor = floor;
@@ -249,6 +280,7 @@ public class NewEditMapController extends MapSuperController {
         MapSuperController.selectedFloor.FLOOR.floor = "1";
 
         findAllNodesEdit(allNodeTypes, MapSuperController.selectedFloor.FLOOR.floor, "EditMap");
+        findAllEdges(MapSuperController.selectedFloor.FLOOR.floor);
 
         initializeImages();
         initalizeFloorButtons();
