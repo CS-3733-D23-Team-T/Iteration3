@@ -84,7 +84,7 @@ public class NewEditMapController extends MapSuperController {
     java.sql.Date today = new Date(2023, 4, 19);
 
     List<Node> clickNode = new ArrayList<>();
-    List<Node> deleteLine = new ArrayList<>();
+    List<Line> deleteLine = new ArrayList<>();
 
     Circle addCircle = new Circle();
 
@@ -138,7 +138,7 @@ public class NewEditMapController extends MapSuperController {
                             }
                             line.setOnContextMenuRequested(event -> {
                                 line.setStroke(Color.RED);
-                                deleteLine.add(node);
+                                deleteLine.add(line);
                             });
                             lineList.add(line);
                         }
@@ -530,14 +530,38 @@ public class NewEditMapController extends MapSuperController {
             if (ke.getCode().equals(KeyCode.ENTER)) {
                 System.out.println("enter");
 
-                for (int i = 0; i < deleteLine.size() - 1; i++) {
-//                    lineHashMap.get(deleteLine.get(i).getNodeID()).remove();
+                lineHashMap.forEach((key,value) -> {
+                    for(Line line : deleteLine) {
+                        if (value.contains(line)){
+                            value.remove(line);
+                        }
+                    }
+                });
+
+                switch (selectedFloor.FLOOR.floor) {
+                    case "L1":
+                        this.L1Group.getChildren().removeAll(deleteLine);
+                        break;
+                    case "L2":
+                        this.L2Group.getChildren().removeAll(deleteLine);
+                        break;
+                    case "1":
+                        this.floor1Group.getChildren().removeAll(deleteLine);
+                        break;
+                    case "2":
+                        this.floor2Group.getChildren().removeAll(deleteLine);
+                        break;
+                    case "3":
+                        this.floor3Group.getChildren().removeAll(deleteLine);
+                        break;
                 }
+
                 try {
                     findAllEdges(selectedFloor.FLOOR.floor);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+
 
                 Node startNode = clickNode.get(0);
                 Node endNode = clickNode.get(clickNode.size() - 1);
