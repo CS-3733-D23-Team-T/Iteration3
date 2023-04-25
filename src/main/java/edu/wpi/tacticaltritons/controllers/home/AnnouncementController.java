@@ -9,6 +9,7 @@ public class AnnouncementController {
     @FXML private Text creator;
     @FXML private Text effectiveDate;
     @FXML private Text type;
+    @FXML private Text separator;
 
     @FXML
     private void initialize(){

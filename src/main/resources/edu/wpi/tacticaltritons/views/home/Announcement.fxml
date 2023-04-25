@@ -30,7 +30,7 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text style="-fx-fill: white;" text="-" textAlignment="CENTER">
+            <Text fx:id="separator" style="-fx-fill: white;" text="-" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>

@@ -31,6 +31,7 @@ public class AnnouncementRootController {
     @FXML
     private void initialize() throws IOException, SQLException {
         List<Announcements> announcementsList = DAOFacade.getAllAnnouncements(Timestamp.valueOf(LocalDateTime.now()));
+        int i = 0;
         if(announcementsList != null) {
             Map<Announcements, Map<String, String>> announcementMap = new HashMap<>();
             announcementsList.forEach(announcement -> {
@@ -39,10 +40,12 @@ public class AnnouncementRootController {
                 fields.put("creator", announcement.getCreator());
                 fields.put("effectiveDate", DateTimeFormatter.ofPattern("MM/dd/yyyy").format(announcement.getEffectiveDate().toLocalDateTime()));
                 fields.put("type", announcement.getType());
+                fields.put("separator", "-");
                 announcementMap.put(announcement, fields);
             });
 
-            for(int i = 0; i < 5 && i < announcementMap.size(); i++){
+
+            for(i = 0; i < 5 && i < announcementMap.size(); i++){
                 FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
                 FlowPane content = loader.load();
                 recursiveAnnouncementSetter(content, announcementMap.get(announcementMap.keySet().stream().toList().get(i)));
@@ -53,7 +56,28 @@ public class AnnouncementRootController {
                 else announcementCol4.setCenter(content);
             }
         }
-        else{
+        for(int j = i; j < 5; j++){
+            FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
+            FlowPane content = loader.load();
+            emptyAnnouncement(content);
+            if(j == 0) announcementCol0.setCenter(content);
+            else if(j == 1) announcementCol1.setCenter(content);
+            else if(j == 2) announcementCol2.setCenter(content);
+            else if(j == 3) announcementCol3.setCenter(content);
+            else announcementCol4.setCenter(content);
+        }
+        if(announcementsList == null || announcementsList.size() == 0){
+            Map<String, String> info = new HashMap<>();
+            info.put("title", "No Announcements");
+            info.put("creator", "");
+            info.put("effectiveDate", "");
+            info.put("type", "");
+
+            System.out.println("hi");
+            FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
+            FlowPane content = loader.load();
+            recursiveAnnouncementSetter(content, info);
+            announcementCol2.setCenter(content);
         }
     }
 
@@ -68,8 +92,18 @@ public class AnnouncementRootController {
                     case "creator" -> ((Text) node).setText(info.get("creator"));
                     case "effectiveDate" -> ((Text) node).setText(info.get("effectiveDate"));
                     case "type" -> ((Text) node).setText(info.get("type"));
+                    case "separator" -> ((Text) node).setText(info.get("separator"));
                 }
             }
         }
+    }
+    private void emptyAnnouncement(FlowPane announcement){
+        Map<String, String> emptyMap = new HashMap<>();
+        emptyMap.put("title", "");
+        emptyMap.put("creator", "");
+        emptyMap.put("effectiveDate", "");
+        emptyMap.put("type", "");
+        emptyMap.put("separator", "");
+        recursiveAnnouncementSetter(announcement, emptyMap);
     }
 }
