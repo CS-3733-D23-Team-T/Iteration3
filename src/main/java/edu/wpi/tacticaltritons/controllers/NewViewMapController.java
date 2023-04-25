@@ -170,7 +170,7 @@ public class NewViewMapController extends MapSuperController {
         initializeMenuButton("ViewMap");
 
         this.applyFilter.setOnAction(event -> {
-            clearAllNodes();
+            clearAllCircles();
             List<String> nodeTypeList = new ArrayList<>();
 
             if (restrooms.isSelected() == true) {
@@ -237,7 +237,7 @@ public class NewViewMapController extends MapSuperController {
         });
 
         this.searchOnMap.setOnAction(event -> {
-            clearAllNodes();
+            clearAllCircles();
             Circle circle = new Circle();
             final double[] circleCoord = new double[2];
             final String[] thisFloor = new String[1];

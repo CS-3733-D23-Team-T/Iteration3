@@ -117,6 +117,7 @@ public class NewEditMapController extends MapSuperController {
     }
 
     public void findAllEdges(String floor) throws SQLException {
+        clearAllLines();
         selectedFloor.FLOOR.floor = floor;
 
         if (firstFindEdge == 1) {
@@ -301,6 +302,14 @@ public class NewEditMapController extends MapSuperController {
     @FXML
     private void initialize() throws SQLException {
 
+        floor.setItems(
+                FXCollections.observableArrayList(
+                        "L1",
+                        "L2",
+                        "1",
+                        "2",
+                        "3"));
+
         importExport.setImage(App.importExport);
 
         MapSuperController.selectedFloor.FLOOR.floor = "1";
@@ -334,11 +343,22 @@ public class NewEditMapController extends MapSuperController {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 componentShift(340);
                 menuPane.setVisible(true);
-                System.out.println(event.getX());
-                System.out.println(event.getY());
 
-                System.out.println(gesturePane.getScrollZoomFactor());
-                addCircle = drawCircle(event.getX(), event.getY(), Color.PINK, Color.RED);
+                Point2D pivotOnTarget = gesturePane.targetPointAt(new Point2D(event.getX(), event.getY()))
+                        .orElse(gesturePane.targetPointAtViewportCentre());
+
+
+                menuLocationName.setText("");
+                shortName.setText("");
+                nodeType.setText("");
+                nodeID.setText("");
+                floor.getSelectionModel().selectItem(selectedFloor.FLOOR.floor);
+                building.setText("");
+
+                xCoordinate.setText("" + (int) pivotOnTarget.getX());
+                yCoordinate.setText("" + (int) pivotOnTarget.getY());
+
+                addCircle = drawCircle(pivotOnTarget.getX(), pivotOnTarget.getY(), Color.PINK, Color.RED);
                 switch (selectedFloor.FLOOR.floor) {
                     case "L1":
                         this.L1Group.getChildren().add(addCircle);
@@ -383,13 +403,11 @@ public class NewEditMapController extends MapSuperController {
                 }
             }
             try {
-                findAllNodes(allNodeTypes,selectedFloor.FLOOR.floor, "EditMap");
+                findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "EditMap");
                 findAllEdges(selectedFloor.FLOOR.floor);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-
-
         });
 
         this.save.setOnAction(event -> {
@@ -504,12 +522,21 @@ public class NewEditMapController extends MapSuperController {
             }
         });
 
+
+
+
+
         this.gesturePane.setOnKeyPressed(ke -> {
             if (ke.getCode().equals(KeyCode.ENTER)) {
                 System.out.println("enter");
 
                 for (int i = 0; i < deleteLine.size() - 1; i++) {
-                    lineHashMap.remove(deleteLine.get(i).getNodeID());
+//                    lineHashMap.get(deleteLine.get(i).getNodeID()).remove();
+                }
+                try {
+                    findAllEdges(selectedFloor.FLOOR.floor);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
 
                 Node startNode = clickNode.get(0);
@@ -529,7 +556,7 @@ public class NewEditMapController extends MapSuperController {
                 circleHashMap.get(clickNode.get(0).getNodeID()).setFill(Color.RED);
                 circleHashMap.get(clickNode.get(clickNode.size() - 1).getNodeID()).setFill(Color.RED);
 
-                clearAllNodes();
+                clearAllCircles();
                 try {
                     findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "ViewMap");
                     findAllEdges(selectedFloor.FLOOR.floor);
@@ -585,8 +612,11 @@ public class NewEditMapController extends MapSuperController {
         });
 
         this.viewNodes.setOnAction(event -> {
+            clearAllCircles();
+            clearAllLines();
             try {
                 findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "EditMap");
+                findAllEdges(selectedFloor.FLOOR.floor);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -637,7 +667,7 @@ public class NewEditMapController extends MapSuperController {
                 throw new RuntimeException(e);
             }
 
-            clearAllNodes();
+            clearAllCircles();
             Circle circle = new Circle();
             final double[] circleCoord = new double[2];
             final String[] thisFloor = new String[1];
