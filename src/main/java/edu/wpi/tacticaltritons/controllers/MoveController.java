@@ -84,6 +84,10 @@ public class MoveController {
     @FXML
     public void initialize() throws SQLException {
 
+        groundFloor.toBack();
+        floor1Group.setVisible(true);
+        floor1Image.setVisible(true);
+
         Date today = new Date(2023, 4, 10);
         lowerLevel1Image.setImage(App.lowerlevel1);
         lowerLevel2Image.setImage(App.lowerlevel2);
@@ -127,7 +131,8 @@ public class MoveController {
         date.setValue(LocalDate.from(formatter.parse(formatter.format(LocalDateTime.now()))));
 
         for (MFXTextField field : fields) {
-            field.prefWidthProperty().bind(Bindings.max(200, App.getPrimaryStage().widthProperty().divide(3)).subtract(40));
+            field.setPrefHeight(45);
+//            field.prefWidthProperty().bind(Bindings.max(200, App.getPrimaryStage().widthProperty().divide(3)).subtract(40));
             field.textProperty().addListener(((observable, oldValue, newValue) -> {
                 formComplete();//check if re-enable submit button
             }));
