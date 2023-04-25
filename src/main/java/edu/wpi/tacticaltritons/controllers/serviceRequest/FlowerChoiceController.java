@@ -133,6 +133,7 @@ public class FlowerChoiceController {
         flowPaneOuter.getChildren().add(flowPaneInner);
 
         // addes things to the main flow pane
+        flowPaneOuter.setStyle("-fx-background-radius: 10; -fx-background-color: white");
         leftFlowPane.getChildren().add(flowPaneOuter);
 
         flowPaneOuter.setOnMouseClicked(event ->

@@ -243,6 +243,7 @@ public class FlowerDeliveryController {
                 flowPane.getChildren().add(price);
                 flowPane.getChildren().add(imageView);
                 flowPane.getChildren().add(discriptionLabel);
+                flowPane.setStyle("-fx-background-radius: 10; -fx-background-color: white");
 
                 flowPane.setOnMouseClicked(event ->
                 {

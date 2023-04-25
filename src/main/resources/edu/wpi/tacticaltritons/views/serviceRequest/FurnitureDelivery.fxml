@@ -17,7 +17,7 @@
          <top>
             <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="100.0" prefWidth="500.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets />
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                </BorderPane.margin>
                <children>
                   <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0">

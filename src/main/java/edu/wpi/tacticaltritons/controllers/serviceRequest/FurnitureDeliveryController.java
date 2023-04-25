@@ -169,6 +169,7 @@ public class FurnitureDeliveryController {
                 flowPane.getChildren().add(itemTitle);
                 flowPane.getChildren().add(imageView);
                 flowPane.getChildren().add(discriptionLabel);
+                flowPane.setStyle("-fx-background-radius: 10; -fx-background-color: white");
 
                 flowPane.setOnMouseClicked(event ->
                 {
