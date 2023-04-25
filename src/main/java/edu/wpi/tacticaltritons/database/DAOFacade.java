@@ -8,6 +8,7 @@ import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class DAOFacade {
@@ -342,5 +343,9 @@ public class DAOFacade {
 
   public static void updateSignage(Signage sign) throws SQLException{
     signageDao.update(sign);
+  }
+
+  public static HashMap<Integer, ArrayList<Node>> getAllNeighbors() throws SQLException {
+    return nodeDao.getAllNeighbors();
   }
 }
