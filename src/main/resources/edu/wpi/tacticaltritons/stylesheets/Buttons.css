@@ -11,6 +11,13 @@
     -fx-text-fill: white;
 }
 
+#moveButtonStyle
+{
+    -fx-border-color: black;
+    -fx-start-margin: 10;
+    -fx-end-margin: 10;
+}
+
 #normalButton:hover{
     -fx-background-color: -yellow;
 }
