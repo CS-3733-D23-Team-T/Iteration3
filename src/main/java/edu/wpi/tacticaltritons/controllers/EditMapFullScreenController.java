@@ -97,10 +97,14 @@ public class EditMapFullScreenController {
     private MFXButton exportButton;
     @FXML
     private MFXComboBox selector;
-    @FXML private MFXButton importExportBar;
-    @FXML private StackPane importExportPane;
-    @FXML private MFXButton makeEdge;
-    @FXML private MFXTextField edgeNodeID;
+    @FXML
+    private MFXButton importExportBar;
+    @FXML
+    private StackPane importExportPane;
+    @FXML
+    private MFXButton makeEdge;
+    @FXML
+    private MFXTextField edgeNodeID;
     private Node oldNode;
     private LocationName oldLocationName;
     private boolean clicked = false;
@@ -307,7 +311,7 @@ public class EditMapFullScreenController {
                     break;
             }
             Point2D centerpoint = new Point2D(newCircle.getCenterX(), newCircle.getCenterY());
-            gesturePane.zoomTo(1.5,centerpoint);
+            gesturePane.zoomTo(1.5, centerpoint);
         });
     }
 
@@ -329,8 +333,8 @@ public class EditMapFullScreenController {
         yCoordinate.setText(DAOFacade.getNode(this.searchOnMap.getSelectedItem(), today).getYcoord() + "");
         floor.setText(DAOFacade.getNode(this.searchOnMap.getSelectedItem(), today).getFloor());
         building.setText(DAOFacade.getNode(this.searchOnMap.getSelectedItem(), today).getBuilding());
-        oldNode = new Node(Integer.parseInt(nodeID.getText()),Integer.parseInt(xCoordinate.getText()),Integer.parseInt(yCoordinate.getText()),floor.getText(),building.getText());
-        oldLocationName = new LocationName(menuLocationName.getText(),shortName.getText(),nodeType.getText());
+        oldNode = new Node(Integer.parseInt(nodeID.getText()), Integer.parseInt(xCoordinate.getText()), Integer.parseInt(yCoordinate.getText()), floor.getText(), building.getText());
+        oldLocationName = new LocationName(menuLocationName.getText(), shortName.getText(), nodeType.getText());
     }
 
     public void initializeImages() {
@@ -375,10 +379,9 @@ public class EditMapFullScreenController {
 
         this.add.setOnAction(event -> {
             System.out.println("this button works");
-            Node node = new Node(0,0,0,"","");
-            LocationName locationName = new LocationName("","","");
-            if(!nodeID.getText().equals(""))
-            {
+            Node node = new Node(0, 0, 0, "", "");
+            LocationName locationName = new LocationName("", "", "");
+            if (!nodeID.getText().equals("")) {
                 node = new Node(Integer.parseInt(nodeID.getText()), Integer.parseInt(xCoordinate.getText()), Integer.parseInt(yCoordinate.getText()), floor.getSelectedItem() + "", building.getSelectedItem() + "");
                 try {
                     DAOFacade.addNode(node);
@@ -386,8 +389,7 @@ public class EditMapFullScreenController {
                     throw new RuntimeException(e);
                 }
             }
-            if(!menuLocationName.getText().equals(""))
-            {
+            if (!menuLocationName.getText().equals("")) {
                 locationName = new LocationName(menuLocationName.getText(), shortName.getText(), nodeType.getSelectedItem() + "");
                 try {
                     DAOFacade.addLocationName(locationName);
@@ -395,9 +397,8 @@ public class EditMapFullScreenController {
                     throw new RuntimeException(e);
                 }
             }
-            if(!nodeID.getText().equals("") && !menuLocationName.getText().equals(""))
-            {
-                hash.put(Integer.parseInt(nodeID.getText()), new Move(node,locationName,today));
+            if (!nodeID.getText().equals("") && !menuLocationName.getText().equals("")) {
+                hash.put(Integer.parseInt(nodeID.getText()), new Move(node, locationName, today));
             }
         });
 
@@ -485,11 +486,10 @@ public class EditMapFullScreenController {
             Node node = new Node(Integer.parseInt(nodeID.getText()), Integer.parseInt(xCoordinateText), Integer.parseInt(yCoordinateText), floorText, buildingText);
             LocationName locationName = new LocationName(longNameText, shortNameText, nodeTypeText);
             try {
-                if(clicked) {
+                if (clicked) {
                     DAOFacade.updateNode(oldNode, node);
                     DAOFacade.updateLocationName(oldLocationName, locationName);
-                }
-                else {
+                } else {
                     DAOFacade.updateNode(node);
                     DAOFacade.updateLocationName(locationName);
                 }
@@ -515,8 +515,7 @@ public class EditMapFullScreenController {
             String currentNodeSelectedId = "";
             String newEdgeNodeId = "";
 
-            if(!(nodeID.getText().isEmpty() || edgeNodeID.getText().isEmpty()))
-            {
+            if (!(nodeID.getText().isEmpty() || edgeNodeID.getText().isEmpty())) {
                 currentNodeSelectedId = nodeID.getText();
                 newEdgeNodeId = edgeNodeID.getText();
                 Node currentNode;
@@ -526,20 +525,18 @@ public class EditMapFullScreenController {
 
 
                 try {
-                    currentNode= DAOFacade.getNode(Integer.parseInt(currentNodeSelectedId));
+                    currentNode = DAOFacade.getNode(Integer.parseInt(currentNodeSelectedId));
                     endNode = DAOFacade.getNode(Integer.parseInt(newEdgeNodeId));
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-                Edge edge = new Edge(currentNode,endNode);
+                Edge edge = new Edge(currentNode, endNode);
                 try {
                     DAOFacade.addEdge(edge);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-            }
-            else
-            {
+            } else {
                 System.out.println("One of the text boxes are empty");
             }
 
@@ -574,7 +571,7 @@ public class EditMapFullScreenController {
                 importExportPane.setVisible(false);
                 componentShift(0);
             }
-                    });
+        });
 
         this.viewNodes.setOnAction(event -> {
             clicked = false;
