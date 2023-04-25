@@ -14,6 +14,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Objects;
 
+import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
+import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
+import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
+import io.github.palexdev.materialfx.enums.ScrimPriority;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
@@ -31,11 +37,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
+import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
 import edu.wpi.tacticaltritons.styling.*;
 
 public class FlowerCheckoutController {
+
+
+    @FXML
+    private BorderPane basePane;
     @FXML
     private MFXTextField userFirstField;
     @FXML
@@ -176,7 +189,6 @@ public class FlowerCheckoutController {
         imageHashMap.put("Bold and Beautiful", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBBoldandBeautiful.png")).toString()));
         imageHashMap.put("Garden Party", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBGardenParty.png")).toString()));
 
-//    EffectGenerator.generateShadowEffect(basePane); //shadow generator
         lowerLevel1Image.setImage(App.lowerlevel1);
         lowerLevel2Image.setImage(App.lowerlevel2);
         groundFloorImage.setImage(App.groundfloor);
@@ -225,8 +237,44 @@ public class FlowerCheckoutController {
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
-                        clearForm();
-                        Navigation.navigate(Screen.HOME);
+                        MFXGenericDialog content = new MFXGenericDialog();
+                        MFXStageDialog stageDialog = new MFXStageDialog();
+                        stageDialog = MFXGenericDialogBuilder.build(content)
+                                .toStageDialogBuilder()
+                                .initOwner(App.getPrimaryStage())
+                                .initModality(Modality.APPLICATION_MODAL)
+                                .setDraggable(false)
+                                .setTitle("Dialogs Preview")
+                                .setOwnerNode(basePane)
+                                .setScrimPriority(ScrimPriority.WINDOW)
+                                .setScrimOwner(true)
+                                .get();
+                        FlowPane flowPane = new FlowPane();
+                        flowPane.setAlignment(Pos.CENTER);
+                        flowPane.setRowValignment(VPos.CENTER);
+                        flowPane.setColumnHalignment(HPos.CENTER);
+                        Text text = new Text();
+                        text.setText("Your order has been confirmed");
+                        text.setFont(new Font(20));
+                        text.setStyle("-fx-text-fill: black");
+                        flowPane.getChildren().add(text);
+                        content.setContent(flowPane);
+
+                        content.setShowClose(false);
+                        content.setShowMinimize(false);
+                        content.setShowAlwaysOnTop(false);
+
+                        stageDialog.setContent(content);
+
+                        MFXStageDialog finalStageDialog = stageDialog;
+                        finalStageDialog.show();
+                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event1 -> {
+                            finalStageDialog.close();
+                            clearForm();
+                            Navigation.navigate(Screen.HOME);
+                        }));
+                        timeline.play();
+
                     } else {
                         System.out.println("Form cannot submit");
                         //TODO do something when not filled
@@ -344,9 +392,7 @@ public class FlowerCheckoutController {
             staffFirst = assignedComboBox.getSelectedItem().toString().substring(0, assignedComboBox.getSelectedItem().toString().indexOf(' '));
             staffLast = assignedComboBox.getSelectedItem().toString().substring(assignedComboBox.getSelectedItem().toString().indexOf(' ') + 1, assignedComboBox.getSelectedItem().toString().length());
             status = RequestStatus.PROCESSING;
-        }
-        else
-        {
+        } else {
             staffFirst = null;
             staffLast = null;
         }
