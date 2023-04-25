@@ -30,6 +30,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import net.kurobako.gesturefx.GesturePane;
 
+import javax.script.Bindings;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
@@ -85,6 +86,8 @@ public class NewEditMapController extends MapSuperController {
 
     List<Node> clickNode = new ArrayList<>();
     List<Line> deleteLine = new ArrayList<>();
+
+    List<Node> circleRightClick = new ArrayList<>();
 
     Circle addCircle = new Circle();
 
@@ -194,6 +197,7 @@ public class NewEditMapController extends MapSuperController {
                     }
 
 
+
                     if (!getMoveHashMap().get(value.getNodeID()).getLocation().getNodeType().equals("HALL")) {
                         longName.setText(getMoveHashMap().get(value.getNodeID()).getLocation().getShortName());
                     }
@@ -282,6 +286,47 @@ public class NewEditMapController extends MapSuperController {
                 }
             }
         });
+        circle.setOnContextMenuRequested(event -> {
+            circle.setFill(Color.BLACK);
+            circle.setStroke(Color.RED);
+            circleRightClick.add(node);
+            if(circleRightClick.size() == 2)
+            {
+                Line line = drawLine(circleRightClick.get(0).getXcoord(),circleRightClick.get(0).getYcoord(),circleRightClick.get(1).getXcoord(),circleRightClick.get(1).getYcoord(),Color.GREEN);
+
+                if(lineHashMap.get(circleRightClick.get(0).getNodeID()) != null)
+                {
+                    lineHashMap.get(circleRightClick.get(0).getNodeID()).add(line);
+                }
+                else{
+                    lineHashMap.get(circleRightClick.get(1).getNodeID()).add(line);
+                }
+                switch (selectedFloor.FLOOR.floor) {
+                    case "L1":
+                        this.L1Group.getChildren().add(1,line);
+                        break;
+                    case "L2":
+                        this.L2Group.getChildren().add(1,line);
+                        break;
+                    case "1":
+                        this.floor1Group.getChildren().add(1,line);
+                        break;
+                    case "2":
+                        this.floor2Group.getChildren().add(1,line);
+                        break;
+                    case "3":
+                        this.floor3Group.getChildren().add(1,line);
+                        break;
+                }
+                try {
+                    findAllNodesEdit(allNodeTypes,selectedFloor.FLOOR.floor, "EditMap");
+                    findAllEdges(selectedFloor.FLOOR.floor);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                circleRightClick.clear();
+            }
+        });
     }
 
 
@@ -302,7 +347,10 @@ public class NewEditMapController extends MapSuperController {
     @FXML
     private void initialize() throws SQLException {
 
-        floor.setItems(
+        this.selector.setItems(FXCollections.observableArrayList("Node", "Edge", "Location Name", "Move"));
+
+
+        this.floor.setItems(
                 FXCollections.observableArrayList(
                         "L1",
                         "L2",
@@ -508,6 +556,15 @@ public class NewEditMapController extends MapSuperController {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+
+            circleHashMap.forEach((key,value) -> {
+                try {
+                    getNodeHashMap().get(key).setXcoord((int)value.getCenterX());
+                    getNodeHashMap().get(key).setYcoord((int)value.getCenterY());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         });
 
         this.delete.setOnAction(event -> {
@@ -604,7 +661,6 @@ public class NewEditMapController extends MapSuperController {
 
                 System.out.println(currentNodeSelectedId + " " + newEdgeNodeId);
 
-
                 try {
                     currentNode = DAOFacade.getNode(Integer.parseInt(currentNodeSelectedId));
                     endNode = DAOFacade.getNode(Integer.parseInt(newEdgeNodeId));
@@ -617,10 +673,18 @@ public class NewEditMapController extends MapSuperController {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+
+                try {
+                    Line line = drawLine(getNodeHashMap().get(currentNodeSelectedId).getXcoord(),getNodeHashMap().get(currentNodeSelectedId).getYcoord(), getNodeHashMap().get(newEdgeNodeId).getXcoord(), getNodeHashMap().get(newEdgeNodeId).getYcoord(), Color.GREEN);
+                    lineHashMap.get(currentNodeSelectedId).add(line);
+                    findAllEdges(selectedFloor.FLOOR.floor);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
             } else {
                 System.out.println("One of the text boxes are empty");
             }
-
         });
 
 
@@ -648,11 +712,21 @@ public class NewEditMapController extends MapSuperController {
 
         this.importButton.setOnAction(
                 event -> {
+                    String tableName = null;
+                    if (selector.getValue().equals("Node")) {
+                        tableName = "node";
+                    } else if (selector.getValue().equals("Edge")) {
+                        tableName = "edge";
+                    } else if (selector.getValue().equals("Location Name")) {
+                        tableName = "locationname";
+                    } else if (selector.getValue().equals("Move")) {
+                        tableName = "move";
+                    }
                     Stage outStage = new Stage();
                     FileChooser fileChooser = new FileChooser();
                     File file = fileChooser.showOpenDialog(outStage);
                     try {
-                        Import.importFile(file, selector.getText());
+                        Import.importFile(file, tableName);
                     } catch (IOException | SQLException | ParseException e) {
                         throw new RuntimeException(e);
                     }
@@ -672,6 +746,7 @@ public class NewEditMapController extends MapSuperController {
             Stage exportStage = new Stage();
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Export");
+            fileChooser.setInitialFileName(tableName);
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
 
             File file = fileChooser.showSaveDialog(exportStage);

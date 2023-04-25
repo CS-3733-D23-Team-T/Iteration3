@@ -116,6 +116,8 @@ public class MapSuperController {
 
     @FXML
     protected MFXFilterComboBox<String> endLocation = new MFXFilterComboBox<>();
+    @FXML
+    protected MFXDatePicker date;
 
     Date today = Date.valueOf(java.time.LocalDate.now());
 
@@ -236,6 +238,7 @@ public class MapSuperController {
         endLocation.setTranslateX(translate);
         viewNodes.setTranslateX(translate);
         importExport.setTranslateX(translate);
+        date.setTranslateX(translate);
     }
 
     public void initializeImages() {
