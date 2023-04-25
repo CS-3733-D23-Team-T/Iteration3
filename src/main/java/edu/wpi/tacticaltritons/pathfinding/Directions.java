@@ -1,6 +1,7 @@
 package edu.wpi.tacticaltritons.pathfinding;
 
 import edu.wpi.tacticaltritons.database.DAOFacade;
+import edu.wpi.tacticaltritons.database.Move;
 import edu.wpi.tacticaltritons.database.Node;
 
 import java.sql.SQLException;
@@ -20,6 +21,7 @@ public class Directions {
     int endNodeId = 640;
     Node startNode = DAOFacade.getNode(startNodeId);
     Node endNode = DAOFacade.getNode(endNodeId);
+    List<Move> allMoves = DAOFacade.getAllMoves();
     Compass compass = new Compass(0);
     List<Node> shortestPath = algorithm.findShortestPath(startNode, endNode);
 
@@ -165,13 +167,25 @@ public class Directions {
 
         List<String> textDirections = new ArrayList<>();
 
-        textDirections.add("Go Straight");
+        String nextLocation = "";
+        for(Move move : allMoves){
+            if(move.getNode().getNodeID() == shortestPath.get(1).getNodeID()){
+                nextLocation = move.getLocation().getShortName();
+            }
+        }
+        textDirections.add("Go Straight to " + nextLocation);
 
 
         for (int i = 1; i < shortestPath.size() - 1; i++) {
             currentNode = shortestPath.get(i - 1);
             nextNode = shortestPath.get(i);
             futureNode = shortestPath.get(i + 1);
+
+            for(Move move : allMoves){
+                if(move.getNode().getNodeID() == futureNode.getNodeID()){
+                    nextLocation = move.getLocation().getShortName();
+                }
+            }
 
 
             int currentX = currentNode.getXcoord();
@@ -187,13 +201,18 @@ public class Directions {
 
 
             if (angle > -20 && angle < 20) {
-                textDirections.add("Go Straight");
+                if(textDirections.get(textDirections.size()-1).contains("Go Straight")){
+                    textDirections.set(textDirections.size()-1, "Go Straight to " + nextLocation);
+                }
+                else{
+                    textDirections.add("Go Straight to " + nextLocation);
+                }
             } else if (angle > 20 && angle < 180) {
                 textDirections.add("Turn Right");
-                textDirections.add("Go Straight");
+                textDirections.add("Go Straight to " + nextLocation);
             } else if (angle < -20 && angle > -180) {
                 textDirections.add("Turn Left");
-                textDirections.add("Go Straight");
+                textDirections.add("Go Straight to " + nextLocation);
             }
 
 
@@ -202,6 +221,8 @@ public class Directions {
             }
 
         }
+
+        textDirections.add("You have arrived at your location");
 
         return textDirections;
     }
