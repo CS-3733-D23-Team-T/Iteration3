@@ -6,6 +6,7 @@ import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
+import edu.wpi.tacticaltritons.pathfinding.CongestionController;
 import io.github.palexdev.materialfx.controls.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
@@ -200,7 +201,6 @@ public class MapSuperController {
 
     public void initializeMenuButton(String page) {
         this.menuBar.setOnMouseClicked(event -> {
-
             if (!menuPane.isVisible()) {
                 menuPane.setVisible(true);
                 switch (page) {
@@ -238,7 +238,6 @@ public class MapSuperController {
         endLocation.setTranslateX(translate);
         viewNodes.setTranslateX(translate);
         importExport.setTranslateX(translate);
-        date.setTranslateX(translate);
     }
 
     public void initializeImages() {
@@ -415,6 +414,49 @@ public class MapSuperController {
 
         for (javafx.scene.Node nodes : floor3Group.getChildren()) {
             if (nodes instanceof Circle) {
+                nodesList.add(nodes);
+            }
+        }
+        floor3Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+    }
+
+    public void clearAllTexts() {
+        List<javafx.scene.Node> nodesList = new ArrayList<>();
+        for (javafx.scene.Node nodes : L1Group.getChildren()) {
+            if (nodes instanceof Text) {
+                nodesList.add(nodes);
+            }
+        }
+        L1Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : L2Group.getChildren()) {
+            if (nodes instanceof Text) {
+                nodesList.add(nodes);
+            }
+        }
+        L2Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : floor1Group.getChildren()) {
+            if (nodes instanceof Text) {
+                nodesList.add(nodes);
+            }
+        }
+        floor1Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : floor2Group.getChildren()) {
+            if (nodes instanceof Text) {
+                nodesList.add(nodes);
+            }
+        }
+        floor2Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : floor3Group.getChildren()) {
+            if (nodes instanceof Text) {
                 nodesList.add(nodes);
             }
         }
@@ -669,6 +711,7 @@ public class MapSuperController {
         endNodeId = endNodeID;
         List<Node> shortestPathMap = new ArrayList<>();
         try {
+            CongestionController congestionController =new CongestionController();
             AStarAlgorithm mapAlgorithm = new AStarAlgorithm();
             startNode1 = DAOFacade.getNode(startNodeId);
             endNode1 = DAOFacade.getNode(endNodeId);
