@@ -12,7 +12,8 @@ public class AStarAlgorithm implements PathFindingAlgorithm {
 
   private CongestionController congestionController;
 
-  public AStarAlgorithm() {
+  public AStarAlgorithm(CongestionController congestionController) {
+    this.congestionController = congestionController;
   }
 
   public void setCongestionController(CongestionController congestionController) {
