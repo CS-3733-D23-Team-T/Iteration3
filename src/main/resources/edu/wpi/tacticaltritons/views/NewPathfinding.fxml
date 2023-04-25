@@ -92,6 +92,11 @@
                                 <Insets bottom="20.0" />
                             </StackPane.margin>
                         </MFXButton>
+                  <MFXDatePicker fx:id="date" prefHeight="50.0" text="Date" StackPane.alignment="TOP_LEFT">
+                     <StackPane.margin>
+                        <Insets left="10.0" top="150.0" />
+                     </StackPane.margin>
+                  </MFXDatePicker>
                     </children>
                     <effect>
                         <DropShadow>
@@ -186,11 +191,6 @@
                         <Insets left="750.0" top="20.0" />
                     </StackPane.margin>
                 </MFXButton>
-            <MFXDatePicker fx:id="date" prefHeight="50.0" text="Date" StackPane.alignment="TOP_LEFT">
-               <StackPane.margin>
-                  <Insets left="850.0" top="20.0" />
-               </StackPane.margin>
-            </MFXDatePicker>
             </children>
             <BorderPane.margin>
                 <Insets />

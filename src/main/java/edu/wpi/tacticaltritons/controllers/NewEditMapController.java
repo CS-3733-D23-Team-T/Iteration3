@@ -638,6 +638,7 @@ public class NewEditMapController extends MapSuperController {
                 circleHashMap.get(clickNode.get(clickNode.size() - 1).getNodeID()).setFill(Color.RED);
 
                 clearAllCircles();
+                clearAllTexts();
                 try {
                     findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "ViewMap");
                     findAllEdges(selectedFloor.FLOOR.floor);
@@ -702,6 +703,7 @@ public class NewEditMapController extends MapSuperController {
         this.viewNodes.setOnAction(event -> {
             clearAllCircles();
             clearAllLines();
+            clearAllTexts();
             try {
                 findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "EditMap");
                 findAllEdges(selectedFloor.FLOOR.floor);
@@ -767,6 +769,7 @@ public class NewEditMapController extends MapSuperController {
             }
 
             clearAllCircles();
+            clearAllTexts();
             Circle circle = new Circle();
             final double[] circleCoord = new double[2];
             final String[] thisFloor = new String[1];
