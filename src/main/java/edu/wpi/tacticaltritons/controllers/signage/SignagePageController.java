@@ -16,7 +16,7 @@ import edu.wpi.tacticaltritons.styling.*;
 import java.util.ArrayList;
 
 
-public class signagePageController {
+public class SignagePageController {
     @FXML private GridPane basePane;
 
     @FXML private FlowPane signageForwardBlock;
@@ -46,13 +46,13 @@ public class signagePageController {
         locationLabels = new ArrayList<>();
         signageLocationBlocks = new VBox[]{signageForwardLocations,signageLeftLocations,signageRightLocations,signageBackLocations};
         horizontalResizing(App.getPrimaryStage().getWidth());
-        loadLocation(signageForwardLocations,signagePageInteractionClass.forwardLocations); // forward direction block is the default display area
-        if(signagePageInteractionClass.signleDisplay){
+        loadLocation(signageForwardLocations, SignagePageInteraction.forwardLocations); // forward direction block is the default display area
+        if(SignagePageInteraction.signleDisplay){
             formatAsSingleDisplay();
         }else{
-            loadLocation(signageLeftLocations,signagePageInteractionClass.leftLocations);
-            loadLocation(signageRightLocations,signagePageInteractionClass.rightLocations);
-            loadLocation(signageBackLocations,signagePageInteractionClass.backLocations);
+            loadLocation(signageLeftLocations, SignagePageInteraction.leftLocations);
+            loadLocation(signageRightLocations, SignagePageInteraction.rightLocations);
+            loadLocation(signageBackLocations, SignagePageInteraction.backLocations);
             removeEmpty();
         }
         EffectGenerator.generateShadowEffect(basePane);
@@ -140,7 +140,7 @@ public class signagePageController {
         for(Label locaionLabel: locationLabels){
             locaionLabel.setStyle("-fx-font-size: " + fontSize);
         }
-        if(signagePageInteractionClass.signleDisplay){
+        if(SignagePageInteraction.signleDisplay){
             signageForwardLocations.getChildren().get(0).setStyle("-fx-text-fill: " + ThemeColors.YELLOW.getColor() + ";" + "-fx-font-size: " + (fontSize + 10));
         }
     }

@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.geometry.Insets?>
 <?import java.net.URL?>
-<GridPane fx:id="basePane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.wpi.tacticaltritons.controllers.signage.signagePageController" prefHeight="600" prefWidth="1280" alignment="CENTER_LEFT" >
+<GridPane fx:id="basePane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.wpi.tacticaltritons.controllers.signage.SignagePageController" prefHeight="600" prefWidth="1280" alignment="CENTER_LEFT" >
     <stylesheets>
         <URL value="@../../stylesheets/signageBlocks.css"/>
     </stylesheets>

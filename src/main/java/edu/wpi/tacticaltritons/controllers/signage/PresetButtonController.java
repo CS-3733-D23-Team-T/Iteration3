@@ -7,10 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-import java.awt.*;
-import java.lang.reflect.Array;
-
-public class presetButtonController {
+public class PresetButtonController {
     @FXML private GridPane basePane;
     @FXML private Label presetName;
     String[] forwardLocations;
@@ -62,12 +59,11 @@ public class presetButtonController {
     }
 
     private void loadData(){
-        System.out.println("clicked");
-        signagePageInteractionClass.forwardLocations = forwardLocations;
-        signagePageInteractionClass.leftLocations = leftLocations;
-        signagePageInteractionClass.rightLocations = rightLocations;
-        signagePageInteractionClass.backLocations = backLocations;
-        signagePageInteractionClass.signleDisplay = singleDisplay;
+        SignagePageInteraction.forwardLocations = forwardLocations;
+        SignagePageInteraction.leftLocations = leftLocations;
+        SignagePageInteraction.rightLocations = rightLocations;
+        SignagePageInteraction.backLocations = backLocations;
+        SignagePageInteraction.signleDisplay = singleDisplay;
         Navigation.navigate(Screen.SIGNAGE);
     }
 }

@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.wpi.tacticaltritons.controllers.signage.signageEditController" prefHeight="650" prefWidth="1280">
+<StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.wpi.tacticaltritons.controllers.signage.SignageEditController" prefHeight="650" prefWidth="1280">
     <FlowPane fx:id="basePane" >
     </FlowPane>
 </StackPane>

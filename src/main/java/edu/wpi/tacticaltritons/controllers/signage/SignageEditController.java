@@ -3,23 +3,19 @@ package edu.wpi.tacticaltritons.controllers.signage;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Signage;
 import edu.wpi.tacticaltritons.styling.*;
-import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.concurrent.Flow;
 
-public class signageEditController {
+public class SignageEditController {
     @FXML private FlowPane basePane;
-    private final URL presetButtonPath = this.getClass().getResource("../../views/signagePages/signagePresetButton.fxml");
+    private final URL presetButtonPath = this.getClass().getResource("../../views/signagePages/SSignagePresetButton.fxml");
     public void initialize() throws IOException, SQLException {
 
         List<Signage> signageList = DAOFacade.getAllSignage();
@@ -36,7 +32,7 @@ public class signageEditController {
     private void addPreset(String presetName, String[] forward, String[] left, String[] right, String[] back) throws IOException {
         FXMLLoader loader = new FXMLLoader(presetButtonPath);
         GridPane presetButton = loader.load();
-        presetButtonController controller = loader.getController();
+        PresetButtonController controller = loader.getController();
         controller.setPresetName(presetName);
         controller.setPresetContents(forward,left,right,back);
         basePane.getChildren().add(presetButton);
@@ -45,7 +41,7 @@ public class signageEditController {
     private void addPreset(String presetName, String[] singleDisplayContent) throws IOException {
         FXMLLoader loader = new FXMLLoader(presetButtonPath);
         GridPane presetButton = loader.load();
-        presetButtonController controller = loader.getController();
+        PresetButtonController controller = loader.getController();
         controller.setPresetName(presetName);
         controller.setPresetContents(singleDisplayContent);
         basePane.getChildren().add(presetButton);
@@ -54,7 +50,7 @@ public class signageEditController {
     private void addPreset(String presetName, boolean singleDisplay, String[] forward, String[] left, String[] right, String[] back) throws IOException {
         FXMLLoader loader = new FXMLLoader(presetButtonPath);
         GridPane presetButton = loader.load();
-        presetButtonController controller = loader.getController();
+        PresetButtonController controller = loader.getController();
         controller.setPresetName(presetName);
         controller.setPresetContents(singleDisplay,forward,left,right,back);
         basePane.getChildren().add(presetButton);
