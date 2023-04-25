@@ -46,7 +46,7 @@ public enum Screen {
   SUPPLY_CHOICE("views/serviceRequest/SupplyChoice.fxml"),
   SUPPLY_CHECKOUT("views/serviceRequest/SupplyCheckout.fxml"),
 
-  SIGNAGE("views/signagePages/Signage.fxml"),
+  SIGNAGE("views/signagePages/signagePage.fxml"),
   PATHFINDING("views/NewPathfinding.fxml"),
   EDIT_MAP("views/NewEditMap.fxml"),
   VIEW_MAP("views/NewViewMap.fxml"),
@@ -64,8 +64,8 @@ public enum Screen {
   TEST_2("views/test_pages/p2.fxml"),
   TEST_3("views/test_pages/p3.fxml"),
   TEST_4("views/test_pages/p4.fxml"),
-  TEST_5("views/test_pages/p5.fxml")
-  ;
+  TEST_5("views/test_pages/p5.fxml"),
+  EDIT_SIGNAGE("views/signagePages/signageEditPage.fxml");
   private final String filename;
 
   Screen(String filename) {

@@ -27,30 +27,6 @@ public class signageEditController {
             addPreset(signage.getTitle(), signage.isSingleDisplay(),signage.getForwarddir(),signage.getLeftdir(),signage.getRightdir(),signage.getBackdir());
         }
 
-        //preset 1
-        addPreset("May 2023 \nWatkins A",
-                new String[]{},
-                new String[]{"Information", "Shapiro Admitting",  "Shapiro Procedural Check-in"},
-                new String[]{"Watkins Clinics A & B (this floor)", "Watkins Clinic C (up to 3rd floor)", "Rehabilitation Services (down to 1st floor)"},
-                new String[]{});
-
-        //preset 2
-        addPreset("May 2023 \nWatkins B",
-                new String[]{"Watkins Clinics A & B (this floor)","Watkins Clinic C (EP & Echo) (up to 3rd floor)","Brigham Circle Medical Associates (up to 3rd floor)"},
-                new String[]{},
-                new String[]{},
-                new String[]{"L2PRU (down to Lower Level \"L2\")"});
-
-        //preset 3 single display
-        addPreset("July 2023 \nWatkins A",
-                new String[]{"Information", "Shapiro Admitting", "Shapiro Procedural Check-in"});
-
-        //preset 4
-        addPreset("November 2023 \nWatkins B",
-                new String[]{"Watkins Clinic & EP (this floor)"},
-                new String[]{"Echocardiography (this floor)"},
-                new String[]{"Brigham Circle Medical Associates (Hale Building)"},
-                new String[]{"L2PRU (down to Lower Level \"L2\")"});
 
         EffectGenerator.generateShadowEffect(basePane);
         EffectGenerator.generateSpacing(basePane,20);
