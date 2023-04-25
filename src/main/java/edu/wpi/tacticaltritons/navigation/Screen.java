@@ -10,10 +10,16 @@ public enum Screen {
   LOGIN_CONTAINER("views/login/LoginContainer.fxml"),
 
   ROOT("views/Root.fxml"),
-  HOME("views/NewHomePage.fxml"),
+  HOME("views/home/Home.fxml"),
 
   ABOUT("views/About.fxml"),
   CREDITS("views/Credits.fxml"),
+
+  ANNOUNCEMENT_ROOT("views/home/AnnouncementRoot.fxml"),
+  ANNOUNCEMENT("views/home/Announcement.fxml"),
+  VIEW_ANNOUNCEMENTS("views/announcements/ViewAnnouncements.fxml"),
+  CREATE_ANNOUNCEMENTS("views/announcements/CreateAnnouncements.fxml"),
+  EDIT_ANNOUNCEMENTS("views/announcements/EditAnnouncements.fxml"),
 
   SETTINGS("views/settings/Settings.fxml"),
   USER_OPTIONS("views/settings/UserOptions.fxml"),
