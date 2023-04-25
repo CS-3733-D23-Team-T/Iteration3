@@ -147,7 +147,7 @@ private BorderPane basePane;
 
         checkoutItems.forEach((key, value) ->
         {
-            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value));
+            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, App.furnitureHashMap.get(key)));
         });
         checkoutFlowplan.setAlignment(Pos.CENTER);
 
@@ -270,7 +270,7 @@ private BorderPane basePane;
 
     }
 
-    private FlowPane createCheckoutNode(String key, int value) {
+    private FlowPane createCheckoutNode(String key, int value, Image furnitureImage) {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(200);
         flowPane.setPrefHeight(100);
@@ -283,8 +283,7 @@ private BorderPane basePane;
         flowPane.setBackground(Background.fill(Color.WHITE));
 
         // Creates the image view
-        Image image = new Image("/edu/wpi/tacticaltritons/images/flower_request/Boston Blossoms.jpg");
-        ImageView imageView = new ImageView(image);
+        ImageView imageView = new ImageView(furnitureImage);
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
 
