@@ -1,14 +1,19 @@
 .tab-pane{
     -fx-font-size: 20;
 }
+#normalTabPane
+{
+}
 
 .tab {
-    -fx-background-color: white;
-
     -fx-fit-to-width: true;
     -fx-fit-to-height: true;
     -fx-tab-min-height: 100;
     -fx-tab-min-width: 150;
+}
+#normalTab
+{
+
 }
 
 #normalTab:hover

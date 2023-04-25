@@ -62,15 +62,21 @@
          <bottom>
             <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="50.0" prefWidth="500" BorderPane.alignment="CENTER">
                <children>
-                  <MFXButton id="clearButton" fx:id="clearButton" prefHeight="30.0" prefWidth="210" text="Clear">
+                  <MFXButton id="clearButton" fx:id="clearButton" prefHeight="50.0" prefWidth="200.0" text="Clear">
                      <FlowPane.margin>
                         <Insets right="10.0" />
                      </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </MFXButton>
-                  <MFXButton id="normalButton" fx:id="checkoutButton" prefHeight="30.0" prefWidth="210" text="Checkout">
+                  <MFXButton id="normalButton" fx:id="checkoutButton" prefHeight="50.0" prefWidth="200.0" text="Checkout">
                      <FlowPane.margin>
                         <Insets left="10.0" />
                      </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </MFXButton>
                </children>
                <BorderPane.margin>
