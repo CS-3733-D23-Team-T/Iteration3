@@ -206,7 +206,6 @@ private BorderPane basePane;
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
-                    clearForm();
                     MFXGenericDialog content = new MFXGenericDialog();
                     MFXStageDialog stageDialog = new MFXStageDialog();
                     stageDialog = MFXGenericDialogBuilder.build(content)
@@ -240,6 +239,7 @@ private BorderPane basePane;
                     finalStageDialog.show();
                     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event1 -> {
                         finalStageDialog.close();
+                        clearForm();
                         Navigation.navigate(Screen.HOME);
                     }));
                     timeline.play();

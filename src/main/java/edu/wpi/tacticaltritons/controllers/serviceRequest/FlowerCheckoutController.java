@@ -237,8 +237,6 @@ public class FlowerCheckoutController {
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
-                        clearForm();
-
                         MFXGenericDialog content = new MFXGenericDialog();
                         MFXStageDialog stageDialog = new MFXStageDialog();
                         stageDialog = MFXGenericDialogBuilder.build(content)
@@ -272,9 +270,11 @@ public class FlowerCheckoutController {
                         finalStageDialog.show();
                         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event1 -> {
                             finalStageDialog.close();
+                            clearForm();
                             Navigation.navigate(Screen.HOME);
                         }));
                         timeline.play();
+
                     } else {
                         System.out.println("Form cannot submit");
                         //TODO do something when not filled
