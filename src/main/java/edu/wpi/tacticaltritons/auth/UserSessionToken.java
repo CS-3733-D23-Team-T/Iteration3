@@ -3,12 +3,11 @@ package edu.wpi.tacticaltritons.auth;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.database.Session;
-import edu.wpi.tacticaltritons.navigation.Navigation;
-import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
-import javafx.beans.property.*;
-import lombok.Getter;
-import lombok.Setter;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import java.sql.SQLException;
 import java.util.UUID;
