@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.home.AnnouncementController">
+<GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.home.AnnouncementController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
@@ -23,6 +23,9 @@
          <font>
             <Font size="25.0" />
          </font>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
           </Label>
           <Label fx:id="titleLabel" text="The Cafe is under construction" textAlignment="CENTER" wrapText="true">
               <font>
@@ -31,11 +34,17 @@
               <GridPane.margin>
                   <Insets />
               </GridPane.margin>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
           </Label>
         <Label fx:id="discriptionLabel" prefHeight="70.0" text="The Cafe Is under construction due to a pipe breaking. Sorry for the inconvince" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="1">
          <font>
             <Font size="20.0" />
          </font>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
       </Label>
     </children>
 </GridPane>
