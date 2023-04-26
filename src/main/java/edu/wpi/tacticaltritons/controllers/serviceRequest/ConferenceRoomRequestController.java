@@ -20,6 +20,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -361,8 +362,15 @@ public class ConferenceRoomRequestController {
 
             MFXStageDialog finalStageDialog = stageDialog;
             finalStageDialog.show();
+            ColorAdjust shadow = new ColorAdjust();
+            shadow.setBrightness(-.6);
+            App.getRootPane().getCenter().setEffect(shadow);
+            App.getRootPane().getCenter().setStyle("-fx-background-color: rgba(102,102,102,0.6)");
+            content.setMaxSize(App.getRootPane().getWidth()/3, App.getRootPane().getHeight()/3);
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event1 -> {
                 finalStageDialog.close();
+                App.getRootPane().getCenter().setEffect(null);
+                App.getRootPane().getCenter().setStyle(null);
                 Navigation.navigate(Screen.HOME);
             }));
             timeline.play();
