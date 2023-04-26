@@ -38,6 +38,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import edu.wpi.tacticaltritons.styling.ThemeColors;
@@ -169,8 +170,8 @@ public class MapSuperController {
     }
 
 
-    public HashMap<String, LocationName> getLocationNameHashMap() throws SQLException {
-        HashMap<String, LocationName> hash = new HashMap<>();
+    public LinkedHashMap<String, LocationName> getLocationNameHashMap() throws SQLException {
+        LinkedHashMap<String, LocationName> hash = new LinkedHashMap<>();
         for (LocationName locationName : allLocationNames) {
             hash.put(locationName.getLongName(), locationName);
         }
