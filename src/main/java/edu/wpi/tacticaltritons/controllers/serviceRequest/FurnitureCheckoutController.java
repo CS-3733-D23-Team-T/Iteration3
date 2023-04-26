@@ -276,6 +276,60 @@ private BorderPane basePane;
             locationComboBox.getItems().add(name.getLongName());
         }
 
+        this.locationComboBox.setOnAction(event -> {
+
+            clearAllNodes();
+            Circle circle = new Circle();
+
+            try {
+                circle = drawCircle(DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getXcoord(), DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getYcoord());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+
+            String endFloor = null;
+            try {
+                endFloor = DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getFloor();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (endFloor != null) {
+                switch (endFloor) {
+                    case "L1":
+                        L1Group.setVisible(true);
+                        lowerLevel1Image.setVisible(true);
+                        this.L1Group.getChildren().add(circle);
+                        break;
+                    case "L2":
+                        L2Group.setVisible(true);
+                        lowerLevel2Image.setVisible(true);
+                        this.L2Group.getChildren().add(circle);
+                        break;
+                    case "1":
+                        floor1Group.setVisible(true);
+                        floor1Image.setVisible(true);
+                        this.floor1Group.getChildren().add(circle);
+                        break;
+                    case "2":
+                        floor2Group.setVisible(true);
+                        floor2Image.setVisible(true);
+                        this.floor2Group.getChildren().add(circle);
+                        break;
+                    case "3":
+                        floor3Group.setVisible(true);
+                        floor3Image.setVisible(true);
+                        this.floor3Group.getChildren().add(circle);
+                        break;
+                }
+            }
+            Point2D centrePoint = new Point2D(circle.getCenterX(), circle.getCenterY());
+            groundFloor.centreOn(centrePoint);
+        });
+
+        groundFloor.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
+
     }
 
     private FlowPane createCheckoutNode(String key, int value, Image furnitureImage) {
@@ -351,6 +405,8 @@ private BorderPane basePane;
         assignedStaffComboBox.clear();
         deliveryDateField.clear();
         locationComboBox.clear();
+        hourComboBox.clear();
+        minComboBox.clear();
     }
 
     public void clearAllNodes() {
