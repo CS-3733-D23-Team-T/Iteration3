@@ -333,23 +333,6 @@ public class NewEditMapController extends MapSuperController {
                 System.out.println(lineHashMap.get(circleRightClick.get(1)));
 
                 lineHashMap.get(circleRightClick.get(0)).add(line);
-                switch (selectedFloor.FLOOR.floor) {
-                    case "L1":
-                        this.L1Group.getChildren().add(1, line);
-                        break;
-                    case "L2":
-                        this.L2Group.getChildren().add(1, line);
-                        break;
-                    case "1":
-                        this.floor1Group.getChildren().add(1, line);
-                        break;
-                    case "2":
-                        this.floor2Group.getChildren().add(1, line);
-                        break;
-                    case "3":
-                        this.floor3Group.getChildren().add(1, line);
-                        break;
-                }
                 clearAllCircles();
                 clearAllLines();
                 try {
@@ -619,7 +602,6 @@ public class NewEditMapController extends MapSuperController {
             if (ke.getCode().equals(KeyCode.ENTER)) {
                 System.out.println("enter");
 
-
                 if (deleteLine != null) {
                     lineHashMap.forEach((key, value) -> {
                         for (Line line : deleteLine) {
@@ -654,32 +636,34 @@ public class NewEditMapController extends MapSuperController {
                 }
 
 
-                Node startNode = clickNode.get(0);
-                Node endNode = clickNode.get(clickNode.size() - 1);
-                int xInterval = (startNode.getXcoord() - endNode.getXcoord()) / (clickNode.size() - 1);
-                int yInterval = (startNode.getYcoord() - endNode.getYcoord()) / (clickNode.size() - 1);
+                if (clickNode != null) {
+                    Node startNode = clickNode.get(0);
+                    Node endNode = clickNode.get(clickNode.size() - 1);
+                    int xInterval = (startNode.getXcoord() - endNode.getXcoord()) / (clickNode.size() - 1);
+                    int yInterval = (startNode.getYcoord() - endNode.getYcoord()) / (clickNode.size() - 1);
 
-                for (int i = 1; i < clickNode.size() - 1; i++) {
-                    System.out.println(circleHashMap.get(clickNode.get(i).getNodeID()).getCenterX());
-                    System.out.println(circleHashMap.get(clickNode.get(i).getNodeID()).getCenterY());
-                    circleHashMap.get(clickNode.get(i).getNodeID()).setCenterX(startNode.getXcoord() - (i * xInterval));
-                    circleHashMap.get(clickNode.get(i).getNodeID()).setCenterY(startNode.getYcoord() - (i * yInterval));
-                    circleHashMap.get(clickNode.get(i).getNodeID()).setFill(Color.RED);
-                    circleHashMap.get(clickNode.get(i).getNodeID()).setStroke(Color.BLACK);
+                    for (int i = 1; i < clickNode.size() - 1; i++) {
+                        System.out.println(circleHashMap.get(clickNode.get(i).getNodeID()).getCenterX());
+                        System.out.println(circleHashMap.get(clickNode.get(i).getNodeID()).getCenterY());
+                        circleHashMap.get(clickNode.get(i).getNodeID()).setCenterX(startNode.getXcoord() - (i * xInterval));
+                        circleHashMap.get(clickNode.get(i).getNodeID()).setCenterY(startNode.getYcoord() - (i * yInterval));
+                        circleHashMap.get(clickNode.get(i).getNodeID()).setFill(Color.RED);
+                        circleHashMap.get(clickNode.get(i).getNodeID()).setStroke(Color.BLACK);
 
+                    }
+                    circleHashMap.get(clickNode.get(0).getNodeID()).setFill(Color.RED);
+                    circleHashMap.get(clickNode.get(clickNode.size() - 1).getNodeID()).setFill(Color.RED);
+
+                    clearAllCircles();
+                    clearAllTexts();
+                    try {
+                        findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "ViewMap");
+                        findAllEdges(selectedFloor.FLOOR.floor);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    clickNode.clear();
                 }
-                circleHashMap.get(clickNode.get(0).getNodeID()).setFill(Color.RED);
-                circleHashMap.get(clickNode.get(clickNode.size() - 1).getNodeID()).setFill(Color.RED);
-
-                clearAllCircles();
-                clearAllTexts();
-                try {
-                    findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "ViewMap");
-                    findAllEdges(selectedFloor.FLOOR.floor);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                clickNode.clear();
             }
         });
 
