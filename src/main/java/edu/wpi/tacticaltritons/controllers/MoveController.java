@@ -43,9 +43,7 @@ public class MoveController {
     @FXML
     MFXDatePicker date;
     @FXML
-    Button submitButton, cancelButton, previewButton, clearButton;
-    @FXML
-    Rectangle formRectangle;
+    Button submitButton, cancelButton, clearButton;
 
     @FXML GesturePane groundFloor;
     @FXML ImageView groundFloorImage;
@@ -86,6 +84,10 @@ public class MoveController {
     @FXML
     public void initialize() throws SQLException {
 
+        groundFloor.toBack();
+        floor1Group.setVisible(true);
+        floor1Image.setVisible(true);
+
         Date today = new Date(2023, 4, 10);
         lowerLevel1Image.setImage(App.lowerlevel1);
         lowerLevel2Image.setImage(App.lowerlevel2);
@@ -97,7 +99,7 @@ public class MoveController {
         List<Node> nodes = DAOFacade.getAllNodes();
         HashMap<String,Node> nodeHashMap = new HashMap<>();
         for(Node node: nodes){
-            originalRoom.getItems().add(Integer.toString(node.getNodeID()));
+            newRoom.getItems().add(Integer.toString(node.getNodeID()));
             nodeHashMap.put(Integer.toString(node.getNodeID()),node);
         }
 
@@ -106,14 +108,14 @@ public class MoveController {
         HashMap<String,LocationName> locationNameHashMap = new HashMap<>();
 
         for (LocationName name : names) {
-            newRoom.getItems().add(name.getLongName());
+            originalRoom.getItems().add(name.getLongName());
             locationNameHashMap.put(name.getLongName(),name);
         }
 
-/*        ArrayList<Login> allPeople = (ArrayList<Login>) DAOFacade.getAllLogins();
-        for(Login people: allPeople){
+        ArrayList<Login> allPeople = (ArrayList<Login>) DAOFacade.getAllLogins();
+        for(Login people: allPeople){ //generate staff list dropdown
             staffMemberName.getItems().add(people.getFirstName() + " " + people.getLastName() + "/" + people.getEmail());
-        }*/
+        }
 
         fields.add(firstName);
         fields.add(lastName);
@@ -129,7 +131,8 @@ public class MoveController {
         date.setValue(LocalDate.from(formatter.parse(formatter.format(LocalDateTime.now()))));
 
         for (MFXTextField field : fields) {
-            field.prefWidthProperty().bind(Bindings.max(200, App.getPrimaryStage().widthProperty().divide(3)).subtract(40));
+            field.setPrefHeight(45);
+//            field.prefWidthProperty().bind(Bindings.max(200, App.getPrimaryStage().widthProperty().divide(3)).subtract(40));
             field.textProperty().addListener(((observable, oldValue, newValue) -> {
                 formComplete();//check if re-enable submit button
             }));
@@ -144,7 +147,7 @@ public class MoveController {
                 String newDate = (date.getText().isEmpty()) ? df.format(LocalDate.now()) : df.format(date.getValue());
                 Date sendDate = Date.valueOf(newDate);
                 try {
-                    DAOFacade.addMove(new edu.wpi.tacticaltritons.database.Move(nodeHashMap.get(originalRoom.getText()),locationNameHashMap.get(newRoom.getText()),sendDate));
+                    DAOFacade.addMove(new edu.wpi.tacticaltritons.database.Move(nodeHashMap.get(newRoom.getText()),locationNameHashMap.get(originalRoom.getText()),sendDate));
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -165,12 +168,6 @@ public class MoveController {
                 formComplete();
             }
         });
-        previewButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                //TODO preview button
-            }
-        });
 
         stackPane.setVisible(true);
         groundFloor.setVisible(true);
@@ -182,15 +179,14 @@ public class MoveController {
             Circle circle = new Circle();
 
             try {
-                circle = drawCircle(DAOFacade.getNode((String) this.newRoom.getSelectedItem(), today).getXcoord(), DAOFacade.getNode((String) this.newRoom.getSelectedItem(), today).getYcoord());
+                circle = drawCircle(DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem())).getXcoord(), DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem())).getYcoord());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
 
-
             String endFloor = null;
             try {
-                endFloor = DAOFacade.getNode((String) this.newRoom.getSelectedItem(), today).getFloor();
+                endFloor = DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem())).getFloor();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

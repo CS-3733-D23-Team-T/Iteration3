@@ -37,6 +37,7 @@ public class QuickNavigationMenuButtons {
 
         signageNavigationMap.put("Signage", Screen.SIGNAGE);
         signageNavigationMap.put("Edit Signage", Screen.EDIT_SIGNAGE);
+        signageNavigationMap.put("Move Signage", Screen.MOVE_SIGN);
 
         databaseNavigationMap.put("Database", Screen.DATABASE);
         databaseNavigationMap.put("Edit Database", Screen.EDIT_DATABASE);
