@@ -690,6 +690,7 @@ public class MapSuperController {
     }
 
     public void pathfinding(int startNodeID, int endNodeID) {
+
         try {
             shortestPathMap.add(getNodeHashMap().get(startNodeID));
         } catch (SQLException e) {
@@ -699,8 +700,7 @@ public class MapSuperController {
         xCoord.clear();
         yCoord.clear();
         startEnd.clear();
-        clearAllCircles();
-        clearAllTexts();
+        clearAllNodes();
         int startNodeId;
         int endNodeId;
         Node endNode1 = null;
@@ -835,6 +835,7 @@ public class MapSuperController {
 //            }
 //        }
         polyList.clear();
+
 
         System.out.println(change);
 
