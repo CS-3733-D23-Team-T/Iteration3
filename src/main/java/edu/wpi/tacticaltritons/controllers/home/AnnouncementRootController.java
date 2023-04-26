@@ -23,17 +23,25 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AnnouncementRootController {
-    @FXML private BorderPane announcementCol0;
-    @FXML private BorderPane announcementCol1;
-    @FXML private BorderPane announcementCol2;
-    @FXML private BorderPane announcementCol3;
-    @FXML private BorderPane announcementCol4;
+    @FXML
+    private BorderPane announcementCol0;
+    @FXML
+    private BorderPane announcementCol1;
+    @FXML
+    private BorderPane announcementCol2;
+    @FXML
+    private BorderPane announcementCol3;
+    @FXML
+    private BorderPane announcementCol4;
+    @FXML
+    private FlowPane announcementFlowPane;
 
     @FXML
     private void initialize() throws IOException, SQLException {
+        /*
         List<Announcements> announcementsList = DAOFacade.getAllAnnouncements(Timestamp.valueOf(LocalDateTime.now()));
         int i = 0;
-        if(announcementsList != null) {
+        if (announcementsList != null) {
             Map<Announcements, Map<String, String>> announcementMap = new HashMap<>();
             announcementsList.forEach(announcement -> {
                 Map<String, String> fields = new HashMap<>();
@@ -46,29 +54,29 @@ public class AnnouncementRootController {
             });
 
 
-            for(i = 0; i < 5 && i < announcementMap.size(); i++){
+            for (i = 0; i < 5 && i < announcementMap.size(); i++) {
                 FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
                 FlowPane content = loader.load();
 //                recursiveAnnouncementSetter(content, announcementMap.get(announcementMap.keySet().stream().toList().get(i)));
                 recursiveAnnouncementSetter(content, announcementMap.get(announcementMap.keySet().stream().collect(Collectors.toList()).get(i)));
-                if(i == 0) announcementCol0.setCenter(content);
-                else if(i == 1) announcementCol1.setCenter(content);
-                else if(i == 2) announcementCol2.setCenter(content);
-                else if(i == 3) announcementCol3.setCenter(content);
+                if (i == 0) announcementCol0.setCenter(content);
+                else if (i == 1) announcementCol1.setCenter(content);
+                else if (i == 2) announcementCol2.setCenter(content);
+                else if (i == 3) announcementCol3.setCenter(content);
                 else announcementCol4.setCenter(content);
             }
         }
-        for(int j = i; j < 5; j++){
+        for (int j = i; j < 5; j++) {
             FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
             FlowPane content = loader.load();
             emptyAnnouncement(content);
-            if(j == 0) announcementCol0.setCenter(content);
-            else if(j == 1) announcementCol1.setCenter(content);
-            else if(j == 2) announcementCol2.setCenter(content);
-            else if(j == 3) announcementCol3.setCenter(content);
+            if (j == 0) announcementCol0.setCenter(content);
+            else if (j == 1) announcementCol1.setCenter(content);
+            else if (j == 2) announcementCol2.setCenter(content);
+            else if (j == 3) announcementCol3.setCenter(content);
             else announcementCol4.setCenter(content);
         }
-        if(announcementsList == null || announcementsList.size() == 0){
+        if (announcementsList == null || announcementsList.size() == 0) {
             Map<String, String> info = new HashMap<>();
             info.put("title", "No Announcements");
             info.put("titleSize", "18");
@@ -81,18 +89,19 @@ public class AnnouncementRootController {
             recursiveAnnouncementSetter(content, info);
             announcementCol2.setCenter(content);
         }
+         */
     }
 
-    private void recursiveAnnouncementSetter(FlowPane announcement, Map<String, String> info){
-        for(Node node : announcement.getChildren()){
-            if(node.getClass().equals(FlowPane.class)){
+    private void recursiveAnnouncementSetter(FlowPane announcement, Map<String, String> info) {
+        for (Node node : announcement.getChildren()) {
+            if (node.getClass().equals(FlowPane.class)) {
                 recursiveAnnouncementSetter((FlowPane) node, info);
-            }
-            else if(node.getClass().equals(Text.class) && node.getId() != null){
-                switch (node.getId()){
+            } else if (node.getClass().equals(Text.class) && node.getId() != null) {
+                switch (node.getId()) {
                     case "title" -> {
                         ((Text) node).setText(info.get("title"));
-                        if(info.containsKey("titleSize")) ((Text) node).setFont(new Font(Double.parseDouble(info.get("titleSize"))));
+                        if (info.containsKey("titleSize"))
+                            ((Text) node).setFont(new Font(Double.parseDouble(info.get("titleSize"))));
                     }
                     case "creator" -> ((Text) node).setText(info.get("creator"));
                     case "effectiveDate" -> ((Text) node).setText(info.get("effectiveDate"));
@@ -102,7 +111,8 @@ public class AnnouncementRootController {
             }
         }
     }
-    private void emptyAnnouncement(FlowPane announcement){
+
+    private void emptyAnnouncement(FlowPane announcement) {
         Map<String, String> emptyMap = new HashMap<>();
         emptyMap.put("title", "");
         emptyMap.put("creator", "");

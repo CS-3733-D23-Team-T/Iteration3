@@ -47,13 +47,21 @@ public class ViewServiceRequestsController {
 
     @FXML
     public void initialize() throws SQLException, ClassNotFoundException {
-
         initConferenceRoomRequestTable();
         initFlowerRequestsTable();
         initFurnitureRequestTable();
         intiOfficeSupplyRequestTable();
         initMealRequestTable();
+        initStyles();
+    }
 
+    public void initStyles(){
+        basePane.setStyle("-fx-padding: 25px;");
+        conferenceRoomRequest.setStyle("-fx-alignment: center;");
+        flowerRequests.setStyle("-fx-alignment: center;");
+        furnitureRequest.setStyle("-fx-alignment: center;");
+        officeSupplyRequest.setStyle("-fx-alignment: center;");
+        mealRequests.setStyle("-fx-alignment: center;");
     }
 
     private void initMealRequestTable() {
@@ -117,7 +125,7 @@ public class ViewServiceRequestsController {
                         setText(null);
                         setGraphic(null);
                     } else if (item.toString().equals("")) {
-                        button.setStyle("-fx-background-color: green;");
+                        button.setStyle("-fx-background-color: green; -fx-font-fill: white;");
                         setText(null);
                         setGraphic(button);
                         button.setOnAction(event -> {
@@ -136,7 +144,7 @@ public class ViewServiceRequestsController {
                         Meal meal = getTableView().getItems().get(getIndex());
 
                         if ((meal.getAssignedStaffFirst().equals(UserSessionToken.getUser().getFirstname())) && (meal.getAssignedStaffLast().equals(UserSessionToken.getUser().getLastname()))) {
-                            button2.setStyle("-fx-background-color: red;");
+                            button2.setStyle("-fx-background-color: #c00b0b; -fx-font-fill: white;");
                             setText(null);
                             setGraphic(button2);
                             button2.setOnAction(event -> {
@@ -372,7 +380,7 @@ public class ViewServiceRequestsController {
                         setText(null);
                         setGraphic(null);
                     } else if (item.toString().equals("")) {
-                        button.setStyle("-fx-background-color: green;");
+                        button.setStyle("-fx-background-color: green; -fx-font-fill: white;");
                         setText(null);
                         setGraphic(button);
                         button.setOnAction(event -> {
@@ -391,7 +399,7 @@ public class ViewServiceRequestsController {
                         Furniture furniture = getTableView().getItems().get(getIndex());
 
                         if ((furniture.getAssignedStaffFirst().equals(UserSessionToken.getUser().getFirstname())) && (furniture.getAssignedStaffLast().equals(UserSessionToken.getUser().getLastname()))) {
-                            button2.setStyle("-fx-background-color: red;");
+                            button2.setStyle("-fx-background-color: #c00b0b; -fx-font-fill: white;");
                             setText(null);
                             setGraphic(button2);
                             button2.setOnAction(event -> {
@@ -510,7 +518,7 @@ public class ViewServiceRequestsController {
                         setText(null);
                         setGraphic(null);
                     } else if (item.toString().equals("")) {
-                        button.setStyle("-fx-background-color: green;");
+                        button.setStyle("-fx-background-color: green; -fx-font-fill: white;");
                         setText(null);
                         setGraphic(button);
                         button.setOnAction(event -> {
@@ -529,7 +537,7 @@ public class ViewServiceRequestsController {
                         Flower flower = getTableView().getItems().get(getIndex());
 
                         if ((flower.getAssignedStaffFirst().equals(UserSessionToken.getUser().getFirstname())) && (flower.getAssignedStaffLast().equals(UserSessionToken.getUser().getLastname()))) {
-                            button2.setStyle("-fx-background-color: red;");
+                            button2.setStyle("-fx-background-color: #c00b0b; -fx-font-fill: white;");
                             setText(null);
                             setGraphic(button2);
                             button2.setOnAction(event -> {
@@ -631,7 +639,7 @@ public class ViewServiceRequestsController {
                         setText(null);
                         setGraphic(null);
                     } else if (item.toString().equals("Processing") && UserSessionToken.getUser().isAdmin()) {
-                        button.setStyle("-fx-background-color: green;");
+                        button.setStyle("-fx-background-color: green; -fx-text-fill: white;");
                         setText(null);
                         setGraphic(button);
                         button.setOnAction(event -> {

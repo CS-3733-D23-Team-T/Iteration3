@@ -8,6 +8,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -84,7 +85,9 @@ public class NewEditMapController extends MapSuperController {
     java.sql.Date today = new Date(2023, 4, 19);
 
     List<Node> clickNode = new ArrayList<>();
-    List<Node> deleteLine = new ArrayList<>();
+    List<Line> deleteLine = new ArrayList<>();
+
+    List<Integer> circleRightClick = new ArrayList<>();
 
     Circle addCircle = new Circle();
 
@@ -138,7 +141,7 @@ public class NewEditMapController extends MapSuperController {
                             }
                             line.setOnContextMenuRequested(event -> {
                                 line.setStroke(Color.RED);
-                                deleteLine.add(node);
+                                deleteLine.add(line);
                             });
                             lineList.add(line);
                         }
@@ -200,12 +203,15 @@ public class NewEditMapController extends MapSuperController {
                     longName.setFont(Font.font("Ariel", FontWeight.BOLD, 15));
                     longName.toFront();
 
-                    setLongNamePosition(longName, value.getXcoord() - (longName.getLayoutBounds().getWidth() / 2), value.getYcoord() + (circle.getRadius() * 2) + 5);
-
-
                     if (firstFind == 1) {
                         circleHashMap.put(value.getNodeID(), circle);
                     }
+
+//                    longName.layoutXProperty().bind(Bindings.subtract((longName.getLayoutBounds().getWidth() / 2) , circleHashMap.get(value.getNodeID()).centerXProperty()));
+//                    longName.layoutYProperty().bind(Bindings.add(25 , circleHashMap.get(value.getNodeID()).centerYProperty()));
+
+                    setLongNamePosition(longName, value.getXcoord() - (longName.getLayoutBounds().getWidth() / 2), value.getYcoord() + (circle.getRadius() * 2) + 5);
+
 
                     switch (value.getFloor()) {
                         case "L1":
@@ -232,6 +238,32 @@ public class NewEditMapController extends MapSuperController {
             }
         }));
         firstFind = 2;
+    }
+
+    public void initializeMenuButton(String page) {
+        this.menuBar.setOnMouseClicked(event -> {
+            if (!menuPane.isVisible()) {
+                menuPane.setVisible(true);
+                switch (page) {
+                    case "ViewMap":
+                        componentShift(210);
+                        break;
+                    case "Pathfinding":
+                        componentShift(210);
+                        break;
+                    case "EditMap":
+                        componentShift(340);
+                        break;
+
+                }
+            } else {
+                menuPane.setVisible(false);
+                componentShift(0);
+            }
+        });
+        this.editMap.setOnAction(event -> {
+            Navigation.navigate(Screen.EDIT_MAP);
+        });
     }
 
     public void clickEditCircle(Circle circle, Node node, Text text) {
@@ -269,17 +301,54 @@ public class NewEditMapController extends MapSuperController {
             }
         });
         circle.setOnMouseClicked(event -> {
-            componentShift(340);
-            menuPane.setVisible(true);
+
             if (event.isControlDown()) {
                 clickNode.add(node);
                 circle.setFill(Color.WHITE);
             } else {
+                componentShift(340);
+                importExport.setTranslateX(340);
+                menuPane.setVisible(true);
                 try {
                     setMenuBarAllText(getMoveHashMap().get(node.getNodeID()).getLocation().getLongName());
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+            }
+        });
+        circle.setOnContextMenuRequested(event -> {
+            circle.setFill(Color.BLACK);
+            circle.setStroke(Color.RED);
+            circleRightClick.add(node.getNodeID());
+            if (circleRightClick.size() == 2) {
+                circleHashMap.get(circleRightClick.get(0)).setFill(Color.RED);
+                circleHashMap.get(circleRightClick.get(0)).setStroke(Color.BLACK);
+                circleHashMap.get(circleRightClick.get(1)).setFill(Color.RED);
+                circleHashMap.get(circleRightClick.get(1)).setStroke(Color.BLACK);
+                Line line = null;
+                try {
+                    line = drawLine(getNodeHashMap().get(circleRightClick.get(0)).getXcoord(), getNodeHashMap().get(circleRightClick.get(0)).getYcoord(), getNodeHashMap().get(circleRightClick.get(1)).getXcoord(), getNodeHashMap().get(circleRightClick.get(1)).getYcoord(), Color.GREEN);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                System.out.println(lineHashMap.get(circleRightClick.get(0)));
+                System.out.println(lineHashMap.get(circleRightClick.get(1)));
+
+                lineHashMap.get(circleRightClick.get(0)).add(line);
+                line.startXProperty().bind(circleHashMap.get(circleRightClick.get(0)).centerXProperty());
+                line.startYProperty().bind(circleHashMap.get(circleRightClick.get(0)).centerYProperty());
+                line.endXProperty().bind(circleHashMap.get(circleRightClick.get(1)).centerXProperty());
+                line.endYProperty().bind(circleHashMap.get(circleRightClick.get(1)).centerYProperty());
+                clearAllCircles();
+                clearAllLines();
+                try {
+                    findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "EditMap");
+                    findAllEdges(selectedFloor.FLOOR.floor);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                circleRightClick.clear();
             }
         });
     }
@@ -302,7 +371,10 @@ public class NewEditMapController extends MapSuperController {
     @FXML
     private void initialize() throws SQLException {
 
-        floor.setItems(
+        this.selector.setItems(FXCollections.observableArrayList("Node", "Edge", "Location Name", "Move"));
+
+
+        this.floor.setItems(
                 FXCollections.observableArrayList(
                         "L1",
                         "L2",
@@ -342,6 +414,7 @@ public class NewEditMapController extends MapSuperController {
         gesturePane.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 componentShift(340);
+                importExport.setTranslateX(340);
                 menuPane.setVisible(true);
 
                 Point2D pivotOnTarget = gesturePane.targetPointAt(new Point2D(event.getX(), event.getY()))
@@ -508,6 +581,15 @@ public class NewEditMapController extends MapSuperController {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+
+            circleHashMap.forEach((key, value) -> {
+                try {
+                    getNodeHashMap().get(key).setXcoord((int) value.getCenterX());
+                    getNodeHashMap().get(key).setYcoord((int) value.getCenterY());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         });
 
         this.delete.setOnAction(event -> {
@@ -523,47 +605,72 @@ public class NewEditMapController extends MapSuperController {
         });
 
 
-
-
-
         this.gesturePane.setOnKeyPressed(ke -> {
             if (ke.getCode().equals(KeyCode.ENTER)) {
                 System.out.println("enter");
 
-                for (int i = 0; i < deleteLine.size() - 1; i++) {
-//                    lineHashMap.get(deleteLine.get(i).getNodeID()).remove();
-                }
-                try {
-                    findAllEdges(selectedFloor.FLOOR.floor);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                if (deleteLine != null) {
+                    lineHashMap.forEach((key, value) -> {
+                        for (Line line : deleteLine) {
+                            if (value.contains(line)) {
+                                value.remove(line);
+                            }
+                        }
+                    });
+                    switch (selectedFloor.FLOOR.floor) {
+                        case "L1":
+                            this.L1Group.getChildren().removeAll(deleteLine);
+                            break;
+                        case "L2":
+                            this.L2Group.getChildren().removeAll(deleteLine);
+                            break;
+                        case "1":
+                            this.floor1Group.getChildren().removeAll(deleteLine);
+                            break;
+                        case "2":
+                            this.floor2Group.getChildren().removeAll(deleteLine);
+                            break;
+                        case "3":
+                            this.floor3Group.getChildren().removeAll(deleteLine);
+                            break;
+                    }
+
+                    try {
+                        findAllEdges(selectedFloor.FLOOR.floor);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
 
-                Node startNode = clickNode.get(0);
-                Node endNode = clickNode.get(clickNode.size() - 1);
-                int xInterval = (startNode.getXcoord() - endNode.getXcoord()) / (clickNode.size() - 1);
-                int yInterval = (startNode.getYcoord() - endNode.getYcoord()) / (clickNode.size() - 1);
 
-                for (int i = 1; i < clickNode.size() - 1; i++) {
-                    System.out.println(circleHashMap.get(clickNode.get(i).getNodeID()).getCenterX());
-                    System.out.println(circleHashMap.get(clickNode.get(i).getNodeID()).getCenterY());
-                    circleHashMap.get(clickNode.get(i).getNodeID()).setCenterX(startNode.getXcoord() - (i * xInterval));
-                    circleHashMap.get(clickNode.get(i).getNodeID()).setCenterY(startNode.getYcoord() - (i * yInterval));
-                    circleHashMap.get(clickNode.get(i).getNodeID()).setFill(Color.RED);
-                    circleHashMap.get(clickNode.get(i).getNodeID()).setStroke(Color.BLACK);
+                if (clickNode != null) {
+                    Node startNode = clickNode.get(0);
+                    Node endNode = clickNode.get(clickNode.size() - 1);
+                    int xInterval = (startNode.getXcoord() - endNode.getXcoord()) / (clickNode.size() - 1);
+                    int yInterval = (startNode.getYcoord() - endNode.getYcoord()) / (clickNode.size() - 1);
 
+                    for (int i = 1; i < clickNode.size() - 1; i++) {
+                        System.out.println(circleHashMap.get(clickNode.get(i).getNodeID()).getCenterX());
+                        System.out.println(circleHashMap.get(clickNode.get(i).getNodeID()).getCenterY());
+                        circleHashMap.get(clickNode.get(i).getNodeID()).setCenterX(startNode.getXcoord() - (i * xInterval));
+                        circleHashMap.get(clickNode.get(i).getNodeID()).setCenterY(startNode.getYcoord() - (i * yInterval));
+                        circleHashMap.get(clickNode.get(i).getNodeID()).setFill(Color.RED);
+                        circleHashMap.get(clickNode.get(i).getNodeID()).setStroke(Color.BLACK);
+
+                    }
+                    circleHashMap.get(clickNode.get(0).getNodeID()).setFill(Color.RED);
+                    circleHashMap.get(clickNode.get(clickNode.size() - 1).getNodeID()).setFill(Color.RED);
+
+                    clearAllCircles();
+                    clearAllTexts();
+                    try {
+                        findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "ViewMap");
+                        findAllEdges(selectedFloor.FLOOR.floor);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    clickNode.clear();
                 }
-                circleHashMap.get(clickNode.get(0).getNodeID()).setFill(Color.RED);
-                circleHashMap.get(clickNode.get(clickNode.size() - 1).getNodeID()).setFill(Color.RED);
-
-                clearAllCircles();
-                try {
-                    findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "ViewMap");
-                    findAllEdges(selectedFloor.FLOOR.floor);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                clickNode.clear();
             }
         });
 
@@ -580,7 +687,6 @@ public class NewEditMapController extends MapSuperController {
 
                 System.out.println(currentNodeSelectedId + " " + newEdgeNodeId);
 
-
                 try {
                     currentNode = DAOFacade.getNode(Integer.parseInt(currentNodeSelectedId));
                     endNode = DAOFacade.getNode(Integer.parseInt(newEdgeNodeId));
@@ -593,10 +699,18 @@ public class NewEditMapController extends MapSuperController {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+
+                try {
+                    Line line = drawLine(getNodeHashMap().get(currentNodeSelectedId).getXcoord(), getNodeHashMap().get(currentNodeSelectedId).getYcoord(), getNodeHashMap().get(newEdgeNodeId).getXcoord(), getNodeHashMap().get(newEdgeNodeId).getYcoord(), Color.GREEN);
+                    lineHashMap.get(currentNodeSelectedId).add(line);
+                    findAllEdges(selectedFloor.FLOOR.floor);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
             } else {
                 System.out.println("One of the text boxes are empty");
             }
-
         });
 
 
@@ -605,15 +719,18 @@ public class NewEditMapController extends MapSuperController {
                 importExportPane.setVisible(true);
                 menuPane.setVisible(false);
                 componentShift(210);
+                importExport.setTranslateX(210);
             } else {
                 importExportPane.setVisible(false);
                 componentShift(0);
+                importExport.setTranslateX(0);
             }
         });
 
         this.viewNodes.setOnAction(event -> {
             clearAllCircles();
             clearAllLines();
+            clearAllTexts();
             try {
                 findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "EditMap");
                 findAllEdges(selectedFloor.FLOOR.floor);
@@ -624,11 +741,21 @@ public class NewEditMapController extends MapSuperController {
 
         this.importButton.setOnAction(
                 event -> {
+                    String tableName = null;
+                    if (selector.getValue().equals("Node")) {
+                        tableName = "node";
+                    } else if (selector.getValue().equals("Edge")) {
+                        tableName = "edge";
+                    } else if (selector.getValue().equals("Location Name")) {
+                        tableName = "locationname";
+                    } else if (selector.getValue().equals("Move")) {
+                        tableName = "move";
+                    }
                     Stage outStage = new Stage();
                     FileChooser fileChooser = new FileChooser();
                     File file = fileChooser.showOpenDialog(outStage);
                     try {
-                        Import.importFile(file, selector.getText());
+                        Import.importFile(file, tableName);
                     } catch (IOException | SQLException | ParseException e) {
                         throw new RuntimeException(e);
                     }
@@ -648,6 +775,7 @@ public class NewEditMapController extends MapSuperController {
             Stage exportStage = new Stage();
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Export");
+            fileChooser.setInitialFileName(tableName);
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
 
             File file = fileChooser.showSaveDialog(exportStage);
@@ -668,6 +796,7 @@ public class NewEditMapController extends MapSuperController {
             }
 
             clearAllCircles();
+            clearAllTexts();
             Circle circle = new Circle();
             final double[] circleCoord = new double[2];
             final String[] thisFloor = new String[1];

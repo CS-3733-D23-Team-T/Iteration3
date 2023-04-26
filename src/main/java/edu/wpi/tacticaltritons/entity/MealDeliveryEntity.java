@@ -255,7 +255,6 @@ public class MealDeliveryEntity {
             int quantity = orderList.get(item);
             double p = priceList.get(item);
             if (orderList.get(item) > 0) items.set(items.get() + item + " (" + orderList.get(item) + ")\n");
-            //TODO on click create new rectangle with item image, description, +/- buttons, and qty
             price.set(price.get() + p * quantity);
         }
     }
@@ -449,11 +448,9 @@ public class MealDeliveryEntity {
                 StackPane stackPane2; //stack text and rectangle
                 VBox vBox = new VBox(top, body);
                 vBox.setPadding(new Insets(10));
-
-                if (type) { //if restaurant, rectangle should be horizontal
+                if(type) { //if restaurant, rectangle should be horizontal
                     rectangle.getStyleClass().add("rectangle");
                     imageView.fitWidthProperty().bind(Bindings.max(150.0, imageViewWidth));
-                    rectangle.widthProperty().bind(Bindings.max(302.0, imageViewWidth.multiply(2)));
                     rectangle.heightProperty().bind(Bindings.max(155.0, imageViewWidth.multiply(1.05)));
                     top.getStyleClass().add("text-header");
 
@@ -465,7 +462,7 @@ public class MealDeliveryEntity {
                     hBox.setPadding(new Insets(20, 0, 10, 20));
                     stackPane2 = new StackPane(rectangle, hBox);//combine them
                 } else { //meals
-                    orderList.put(title.get(i), 0);//TODO new
+                    orderList.put(title.get(i), 0);
                     rectangle.getStyleClass().add("rectangle-gray");
                     top.getStyleClass().add("text-general");
                     top.wrappingWidthProperty().bind(rectangle.widthProperty().divide(1.2));

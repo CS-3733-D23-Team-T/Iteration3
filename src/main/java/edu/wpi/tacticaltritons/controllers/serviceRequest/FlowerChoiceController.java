@@ -52,8 +52,6 @@ public class FlowerChoiceController {
 
 
     public void initialize() throws NullPointerException {
-
-
         // This gets all the entrys in the database into a list locally so it is only one database call
 
         HashMap<String, FlowerRequestOptions> uniqueShops = new HashMap<>();

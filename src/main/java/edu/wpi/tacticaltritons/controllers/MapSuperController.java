@@ -13,12 +13,15 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -118,6 +121,8 @@ public class MapSuperController {
 
     @FXML
     protected MFXFilterComboBox<String> endLocation = new MFXFilterComboBox<>();
+    @FXML
+    protected MFXDatePicker date;
 
     Date today = Date.valueOf(java.time.LocalDate.now());
 
@@ -140,6 +145,10 @@ public class MapSuperController {
 
     public HashMap<Integer, Circle> circleHashMap = new HashMap<>();
     public HashMap<Integer, List<Line>> lineHashMap = new HashMap<>();
+
+    public String pathfindingCommentString;
+
+    public List<Node> shortestPathMap = new ArrayList<>();
 
 
 
@@ -198,32 +207,7 @@ public class MapSuperController {
 
     }
 
-    public void initializeMenuButton(String page) {
-        this.menuBar.setOnMouseClicked(event -> {
 
-            if (!menuPane.isVisible()) {
-                menuPane.setVisible(true);
-                switch (page) {
-                    case "ViewMap":
-                        componentShift(210);
-                        break;
-                    case "Pathfinding":
-                        componentShift(210);
-                        break;
-                    case "EditMap":
-                        componentShift(340);
-                        break;
-
-                }
-            } else {
-                menuPane.setVisible(false);
-                componentShift(0);
-            }
-        });
-        this.editMap.setOnAction(event -> {
-            Navigation.navigate(Screen.EDIT_MAP);
-        });
-    }
 
     public void componentShift(int translate) {
         menuBar.setTranslateX(translate);
@@ -237,7 +221,6 @@ public class MapSuperController {
         startLocation.setTranslateX(translate);
         endLocation.setTranslateX(translate);
         viewNodes.setTranslateX(translate);
-        importExport.setTranslateX(translate);
     }
 
     public void initializeImages() {
@@ -414,6 +397,49 @@ public class MapSuperController {
 
         for (javafx.scene.Node nodes : floor3Group.getChildren()) {
             if (nodes instanceof Circle) {
+                nodesList.add(nodes);
+            }
+        }
+        floor3Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+    }
+
+    public void clearAllTexts() {
+        List<javafx.scene.Node> nodesList = new ArrayList<>();
+        for (javafx.scene.Node nodes : L1Group.getChildren()) {
+            if (nodes instanceof Text) {
+                nodesList.add(nodes);
+            }
+        }
+        L1Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : L2Group.getChildren()) {
+            if (nodes instanceof Text) {
+                nodesList.add(nodes);
+            }
+        }
+        L2Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : floor1Group.getChildren()) {
+            if (nodes instanceof Text) {
+                nodesList.add(nodes);
+            }
+        }
+        floor1Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : floor2Group.getChildren()) {
+            if (nodes instanceof Text) {
+                nodesList.add(nodes);
+            }
+        }
+        floor2Group.getChildren().removeAll(nodesList);
+        nodesList.clear();
+
+        for (javafx.scene.Node nodes : floor3Group.getChildren()) {
+            if (nodes instanceof Text) {
                 nodesList.add(nodes);
             }
         }
@@ -627,13 +653,7 @@ public class MapSuperController {
                     System.out.println(pathfindingList.size());
                     if (pathfindingList.size() == 2) {
                         System.out.println("pathfinding");
-                        clearAllCircles();
-                        try {
-                            this.startLocation.getSelectionModel().selectItem(getMoveHashMap().get(pathfindingList.get(0).getNodeID()).getLocation().getLongName());
-                            this.endLocation.getSelectionModel().selectItem(getMoveHashMap().get(pathfindingList.get(1).getNodeID()).getLocation().getLongName());
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
+                        clearAllNodes();
                         pathfinding(pathfindingList.get(0).getNodeID(), pathfindingList.get(1).getNodeID());
                         pathfindingList.clear();
                     }
@@ -655,27 +675,61 @@ public class MapSuperController {
         }
     }
 
+    public void clickStartNode(Circle circle){
+        circle.setOnMouseClicked(event -> {
+            PopOver popover = new PopOver();
+            VBox vBox = new VBox();
+            MFXTextField textField = new MFXTextField();
+            MFXButton submit = new MFXButton("SUBMIT");
+
+            popover.setDetachable(false);
+            popover.setCornerRadius(5);
+            popover.setAnimated(true);
+            popover.setCloseButtonEnabled(true);
+            popover.setPrefHeight(200);
+            popover.setPrefHeight(210);
+            textField.setPrefWidth(130);
+            textField.setPrefHeight(130);
+            submit.setPrefSize(100, 50);
+
+            vBox.setAlignment(Pos.TOP_CENTER);
+            vBox.getChildren().add(textField);
+            vBox.getChildren().add(submit);
+            vBox.setPadding(new Insets(10));
+            vBox.setSpacing(10);
+            popover.setContentNode(vBox);
+
+            popover.setArrowLocation(PopOver.ArrowLocation.LEFT_CENTER);
+            popover.show(circle);
+            submit.setOnAction(event1 -> {pathfindingCommentString = textField.getText();});
+        });
+    }
+
     public void pathfinding(int startNodeID, int endNodeID) {
+        try {
+            shortestPathMap.add(getNodeHashMap().get(startNodeID));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        shortestPathMap.clear();
         xCoord.clear();
         yCoord.clear();
         startEnd.clear();
         clearAllCircles();
+        clearAllTexts();
         int startNodeId;
         int endNodeId;
         Node endNode1 = null;
         Node startNode1 = null;
         startNodeId = startNodeID;
         endNodeId = endNodeID;
-        List<Node> shortestPathMap = new ArrayList<>();
         try {
-            CongestionController congestionController = new CongestionController();
+            CongestionController congestionController =new CongestionController();
             AStarAlgorithm mapAlgorithm = new AStarAlgorithm(congestionController);
             startNode1 = DAOFacade.getNode(startNodeId);
             endNode1 = DAOFacade.getNode(endNodeId);
-            //shortestPathMap = mapAlgorithm.findShortestPath(startNode1, endNode1);
             shortestPathMap = AlgorithmSingleton.getInstance().algorithm.findShortestPath(startNode1, endNode1);
             System.out.println(shortestPathMap.get(0).getXcoord() + "," + shortestPathMap.get(0).getYcoord());
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -685,7 +739,6 @@ public class MapSuperController {
         Node finalNode = shortestPathMap.get(shortestPathMap.size() - 2);
         int change = 0;
         for (Node node : shortestPathMap) {
-
 
             System.out.println("new Node: " + node.getFloor());
             System.out.println("old Node: " + lastNode.getFloor());
@@ -699,6 +752,7 @@ public class MapSuperController {
                 Circle start = new Circle();
                 if (startNode1 == shortestPathMap.get(0)) {
                     start = drawCircle(startNode1.getXcoord(), startNode1.getYcoord(), Color.GREEN, Color.BLACK);
+                    clickStartNode(start);
                 } else {
                     start = drawCircle(startNode1.getXcoord(), startNode1.getYcoord(), Color.BLUE, Color.BLACK);
                     Node finalStartNode = lastNode;
@@ -768,34 +822,34 @@ public class MapSuperController {
             lastNode = node;
         }
 
-        polyList.add((double) finalNode.getXcoord());
-        polyList.add((double) finalNode.getYcoord());
-        Polyline path = new Polyline();
-        path.setStroke(Color.RED);
-        path.setOpacity(0.8);
-        path.setStrokeWidth(6.0f);
-        path.getPoints().addAll(polyList);
-
-        String startFloor = lastNode.getFloor();
-        if (startFloor != null) {
-            switch (startFloor) {
-                case "L1":
-                    this.L1Group.getChildren().add(path);
-                    break;
-                case "L2":
-                    this.L2Group.getChildren().add(path);
-                    break;
-                case "1":
-                    this.floor1Group.getChildren().add(path);
-                    break;
-                case "2":
-                    this.floor2Group.getChildren().add(path);
-                    break;
-                case "3":
-                    this.floor3Group.getChildren().add(path);
-                    break;
-            }
-        }
+//        polyList.add((double) finalNode.getXcoord());
+//        polyList.add((double) finalNode.getYcoord());
+//        Polyline path = new Polyline();
+//        path.setStroke(Color.RED);
+//        path.setOpacity(0.8);
+//        path.setStrokeWidth(6.0f);
+//        path.getPoints().addAll(polyList);
+//
+//        String startFloor = lastNode.getFloor();
+//        if (startFloor != null) {
+//            switch (startFloor) {
+//                case "L1":
+//                    this.L1Group.getChildren().add(path);
+//                    break;
+//                case "L2":
+//                    this.L2Group.getChildren().add(path);
+//                    break;
+//                case "1":
+//                    this.floor1Group.getChildren().add(path);
+//                    break;
+//                case "2":
+//                    this.floor2Group.getChildren().add(path);
+//                    break;
+//                case "3":
+//                    this.floor3Group.getChildren().add(path);
+//                    break;
+//            }
+//        }
         polyList.clear();
 
         System.out.println(change);

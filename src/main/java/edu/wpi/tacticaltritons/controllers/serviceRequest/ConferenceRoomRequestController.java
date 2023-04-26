@@ -85,8 +85,6 @@ public class ConferenceRoomRequestController {
     @FXML private BorderPane basePane;
 
     public void initialize() throws SQLException{
-
-        EffectGenerator.generateShadowEffect(basePane);
         firstName.setText(UserSessionToken.getUser().getFirstname());
         lastName.setText(UserSessionToken.getUser().getLastname());
 
