@@ -38,6 +38,8 @@ import org.controlsfx.control.PopOver;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -45,8 +47,10 @@ import java.util.concurrent.Flow;
 
 
 public class HomeController {
-    @FXML FlowPane requestsPane;
-    @FXML BorderPane borderPaneHome;
+    @FXML
+    FlowPane requestsPane;
+    @FXML
+    BorderPane borderPaneHome;
     @FXML
     FlowPane movesPane;
     @FXML
@@ -80,22 +84,48 @@ public class HomeController {
     @FXML
     private FlowPane titleFlowPane;
 
-    @FXML private BorderPane announcementsPane;
+    @FXML
+    private GridPane announcementGridPane;
 
     TableView<HomeServiceRequests> tableServiceRequest = new TableView<>();
     TableView<Invitations> tableInvitation = new TableView<>();
 
     @FXML
     public void initialize() throws SQLException, IOException {
-        announcementsPane.maxWidthProperty().bind(App.getPrimaryStage().widthProperty());
-        App.getNavBar().maxWidthProperty().bind(App.getPrimaryStage().widthProperty());
-        borderPaneHome.maxWidthProperty().bind(App.getPrimaryStage().widthProperty());
-        tableGridPane.maxWidthProperty().bind(App.getPrimaryStage().widthProperty());
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT_ROOT.getFilename()));
-        announcementsPane.setCenter(loader.load());
+        initAnnouncements();
         initEventTable();
         initMoveTable();
         initServiceTable();
+    }
+
+    private void initAnnouncements() throws SQLException, IOException {
+        List<Announcements> announcementsList = DAOFacade.getAllAnnouncements(Timestamp.valueOf(LocalDateTime.now()));
+        System.out.println(announcementsList.size());
+
+        if (announcementsList.isEmpty()) {
+
+        } else {
+            for (int i = 0; i < announcementsList.size(); i++) {
+                if(i == 0)
+                {
+                    FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
+                    FlowPane flowPane = new FlowPane();
+                    flowPane.setAlignment(Pos.CENTER);
+                    //flowPane.getChildren().add(loader.load());
+                    announcementGridPane.add(loader.load(), 0,0);
+                }
+                else
+                {
+                    FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
+                    GridPane gridPane = new GridPane();
+                    gridPane.setAlignment(Pos.CENTER);
+                    gridPane.add(loader.load(),0,0);
+                    announcementGridPane.addColumn(i,gridPane);
+                    announcementGridPane.setAlignment(Pos.CENTER);
+                    announcementGridPane.autosize();
+                }
+            }
+        }
     }
 
     private void initEventTable() {
@@ -382,7 +412,6 @@ public class HomeController {
         TableColumn<HomeServiceRequests, String> title = new TableColumn<>("Service Request Table");
 
         tableServiceRequest.getColumns().addAll(completed, serviceType, items, location, fullNameCol, deliveryDate, deliveryTime);
-
 
 
         tableServiceRequest.getItems().addAll(requestObservableList);
