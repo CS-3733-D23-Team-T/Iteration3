@@ -108,16 +108,24 @@ public class HomeController {
                     FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
                     GridPane gridPane = loader.load();
                     setContent(gridPane, announcementsList.get(i));
+                    gridPane.setMargin(gridPane,new Insets(10,10,10,10));
                     announcementGridPane.add(gridPane, 0,0);
+                    ColumnConstraints newCol = new ColumnConstraints();
+                    newCol.setHgrow(Priority.ALWAYS);
+                    announcementGridPane.getColumnConstraints().add(i,newCol);
+
                 } else {
                     FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
                     GridPane gridPane = loader.load();
                     setContent(gridPane, announcementsList.get(i));
+                    gridPane.setMargin(gridPane,new Insets(10,10,10,10));
                     announcementGridPane.addColumn(i, gridPane);
+                    ColumnConstraints newCol = new ColumnConstraints();
+                    newCol.setHgrow(Priority.ALWAYS);
+                    announcementGridPane.getColumnConstraints().add(i,newCol);
                 }
             }
         }
-        announcementGridPane.autosize();
     }
 
     private void setContent(GridPane gridPane, Announcements announcements) {
