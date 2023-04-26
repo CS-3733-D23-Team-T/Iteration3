@@ -687,7 +687,7 @@ public class MapSuperController {
         List<Node> shortestPathMap = new ArrayList<>();
         try {
             CongestionController congestionController =new CongestionController();
-            AStarAlgorithm mapAlgorithm = new AStarAlgorithm();
+            AStarAlgorithm mapAlgorithm = new AStarAlgorithm(congestionController);
             startNode1 = DAOFacade.getNode(startNodeId);
             endNode1 = DAOFacade.getNode(endNodeId);
             //shortestPathMap = mapAlgorithm.findShortestPath(startNode1, endNode1);
