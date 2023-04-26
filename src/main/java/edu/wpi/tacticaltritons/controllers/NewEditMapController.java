@@ -87,7 +87,7 @@ public class NewEditMapController extends MapSuperController {
     List<Node> clickNode = new ArrayList<>();
     List<Line> deleteLine = new ArrayList<>();
 
-    List<Node> circleRightClick = new ArrayList<>();
+    List<Integer> circleRightClick = new ArrayList<>();
 
     Circle addCircle = new Circle();
 
@@ -238,6 +238,32 @@ public class NewEditMapController extends MapSuperController {
         firstFind = 2;
     }
 
+    public void initializeMenuButton(String page) {
+        this.menuBar.setOnMouseClicked(event -> {
+            if (!menuPane.isVisible()) {
+                menuPane.setVisible(true);
+                switch (page) {
+                    case "ViewMap":
+                        componentShift(210);
+                        break;
+                    case "Pathfinding":
+                        componentShift(210);
+                        break;
+                    case "EditMap":
+                        componentShift(340);
+                        break;
+
+                }
+            } else {
+                menuPane.setVisible(false);
+                componentShift(0);
+            }
+        });
+        this.editMap.setOnAction(event -> {
+            Navigation.navigate(Screen.EDIT_MAP);
+        });
+    }
+
     public void clickEditCircle(Circle circle, Node node, Text text) {
         circle.setOnMousePressed(event -> {
             if (event.isShiftDown()) {
@@ -273,12 +299,14 @@ public class NewEditMapController extends MapSuperController {
             }
         });
         circle.setOnMouseClicked(event -> {
-            componentShift(340);
-            menuPane.setVisible(true);
+
             if (event.isControlDown()) {
                 clickNode.add(node);
                 circle.setFill(Color.WHITE);
             } else {
+                componentShift(340);
+                importExport.setTranslateX(340);
+                menuPane.setVisible(true);
                 try {
                     setMenuBarAllText(getMoveHashMap().get(node.getNodeID()).getLocation().getLongName());
                 } catch (SQLException e) {
@@ -289,17 +317,28 @@ public class NewEditMapController extends MapSuperController {
         circle.setOnContextMenuRequested(event -> {
             circle.setFill(Color.BLACK);
             circle.setStroke(Color.RED);
-            circleRightClick.add(node);
+            circleRightClick.add(node.getNodeID());
             if(circleRightClick.size() == 2)
             {
-                Line line = drawLine(circleRightClick.get(0).getXcoord(),circleRightClick.get(0).getYcoord(),circleRightClick.get(1).getXcoord(),circleRightClick.get(1).getYcoord(),Color.GREEN);
+                circleHashMap.get(circleRightClick.get(0)).setFill(Color.RED);
+                circleHashMap.get(circleRightClick.get(0)).setStroke(Color.BLACK);
+                circleHashMap.get(circleRightClick.get(1)).setFill(Color.RED);
+                circleHashMap.get(circleRightClick.get(1)).setStroke(Color.BLACK);
+                Line line = null;
+                try {
+                    line = drawLine(getNodeHashMap().get(circleRightClick.get(0)).getXcoord(),getNodeHashMap().get(circleRightClick.get(0)).getYcoord(),getNodeHashMap().get(circleRightClick.get(1)).getXcoord(),getNodeHashMap().get(circleRightClick.get(1)).getYcoord(), Color.GREEN);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
 
-                if(lineHashMap.get(circleRightClick.get(0).getNodeID()) != null)
+                System.out.println(lineHashMap.get(circleRightClick.get(0)));
+                System.out.println(lineHashMap.get(circleRightClick.get(1)));
+                if(lineHashMap.get(circleRightClick.get(0)) != null)
                 {
-                    lineHashMap.get(circleRightClick.get(0).getNodeID()).add(line);
+                    lineHashMap.get(circleRightClick.get(0)).add(line);
                 }
                 else{
-                    lineHashMap.get(circleRightClick.get(1).getNodeID()).add(line);
+                    lineHashMap.get(circleRightClick.get(1)).add(line);
                 }
                 switch (selectedFloor.FLOOR.floor) {
                     case "L1":
@@ -318,6 +357,8 @@ public class NewEditMapController extends MapSuperController {
                         this.floor3Group.getChildren().add(1,line);
                         break;
                 }
+                clearAllCircles();
+                clearAllLines();
                 try {
                     findAllNodesEdit(allNodeTypes,selectedFloor.FLOOR.floor, "EditMap");
                     findAllEdges(selectedFloor.FLOOR.floor);
@@ -390,6 +431,7 @@ public class NewEditMapController extends MapSuperController {
         gesturePane.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 componentShift(340);
+                importExport.setTranslateX(340);
                 menuPane.setVisible(true);
 
                 Point2D pivotOnTarget = gesturePane.targetPointAt(new Point2D(event.getX(), event.getY()))
@@ -587,36 +629,40 @@ public class NewEditMapController extends MapSuperController {
             if (ke.getCode().equals(KeyCode.ENTER)) {
                 System.out.println("enter");
 
-                lineHashMap.forEach((key,value) -> {
-                    for(Line line : deleteLine) {
-                        if (value.contains(line)){
-                            value.remove(line);
+
+
+                if(deleteLine!=null)
+                {
+                    lineHashMap.forEach((key,value) -> {
+                        for(Line line : deleteLine) {
+                            if (value.contains(line)){
+                                value.remove(line);
+                            }
                         }
+                    });
+                    switch (selectedFloor.FLOOR.floor) {
+                        case "L1":
+                            this.L1Group.getChildren().removeAll(deleteLine);
+                            break;
+                        case "L2":
+                            this.L2Group.getChildren().removeAll(deleteLine);
+                            break;
+                        case "1":
+                            this.floor1Group.getChildren().removeAll(deleteLine);
+                            break;
+                        case "2":
+                            this.floor2Group.getChildren().removeAll(deleteLine);
+                            break;
+                        case "3":
+                            this.floor3Group.getChildren().removeAll(deleteLine);
+                            break;
                     }
-                });
 
-                switch (selectedFloor.FLOOR.floor) {
-                    case "L1":
-                        this.L1Group.getChildren().removeAll(deleteLine);
-                        break;
-                    case "L2":
-                        this.L2Group.getChildren().removeAll(deleteLine);
-                        break;
-                    case "1":
-                        this.floor1Group.getChildren().removeAll(deleteLine);
-                        break;
-                    case "2":
-                        this.floor2Group.getChildren().removeAll(deleteLine);
-                        break;
-                    case "3":
-                        this.floor3Group.getChildren().removeAll(deleteLine);
-                        break;
-                }
-
-                try {
-                    findAllEdges(selectedFloor.FLOOR.floor);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                    try {
+                        findAllEdges(selectedFloor.FLOOR.floor);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
 
 
@@ -694,9 +740,11 @@ public class NewEditMapController extends MapSuperController {
                 importExportPane.setVisible(true);
                 menuPane.setVisible(false);
                 componentShift(210);
+                importExport.setTranslateX(210);
             } else {
                 importExportPane.setVisible(false);
                 componentShift(0);
+                importExport.setTranslateX(0);
             }
         });
 
