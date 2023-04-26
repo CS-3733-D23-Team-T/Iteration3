@@ -109,20 +109,13 @@ public class HomeController {
                 if(i == 0)
                 {
                     FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
-                    FlowPane flowPane = new FlowPane();
-                    flowPane.setAlignment(Pos.CENTER);
-                    //flowPane.getChildren().add(loader.load());
                     announcementGridPane.add(loader.load(), 0,0);
                 }
                 else
                 {
                     FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
-                    GridPane gridPane = new GridPane();
-                    gridPane.setAlignment(Pos.CENTER);
-                    gridPane.add(loader.load(),0,0);
+                    GridPane gridPane = loader.load();
                     announcementGridPane.addColumn(i,gridPane);
-                    announcementGridPane.setAlignment(Pos.CENTER);
-                    announcementGridPane.autosize();
                 }
             }
         }
