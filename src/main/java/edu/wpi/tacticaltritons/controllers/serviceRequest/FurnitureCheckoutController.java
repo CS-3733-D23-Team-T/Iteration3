@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.*;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -147,7 +148,7 @@ private BorderPane basePane;
 
         checkoutItems.forEach((key, value) ->
         {
-            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value));
+            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, App.furnitureHashMap.get(key)));
         });
         checkoutFlowplan.setAlignment(Pos.CENTER);
 
@@ -237,9 +238,16 @@ private BorderPane basePane;
 
                     MFXStageDialog finalStageDialog = stageDialog;
                     finalStageDialog.show();
+                    ColorAdjust shadow = new ColorAdjust();
+                    shadow.setBrightness(-.6);
+                    App.getRootPane().getCenter().setEffect(shadow);
+                    App.getRootPane().getCenter().setStyle("-fx-background-color: rgba(102,102,102,0.6)");
+                    content.setMaxSize(App.getRootPane().getWidth()/3, App.getRootPane().getHeight()/3);
                     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event1 -> {
                         finalStageDialog.close();
                         clearForm();
+                        App.getRootPane().getCenter().setEffect(null);
+                        App.getRootPane().getCenter().setStyle(null);
                         Navigation.navigate(Screen.HOME);
                     }));
                     timeline.play();
@@ -270,7 +278,7 @@ private BorderPane basePane;
 
     }
 
-    private FlowPane createCheckoutNode(String key, int value) {
+    private FlowPane createCheckoutNode(String key, int value, Image furnitureImage) {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(200);
         flowPane.setPrefHeight(100);
@@ -283,8 +291,7 @@ private BorderPane basePane;
         flowPane.setBackground(Background.fill(Color.WHITE));
 
         // Creates the image view
-        Image image = new Image("/edu/wpi/tacticaltritons/images/flower_request/Boston Blossoms.jpg");
-        ImageView imageView = new ImageView(image);
+        ImageView imageView = new ImageView(furnitureImage);
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
 

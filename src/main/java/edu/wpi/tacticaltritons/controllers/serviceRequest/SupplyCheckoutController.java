@@ -8,6 +8,12 @@ import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.styling.EffectGenerator;
 import edu.wpi.tacticaltritons.styling.ThemeColors;
 import io.github.palexdev.materialfx.controls.*;
+import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
+import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
+import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
+import io.github.palexdev.materialfx.enums.ScrimPriority;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
@@ -15,14 +21,18 @@ import javafx.fxml.FXML;
 import javafx.geometry.*;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.util.Duration;
 import net.kurobako.gesturefx.GesturePane;
 
 import java.sql.Date;
@@ -35,6 +45,8 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class SupplyCheckoutController {
+    @FXML
+    private BorderPane basePane;
     @FXML
     private MFXTextField userFirstField;
     @FXML
@@ -127,53 +139,7 @@ public class SupplyCheckoutController {
         floor2Image.setImage(App.secondfloor);
         floor3Image.setImage(App.thirdfloor);
         HashMap<String, Image> imageHashMap = new HashMap<>();
-        //Free Mont Flowers
-        imageHashMap.put("Blushing Beauty Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFBlushingBeautyBouquet.png")).toString()));
-        imageHashMap.put("Elegance Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFEleganceBouquet.png")).toString()));
-        imageHashMap.put("Charming Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFCharmingBouquet.png")).toString()));
-        imageHashMap.put("Cherry Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFCherryBouquet.png")).toString()));
-        imageHashMap.put("Zen Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFZenBouquet.png")).toString()));
-        imageHashMap.put("What a Delight Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFWhataDelightBouquet.png")).toString()));
-        imageHashMap.put("Girl Power Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFGirlPowerBouquet.png")).toString()));
-        imageHashMap.put("Birds of Paradise Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFMinimalistBouquet.png")).toString()));
-        imageHashMap.put("Minimalist Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFMinimalistBouquet.png")).toString()));
-        imageHashMap.put("So Chic Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FMFSoChicBouquet.png")).toString()));
 
-        // Blossoms Path
-        imageHashMap.put("Summer Garden Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPSummerGardenBouquet.png")).toString()));
-        imageHashMap.put("Easter Lily Arrangement", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPEasterLilyArrangement.png")).toString()));
-        imageHashMap.put("Tulip Trio", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPTulipTrio.png")).toString()));
-        imageHashMap.put("Springtime Garden Basket", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPSpringtimeGardenBasket.png")).toString()));
-        imageHashMap.put("Elegant Orchids", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPElegantOrchids.png")).toString()));
-        imageHashMap.put("Cherry Blossom Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPCherryBlossomBouquet.png")).toString()));
-        imageHashMap.put("Winter Garden Centerpiece", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPWinterGardenCenterpiece.png")).toString()));
-        imageHashMap.put("Rose Arrangement", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPRoseArrangement.png")).toString()));
-        imageHashMap.put("Springtime Succulent Garden", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPSpringtimeSucculentGarden.png")).toString()));
-        imageHashMap.put("Butterfly Garden Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BPButterflyGardenBouquet.png")).toString()));
-
-        // Garden Grace
-        imageHashMap.put("Wonderland Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGWonderlandBouquet.png")).toString()));
-        imageHashMap.put("Sunny Morning Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGSunnyMorningBouquet.png")).toString()));
-        imageHashMap.put("Holiday Cheer Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGHolidayCheerBouquet.png")).toString()));
-        imageHashMap.put("Summer Solstice Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGSummerSolsticeBouquet.png")).toString()));
-        imageHashMap.put("Snowy Splendor Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGSnowySplendorBouquet.png")).toString()));
-        imageHashMap.put("Forest Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGForestBouquet.png")).toString()));
-        imageHashMap.put("Berries Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGBerriesBouquet.png")).toString()));
-        imageHashMap.put("Cozy Nights Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGCozyNightsBouquet.png")).toString()));
-        imageHashMap.put("Icy Elegance Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGIcyEleganceBouquet.png")).toString()));
-        imageHashMap.put("Cheer Up Bouquet", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GGCheerUpBouquet.png")).toString()));
-
-        // Petal Boutique
-        imageHashMap.put("Roses and Lilies", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBRosesandLilies.png")).toString()));
-        imageHashMap.put("Tropical Oasis", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBTropicalOasis.png")).toString()));
-        imageHashMap.put("Spring Fling", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBSpringFling.png")).toString()));
-        imageHashMap.put("Vintage Romance", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBVintageRomance.png")).toString()));
-        imageHashMap.put("Succulent Garden", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBSucculentGarden.png")).toString()));
-        imageHashMap.put("Enchanted Forest", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBEnchantedForest.png")).toString()));
-        imageHashMap.put("Orchid Delight", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBOrchidDelight.png")).toString()));
-        imageHashMap.put("Sunflower Surprise", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBSunflowerSurprise.png")).toString()));
-        imageHashMap.put("Bold and Beautiful", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBBoldandBeautiful.png")).toString()));
-        imageHashMap.put("Garden Party", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PBGardenParty.png")).toString()));
 
 //    EffectGenerator.generateShadowEffect(basePane); //shadow generator
         lowerLevel1Image.setImage(App.lowerlevel1);
@@ -225,7 +191,51 @@ public class SupplyCheckoutController {
                             throw new RuntimeException(e);
                         }
                         clearForm();
-                        Navigation.navigate(Screen.HOME);
+
+                        MFXGenericDialog content = new MFXGenericDialog();
+                        MFXStageDialog stageDialog = new MFXStageDialog();
+                        stageDialog = MFXGenericDialogBuilder.build(content)
+                                .toStageDialogBuilder()
+                                .initOwner(App.getPrimaryStage())
+                                .initModality(Modality.APPLICATION_MODAL)
+                                .setDraggable(false)
+                                .setTitle("Dialogs Preview")
+                                .setOwnerNode(basePane)
+                                .setScrimPriority(ScrimPriority.WINDOW)
+                                .setScrimOwner(true)
+                                .get();
+                        FlowPane flowPane = new FlowPane();
+                        flowPane.setAlignment(Pos.CENTER);
+                        flowPane.setRowValignment(VPos.CENTER);
+                        flowPane.setColumnHalignment(HPos.CENTER);
+                        Text text = new Text();
+                        text.setText("Your order has been confirmed");
+                        text.setFont(new Font(20));
+                        text.setStyle("-fx-text-fill: black");
+                        flowPane.getChildren().add(text);
+                        content.setContent(flowPane);
+
+                        content.setShowClose(false);
+                        content.setShowMinimize(false);
+                        content.setShowAlwaysOnTop(false);
+
+                        stageDialog.setContent(content);
+
+                        MFXStageDialog finalStageDialog = stageDialog;
+                        finalStageDialog.show();
+                        ColorAdjust shadow = new ColorAdjust();
+                        shadow.setBrightness(-.6);
+                        App.getRootPane().getCenter().setEffect(shadow);
+                        App.getRootPane().getCenter().setStyle("-fx-background-color: rgba(102,102,102,0.6)");
+                        content.setMaxSize(App.getRootPane().getWidth()/3, App.getRootPane().getHeight()/3);
+                        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event1 -> {
+                            finalStageDialog.close();
+                            clearForm();
+                            App.getRootPane().getCenter().setEffect(null);
+                            App.getRootPane().getCenter().setStyle(null);
+                            Navigation.navigate(Screen.HOME);
+                        }));
+                        timeline.play();
                     } else {
                         System.out.println("Form cannot submit");
                         //TODO do something when not filled

@@ -36,7 +36,7 @@ public class QuickNavigationMenuButtons {
         hospitalMapNavigationMap.put("Pathfinding", Screen.PATHFINDING);
 
         signageNavigationMap.put("Signage", Screen.SIGNAGE);
-        signageNavigationMap.put("Edit Signage", null);
+        signageNavigationMap.put("Edit Signage", Screen.EDIT_SIGNAGE);
         signageNavigationMap.put("Move Signage", Screen.MOVE_SIGN);
 
         databaseNavigationMap.put("Database", Screen.DATABASE);
