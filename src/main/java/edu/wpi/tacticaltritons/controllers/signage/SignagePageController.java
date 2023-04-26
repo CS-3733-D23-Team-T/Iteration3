@@ -47,12 +47,15 @@ public class SignagePageController {
 
     ArrayList<Label> locationLabels;
     public void initialize() throws SQLException {
-        List<Signage> signageList = DAOFacade.getAllSignage();
-        SignagePageInteraction.forwardLocations = signageList.get(0).getForwarddir();
-        SignagePageInteraction.leftLocations = signageList.get(0).getLeftdir();
-        SignagePageInteraction.rightLocations = signageList.get(0).getRightdir();
-        SignagePageInteraction.backLocations = signageList.get(0).getBackdir();
-        SignagePageInteraction.signleDisplay = signageList.get(0).isSingleDisplay();
+        if(SignagePageInteraction.firstDisplay){
+            List<Signage> signageList = DAOFacade.getAllSignage();
+            SignagePageInteraction.forwardLocations = signageList.get(0).getForwarddir();
+            SignagePageInteraction.leftLocations = signageList.get(0).getLeftdir();
+            SignagePageInteraction.rightLocations = signageList.get(0).getRightdir();
+            SignagePageInteraction.backLocations = signageList.get(0).getBackdir();
+            SignagePageInteraction.signleDisplay = signageList.get(0).isSingleDisplay();
+            SignagePageInteraction.firstDisplay = false;
+        }
         locationLabels = new ArrayList<>();
         signageLocationBlocks = new VBox[]{signageForwardLocations,signageLeftLocations,signageRightLocations,signageBackLocations};
         horizontalResizing(App.getPrimaryStage().getWidth());
