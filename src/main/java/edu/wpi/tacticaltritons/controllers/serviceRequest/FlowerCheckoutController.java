@@ -134,7 +134,6 @@ public class FlowerCheckoutController {
             assignedComboBox.getItems().add(login.getFirstName() + " " + login.getLastName());
         }
 
-        Date today = new Date(2023, 4, 10);
         lowerLevel1Image.setImage(App.lowerlevel1);
         lowerLevel2Image.setImage(App.lowerlevel2);
         groundFloorImage.setImage(App.groundfloor);
@@ -251,7 +250,7 @@ public class FlowerCheckoutController {
             Circle circle = new Circle();
 
             try {
-                circle = drawCircle(DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), today).getXcoord(), DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), today).getYcoord());
+                circle = drawCircle(DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getXcoord(), DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getYcoord());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -259,7 +258,7 @@ public class FlowerCheckoutController {
 
             String endFloor = null;
             try {
-                endFloor = DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), today).getFloor();
+                endFloor = DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getFloor();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
