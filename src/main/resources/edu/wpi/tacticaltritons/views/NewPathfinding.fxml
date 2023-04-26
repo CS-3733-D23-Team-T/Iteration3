@@ -77,12 +77,12 @@
                                 <Insets top="72.0" />
                             </StackPane.margin>
                         </Line>
-                        <Text fx:id="menuLocationName" strokeType="OUTSIDE" strokeWidth="0.0" text="Location Name" StackPane.alignment="TOP_CENTER">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pathfinding Comment" StackPane.alignment="TOP_CENTER">
                             <StackPane.margin>
                                 <Insets top="25.0" />
                             </StackPane.margin>
                         </Text>
-                        <Text fx:id="menuLocationDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="Location Description" StackPane.alignment="TOP_LEFT">
+                        <Text fx:id="pathfindingComment" strokeType="OUTSIDE" strokeWidth="0.0" text="pathfindingComment" StackPane.alignment="TOP_LEFT">
                             <StackPane.margin>
                                 <Insets left="15.0" top="100.0" />
                             </StackPane.margin>
@@ -94,7 +94,7 @@
                         </MFXButton>
                   <MFXDatePicker fx:id="date" prefHeight="50.0" text="Date" StackPane.alignment="TOP_LEFT">
                      <StackPane.margin>
-                        <Insets left="10.0" top="150.0" />
+                        <Insets left="10.0" top="200.0" />
                      </StackPane.margin>
                   </MFXDatePicker>
                     </children>

@@ -14,6 +14,7 @@ import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -42,6 +43,7 @@ public class NewPathfindingController extends MapSuperController {
     @FXML
     private Text textForDirections;
 
+    @FXML private Text pathfindingComment;
 
     public NewPathfindingController() throws SQLException {
     }
@@ -67,6 +69,12 @@ public class NewPathfindingController extends MapSuperController {
                         componentShift(340);
                         break;
 
+                }
+                if(pathfindingCommentString == null){
+                    pathfindingComment.setText("Nothing here");
+                }
+                else{
+                    pathfindingComment.setText(pathfindingCommentString);
                 }
             } else {
                 menuPane.setVisible(false);
@@ -147,6 +155,13 @@ public class NewPathfindingController extends MapSuperController {
                         throw new RuntimeException(e);
                     }
                 });
+
+
+        this.gesturePane.setOnKeyPressed(ke -> {
+            if (ke.getCode().equals(KeyCode.ENTER)) {
+
+            }
+        });
     }
 
 
