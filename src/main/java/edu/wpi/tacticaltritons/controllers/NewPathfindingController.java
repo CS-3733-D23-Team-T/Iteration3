@@ -21,6 +21,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import org.checkerframework.checker.units.qual.C;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,13 @@ public class NewPathfindingController extends MapSuperController {
 
         this.pathfinding.setOnMouseClicked(
                 event -> {
-                    java.sql.Date sqlDate = java.sql.Date.valueOf(date.getValue());
+                    Date sqlDate;
+                    if(date == null){
+                        sqlDate = Date.valueOf(java.time.LocalDate.now());
+                    }
+                    else {
+                        sqlDate = java.sql.Date.valueOf(date.getValue());
+                    }
                     try {
                         pathfinding(DAOFacade.getNode(startLocation.getSelectedItem(), sqlDate).getNodeID(), DAOFacade.getNode(endLocation.getSelectedItem(), sqlDate).getNodeID());
                     } catch (SQLException e) {
