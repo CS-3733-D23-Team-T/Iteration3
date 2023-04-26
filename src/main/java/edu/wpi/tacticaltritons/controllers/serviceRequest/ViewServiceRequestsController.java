@@ -164,11 +164,31 @@ public class ViewServiceRequestsController {
 
         tableMeal.getItems().addAll(mealObservableList);
 
-        tableMeal.setPrefWidth(App.getPrimaryStage().widthProperty().get());
-        tableMeal.setPrefHeight(App.getPrimaryStage().heightProperty().get());
         tableMeal.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        App.getPrimaryStage().widthProperty().addListener(((obs, o, n) -> {
+            double scaleX = mealRequests.getWidth() / App.getPrimaryStage().getWidth();
+            mealRequests.setMinWidth(scaleX);
+        }));
+        App.getPrimaryStage().heightProperty().addListener(((obs, o, n) -> {
+            double scaleY = mealRequests.getHeight() / App.getPrimaryStage().getHeight();
+            mealRequests.setMinHeight(scaleY);
+        }));
+
+        mealRequests.widthProperty().addListener((observable, oldValue, newValue) -> {
+            mealRequests.getChildren().clear();
+            tableMeal.setMinWidth(mealRequests.getMinWidth());
+            tableMeal.setPrefWidth(newValue.doubleValue());
+            mealRequests.getChildren().add(tableMeal);
+        });
+
+        mealRequests.heightProperty().addListener((observable, oldValue, newValue) -> {
+            mealRequests.getChildren().clear();
+            tableMeal.setMinHeight(newValue.doubleValue());
+            tableMeal.setPrefHeight(newValue.doubleValue());
+            mealRequests.getChildren().add(tableMeal);
+        });
         tableMeal.getStyleClass().add("table-view");
-        mealRequests.getChildren().add(tableMeal);
     }
 
     private void intiOfficeSupplyRequestTable() {
@@ -273,11 +293,31 @@ public class ViewServiceRequestsController {
 
         tableSupply.getItems().addAll(supplyObservableList);
 
-        tableSupply.setPrefWidth(App.getPrimaryStage().widthProperty().get());
-        tableSupply.setPrefHeight(App.getPrimaryStage().heightProperty().get());
         tableSupply.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        App.getPrimaryStage().widthProperty().addListener(((obs, o, n) -> {
+            double scaleX = officeSupplyRequest.getWidth() / App.getPrimaryStage().getWidth();
+            officeSupplyRequest.setMinWidth(scaleX);
+        }));
+        App.getPrimaryStage().heightProperty().addListener(((obs, o, n) -> {
+            double scaleY = officeSupplyRequest.getHeight() / App.getPrimaryStage().getHeight();
+            officeSupplyRequest.setMinHeight(scaleY);
+        }));
+
+        officeSupplyRequest.widthProperty().addListener((observable, oldValue, newValue) -> {
+            officeSupplyRequest.getChildren().clear();
+            tableSupply.setMinWidth(officeSupplyRequest.getMinWidth());
+            tableSupply.setPrefWidth(newValue.doubleValue());
+            officeSupplyRequest.getChildren().add(tableSupply);
+        });
+
+        officeSupplyRequest.heightProperty().addListener((observable, oldValue, newValue) -> {
+            officeSupplyRequest.getChildren().clear();
+            tableSupply.setMinHeight(newValue.doubleValue());
+            tableSupply.setPrefHeight(newValue.doubleValue());
+            officeSupplyRequest.getChildren().add(tableSupply);
+        });
         tableSupply.getStyleClass().add("table-view");
-        officeSupplyRequest.getChildren().add(tableSupply);
     }
 
     private void initFurnitureRequestTable() {
@@ -379,11 +419,31 @@ public class ViewServiceRequestsController {
 
         tableFurniture.getItems().addAll(furnitureObservableList);
 
-        tableFurniture.setPrefWidth(App.getPrimaryStage().widthProperty().get());
-        tableFurniture.setPrefHeight(App.getPrimaryStage().heightProperty().get());
         tableFurniture.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        App.getPrimaryStage().widthProperty().addListener(((obs, o, n) -> {
+            double scaleX = furnitureRequest.getWidth() / App.getPrimaryStage().getWidth();
+            furnitureRequest.setMinWidth(scaleX);
+        }));
+        App.getPrimaryStage().heightProperty().addListener(((obs, o, n) -> {
+            double scaleY = furnitureRequest.getHeight() / App.getPrimaryStage().getHeight();
+            furnitureRequest.setMinHeight(scaleY);
+        }));
+
+        furnitureRequest.widthProperty().addListener((observable, oldValue, newValue) -> {
+            furnitureRequest.getChildren().clear();
+            tableFurniture.setMinWidth(furnitureRequest.getMinWidth());
+            tableFurniture.setPrefWidth(newValue.doubleValue());
+            furnitureRequest.getChildren().add(tableFurniture);
+        });
+
+        furnitureRequest.heightProperty().addListener((observable, oldValue, newValue) -> {
+            furnitureRequest.getChildren().clear();
+            tableFurniture.setMinHeight(newValue.doubleValue());
+            tableFurniture.setPrefHeight(newValue.doubleValue());
+            furnitureRequest.getChildren().add(tableFurniture);
+        });
         tableFurniture.getStyleClass().add("table-view");
-        furnitureRequest.getChildren().add(tableFurniture);
     }
 
     private void initFlowerRequestsTable() {
@@ -497,11 +557,31 @@ public class ViewServiceRequestsController {
 
         tableFlower.getItems().addAll(flowerObservableList);
 
-        tableFlower.setPrefWidth(App.getPrimaryStage().widthProperty().get());
-        tableFlower.setPrefHeight(App.getPrimaryStage().heightProperty().get());
         tableFlower.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        App.getPrimaryStage().widthProperty().addListener(((obs, o, n) -> {
+            double scaleX = flowerRequests.getWidth() / App.getPrimaryStage().getWidth();
+            flowerRequests.setMinWidth(scaleX);
+        }));
+        App.getPrimaryStage().heightProperty().addListener(((obs, o, n) -> {
+            double scaleY = flowerRequests.getHeight() / App.getPrimaryStage().getHeight();
+            flowerRequests.setMinHeight(scaleY);
+        }));
+
+        flowerRequests.widthProperty().addListener((observable, oldValue, newValue) -> {
+            flowerRequests.getChildren().clear();
+            tableFlower.setMinWidth(flowerRequests.getMinWidth());
+            tableFlower.setPrefWidth(newValue.doubleValue());
+            flowerRequests.getChildren().add(tableFlower);
+        });
+
+        flowerRequests.heightProperty().addListener((observable, oldValue, newValue) -> {
+            flowerRequests.getChildren().clear();
+            tableFlower.setMinHeight(newValue.doubleValue());
+            tableFlower.setPrefHeight(newValue.doubleValue());
+            flowerRequests.getChildren().add(tableFlower);
+        });
         tableFlower.getStyleClass().add("table-view");
-        flowerRequests.getChildren().add(tableFlower);
     }
 
     private void initConferenceRoomRequestTable() {
@@ -573,12 +653,31 @@ public class ViewServiceRequestsController {
         });
 
         tableConference.getItems().addAll(conferenceObservableList);
-        Platform.runLater(() -> {
-            tableConference.setPrefWidth(App.getPrimaryStage().widthProperty().get() - 15);
-            tableConference.setPrefHeight(basePane.heightProperty().get());
-            tableConference.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-            tableConference.getStyleClass().add("table-view");
+
+        tableConference.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        App.getPrimaryStage().widthProperty().addListener(((obs, o, n) -> {
+            double scaleX = conferenceRoomRequest.getWidth() / App.getPrimaryStage().getWidth();
+            conferenceRoomRequest.setMinWidth(scaleX);
+        }));
+        App.getPrimaryStage().heightProperty().addListener(((obs, o, n) -> {
+            double scaleY = conferenceRoomRequest.getHeight() / App.getPrimaryStage().getHeight();
+            conferenceRoomRequest.setMinHeight(scaleY);
+        }));
+
+        conferenceRoomRequest.widthProperty().addListener((observable, oldValue, newValue) -> {
+            conferenceRoomRequest.getChildren().clear();
+            tableConference.setMinWidth(conferenceRoomRequest.getMinWidth());
+            tableConference.setPrefWidth(newValue.doubleValue());
             conferenceRoomRequest.getChildren().add(tableConference);
         });
+
+        conferenceRoomRequest.heightProperty().addListener((observable, oldValue, newValue) -> {
+            conferenceRoomRequest.getChildren().clear();
+            tableConference.setMinHeight(newValue.doubleValue());
+            tableConference.setPrefHeight(newValue.doubleValue());
+            conferenceRoomRequest.getChildren().add(tableConference);
+        });
+        tableConference.getStyleClass().add("table-view");
     }
 }
