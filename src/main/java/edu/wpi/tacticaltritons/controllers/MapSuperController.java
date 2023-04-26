@@ -148,6 +148,8 @@ public class MapSuperController {
 
     public String pathfindingCommentString;
 
+    public List<Node> shortestPathMap = new ArrayList<>();
+
 
 
     public MapSuperController() throws SQLException {
@@ -688,6 +690,7 @@ public class MapSuperController {
     }
 
     public void pathfinding(int startNodeID, int endNodeID) {
+        shortestPathMap.clear();
         xCoord.clear();
         yCoord.clear();
         startEnd.clear();
@@ -699,7 +702,6 @@ public class MapSuperController {
         Node startNode1 = null;
         startNodeId = startNodeID;
         endNodeId = endNodeID;
-        List<Node> shortestPathMap = new ArrayList<>();
         try {
             CongestionController congestionController = new CongestionController();
             AStarAlgorithm mapAlgorithm = new AStarAlgorithm(congestionController);
