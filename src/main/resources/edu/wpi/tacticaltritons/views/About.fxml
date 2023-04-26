@@ -56,7 +56,7 @@
             </BorderPane>
             <BorderPane style="-fx-border-color: black;">
                <left>
-                        <ImageView fx:id="Mark" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                        <ImageView fx:id="Mark" fitHeight="115.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
                             <image>
                                 <Image url="@../images/QuetinHeadshots/Mark_Headshot.jpg" />
                             </image>
@@ -75,7 +75,7 @@
             </BorderPane>
             <BorderPane style="-fx-border-color: black;">
                <left>
-                        <ImageView fx:id="Quentin" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                        <ImageView fx:id="Quentin" fitHeight="114.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
 
                             <image>
                                 <Image url="@../images/QuetinHeadshots/Quentin_Headshot.jpg" />
@@ -95,7 +95,7 @@
             </BorderPane>
             <BorderPane style="-fx-border-color: black;">
                <left>
-                        <ImageView fx:id="Jai" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                        <ImageView fx:id="Jai" fitHeight="114.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
 
                             <image>
                                 <Image url="@../images/QuetinHeadshots/Jai_Headshot.jpg" />
@@ -182,7 +182,7 @@
             </BorderPane>
             <BorderPane style="-fx-border-color: black;">
                <left>
-                        <ImageView fx:id="Vanessa" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                        <ImageView fx:id="Vanessa" fitHeight="111.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
 
                             <image>
                                 <Image url="@../images/QuetinHeadshots/Vanessa_Headshot.jpg" />
@@ -203,7 +203,7 @@
             </BorderPane>
             <BorderPane style="-fx-border-color: black;">
                <left>
-                        <ImageView fx:id="James" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                        <ImageView fx:id="James" fitHeight="114.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
 
                             <image>
                                 <Image url="@../images/QuetinHeadshots/James_Headshot.jpg" />
@@ -228,7 +228,7 @@
     <right>
         <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" prefHeight="450.0" prefWidth="253.0" vgap="20.0" BorderPane.alignment="CENTER">
             <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Actknowledgement:" underline="true">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Acknowledgement:" underline="true">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font></Text>

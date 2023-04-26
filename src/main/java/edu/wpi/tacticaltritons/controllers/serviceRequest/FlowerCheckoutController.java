@@ -2,6 +2,7 @@ package edu.wpi.tacticaltritons.controllers.serviceRequest;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
+import edu.wpi.tacticaltritons.auth.Validator;
 import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
@@ -20,6 +21,8 @@ import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
 import io.github.palexdev.materialfx.enums.ScrimPriority;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
@@ -48,67 +51,50 @@ import edu.wpi.tacticaltritons.styling.*;
 public class FlowerCheckoutController {
 
 
-    @FXML
-    private BorderPane basePane;
-    @FXML
-    private MFXTextField userFirstField;
-    @FXML
-    private MFXTextField userLastField;
-    @FXML
-    private MFXTextField patientFirstField;
-    @FXML
-    private MFXTextField patientLastField;
-    @FXML
-    private MFXDatePicker deliveryDateField;
-    @FXML
-    private MFXComboBox<Integer> hourComboBox;
-    @FXML
-    private MFXComboBox<String> minComboBox;
+    @FXML private BorderPane basePane;
+    @FXML private MFXTextField userFirstField;
+    @FXML private Text userFirstValidator;
 
-    @FXML
-    private MFXButton cancelButton;
-    @FXML
-    private MFXButton clearButton;
-    @FXML
-    private MFXButton submitButton;
-    @FXML
-    private FlowPane checkoutFlowplan;
+    @FXML private MFXTextField userLastField;
+    @FXML private Text userLastValidator;
+
+    @FXML private MFXTextField patientFirstField;
+    @FXML private Text patientFirstValidator;
+
+    @FXML private MFXTextField patientLastField;
+    @FXML private Text patientLastValidator;
+    @FXML private MFXDatePicker deliveryDateField;
+    @FXML private Text dateValidator;
+    @FXML private Text assignedStaffValidator;
+    @FXML private MFXComboBox<Integer> hourComboBox;
+    @FXML private MFXComboBox<String> minComboBox;
+    @FXML private Text minValidator;
+    @FXML private Text hourValidator;
+    @FXML private Text locationValidator;
+
+    @FXML private MFXButton cancelButton;
+    @FXML private MFXButton clearButton;
+    @FXML private MFXButton submitButton;
+    @FXML private FlowPane checkoutFlowplan;
 
     //  @FXML private Text location;
-    @FXML
-    private MFXFilterComboBox locationComboBox;
-    @FXML
-    private Text shopName;
-    @FXML
-    private GesturePane groundFloor;
-    @FXML
-    private ImageView groundFloorImage;
-    @FXML
-    private ImageView lowerLevel1Image;
-    @FXML
-    private ImageView lowerLevel2Image;
-    @FXML
-    private ImageView floor1Image;
-    @FXML
-    private ImageView floor2Image;
-    @FXML
-    private ImageView floor3Image;
-    @FXML
-    private Group groundGroup;
-    @FXML
-    private Group L1Group;
-    @FXML
-    private Group L2Group;
-    @FXML
-    private Group floor1Group;
-    @FXML
-    private Group floor2Group;
-    @FXML
-    private Group floor3Group;
-    @FXML
-    MFXFilterComboBox assignedComboBox;
-    @FXML
-    private Text priceText;
+    @FXML private MFXFilterComboBox locationComboBox;
+    @FXML private Text shopName;
+    @FXML private GesturePane groundFloor;
+    @FXML private ImageView groundFloorImage;
+    @FXML private ImageView lowerLevel1Image;
+    @FXML private ImageView lowerLevel2Image;
+    @FXML private ImageView floor1Image;
+    @FXML private ImageView floor2Image;
+    @FXML private ImageView floor3Image;
+    @FXML private Group groundGroup;
+    @FXML private Group L1Group;
+    @FXML private Group L2Group;
+    @FXML private Group floor1Group;
+    @FXML private Group floor2Group;
+    @FXML private Group floor3Group;
+    @FXML MFXFilterComboBox assignedComboBox;
+    @FXML private Text priceText;
     private String userFirst;
     private String userLast;
     private String patientFirst;
@@ -134,7 +120,6 @@ public class FlowerCheckoutController {
             assignedComboBox.getItems().add(login.getFirstName() + " " + login.getLastName());
         }
 
-        Date today = new Date(2023, 4, 10);
         lowerLevel1Image.setImage(App.lowerlevel1);
         lowerLevel2Image.setImage(App.lowerlevel2);
         groundFloorImage.setImage(App.groundfloor);
@@ -181,6 +166,73 @@ public class FlowerCheckoutController {
 
         formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
         deliveryDateField.setValue(LocalDate.from(formatter.parse(formatter.format(LocalDateTime.now()))));
+        userFirstField.setText(UserSessionToken.getUser().getFirstname());
+        BooleanProperty validUserFirstName = new SimpleBooleanProperty(true);
+        userFirstField.textProperty().addListener(Validator.generateValidatorListener(validUserFirstName, "[A-Za-z]{1,50}",
+                userFirstValidator.getText(), userFirstValidator));
+        userLastField.setText(UserSessionToken.getUser().getLastname());
+        BooleanProperty validUserLastName = new SimpleBooleanProperty(true);
+        userLastField.textProperty().addListener(Validator.generateValidatorListener(validUserLastName, "[A-Za-z]{1,50}",
+                userLastValidator.getText(), userLastValidator));
+
+        BooleanProperty validPatientFirstName = new SimpleBooleanProperty(true);
+        patientFirstField.textProperty().addListener(Validator.generateValidatorListener(validPatientFirstName, "[A-Za-z]{1,50}",
+                patientFirstValidator.getText(), patientFirstValidator));
+        BooleanProperty validPatientLastName = new SimpleBooleanProperty(true);
+        patientLastField.textProperty().addListener(Validator.generateValidatorListener(validPatientLastName, "[A-Za-z]{1,50}",
+                patientLastValidator.getText(), patientLastValidator));
+
+        BooleanProperty validAssignedStaff = new SimpleBooleanProperty(true);
+        assignedComboBox.selectedItemProperty().addListener((obs, o, n) -> validAssignedStaff.set(n != null));
+
+        BooleanProperty validHourCombobox = new SimpleBooleanProperty(true);
+        hourComboBox.selectedItemProperty().addListener((obs, o, n) -> validHourCombobox.set(n != null));
+
+        BooleanProperty validMinCombobox = new SimpleBooleanProperty(true);
+        minComboBox.selectedItemProperty().addListener((obs, o, n) -> validMinCombobox.set(n != null));
+
+        DateTimeFormatter[] formatters = new DateTimeFormatter[]{
+                DateTimeFormatter.ofPattern("MMM dd, yyyy"),
+                DateTimeFormatter.ofPattern("MMM d, yyyy")
+        };
+        try {
+            deliveryDateField.setValue(LocalDate.from(formatters[1].parse(formatters[1].format(LocalDateTime.now()))));
+        } catch (Exception ignored) {
+            try {
+                deliveryDateField.setValue(LocalDate.from(formatters[0].parse(formatters[0].format(LocalDateTime.now()))));
+            } catch (Exception ignore) {
+
+            }
+        }
+        BooleanProperty validDate = new SimpleBooleanProperty(true);
+        deliveryDateField.textProperty().addListener(Validator.generateValidatorListener(
+                validDate, dateValidator.getText(), dateValidator, formatters));
+        BooleanProperty validLocation = new SimpleBooleanProperty(false);
+        locationComboBox.selectedItemProperty().addListener((obs, o, n) -> validLocation.set(n != null));
+
+        validUserFirstName.addListener(Validator.generateFormListener(submitButton,
+                validUserFirstName, validUserLastName, validPatientFirstName, validPatientLastName, validDate, validLocation, validHourCombobox, validMinCombobox));
+
+        validUserLastName.addListener(Validator.generateFormListener(submitButton,
+                validUserFirstName, validUserLastName, validPatientFirstName, validPatientLastName, validDate, validLocation, validHourCombobox, validMinCombobox));
+
+        validPatientFirstName.addListener(Validator.generateFormListener(submitButton,
+                validUserFirstName, validUserLastName, validPatientFirstName, validPatientLastName, validDate, validLocation, validHourCombobox, validMinCombobox));
+
+        validPatientLastName.addListener(Validator.generateFormListener(submitButton,
+                validUserFirstName, validUserLastName, validPatientFirstName, validPatientLastName, validDate, validLocation, validHourCombobox, validMinCombobox));
+
+        validDate.addListener(Validator.generateFormListener(submitButton,
+                validUserFirstName, validUserLastName, validPatientFirstName, validPatientLastName, validDate, validLocation, validHourCombobox, validMinCombobox));
+
+        validLocation.addListener(Validator.generateFormListener(submitButton,
+                validUserFirstName, validUserLastName, validPatientFirstName, validPatientLastName, validDate, validLocation, validHourCombobox, validMinCombobox));
+
+        validHourCombobox.addListener(Validator.generateFormListener(submitButton,
+                validUserFirstName, validUserLastName, validPatientFirstName, validPatientLastName, validDate, validLocation, validHourCombobox, validMinCombobox));
+
+        validMinCombobox.addListener(Validator.generateFormListener(submitButton,
+                validUserFirstName, validUserLastName, validPatientFirstName, validPatientLastName, validDate, validLocation, validHourCombobox, validMinCombobox));
 
         submitButton.setOnMouseClicked(
                 event -> {
@@ -245,13 +297,14 @@ public class FlowerCheckoutController {
             locationComboBox.getItems().add(name.getLongName());
         }
 
+
         this.locationComboBox.setOnAction(event -> {
 
             clearAllNodes();
             Circle circle = new Circle();
 
             try {
-                circle = drawCircle(DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), today).getXcoord(), DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), today).getYcoord());
+                circle = drawCircle(DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getXcoord(), DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getYcoord());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -259,7 +312,7 @@ public class FlowerCheckoutController {
 
             String endFloor = null;
             try {
-                endFloor = DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), today).getFloor();
+                endFloor = DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getFloor();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
