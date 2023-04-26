@@ -822,34 +822,34 @@ public class MapSuperController {
             lastNode = node;
         }
 
-        polyList.add((double) finalNode.getXcoord());
-        polyList.add((double) finalNode.getYcoord());
-        Polyline path = new Polyline();
-        path.setStroke(Color.RED);
-        path.setOpacity(0.8);
-        path.setStrokeWidth(6.0f);
-        path.getPoints().addAll(polyList);
-
-        String startFloor = lastNode.getFloor();
-        if (startFloor != null) {
-            switch (startFloor) {
-                case "L1":
-                    this.L1Group.getChildren().add(path);
-                    break;
-                case "L2":
-                    this.L2Group.getChildren().add(path);
-                    break;
-                case "1":
-                    this.floor1Group.getChildren().add(path);
-                    break;
-                case "2":
-                    this.floor2Group.getChildren().add(path);
-                    break;
-                case "3":
-                    this.floor3Group.getChildren().add(path);
-                    break;
-            }
-        }
+//        polyList.add((double) finalNode.getXcoord());
+//        polyList.add((double) finalNode.getYcoord());
+//        Polyline path = new Polyline();
+//        path.setStroke(Color.RED);
+//        path.setOpacity(0.8);
+//        path.setStrokeWidth(6.0f);
+//        path.getPoints().addAll(polyList);
+//
+//        String startFloor = lastNode.getFloor();
+//        if (startFloor != null) {
+//            switch (startFloor) {
+//                case "L1":
+//                    this.L1Group.getChildren().add(path);
+//                    break;
+//                case "L2":
+//                    this.L2Group.getChildren().add(path);
+//                    break;
+//                case "1":
+//                    this.floor1Group.getChildren().add(path);
+//                    break;
+//                case "2":
+//                    this.floor2Group.getChildren().add(path);
+//                    break;
+//                case "3":
+//                    this.floor3Group.getChildren().add(path);
+//                    break;
+//            }
+//        }
         polyList.clear();
 
         System.out.println(change);
