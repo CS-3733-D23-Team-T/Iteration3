@@ -117,6 +117,7 @@ public class HomeController {
                 }
             }
         }
+        announcementGridPane.autosize();
     }
 
     private void setContent(GridPane gridPane, Announcements announcements) {
