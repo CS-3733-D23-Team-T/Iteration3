@@ -199,8 +199,14 @@ public class ResetPasswordController {
                 }
             }
             else if(currentStep == 2){
-                Account.resetPassword(newPasswordField.getText(), emailField.getText());
-                LoginNavigation.navigate(Screen.LOGIN_CONTAINER);
+                int returnValue = Account.resetPassword(newPasswordField.getText(), emailField.getText());
+                if(returnValue == 1) LoginNavigation.navigate(Screen.LOGIN_CONTAINER);
+                else if(returnValue == 2){
+                    confirmPasswordValidator.setText("Old and New Password Match");
+                    confirmPasswordValidator.setVisible(true);
+                    validConfirmPassword.set(false);
+                    validPassword.set(false);
+                }
             }
         });
 

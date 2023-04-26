@@ -21,20 +21,20 @@ public enum AuthenticationMethod {
     }
     public static String[] compileMethods(String[] methods, String methodToFront){
         if(methods != null) {
+            String[] ret;
             if (Arrays.asList(methods).contains(methodToFront)) {
-                String[] ret = new String[methods.length];
+                ret = new String[methods.length];
                 ret[0] = methodToFront;
                 for(int i = 0, j = 1; i < methods.length; i++){
                     if(methods[i].equals(methodToFront)) continue;
                     methods[j++] = methods[i];
                 }
-                return ret;
             } else {
-                String[] ret = new String[methods.length + 1];
+                ret = new String[methods.length + 1];
                 ret[0] = methodToFront;
                 System.arraycopy(methods, 0, ret, 1, methods.length);
-                return ret;
             }
+            return ret;
         }
         return new String[]{methodToFront};
     }

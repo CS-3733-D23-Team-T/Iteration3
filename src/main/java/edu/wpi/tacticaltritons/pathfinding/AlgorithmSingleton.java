@@ -1,8 +1,5 @@
 package edu.wpi.tacticaltritons.pathfinding;
 
-import edu.wpi.tacticaltritons.database.Node;
-import java.sql.SQLException;
-import java.util.List;
 import java.util.Locale;
 
 public enum AlgorithmSingleton {
@@ -37,7 +34,7 @@ public enum AlgorithmSingleton {
         return null;
     }
 
-    public String formalName() {
+    public String formalName(){
         String[] parts = this.name().split("_");
         StringBuilder formalName = new StringBuilder();
         for (String part : parts) {

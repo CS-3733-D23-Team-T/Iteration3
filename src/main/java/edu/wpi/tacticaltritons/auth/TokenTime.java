@@ -1,7 +1,5 @@
 package edu.wpi.tacticaltritons.auth;
 
-import com.google.errorprone.annotations.ForOverride;
-
 import java.util.Locale;
 
 public enum TokenTime {
