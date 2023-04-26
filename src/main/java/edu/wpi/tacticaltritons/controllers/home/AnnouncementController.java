@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 public class AnnouncementController {
 
     @FXML
-    private Label titleLable;
+    private Label titleLabel;
     @FXML
     private Label dateLabel;
     @FXML

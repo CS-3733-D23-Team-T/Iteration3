@@ -17,10 +17,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.image.Image;
@@ -40,6 +38,7 @@ import java.sql.SQLException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -100,7 +99,6 @@ public class HomeController {
 
     private void initAnnouncements() throws SQLException, IOException {
         List<Announcements> announcementsList = DAOFacade.getAllAnnouncements(Timestamp.valueOf(LocalDateTime.now()));
-        System.out.println(announcementsList.size());
 
         if (announcementsList.isEmpty()) {
 
@@ -109,13 +107,37 @@ public class HomeController {
                 if(i == 0)
                 {
                     FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
-                    announcementGridPane.add(loader.load(), 0,0);
+                    //GridPane gridPane = loader.load();
+                    setContent(loader.load(),announcementsList.get(i));
+                    //announcementGridPane.add(gridPane, 0,0);
                 }
                 else
                 {
                     FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
                     GridPane gridPane = loader.load();
                     announcementGridPane.addColumn(i,gridPane);
+                }
+            }
+        }
+    }
+
+    private void setContent(GridPane gridPane, Announcements announcements)
+    {
+        List<Node> nodes = gridPane.getChildren();
+
+        for(Node node : nodes)
+        {
+            System.out.println("Found a label with id: " + node.getId());
+            if(node.getClass().equals(Label.class))
+            {
+                if(node.getId().equals("titleLabel"))
+                {
+                    ((Label) node).setText(announcements.getTitle());
+                } else if(node.getId().equals("dateLabel"))
+                {
+                    ((Label) node).setText(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(announcements.getEffectiveDate().toLocalDateTime()));
+                } else if (node.getId().equals("discriptionLabel")) {
+                    ((Label) node).setText(announcements.getContent());
                 }
             }
         }
