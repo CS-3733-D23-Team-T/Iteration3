@@ -49,7 +49,6 @@ public class Navigation {
             screen.set(destination);
             final var resource = App.class.getResource(destination.getFilename());
             final FXMLLoader loader = new FXMLLoader(resource);
-
             App.getRootPane().getChildren().clear();
 
             try {

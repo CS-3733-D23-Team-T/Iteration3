@@ -357,6 +357,10 @@ public class HomeController {
                             Furniture furniture = DAOFacade.getFurniture(request.getOrderNum());
                             furniture.setStatus(RequestStatus.DONE);
                             DAOFacade.updateFurniture(furniture);
+                        } else if (request.getRequestType().equals("Supply")) {
+                            Supply supply = DAOFacade.getSupply(request.getOrderNum());
+                            supply.setStatus(RequestStatus.DONE);
+                            DAOFacade.updateSupply(supply);
                         }
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);

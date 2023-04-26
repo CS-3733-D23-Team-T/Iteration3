@@ -9,7 +9,7 @@ class StylingParameters {
      static final double shadowRadius = 15;
      static final double shadowOffsetX = 0;
      static final double shadowOffsetY = 0;
-     static final String invalid = Objects.requireNonNull(StylingParameters.class.getResource("../stylesheets/InvalidMFXTextFields.css")).toString();
+     //static final String invalid = Objects.requireNonNull(StylingParameters.class.getResource("../stylesheets/InvalidMFXTextFields.css")).toString();
      static final Color shandowColor = Color.web(ThemeColors.GRAY.getColor());
      static final String noFirstName = "Please input first name";
      static final String noLastName = "Please input last name ";
