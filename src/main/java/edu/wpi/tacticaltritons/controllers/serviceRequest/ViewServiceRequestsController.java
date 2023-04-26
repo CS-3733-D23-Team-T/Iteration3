@@ -41,6 +41,7 @@ public class ViewServiceRequestsController {
     TableView<Flower> tableFlower = new TableView<>();
     TableView<Conference> tableConference = new TableView<>();
     TableView<Furniture> tableFurniture = new TableView<>();
+    TableView<Supply> tableSupply = new TableView<>();
     private final double minWidth = 1280;
     private final double minHeight = 650;
 
@@ -171,7 +172,112 @@ public class ViewServiceRequestsController {
     }
 
     private void intiOfficeSupplyRequestTable() {
+        officeSupplyRequest.getChildren().clear();
+        tableSupply = new TableView<>();
+        TableColumn<Supply, Integer> orderNumber = new TableColumn<>("Order Number");
+        orderNumber.setCellValueFactory(new PropertyValueFactory<>("orderNum"));
 
+        TableColumn<Supply, String> firstName = new TableColumn<>("First Name");
+        firstName.setCellValueFactory(new PropertyValueFactory<>("requesterFirst"));
+
+        TableColumn<Supply, String> lastName = new TableColumn<>("Last Name");
+        lastName.setCellValueFactory(new PropertyValueFactory<>("requesterLast"));
+
+        TableColumn<Supply, String> assigendFirst = new TableColumn<>("Assigned First Name");
+        assigendFirst.setCellValueFactory(new PropertyValueFactory<>("assignedStaffFirst"));
+
+        TableColumn<Supply, String> assigendLast = new TableColumn<>("Assigned Last Name");
+        assigendLast.setCellValueFactory(new PropertyValueFactory<>("assignedStaffLast"));
+
+        TableColumn<Supply, Date> date = new TableColumn<>("Date");
+        date.setCellValueFactory(new PropertyValueFactory<>("deliveryDate"));
+
+        TableColumn<Supply, Time> time = new TableColumn<>("Time");
+        time.setCellValueFactory(new PropertyValueFactory<>("deliveryTime"));
+
+        TableColumn<Supply, String> location = new TableColumn<>("Location");
+        location.setCellValueFactory(new PropertyValueFactory<>("location"));
+
+        TableColumn<Supply, String> items = new TableColumn<>("Items");
+        items.setCellValueFactory(new PropertyValueFactory<>("items"));
+
+        TableColumn<Supply, String> total = new TableColumn<>("Total");
+        total.setCellValueFactory(new PropertyValueFactory<>("total"));
+
+        TableColumn<Supply, RequestStatus> status = new TableColumn<>("Status");
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        ObservableList<Supply> supplyObservableList = null;
+        try {
+            supplyObservableList = FXCollections.observableArrayList(DAOFacade.getAllSupply());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        tableSupply.getColumns().addAll(orderNumber, status, firstName, lastName, assigendFirst, assigendLast, date, time, location, items, total);
+
+        status.setCellFactory(column -> {
+            return new TableCell<Supply, RequestStatus>() {
+                private final MFXButton button = new MFXButton("Accept");
+                private final MFXButton button2 = new MFXButton("Cancel");
+
+                protected void updateItem(RequestStatus item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else if (item.toString().equals("")) {
+                        button.setStyle("-fx-background-color: green;");
+                        setText(null);
+                        setGraphic(button);
+                        button.setOnAction(event -> {
+                            Supply supply = getTableView().getItems().get(getIndex());
+                            supply.setAssignedStaffLast(UserSessionToken.getUser().getLastname());
+                            supply.setAssignedStaffFirst(UserSessionToken.getUser().getFirstname());
+                            supply.setStatus(RequestStatus.PROCESSING);
+                            getTableView().refresh();
+                            try {
+                                DAOFacade.updateSupply(supply);
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    } else if (item.toString().equals("Processing")) {
+                        Supply supply = getTableView().getItems().get(getIndex());
+
+                        if ((supply.getAssignedStaffFirst().equals(UserSessionToken.getUser().getFirstname())) && (supply.getAssignedStaffLast().equals(UserSessionToken.getUser().getLastname()))) {
+                            button2.setStyle("-fx-background-color: red;");
+                            setText(null);
+                            setGraphic(button2);
+                            button2.setOnAction(event -> {
+                                supply.setAssignedStaffLast(null);
+                                supply.setAssignedStaffFirst(null);
+                                supply.setStatus(RequestStatus.BLANK);
+                                getTableView().refresh();
+                                try {
+                                    DAOFacade.updateSupply(supply);
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+                        } else {
+                            setText(item.toString());
+                            setGraphic(null);
+                        }
+                    } else {
+                        setText(item.toString());
+                        setGraphic(null);
+                    }
+                }
+            };
+        });
+
+        tableSupply.getItems().addAll(supplyObservableList);
+
+        tableSupply.setPrefWidth(App.getPrimaryStage().widthProperty().get());
+        tableSupply.setPrefHeight(App.getPrimaryStage().heightProperty().get());
+        tableSupply.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableSupply.getStyleClass().add("table-view");
+        officeSupplyRequest.getChildren().add(tableSupply);
     }
 
     private void initFurnitureRequestTable() {
