@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
-<FlowPane alignment="CENTER" prefHeight="650.0" prefWidth="1280.0" stylesheets="@../../stylesheets/Database.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.database.EditDatabaseController">
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.FlowPane?>
+
+<FlowPane alignment="CENTER" prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.database.EditDatabaseController">
     <children>
         <FlowPane fx:id="content" alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="510.0" prefWidth="350.0" style="-fx-background-color: ffffff; -fx-background-radius: 10;">
             <children>
@@ -20,7 +18,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </FlowPane.margin>
             </FlowPane>
-            <MFXButton fx:id="updateEntryButton" style="-fx-background-color: #002D59; -fx-border-color: #002D59; -fx-background-radius: 10; -fx-border-radius: 10; -fx-text-fill: #FFFFFF;">
+            <MFXButton id="normalButton" fx:id="updateEntryButton" text="Update">
                <FlowPane.margin>
                   <Insets bottom="10.0" top="10.0" />
                </FlowPane.margin>
@@ -30,7 +28,11 @@
                 <Insets right="25.0" />
             </FlowPane.margin>
         </FlowPane>
-        <FlowPane fx:id="tableInsert" alignment="CENTER" columnHalignment="CENTER" prefHeight="510.0" prefWidth="850.0" style="-fx-background-color: ffffff; -fx-background-radius: 10;" />
+        <FlowPane fx:id="tableInsert" alignment="CENTER" columnHalignment="CENTER" prefHeight="510.0" prefWidth="800.0" style="-fx-background-color: ffffff; -fx-background-radius: 10;" />
     </children>
+   <stylesheets>
+      <URL value="@../../stylesheets/Database.css" />
+      <URL value="@../../stylesheets/Buttons.css" />
+   </stylesheets>
 
 </FlowPane>

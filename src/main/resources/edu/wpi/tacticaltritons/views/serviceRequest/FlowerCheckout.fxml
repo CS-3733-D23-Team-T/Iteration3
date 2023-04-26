@@ -202,7 +202,7 @@
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
                             <font>
-                                <Font name="Times New Roman" size="18.0" />
+                                <Font size="18.0" />
                             </font>
                             <FlowPane.margin>
                                 <Insets />
@@ -210,7 +210,7 @@
                         </Text>
                         <Text fx:id="shopName" strokeType="OUTSIDE" strokeWidth="0.0" text="EDIBLE ARRANGEMENTS">
                             <font>
-                                <Font name="Times New Roman" size="22.0" />
+                                <Font size="22.0" />
                             </font>
                         </Text>
                     </children>

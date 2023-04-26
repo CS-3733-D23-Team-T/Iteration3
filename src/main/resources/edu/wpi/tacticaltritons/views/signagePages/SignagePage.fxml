@@ -1,80 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.shape.SVGPath?>
-<?import javafx.geometry.Insets?>
-<?import java.net.URL?>
-<GridPane fx:id="basePane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.wpi.tacticaltritons.controllers.signage.SignagePageController" prefHeight="600" prefWidth="1280" alignment="CENTER_LEFT" >
+
+<GridPane fx:id="basePane" alignment="CENTER_LEFT" prefHeight="600" prefWidth="1280" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.signage.SignagePageController">
     <stylesheets>
-        <URL value="@../../stylesheets/signageBlocks.css"/>
+        <URL value="@../../stylesheets/signageBlocks.css" />
     </stylesheets>
 
-    <FlowPane GridPane.rowIndex="0" id="block" fx:id="signageForwardBlock" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="200" prefWidth="1280" alignment="CENTER_LEFT">
-        <HBox minWidth="120" minHeight="120" alignment="CENTER">
+    <FlowPane id="block" fx:id="signageForwardBlock" alignment="CENTER_LEFT" prefHeight="200" prefWidth="1280" GridPane.rowIndex="0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+        <HBox alignment="CENTER" minHeight="120" minWidth="120">
             <FlowPane.margin>
-                <Insets right="50" left="50"/>
+                <Insets left="50" right="50" />
             </FlowPane.margin>
-            <SVGPath content="M37.0117 92.2363C39.5508 92.2363 41.3574 90.4785 41.3574 87.9395L41.3574 23.6328L40.8691 9.08203L38.0859 10.0586L55.6152 29.248L66.748 40.1855C67.5293 40.9668 68.6523 41.3574 69.8242 41.3574C72.2656 41.3574 74.0234 39.502 74.0234 37.1094C74.0234 35.9375 73.6328 34.9121 72.7051 33.9355L40.2832 1.46484C39.3555 0.488281 38.2324 0 37.0117 0C35.791 0 34.668 0.488281 33.7402 1.46484L1.36719 33.9355C0.439453 34.9121 0 35.9375 0 37.1094C0 39.502 1.75781 41.3574 4.19922 41.3574C5.37109 41.3574 6.54297 40.9668 7.27539 40.1855L18.4082 29.248L35.8887 10.0586L33.1543 9.08203L32.666 23.6328L32.666 87.9395C32.666 90.4785 34.4727 92.2363 37.0117 92.2363Z" fill="#002d59"/>
+            <SVGPath content="M37.0117 92.2363C39.5508 92.2363 41.3574 90.4785 41.3574 87.9395L41.3574 23.6328L40.8691 9.08203L38.0859 10.0586L55.6152 29.248L66.748 40.1855C67.5293 40.9668 68.6523 41.3574 69.8242 41.3574C72.2656 41.3574 74.0234 39.502 74.0234 37.1094C74.0234 35.9375 73.6328 34.9121 72.7051 33.9355L40.2832 1.46484C39.3555 0.488281 38.2324 0 37.0117 0C35.791 0 34.668 0.488281 33.7402 1.46484L1.36719 33.9355C0.439453 34.9121 0 35.9375 0 37.1094C0 39.502 1.75781 41.3574 4.19922 41.3574C5.37109 41.3574 6.54297 40.9668 7.27539 40.1855L18.4082 29.248L35.8887 10.0586L33.1543 9.08203L32.666 23.6328L32.666 87.9395C32.666 90.4785 34.4727 92.2363 37.0117 92.2363Z" fill="#002d59" />
         </HBox>
-        <Rectangle id="seperator" fx:id="signageForwardSeparator" width="15" height="120">
+        <Rectangle id="seperator" fx:id="signageForwardSeparator" height="120" width="15">
             <FlowPane.margin>
-                <Insets right="100"/>
+                <Insets right="100" />
             </FlowPane.margin>
         </Rectangle>
-        <VBox fx:id="signageForwardLocations" prefWidth="900"/>
+        <VBox fx:id="signageForwardLocations" prefWidth="900" />
     </FlowPane>
 
-    <FlowPane GridPane.rowIndex="1" id="block" fx:id="signageLeftBlock" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="200" prefWidth="1280" alignment="CENTER_LEFT">
-        <HBox minWidth="120" minHeight="120" alignment="CENTER">
+    <FlowPane id="block" fx:id="signageLeftBlock" alignment="CENTER_LEFT" prefHeight="200" prefWidth="1280" GridPane.rowIndex="1" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+        <HBox alignment="CENTER" minHeight="120" minWidth="120">
             <FlowPane.margin>
-                <Insets right="50" left="50"/>
+                <Insets left="50" right="50" />
             </FlowPane.margin>
-            <SVGPath content= "M0 37.0117C0 38.2324 0.537109 39.3555 1.51367 40.2832L33.9355 72.6562C34.9121 73.584 35.9375 74.0234 37.1094 74.0234C39.502 74.0234 41.4062 72.2656 41.4062 69.8242C41.4062 68.6523 40.9668 67.4805 40.1855 66.748L29.248 55.6152L9.91211 37.9883L8.88672 40.3809L24.6094 41.3574L86.377 41.3574C88.916 41.3574 90.6738 39.5508 90.6738 37.0117C90.6738 34.4727 88.916 32.666 86.377 32.666L24.6094 32.666L8.88672 33.6426L9.91211 36.084L29.248 18.4082L40.1855 7.27539C40.9668 6.49414 41.4062 5.37109 41.4062 4.19922C41.4062 1.75781 39.502 0 37.1094 0C35.9375 0 34.9121 0.390625 33.8379 1.46484L1.51367 33.7402C0.537109 34.668 0 35.791 0 37.0117Z" fill="#002d59"/>
+            <SVGPath content="M0 37.0117C0 38.2324 0.537109 39.3555 1.51367 40.2832L33.9355 72.6562C34.9121 73.584 35.9375 74.0234 37.1094 74.0234C39.502 74.0234 41.4062 72.2656 41.4062 69.8242C41.4062 68.6523 40.9668 67.4805 40.1855 66.748L29.248 55.6152L9.91211 37.9883L8.88672 40.3809L24.6094 41.3574L86.377 41.3574C88.916 41.3574 90.6738 39.5508 90.6738 37.0117C90.6738 34.4727 88.916 32.666 86.377 32.666L24.6094 32.666L8.88672 33.6426L9.91211 36.084L29.248 18.4082L40.1855 7.27539C40.9668 6.49414 41.4062 5.37109 41.4062 4.19922C41.4062 1.75781 39.502 0 37.1094 0C35.9375 0 34.9121 0.390625 33.8379 1.46484L1.51367 33.7402C0.537109 34.668 0 35.791 0 37.0117Z" fill="#002d59" />
         </HBox>
-        <Rectangle id="seperator" fx:id="signageLeftSeparator" width="15" height="120">
+        <Rectangle id="seperator" fx:id="signageLeftSeparator" height="120" width="15">
             <FlowPane.margin>
-                <Insets right="100"/>
+                <Insets right="100" />
             </FlowPane.margin>
         </Rectangle>
-        <VBox fx:id="signageLeftLocations" prefWidth="900"/>
+        <VBox fx:id="signageLeftLocations" prefWidth="900" />
     </FlowPane>
 
-    <FlowPane GridPane.rowIndex="2" id="block" fx:id="signageRightBlock" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="200" prefWidth="1280" alignment="CENTER_RIGHT">
-        <VBox fx:id="signageRightLocations" prefWidth="900"/>
-        <Rectangle id="seperator" fx:id="signageRightSeparator" width="15" height="120">
+    <FlowPane id="block" fx:id="signageRightBlock" alignment="CENTER_RIGHT" prefHeight="200" prefWidth="1280" GridPane.rowIndex="2" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+        <VBox fx:id="signageRightLocations" prefWidth="900" />
+        <Rectangle id="seperator" fx:id="signageRightSeparator" height="120" width="15">
             <FlowPane.margin>
-                <Insets left="100"/>
+                <Insets left="100" />
             </FlowPane.margin>
         </Rectangle>
-        <HBox minWidth="120" minHeight="120" alignment="CENTER">
+        <HBox alignment="CENTER" minHeight="120" minWidth="120">
             <FlowPane.margin>
-                <Insets right="50" left="50"/>
+                <Insets left="50" right="50" />
             </FlowPane.margin>
-            <SVGPath content="M90.6738 37.0117C90.6738 35.791 90.1855 34.668 89.209 33.7402L56.8359 1.46484C55.7617 0.390625 54.7363 0 53.5645 0C51.1719 0 49.3164 1.75781 49.3164 4.19922C49.3164 5.37109 49.707 6.49414 50.4883 7.27539L61.4258 18.4082L80.8105 36.084L81.7871 33.6426L66.0645 32.666L4.29688 32.666C1.75781 32.666 0 34.4727 0 37.0117C0 39.5508 1.75781 41.3574 4.29688 41.3574L66.0645 41.3574L81.7871 40.3809L80.8105 37.9883L61.4258 55.6152L50.4883 66.748C49.707 67.4805 49.3164 68.6523 49.3164 69.8242C49.3164 72.2656 51.1719 74.0234 53.5645 74.0234C54.7363 74.0234 55.7617 73.584 56.7383 72.6562L89.209 40.2832C90.1855 39.3555 90.6738 38.2324 90.6738 37.0117Z" fill="#002d59"/>
+            <SVGPath content="M90.6738 37.0117C90.6738 35.791 90.1855 34.668 89.209 33.7402L56.8359 1.46484C55.7617 0.390625 54.7363 0 53.5645 0C51.1719 0 49.3164 1.75781 49.3164 4.19922C49.3164 5.37109 49.707 6.49414 50.4883 7.27539L61.4258 18.4082L80.8105 36.084L81.7871 33.6426L66.0645 32.666L4.29688 32.666C1.75781 32.666 0 34.4727 0 37.0117C0 39.5508 1.75781 41.3574 4.29688 41.3574L66.0645 41.3574L81.7871 40.3809L80.8105 37.9883L61.4258 55.6152L50.4883 66.748C49.707 67.4805 49.3164 68.6523 49.3164 69.8242C49.3164 72.2656 51.1719 74.0234 53.5645 74.0234C54.7363 74.0234 55.7617 73.584 56.7383 72.6562L89.209 40.2832C90.1855 39.3555 90.6738 38.2324 90.6738 37.0117Z" fill="#002d59" />
         </HBox>
     </FlowPane>
 
-    <FlowPane GridPane.rowIndex="3" id="block" fx:id="signageBackBlock" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="200" prefWidth="1280" alignment="CENTER_LEFT">
-        <HBox minHeight="120" minWidth="120" alignment="CENTER">
+    <FlowPane id="block" fx:id="signageBackBlock" alignment="CENTER_LEFT" prefHeight="200" prefWidth="1280" GridPane.rowIndex="3" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+        <HBox alignment="CENTER" minHeight="120" minWidth="120">
             <FlowPane.margin>
-                <Insets right="50" left="50"/>
+                <Insets left="50" right="50" />
             </FlowPane.margin>
-            <SVGPath content="M37.0117 0C34.4727 0 32.666 1.75781 32.666 4.29688L32.666 68.6035L33.1543 83.1543L35.8887 82.1777L18.4082 62.9883L7.27539 52.0508C6.54297 51.2695 5.37109 50.8789 4.19922 50.8789C1.75781 50.8789 0 52.7344 0 55.127C0 56.2988 0.439453 57.3242 1.36719 58.3008L33.7402 90.7715C34.668 91.748 35.791 92.2363 37.0117 92.2363C38.2324 92.2363 39.3555 91.748 40.2832 90.7715L72.7051 58.3008C73.6328 57.3242 74.0234 56.2988 74.0234 55.127C74.0234 52.7344 72.2656 50.8789 69.8242 50.8789C68.6523 50.8789 67.5293 51.2695 66.748 52.0508L55.6152 62.9883L38.0859 82.1777L40.8691 83.1543L41.3574 68.6035L41.3574 4.29688C41.3574 1.75781 39.5508 0 37.0117 0Z" fill="#002d59"/>
+            <SVGPath content="M37.0117 0C34.4727 0 32.666 1.75781 32.666 4.29688L32.666 68.6035L33.1543 83.1543L35.8887 82.1777L18.4082 62.9883L7.27539 52.0508C6.54297 51.2695 5.37109 50.8789 4.19922 50.8789C1.75781 50.8789 0 52.7344 0 55.127C0 56.2988 0.439453 57.3242 1.36719 58.3008L33.7402 90.7715C34.668 91.748 35.791 92.2363 37.0117 92.2363C38.2324 92.2363 39.3555 91.748 40.2832 90.7715L72.7051 58.3008C73.6328 57.3242 74.0234 56.2988 74.0234 55.127C74.0234 52.7344 72.2656 50.8789 69.8242 50.8789C68.6523 50.8789 67.5293 51.2695 66.748 52.0508L55.6152 62.9883L38.0859 82.1777L40.8691 83.1543L41.3574 68.6035L41.3574 4.29688C41.3574 1.75781 39.5508 0 37.0117 0Z" fill="#002d59" />
         </HBox>
-        <Rectangle id="seperator" fx:id="signageBackSeparator" width="15" height="120">
+        <Rectangle id="seperator" fx:id="signageBackSeparator" height="120" width="15">
             <FlowPane.margin>
-                <Insets right="100"/>
+                <Insets right="100" />
             </FlowPane.margin>
         </Rectangle>
-        <VBox fx:id="signageBackLocations" prefWidth="900"/>
+        <VBox fx:id="signageBackLocations" prefWidth="900" />
     </FlowPane>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
 
 </GridPane>

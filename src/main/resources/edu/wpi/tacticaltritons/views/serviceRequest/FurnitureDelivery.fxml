@@ -4,7 +4,6 @@
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.paint.Color?>
@@ -24,12 +23,12 @@
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="FURNITURE FROM">
                            <font>
-                              <Font name="Times New Roman" size="18.0" />
+                              <Font size="15.0" />
                            </font>
                         </Text>
                         <Label fx:id="checkoutLabel" text="This is the Name of Shop" textAlignment="CENTER" wrapText="true">
                            <font>
-                              <Font name="Times New Roman" size="20.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
                      </children>
@@ -41,7 +40,7 @@
          <bottom>
             <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="50.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXButton id="clearButton" fx:id="clearButton" prefHeight="50.0" prefWidth="200.0" text="Clear">
+                  <MFXButton id="clearButton" fx:id="clearButton" prefHeight="30.0" prefWidth="130.0" text="Clear">
                      <FlowPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </FlowPane.margin>
@@ -49,7 +48,7 @@
                         <Font size="15.0" />
                      </font>
                   </MFXButton>
-                  <MFXButton id="normalButton" fx:id="checkoutButton" disable="true" prefHeight="50.0" prefWidth="200.0" text="Checkout">
+                  <MFXButton id="normalButton" fx:id="checkoutButton" disable="true" prefHeight="30.0" prefWidth="130.0" text="Checkout">
                      <FlowPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </FlowPane.margin>
@@ -63,13 +62,6 @@
                </BorderPane.margin>
             </FlowPane>
          </bottom>
-         <effect>
-            <DropShadow>
-               <color>
-                  <Color opacity="0.3199999928474426" />
-               </color>
-            </DropShadow>
-         </effect>
          <BorderPane.margin>
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </BorderPane.margin>
@@ -87,13 +79,7 @@
    </right>
    <center>
       <BorderPane fx:id="infoBoardPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-radius: 10;" stylesheets="@../../stylesheets/TabPane.css" BorderPane.alignment="CENTER">
-         <effect>
-            <DropShadow>
-               <color>
-                  <Color opacity="0.3199999928474426" />
-               </color>
-            </DropShadow>
-         </effect>
+
          <BorderPane.margin>
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </BorderPane.margin>
