@@ -38,6 +38,7 @@ public class AnnouncementRootController {
 
     @FXML
     private void initialize() throws IOException, SQLException {
+        /*
         List<Announcements> announcementsList = DAOFacade.getAllAnnouncements(Timestamp.valueOf(LocalDateTime.now()));
         int i = 0;
         if (announcementsList != null) {
@@ -88,6 +89,7 @@ public class AnnouncementRootController {
             recursiveAnnouncementSetter(content, info);
             announcementCol2.setCenter(content);
         }
+         */
     }
 
     private void recursiveAnnouncementSetter(FlowPane announcement, Map<String, String> info) {
