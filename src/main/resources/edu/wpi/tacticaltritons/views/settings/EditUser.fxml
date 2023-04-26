@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXTextField?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="610" prefWidth="300.0" style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.settings.EditUserController">
+<BorderPane prefHeight="610" prefWidth="300.0" style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.settings.EditUserController">
     <BorderPane.margin>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </BorderPane.margin>
@@ -90,7 +87,7 @@
     <bottom>
         <FlowPane alignment="CENTER" BorderPane.alignment="CENTER">
             <children>
-                <MFXButton fx:id="cancelButton" alignment="CENTER" minHeight="27.0" minWidth="70.0" style="-fx-background-color: #ffffff; -fx-text-fill: #003A96; -fx-border-color: #000000; -fx-border-radius: 10; -fx-background-radius: 10;" text="Cancel">
+                <MFXButton id="cancelButton" fx:id="cancelButton" alignment="CENTER" minHeight="27.0" minWidth="70.0" text="Cancel">
                     <font>
                         <Font size="16.0" />
                     </font>
@@ -98,7 +95,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </FlowPane.margin>
                 </MFXButton>
-                <MFXButton fx:id="confirmEditButton" alignment="CENTER" minHeight="27.0" minWidth="70.0" style="-fx-background-color: #003A96; -fx-text-fill: #ffffff; -fx-border-radius: 10; -fx-background-radius: 10;" text="Confirm">
+                <MFXButton id="normalButton" fx:id="confirmEditButton" alignment="CENTER" minHeight="27.0" minWidth="70.0" style="-fx-background-color: #003A96; -fx-text-fill: #ffffff; -fx-border-radius: 10; -fx-background-radius: 10;" text="Confirm">
                     <font>
                         <Font size="16.0" />
                     </font>
