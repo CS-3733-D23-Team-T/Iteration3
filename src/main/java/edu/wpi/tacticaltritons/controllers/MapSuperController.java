@@ -199,31 +199,7 @@ public class MapSuperController {
 
     }
 
-    public void initializeMenuButton(String page) {
-        this.menuBar.setOnMouseClicked(event -> {
-            if (!menuPane.isVisible()) {
-                menuPane.setVisible(true);
-                switch (page) {
-                    case "ViewMap":
-                        componentShift(210);
-                        break;
-                    case "Pathfinding":
-                        componentShift(210);
-                        break;
-                    case "EditMap":
-                        componentShift(340);
-                        break;
 
-                }
-            } else {
-                menuPane.setVisible(false);
-                componentShift(0);
-            }
-        });
-        this.editMap.setOnAction(event -> {
-            Navigation.navigate(Screen.EDIT_MAP);
-        });
-    }
 
     public void componentShift(int translate) {
         menuBar.setTranslateX(translate);
@@ -237,7 +213,6 @@ public class MapSuperController {
         startLocation.setTranslateX(translate);
         endLocation.setTranslateX(translate);
         viewNodes.setTranslateX(translate);
-        importExport.setTranslateX(translate);
     }
 
     public void initializeImages() {

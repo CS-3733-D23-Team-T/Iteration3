@@ -52,7 +52,35 @@ public class NewPathfindingController extends MapSuperController {
         textForDirections.setVisible(bool);
     }
 
+    public void initializeMenuButton(String page) {
+        this.menuBar.setOnMouseClicked(event -> {
+            if (!menuPane.isVisible()) {
+                menuPane.setVisible(true);
+                switch (page) {
+                    case "ViewMap":
+                        componentShift(210);
+                        break;
+                    case "Pathfinding":
+                        componentShift(210);
+                        break;
+                    case "EditMap":
+                        componentShift(340);
+                        break;
+
+                }
+            } else {
+                menuPane.setVisible(false);
+                componentShift(0);
+            }
+        });
+        this.editMap.setOnAction(event -> {
+            Navigation.navigate(Screen.EDIT_MAP);
+        });
+    }
+
     public void initialize() throws SQLException {
+
+        date.setValue(java.time.LocalDate.now());
         selectedFloor.FLOOR.floor = "1";
         findAllNodes(allNodeTypes, selectedFloor.FLOOR.floor, "Pathfinding");
 
@@ -81,6 +109,7 @@ public class NewPathfindingController extends MapSuperController {
         });
 
         this.directions.setVisible(true);
+        showDirections(false);
         this.directions.setOnAction(event -> {
             if (!directionsPane.isVisible()) {
                 showDirections(true);
@@ -94,7 +123,7 @@ public class NewPathfindingController extends MapSuperController {
                 event -> {
                     today = java.sql.Date.valueOf(date.getValue());
                     final int[] startNodeID = {0};
-                    final int[] endNodeID = new int[1];
+                    final int[] endNodeID = {0};
                     try {
                         List<Move> allCurrentMoves = DAOFacade.getAllCurrentMoves(today);
 
@@ -103,12 +132,13 @@ public class NewPathfindingController extends MapSuperController {
                         for (Move move : allCurrentMoves) {
                             hash.put(move.getNode().getNodeID(), move);
                         }
-
                         hash.forEach((key, value) -> {
-                            if (value.getLocation().getLongName() == startLocation.getSelectedItem()) {
+                            if (value.getLocation().getLongName().equals(startLocation.getSelectedItem())) {
+                                System.out.println("it works");
                                 startNodeID[0] = key;
                             }
-                            if (value.getLocation().getLongName() == endLocation.getSelectedItem()) {
+                            if (value.getLocation().getLongName().equals(endLocation.getSelectedItem())) {
+                                System.out.println("it works");
                                 endNodeID[0] = key;
                             }
                         });
