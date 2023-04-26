@@ -45,80 +45,52 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class FurnitureCheckoutController {
-    @FXML
-    private MFXTextField userFirstField;
-    @FXML
-    private Text userFirstValidator;
-    @FXML
-    private MFXTextField userLastField;
-    @FXML
-    private Text userLastValidator;
-    @FXML
-    private MFXComboBox assignedStaffComboBox;
-    @FXML
-    private Text assignedStaffValidator;
-    @FXML
-    private MFXDatePicker deliveryDateField;
-    @FXML
-    private Text dateValidator;
-    @FXML
-    private MFXButton cancelButton;
-    @FXML
-    private MFXButton clearButton;
-    @FXML
-    private MFXButton submitButton;
-    @FXML
-    private MFXButton previewButton;
-    @FXML
-    private FlowPane checkoutFlowplan;
+    @FXML private MFXTextField userFirstField;
+    @FXML private Text userFirstValidator;
+    @FXML private MFXTextField userLastField;
+    @FXML private Text userLastValidator;
+    @FXML private MFXComboBox assignedStaffComboBox;
+    @FXML private Text assignedStaffValidator;
+    @FXML private MFXDatePicker deliveryDateField;
+    @FXML private Text dateValidator;
+    @FXML private Text minValidator;
+    @FXML private Text hourValidator;
+    @FXML private Text locationValidator;
+    @FXML private MFXButton cancelButton;
+    @FXML private MFXButton clearButton;
+    @FXML private MFXButton submitButton;
+    @FXML private MFXButton previewButton;
+    @FXML private FlowPane checkoutFlowplan;
 
-    @FXML
-    private MFXComboBox<Integer> hourComboBox;
-    @FXML
-    private MFXComboBox<String> minComboBox;
+    @FXML private MFXComboBox<Integer> hourComboBox;
+    @FXML private MFXComboBox<String> minComboBox;
     private int hour;
     private int min;
 
     //  @FXML private Text location;
-    @FXML
-    private MFXFilterComboBox<String> locationComboBox;
-    @FXML
-    private Text shopName;
-@FXML
-private BorderPane basePane;
-    @FXML
-    private GesturePane groundFloor;
+    @FXML private MFXFilterComboBox<String> locationComboBox;
+    @FXML private Text shopName;
+    @FXML private BorderPane basePane;
+    @FXML private GesturePane groundFloor;
 
-    @FXML
-    private ImageView groundFloorImage;
+    @FXML private ImageView groundFloorImage;
 
-    @FXML
-    private ImageView lowerLevel1Image;
+    @FXML private ImageView lowerLevel1Image;
 
-    @FXML
-    private ImageView lowerLevel2Image;
+    @FXML private ImageView lowerLevel2Image;
 
-    @FXML
-    private ImageView floor1Image;
+    @FXML private ImageView floor1Image;
 
-    @FXML
-    private ImageView floor2Image;
+    @FXML private ImageView floor2Image;
 
-    @FXML
-    private ImageView floor3Image;
+    @FXML private ImageView floor3Image;
 
-    @FXML
-    private Group groundGroup;
-    @FXML
-    private Group L1Group;
-    @FXML
-    private Group L2Group;
-    @FXML
-    private Group floor1Group;
-    @FXML
-    private Group floor2Group;
-    @FXML
-    private Group floor3Group;
+    @FXML private Group groundGroup;
+    @FXML private Group L1Group;
+    @FXML private Group L2Group;
+    @FXML private Group floor1Group;
+    @FXML private Group floor2Group;
+    @FXML private Group floor3Group;
 
 
     @FXML
@@ -151,9 +123,6 @@ private BorderPane basePane;
             checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, App.furnitureHashMap.get(key)));
         });
         checkoutFlowplan.setAlignment(Pos.CENTER);
-
-
-        //shopName.setText("Storage");
 
         clearButton.setOnMouseClicked(event -> clearForm());
 
