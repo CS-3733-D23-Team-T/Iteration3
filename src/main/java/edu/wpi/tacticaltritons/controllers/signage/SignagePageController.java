@@ -39,10 +39,10 @@ public class SignagePageController {
     @FXML private VBox signageBackLocations;
     @FXML private Rectangle signageBackSeparator;
 
-    double seperatorRatio = 0.6;
-    double arrowIconSize = 400;
-    int fontSize = 70;
-    double referenceWidth = 3840;
+    private double seperatorRatio = 0.6;
+    private double arrowIconSize = 400;
+    private int fontSize = 70;
+    private double referenceWidth = 3840;
     VBox[] signageLocationBlocks;
 
     ArrayList<Label> locationLabels;

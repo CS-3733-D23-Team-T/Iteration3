@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.font.MFXFontIcon?>
+<?import javafx.geometry.Insets?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="100" prefWidth="563" alignment="CENTER">
+    <MFXButton id="deleteButton" text="" fx:id="delete" prefHeight="60" prefWidth="60" minWidth="60" minHeight="60">
+        <HBox.margin>
+            <Insets top="10" bottom="10" left="10" right="10"/>
+        </HBox.margin>
+        <graphic>
+            <MFXFontIcon description="mfx-x-alt" style="-mfx-color: white" size="30"/>
+        </graphic>
+    </MFXButton>
+    <MFXTextField fx:id="content" prefHeight="60" prefWidth="483">
+        <HBox.margin>
+            <Insets top="10" bottom="10" right="10"/>
+        </HBox.margin>
+    </MFXTextField>
+</HBox>
