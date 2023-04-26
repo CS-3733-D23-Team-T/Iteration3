@@ -76,7 +76,7 @@
             </FlowPane>
             <FlowPane alignment="CENTER" orientation="VERTICAL" prefWrapLength="60.0">
                <children>
-                  <MFXTextField fx:id="lastNameField" floatMode="BORDER" floatingText="First Name" prefWidth="200.0" promptText="Last Name">
+                  <MFXTextField fx:id="lastNameField" floatMode="BORDER" floatingText="Last Name" prefWidth="200.0" promptText="Last Name">
                      <font>
                         <Font size="14.0" />
                      </font>

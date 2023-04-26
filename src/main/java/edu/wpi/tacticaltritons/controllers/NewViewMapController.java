@@ -120,6 +120,32 @@ public class NewViewMapController extends MapSuperController {
         });
     }
 
+    public void initializeMenuButton(String page) {
+        this.menuBar.setOnMouseClicked(event -> {
+            if (!menuPane.isVisible()) {
+                menuPane.setVisible(true);
+                switch (page) {
+                    case "ViewMap":
+                        componentShift(210);
+                        break;
+                    case "Pathfinding":
+                        componentShift(210);
+                        break;
+                    case "EditMap":
+                        componentShift(340);
+                        break;
+
+                }
+            } else {
+                menuPane.setVisible(false);
+                componentShift(0);
+            }
+        });
+        this.editMap.setOnAction(event -> {
+            Navigation.navigate(Screen.EDIT_MAP);
+        });
+    }
+
 
 
 
@@ -317,6 +343,7 @@ public class NewViewMapController extends MapSuperController {
             }
             Point2D centrePoint = new Point2D(circle.getCenterX(), circle.getCenterY());
             gesturePane.centreOn(centrePoint);
+            shortestPathMap.clear();
         });
 
 

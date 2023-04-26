@@ -35,6 +35,11 @@ public class HomeServiceRequestsDaoImpl implements HomeServiceRequestsDao {
                             "         JOIN flower F ON L.firstname = F.assignedstafffirst and L.lastname = F.assignedstafflast " +
                             "WHERE F.status = 'Processing' " +
                             "UNION ALL " +
+                            "SELECT L.firstname, L.lastname, 'Supply' as requestType, S.ordernum, S.date, S.time, '' as patientFirst, '' as patientLast, S.items, S.location " +
+                            "FROM Login L " +
+                            "         JOIN officesuppliesform S ON L.firstname = S.assignedstafffirst and L.lastname = S.assignedstafflast " +
+                            "WHERE S.status = 'Processing' " +
+                            "UNION ALL " +
                             "SELECT L.firstname, L.lastname, 'Furniture' as requestType, Fr.ordernum, Fr.date, '00:00:00' as deliveryTime, '' as patientFirst, '' as patientLast, Fr.items, Fr.location " +
                             "FROM Login L " +
                             "         JOIN furnitureforms Fr ON L.firstname = Fr.assignedstafffirst AND L.lastname = Fr.assignedstafflast " +

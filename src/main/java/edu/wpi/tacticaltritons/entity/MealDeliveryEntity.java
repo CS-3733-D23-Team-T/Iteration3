@@ -33,6 +33,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -254,7 +255,6 @@ public class MealDeliveryEntity {
             int quantity = orderList.get(item);
             double p = priceList.get(item);
             if (orderList.get(item) > 0) items.set(items.get() + item + " (" + orderList.get(item) + ")\n");
-            //TODO on click create new rectangle with item image, description, +/- buttons, and qty
             price.set(price.get() + p * quantity);
         }
     }
@@ -462,7 +462,7 @@ public class MealDeliveryEntity {
                     hBox.setPadding(new Insets(20, 0, 10, 20));
                     stackPane2 = new StackPane(rectangle, hBox);//combine them
                 } else { //meals
-                    orderList.put(title.get(i), 0);//TODO new
+                    orderList.put(title.get(i), 0);
                     rectangle.getStyleClass().add("rectangle-gray");
                     top.getStyleClass().add("text-general");
                     top.wrappingWidthProperty().bind(rectangle.widthProperty().divide(1.2));
@@ -596,8 +596,15 @@ public class MealDeliveryEntity {
 
                     MFXStageDialog finalStageDialog = stageDialog;
                     finalStageDialog.show();
+                    ColorAdjust shadow = new ColorAdjust();
+                    shadow.setBrightness(-.6);
+                    App.getRootPane().getCenter().setEffect(shadow);
+                    App.getRootPane().getCenter().setStyle("-fx-background-color: rgba(102,102,102,0.6)");
+                    content.setMaxSize(App.getRootPane().getWidth()/3, App.getRootPane().getHeight()/3);
                     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event1 -> {
                         finalStageDialog.close();
+                        App.getRootPane().getCenter().setEffect(null);
+                        App.getRootPane().getCenter().setStyle(null);
                         Navigation.navigate(Screen.HOME);
                     }));
                     timeline.play();
