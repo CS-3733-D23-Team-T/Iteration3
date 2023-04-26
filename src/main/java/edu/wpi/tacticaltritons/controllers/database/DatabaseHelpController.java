@@ -9,6 +9,7 @@ public class DatabaseHelpController {
 @FXML private MFXScrollPane helptext;
   @FXML
   public void initialize() {
+
     helptext.setFitToHeight(true);
     helptext.setFitToWidth(true);
     helptext.heightProperty().addListener(new ChangeListener<Number>() {

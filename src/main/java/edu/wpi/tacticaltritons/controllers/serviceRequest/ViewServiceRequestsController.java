@@ -41,18 +41,27 @@ public class ViewServiceRequestsController {
     TableView<Flower> tableFlower = new TableView<>();
     TableView<Conference> tableConference = new TableView<>();
     TableView<Furniture> tableFurniture = new TableView<>();
+    TableView<Supply> tableSupply = new TableView<>();
     private final double minWidth = 1280;
     private final double minHeight = 650;
 
     @FXML
     public void initialize() throws SQLException, ClassNotFoundException {
-
         initConferenceRoomRequestTable();
         initFlowerRequestsTable();
         initFurnitureRequestTable();
         intiOfficeSupplyRequestTable();
         initMealRequestTable();
+        initStyles();
+    }
 
+    public void initStyles(){
+        basePane.setStyle("-fx-padding: 25px;");
+        conferenceRoomRequest.setStyle("-fx-alignment: center;");
+        flowerRequests.setStyle("-fx-alignment: center;");
+        furnitureRequest.setStyle("-fx-alignment: center;");
+        officeSupplyRequest.setStyle("-fx-alignment: center;");
+        mealRequests.setStyle("-fx-alignment: center;");
     }
 
     private void initMealRequestTable() {
@@ -116,7 +125,7 @@ public class ViewServiceRequestsController {
                         setText(null);
                         setGraphic(null);
                     } else if (item.toString().equals("")) {
-                        button.setStyle("-fx-background-color: green;");
+                        button.setStyle("-fx-background-color: green; -fx-font-fill: white;");
                         setText(null);
                         setGraphic(button);
                         button.setOnAction(event -> {
@@ -135,7 +144,7 @@ public class ViewServiceRequestsController {
                         Meal meal = getTableView().getItems().get(getIndex());
 
                         if ((meal.getAssignedStaffFirst().equals(UserSessionToken.getUser().getFirstname())) && (meal.getAssignedStaffLast().equals(UserSessionToken.getUser().getLastname()))) {
-                            button2.setStyle("-fx-background-color: red;");
+                            button2.setStyle("-fx-background-color: #c00b0b; -fx-font-fill: white;");
                             setText(null);
                             setGraphic(button2);
                             button2.setOnAction(event -> {
@@ -163,15 +172,160 @@ public class ViewServiceRequestsController {
 
         tableMeal.getItems().addAll(mealObservableList);
 
-        tableMeal.setPrefWidth(App.getPrimaryStage().widthProperty().get());
-        tableMeal.setPrefHeight(App.getPrimaryStage().heightProperty().get());
         tableMeal.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        App.getPrimaryStage().widthProperty().addListener(((obs, o, n) -> {
+            double scaleX = mealRequests.getWidth() / App.getPrimaryStage().getWidth();
+            mealRequests.setMinWidth(scaleX);
+        }));
+        App.getPrimaryStage().heightProperty().addListener(((obs, o, n) -> {
+            double scaleY = mealRequests.getHeight() / App.getPrimaryStage().getHeight();
+            mealRequests.setMinHeight(scaleY);
+        }));
+
+        mealRequests.widthProperty().addListener((observable, oldValue, newValue) -> {
+            mealRequests.getChildren().clear();
+            tableMeal.setMinWidth(mealRequests.getMinWidth());
+            tableMeal.setPrefWidth(newValue.doubleValue());
+            mealRequests.getChildren().add(tableMeal);
+        });
+
+        mealRequests.heightProperty().addListener((observable, oldValue, newValue) -> {
+            mealRequests.getChildren().clear();
+            tableMeal.setMinHeight(newValue.doubleValue());
+            tableMeal.setPrefHeight(newValue.doubleValue());
+            mealRequests.getChildren().add(tableMeal);
+        });
         tableMeal.getStyleClass().add("table-view");
-        mealRequests.getChildren().add(tableMeal);
     }
 
     private void intiOfficeSupplyRequestTable() {
+        officeSupplyRequest.getChildren().clear();
+        tableSupply = new TableView<>();
+        TableColumn<Supply, Integer> orderNumber = new TableColumn<>("Order Number");
+        orderNumber.setCellValueFactory(new PropertyValueFactory<>("orderNum"));
 
+        TableColumn<Supply, String> firstName = new TableColumn<>("First Name");
+        firstName.setCellValueFactory(new PropertyValueFactory<>("requesterFirst"));
+
+        TableColumn<Supply, String> lastName = new TableColumn<>("Last Name");
+        lastName.setCellValueFactory(new PropertyValueFactory<>("requesterLast"));
+
+        TableColumn<Supply, String> assigendFirst = new TableColumn<>("Assigned First Name");
+        assigendFirst.setCellValueFactory(new PropertyValueFactory<>("assignedStaffFirst"));
+
+        TableColumn<Supply, String> assigendLast = new TableColumn<>("Assigned Last Name");
+        assigendLast.setCellValueFactory(new PropertyValueFactory<>("assignedStaffLast"));
+
+        TableColumn<Supply, Date> date = new TableColumn<>("Date");
+        date.setCellValueFactory(new PropertyValueFactory<>("deliveryDate"));
+
+        TableColumn<Supply, Time> time = new TableColumn<>("Time");
+        time.setCellValueFactory(new PropertyValueFactory<>("deliveryTime"));
+
+        TableColumn<Supply, String> location = new TableColumn<>("Location");
+        location.setCellValueFactory(new PropertyValueFactory<>("location"));
+
+        TableColumn<Supply, String> items = new TableColumn<>("Items");
+        items.setCellValueFactory(new PropertyValueFactory<>("items"));
+
+        TableColumn<Supply, String> total = new TableColumn<>("Total");
+        total.setCellValueFactory(new PropertyValueFactory<>("total"));
+
+        TableColumn<Supply, RequestStatus> status = new TableColumn<>("Status");
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        ObservableList<Supply> supplyObservableList = null;
+        try {
+            supplyObservableList = FXCollections.observableArrayList(DAOFacade.getAllSupply());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        tableSupply.getColumns().addAll(orderNumber, status, firstName, lastName, assigendFirst, assigendLast, date, time, location, items, total);
+
+        status.setCellFactory(column -> {
+            return new TableCell<Supply, RequestStatus>() {
+                private final MFXButton button = new MFXButton("Accept");
+                private final MFXButton button2 = new MFXButton("Cancel");
+
+                protected void updateItem(RequestStatus item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else if (item.toString().equals("")) {
+                        button.setStyle("-fx-background-color: green;");
+                        setText(null);
+                        setGraphic(button);
+                        button.setOnAction(event -> {
+                            Supply supply = getTableView().getItems().get(getIndex());
+                            supply.setAssignedStaffLast(UserSessionToken.getUser().getLastname());
+                            supply.setAssignedStaffFirst(UserSessionToken.getUser().getFirstname());
+                            supply.setStatus(RequestStatus.PROCESSING);
+                            getTableView().refresh();
+                            try {
+                                DAOFacade.updateSupply(supply);
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    } else if (item.toString().equals("Processing")) {
+                        Supply supply = getTableView().getItems().get(getIndex());
+
+                        if ((supply.getAssignedStaffFirst().equals(UserSessionToken.getUser().getFirstname())) && (supply.getAssignedStaffLast().equals(UserSessionToken.getUser().getLastname()))) {
+                            button2.setStyle("-fx-background-color: red;");
+                            setText(null);
+                            setGraphic(button2);
+                            button2.setOnAction(event -> {
+                                supply.setAssignedStaffLast(null);
+                                supply.setAssignedStaffFirst(null);
+                                supply.setStatus(RequestStatus.BLANK);
+                                getTableView().refresh();
+                                try {
+                                    DAOFacade.updateSupply(supply);
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+                        } else {
+                            setText(item.toString());
+                            setGraphic(null);
+                        }
+                    } else {
+                        setText(item.toString());
+                        setGraphic(null);
+                    }
+                }
+            };
+        });
+
+        tableSupply.getItems().addAll(supplyObservableList);
+
+        tableSupply.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        App.getPrimaryStage().widthProperty().addListener(((obs, o, n) -> {
+            double scaleX = officeSupplyRequest.getWidth() / App.getPrimaryStage().getWidth();
+            officeSupplyRequest.setMinWidth(scaleX);
+        }));
+        App.getPrimaryStage().heightProperty().addListener(((obs, o, n) -> {
+            double scaleY = officeSupplyRequest.getHeight() / App.getPrimaryStage().getHeight();
+            officeSupplyRequest.setMinHeight(scaleY);
+        }));
+
+        officeSupplyRequest.widthProperty().addListener((observable, oldValue, newValue) -> {
+            officeSupplyRequest.getChildren().clear();
+            tableSupply.setMinWidth(officeSupplyRequest.getMinWidth());
+            tableSupply.setPrefWidth(newValue.doubleValue());
+            officeSupplyRequest.getChildren().add(tableSupply);
+        });
+
+        officeSupplyRequest.heightProperty().addListener((observable, oldValue, newValue) -> {
+            officeSupplyRequest.getChildren().clear();
+            tableSupply.setMinHeight(newValue.doubleValue());
+            tableSupply.setPrefHeight(newValue.doubleValue());
+            officeSupplyRequest.getChildren().add(tableSupply);
+        });
+        tableSupply.getStyleClass().add("table-view");
     }
 
     private void initFurnitureRequestTable() {
@@ -226,7 +380,7 @@ public class ViewServiceRequestsController {
                         setText(null);
                         setGraphic(null);
                     } else if (item.toString().equals("")) {
-                        button.setStyle("-fx-background-color: green;");
+                        button.setStyle("-fx-background-color: green; -fx-font-fill: white;");
                         setText(null);
                         setGraphic(button);
                         button.setOnAction(event -> {
@@ -245,7 +399,7 @@ public class ViewServiceRequestsController {
                         Furniture furniture = getTableView().getItems().get(getIndex());
 
                         if ((furniture.getAssignedStaffFirst().equals(UserSessionToken.getUser().getFirstname())) && (furniture.getAssignedStaffLast().equals(UserSessionToken.getUser().getLastname()))) {
-                            button2.setStyle("-fx-background-color: red;");
+                            button2.setStyle("-fx-background-color: #c00b0b; -fx-font-fill: white;");
                             setText(null);
                             setGraphic(button2);
                             button2.setOnAction(event -> {
@@ -273,11 +427,31 @@ public class ViewServiceRequestsController {
 
         tableFurniture.getItems().addAll(furnitureObservableList);
 
-        tableFurniture.setPrefWidth(App.getPrimaryStage().widthProperty().get());
-        tableFurniture.setPrefHeight(App.getPrimaryStage().heightProperty().get());
         tableFurniture.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        App.getPrimaryStage().widthProperty().addListener(((obs, o, n) -> {
+            double scaleX = furnitureRequest.getWidth() / App.getPrimaryStage().getWidth();
+            furnitureRequest.setMinWidth(scaleX);
+        }));
+        App.getPrimaryStage().heightProperty().addListener(((obs, o, n) -> {
+            double scaleY = furnitureRequest.getHeight() / App.getPrimaryStage().getHeight();
+            furnitureRequest.setMinHeight(scaleY);
+        }));
+
+        furnitureRequest.widthProperty().addListener((observable, oldValue, newValue) -> {
+            furnitureRequest.getChildren().clear();
+            tableFurniture.setMinWidth(furnitureRequest.getMinWidth());
+            tableFurniture.setPrefWidth(newValue.doubleValue());
+            furnitureRequest.getChildren().add(tableFurniture);
+        });
+
+        furnitureRequest.heightProperty().addListener((observable, oldValue, newValue) -> {
+            furnitureRequest.getChildren().clear();
+            tableFurniture.setMinHeight(newValue.doubleValue());
+            tableFurniture.setPrefHeight(newValue.doubleValue());
+            furnitureRequest.getChildren().add(tableFurniture);
+        });
         tableFurniture.getStyleClass().add("table-view");
-        furnitureRequest.getChildren().add(tableFurniture);
     }
 
     private void initFlowerRequestsTable() {
@@ -344,7 +518,7 @@ public class ViewServiceRequestsController {
                         setText(null);
                         setGraphic(null);
                     } else if (item.toString().equals("")) {
-                        button.setStyle("-fx-background-color: green;");
+                        button.setStyle("-fx-background-color: green; -fx-font-fill: white;");
                         setText(null);
                         setGraphic(button);
                         button.setOnAction(event -> {
@@ -363,7 +537,7 @@ public class ViewServiceRequestsController {
                         Flower flower = getTableView().getItems().get(getIndex());
 
                         if ((flower.getAssignedStaffFirst().equals(UserSessionToken.getUser().getFirstname())) && (flower.getAssignedStaffLast().equals(UserSessionToken.getUser().getLastname()))) {
-                            button2.setStyle("-fx-background-color: red;");
+                            button2.setStyle("-fx-background-color: #c00b0b; -fx-font-fill: white;");
                             setText(null);
                             setGraphic(button2);
                             button2.setOnAction(event -> {
@@ -391,11 +565,31 @@ public class ViewServiceRequestsController {
 
         tableFlower.getItems().addAll(flowerObservableList);
 
-        tableFlower.setPrefWidth(App.getPrimaryStage().widthProperty().get());
-        tableFlower.setPrefHeight(App.getPrimaryStage().heightProperty().get());
         tableFlower.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        App.getPrimaryStage().widthProperty().addListener(((obs, o, n) -> {
+            double scaleX = flowerRequests.getWidth() / App.getPrimaryStage().getWidth();
+            flowerRequests.setMinWidth(scaleX);
+        }));
+        App.getPrimaryStage().heightProperty().addListener(((obs, o, n) -> {
+            double scaleY = flowerRequests.getHeight() / App.getPrimaryStage().getHeight();
+            flowerRequests.setMinHeight(scaleY);
+        }));
+
+        flowerRequests.widthProperty().addListener((observable, oldValue, newValue) -> {
+            flowerRequests.getChildren().clear();
+            tableFlower.setMinWidth(flowerRequests.getMinWidth());
+            tableFlower.setPrefWidth(newValue.doubleValue());
+            flowerRequests.getChildren().add(tableFlower);
+        });
+
+        flowerRequests.heightProperty().addListener((observable, oldValue, newValue) -> {
+            flowerRequests.getChildren().clear();
+            tableFlower.setMinHeight(newValue.doubleValue());
+            tableFlower.setPrefHeight(newValue.doubleValue());
+            flowerRequests.getChildren().add(tableFlower);
+        });
         tableFlower.getStyleClass().add("table-view");
-        flowerRequests.getChildren().add(tableFlower);
     }
 
     private void initConferenceRoomRequestTable() {
@@ -445,7 +639,7 @@ public class ViewServiceRequestsController {
                         setText(null);
                         setGraphic(null);
                     } else if (item.toString().equals("Processing") && UserSessionToken.getUser().isAdmin()) {
-                        button.setStyle("-fx-background-color: green;");
+                        button.setStyle("-fx-background-color: green; -fx-text-fill: white;");
                         setText(null);
                         setGraphic(button);
                         button.setOnAction(event -> {
@@ -467,12 +661,31 @@ public class ViewServiceRequestsController {
         });
 
         tableConference.getItems().addAll(conferenceObservableList);
-        Platform.runLater(() -> {
-            tableConference.setPrefWidth(App.getPrimaryStage().widthProperty().get() - 15);
-            tableConference.setPrefHeight(basePane.heightProperty().get());
-            tableConference.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-            tableConference.getStyleClass().add("table-view");
+
+        tableConference.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        App.getPrimaryStage().widthProperty().addListener(((obs, o, n) -> {
+            double scaleX = conferenceRoomRequest.getWidth() / App.getPrimaryStage().getWidth();
+            conferenceRoomRequest.setMinWidth(scaleX);
+        }));
+        App.getPrimaryStage().heightProperty().addListener(((obs, o, n) -> {
+            double scaleY = conferenceRoomRequest.getHeight() / App.getPrimaryStage().getHeight();
+            conferenceRoomRequest.setMinHeight(scaleY);
+        }));
+
+        conferenceRoomRequest.widthProperty().addListener((observable, oldValue, newValue) -> {
+            conferenceRoomRequest.getChildren().clear();
+            tableConference.setMinWidth(conferenceRoomRequest.getMinWidth());
+            tableConference.setPrefWidth(newValue.doubleValue());
             conferenceRoomRequest.getChildren().add(tableConference);
         });
+
+        conferenceRoomRequest.heightProperty().addListener((observable, oldValue, newValue) -> {
+            conferenceRoomRequest.getChildren().clear();
+            tableConference.setMinHeight(newValue.doubleValue());
+            tableConference.setPrefHeight(newValue.doubleValue());
+            conferenceRoomRequest.getChildren().add(tableConference);
+        });
+        tableConference.getStyleClass().add("table-view");
     }
 }

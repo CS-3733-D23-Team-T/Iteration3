@@ -17,10 +17,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.image.Image;
@@ -38,6 +36,9 @@ import org.controlsfx.control.PopOver;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -45,8 +46,10 @@ import java.util.concurrent.Flow;
 
 
 public class HomeController {
-    @FXML FlowPane requestsPane;
-    @FXML BorderPane borderPaneHome;
+    @FXML
+    FlowPane requestsPane;
+    @FXML
+    BorderPane borderPaneHome;
     @FXML
     FlowPane movesPane;
     @FXML
@@ -80,22 +83,64 @@ public class HomeController {
     @FXML
     private FlowPane titleFlowPane;
 
-    @FXML private BorderPane announcementsPane;
+    @FXML
+    private GridPane announcementGridPane;
 
     TableView<HomeServiceRequests> tableServiceRequest = new TableView<>();
     TableView<Invitations> tableInvitation = new TableView<>();
 
     @FXML
     public void initialize() throws SQLException, IOException {
-        announcementsPane.maxWidthProperty().bind(App.getPrimaryStage().widthProperty());
-        App.getNavBar().maxWidthProperty().bind(App.getPrimaryStage().widthProperty());
-        borderPaneHome.maxWidthProperty().bind(App.getPrimaryStage().widthProperty());
-        tableGridPane.maxWidthProperty().bind(App.getPrimaryStage().widthProperty());
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT_ROOT.getFilename()));
-        announcementsPane.setCenter(loader.load());
+        initAnnouncements();
         initEventTable();
         initMoveTable();
         initServiceTable();
+    }
+
+    private void initAnnouncements() throws SQLException, IOException {
+        List<Announcements> announcementsList = DAOFacade.getAllAnnouncements(Timestamp.valueOf(LocalDateTime.now()));
+
+        if (announcementsList.isEmpty()) {
+
+        } else {
+            for (int i = 0; i < announcementsList.size(); i++) {
+                if (i == 0) {
+                    FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
+                    GridPane gridPane = loader.load();
+                    setContent(gridPane, announcementsList.get(i));
+                    gridPane.setMargin(gridPane,new Insets(10,10,10,10));
+                    announcementGridPane.add(gridPane, 0,0);
+                    ColumnConstraints newCol = new ColumnConstraints();
+                    newCol.setHgrow(Priority.ALWAYS);
+                    announcementGridPane.getColumnConstraints().add(i,newCol);
+
+                } else {
+                    FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
+                    GridPane gridPane = loader.load();
+                    setContent(gridPane, announcementsList.get(i));
+                    gridPane.setMargin(gridPane,new Insets(10,10,10,10));
+                    announcementGridPane.addColumn(i, gridPane);
+                    ColumnConstraints newCol = new ColumnConstraints();
+                    newCol.setHgrow(Priority.ALWAYS);
+                    announcementGridPane.getColumnConstraints().add(i,newCol);
+                }
+            }
+        }
+    }
+
+    private void setContent(GridPane gridPane, Announcements announcements) {
+        List<Node> nodes = gridPane.getChildren();
+        for (Node node : nodes) {
+            if (node.getClass().equals(Label.class)) {
+                if (node.getId().equals("discriptionLabel")) {
+                    ((Label) node).setText(announcements.getContent());
+                }else if (node.getId().equals("titleLabel")) {
+                    ((Label) node).setText(announcements.getTitle());
+                } else if (node.getId().equals("dateLabel")) {
+                    ((Label) node).setText(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(announcements.getEffectiveDate().toLocalDateTime()));
+                }
+            }
+        }
     }
 
     private void initEventTable() {
@@ -357,6 +402,10 @@ public class HomeController {
                             Furniture furniture = DAOFacade.getFurniture(request.getOrderNum());
                             furniture.setStatus(RequestStatus.DONE);
                             DAOFacade.updateFurniture(furniture);
+                        } else if (request.getRequestType().equals("Supply")) {
+                            Supply supply = DAOFacade.getSupply(request.getOrderNum());
+                            supply.setStatus(RequestStatus.DONE);
+                            DAOFacade.updateSupply(supply);
                         }
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
@@ -382,7 +431,6 @@ public class HomeController {
         TableColumn<HomeServiceRequests, String> title = new TableColumn<>("Service Request Table");
 
         tableServiceRequest.getColumns().addAll(completed, serviceType, items, location, fullNameCol, deliveryDate, deliveryTime);
-
 
 
         tableServiceRequest.getItems().addAll(requestObservableList);

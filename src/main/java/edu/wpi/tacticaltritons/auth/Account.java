@@ -14,26 +14,13 @@ import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 public class Account {
-    public static int createUser(
-            String username,
-            String plaintextPassword,
-            String email,
-            String firstname,
-            String lastname,
-            boolean admin)
-            throws SQLException {
-        int validationResult = Validator.validate(DAOFacade.getAllLogins(), email);
-        if(validationResult != 1){
-            return validationResult;
-        }
-
-
-        // start create new account
+    private static String[] createHexPassword(String plaintextPassword){
         MessageDigest digest;
         String hexPasswordHash;
         String hexSalt;
         try {
             digest = MessageDigest.getInstance("SHA-256");
+            digest.reset();
 
             byte[] salt = new byte[16];
             SecureRandom random = new SecureRandom();
@@ -55,31 +42,50 @@ public class Account {
                 builder.append(String.format("%02x", b));
             }
             hexSalt = builder.toString();
+        } catch (NoSuchAlgorithmException ex) {
+            throw new RuntimeException(ex);
+        }
+        return new String[]{hexPasswordHash, hexSalt};
+    }
 
-            DAOFacade.addLogin(
-                    new Login(username,
-                            hexSalt,
-                            hexPasswordHash,
-                            email,
-                            firstname,
-                            lastname,
-                            admin,
-                            null,
-                            false,
-                            "en-us",
-                            false,
-                            null,
-                            null,
-                            UserSessionToken.DEFAULT_SESSION_TIME,
-                            AlgorithmSingleton.ASTAR.name(),
-                            false));
-
-            return 1;
-        } catch (NoSuchAlgorithmException | SQLException e) {
-            e.printStackTrace();
+    public static int createUser(
+            String username,
+            String plaintextPassword,
+            String email,
+            String firstname,
+            String lastname,
+            boolean admin)
+            throws SQLException {
+        int validationResult = Validator.validate(DAOFacade.getAllLogins(), email);
+        if(validationResult != 1){
+            return validationResult;
         }
 
-        return -1;
+
+        // start create new account
+
+        String[] passwordTuple = createHexPassword(plaintextPassword);
+
+        DAOFacade.addLogin(
+                new Login(username,
+                        passwordTuple[0],
+                        passwordTuple[1],
+                        email,
+                        firstname,
+                        lastname,
+                        admin,
+                        null,
+                        false,
+                        "en-us",
+                        false,
+                        null,
+                        null,
+                        UserSessionToken.DEFAULT_SESSION_TIME,
+                        AlgorithmSingleton.ASTAR.name(),
+                        false));
+
+        return 1;
+
     }
 
     //ret values:
@@ -93,9 +99,7 @@ public class Account {
 
                 if (login.getTwoFactor()) {
                     LocalDateTime lastLogin = login.getLastLogin();
-                    System.out.println(lastLogin);
                     LocalDateTime currentTime = LocalDateTime.now();
-                    System.out.println(currentTime);
 
                     Duration duration = Duration.between(lastLogin, currentTime);
 
@@ -108,7 +112,6 @@ public class Account {
                         DAOFacade.updateLogin(login);
                         return 2;
                     }
-                    System.out.println(frequency + ", " + verifyDif(frequency, hours) + ", " + hours);
                     if (verifyDif(frequency, hours)) {
                         return 2;
                     }
@@ -173,91 +176,58 @@ public class Account {
     //1 = success
     //2 = oldPasswords dont match
     public static int updatePassword(String plainTextPassword, String plainTextOldPassword){
-        MessageDigest digest;
 
-        try{
-            Login user = DAOFacade.getLogin(UserSessionToken.getUser().getUsername());
-
-            if(!passwordMatch(UserSessionToken.getUser().getUsername(), plainTextOldPassword)){
-                return 2;
-            }
-
-            //new password creation + salt
-            byte[] newSalt = new byte[16];
-            SecureRandom random = new SecureRandom();
-            random.nextBytes(newSalt);
-
-            digest = MessageDigest.getInstance("SHA-256");
-            digest.update(newSalt);
-
-            StringBuilder builder = new StringBuilder();
-            for(byte b : newSalt){
-                builder.append(String.format("%02x", b));
-            }
-            user.setSalt(builder.toString());
-
-            builder = new StringBuilder();
-            byte[] newEncodedHash = digest.digest(plainTextPassword.getBytes(StandardCharsets.UTF_8));
-            digest.reset();
-            digest.update(newSalt);
-            for(byte b : newEncodedHash){
-                builder.append(String.format("%02x", b));
-            }
-            user.setPassword(builder.toString());
-
-
-            DAOFacade.deleteLogin(DAOFacade.getLogin(UserSessionToken.getUser().getUsername()));
-            DAOFacade.addLogin(user);
-            return 1;
-        } catch (SQLException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        if(UserSessionToken.getUser() == null) return -1;
+        if(!passwordMatch(UserSessionToken.getUser().getUsername(), plainTextOldPassword)){
+            return 2;
         }
-        return -1;
+
+        new Thread(() -> {
+            try {
+                Login user = DAOFacade.getLogin(UserSessionToken.getUser().getUsername());
+
+                String[] passwordTuple = createHexPassword(plainTextPassword);
+                user.setPassword(passwordTuple[0]);
+                user.setSalt(passwordTuple[1]);
+
+                DAOFacade.updateLogin(user);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+
+        return 1;
     }
 
-    public static void resetPassword(String plainTextPassword, String email) {
-        Login user;
+    // 1 is success
+    // 2 is old password = new password
+    // 3 no user with that email
+    // -1 fail
+    public static int resetPassword(String plainTextPassword, String email) {
+        Login user = null;
         try {
             user = DAOFacade.getAllLogins().parallelStream().filter(x -> x.getEmail().equals(email)).collect(
                    Collectors.collectingAndThen(Collectors.toList(), list -> list.get(0)));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        } catch (SQLException ignored) { }
         if(user == null){
-            throw new RuntimeException("Couldn't find user");
+            return 3;
         }
+        if(passwordMatch(user.getUsername(), plainTextPassword)) return 2;
 
-        try{
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.reset();
-            byte[] salt = new byte[16];
-            SecureRandom random = new SecureRandom();
-            random.nextBytes(salt);
 
-            digest.update(salt);
-            byte[] encodedHash = digest.digest(plainTextPassword.getBytes(StandardCharsets.UTF_8));
+        String[] passwordTuple = createHexPassword(plainTextPassword);
+        user.setPassword(passwordTuple[0]);
+        user.setSalt(passwordTuple[1]);
 
-            StringBuilder builder = new StringBuilder();
-            for(byte b : salt){
-                builder.append(String.format("%02x", b));
+        Login finalUser = user;
+        new Thread(() -> {
+            try {
+                DAOFacade.updateLogin(finalUser);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-            user.setSalt(builder.toString());
-            builder = new StringBuilder();
-            for(byte b : encodedHash){
-                builder.append(String.format("%02x", b));
-            }
-            user.setPassword(builder.toString());
+        }).start();
 
-            new Thread(() -> {
-                try {
-                    DAOFacade.updateLogin(user);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }).start();
-        }
-        catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        return 1;
     }
 }

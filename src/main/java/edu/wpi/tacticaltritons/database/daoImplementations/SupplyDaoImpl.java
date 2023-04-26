@@ -28,15 +28,15 @@ public class SupplyDaoImpl implements SupplyDao {
       rs = ps.executeQuery();
       if (rs.next()) {
         int orderN = rs.getInt("orderNum");
-        String requesterFirst = rs.getString("requesterFirst");
-        String requesterLast = rs.getString("requesterLast");
+        String requesterFirst = rs.getString("firstname");
+        String requesterLast = rs.getString("lastname");
         String assignedStaffFirst = rs.getString("assignedStaffFirst");
         String assignedStaffLast = rs.getString("assignedStaffLast");
-        Date deliveryDate = rs.getDate("deliveryDate");
-        Time deliveryTime = rs.getTime("deliveryTime");
+        Date deliveryDate = rs.getDate("date");
+        Time deliveryTime = rs.getTime("time");
         String location = rs.getString("location");
         String items = rs.getString("items");
-        int total = rs.getInt("total");
+        int total = rs.getInt("price");
         RequestStatus status = RequestStatus.getEnum(rs.getString("status"));
 
         supply =
@@ -80,15 +80,15 @@ public class SupplyDaoImpl implements SupplyDao {
       connection = Tdb.getConnection();
       String sql =
               "UPDATE officesuppliesform SET "
-                      + "requesterFirst = ?,"
-                      + "requesterLast = ?,"
+                      + "firstname = ?,"
+                      + "lastname = ?,"
                       + "assignedStaffFirst = ?,"
                       + "assignedStaffLast = ?,"
-                      + "deliveryDate = ?,"
-                      + "deliveryTime = ?,"
+                      + "date = ?,"
+                      + "time = ?,"
                       + "location = ?,"
                       + "items = ?,"
-                      + "total = ?,"
+                      + "price = ?,"
                       + "status = ? "
                       + "WHERE orderNum = ?;";
 
@@ -130,8 +130,8 @@ public class SupplyDaoImpl implements SupplyDao {
     try {
       connection = Tdb.getConnection();
       String sql =
-              "INSERT INTO officesuppliesform (requesterFirst, requesterLast, "
-                      + "assignedStaffFirst, assignedStaffLast, deliveryDate, deliveryTime, location, items, total, status) "
+              "INSERT INTO officesuppliesform (firstname, lastname, "
+                      + "assignedStaffFirst, assignedStaffLast, date, time, location, items, price, status) "
                       + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
       ps = connection.prepareStatement(sql);
@@ -207,15 +207,15 @@ public class SupplyDaoImpl implements SupplyDao {
 
       while (rs.next()) {
         int orderNum = rs.getInt("orderNum");
-        String requesterFirst = rs.getString("requesterFirst");
-        String requesterLast = rs.getString("requesterLast");
+        String requesterFirst = rs.getString("firstname");
+        String requesterLast = rs.getString("lastname");
         String assignedStaffFirst = rs.getString("assignedStaffFirst");
         String assignedStaffLast = rs.getString("assignedStaffLast");
-        Date deliveryDate = rs.getDate("deliveryDate");
-        Time deliveryTime = rs.getTime("deliveryTime");
+        Date deliveryDate = rs.getDate("date");
+        Time deliveryTime = rs.getTime("time");
         String location = rs.getString("location");
         String items = rs.getString("items");
-        int total = rs.getInt("total");
+        int total = rs.getInt("price");
         RequestStatus status = RequestStatus.getEnum(rs.getString("status"));
 
         Supply supply =

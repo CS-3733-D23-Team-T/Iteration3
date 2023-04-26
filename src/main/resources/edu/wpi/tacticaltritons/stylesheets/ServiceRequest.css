@@ -37,12 +37,11 @@
 }
 
 .rectangle {
+    -fx-background-color: white;
     -fx-fill: white;
-    -fx-stroke: gray;
     -fx-stroke-width: 0;
     -fx-arc-height: 10;
     -fx-arc-width: 10;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 5, 5);
 }
 
 .rectangle-gray{
@@ -51,7 +50,6 @@
     -fx-stroke-width: 0;
     -fx-arc-height: 10;
     -fx-arc-width: 10;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 5, 5);
 }
 
 /*different button types, different rectangle types*/

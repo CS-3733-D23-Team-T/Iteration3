@@ -91,74 +91,155 @@
     <left>
         <FlowPane id="block" alignment="CENTER" columnHalignment="CENTER" prefHeight="600" prefWidth="400.0" BorderPane.alignment="CENTER">
             <children>
-                <MFXTextField fx:id="userFirstField" floatingText="First Name" prefHeight="50.0" prefWidth="200.0">
-                    <FlowPane.margin>
-                        <Insets left="10.0" right="10.0" top="10.0" />
-                    </FlowPane.margin>
-               <font>
-                  <Font size="15.0" />
-               </font>
-                </MFXTextField>
-                <MFXTextField fx:id="userLastField" floatingText="Last Name" prefHeight="50.0" prefWidth="200.0">
-                    <FlowPane.margin>
-                        <Insets left="10.0" right="10.0" top="10.0" />
-                    </FlowPane.margin>
-               <font>
-                  <Font size="15.0" />
-               </font>
-                </MFXTextField>
-                <MFXTextField fx:id="patientFirstField" floatingText="Patient's First Name" prefHeight="50.0" prefWidth="200.0">
-                    <FlowPane.margin>
-                        <Insets left="10.0" right="10.0" top="10.0" />
-                    </FlowPane.margin>
-               <font>
-                  <Font size="15.0" />
-               </font>
-                </MFXTextField>
-                <MFXTextField fx:id="patientLastField" floatingText="Patient's Last Name" prefHeight="50.0" prefWidth="200.0">
-                    <FlowPane.margin>
-                        <Insets left="10.0" right="10.0" top="10.0" />
-                    </FlowPane.margin>
-               <font>
-                  <Font size="15.0" />
-               </font>
-                </MFXTextField>
-                <MFXFilterComboBox fx:id="assignedComboBox" floatingText="Assigned Staff" floatingTextGap="10.0" prefHeight="50.0" prefWidth="200.0">
-                    <FlowPane.margin>
-                        <Insets left="10.0" right="10.0" top="10.0" />
-                    </FlowPane.margin>
-               <font>
-                  <Font size="15.0" />
-               </font>
-                </MFXFilterComboBox>
-                <MFXFilterComboBox fx:id="locationComboBox" floatingText="Search the map" prefHeight="50.0" prefWidth="200.0" searchText="">
-                    <FlowPane.margin>
-                        <Insets left="10.0" right="10.0" top="10.0" />
-                    </FlowPane.margin>
-               <font>
-                  <Font size="15.0" />
-               </font>
-                </MFXFilterComboBox>
-                <MFXDatePicker fx:id="deliveryDateField" floatingText="Date" prefHeight="50.0" prefWidth="200.0">
-                    <FlowPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </FlowPane.margin>
-               <font>
-                  <Font size="15.0" />
-               </font>
-                </MFXDatePicker>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXTextField fx:id="userFirstField" floatingText="First Name" prefHeight="50.0" prefWidth="200.0">
+                          <FlowPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXTextField>
+                  <Text fx:id="userFirstValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid User First Name" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXTextField fx:id="userLastField" floatingText="Last Name" prefHeight="50.0" prefWidth="200.0">
+                          <FlowPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXTextField>
+                  <Text fx:id="userLastValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid User Last Name" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXTextField fx:id="patientFirstField" floatingText="Patient's First Name" prefHeight="50.0" prefWidth="200.0">
+                          <FlowPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXTextField>
+                  <Text fx:id="patientFirstValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Patient First Name" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXTextField fx:id="patientLastField" floatingText="Patient's Last Name" prefHeight="50.0" prefWidth="200.0">
+                          <FlowPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXTextField>
+                  <Text fx:id="patientLastValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Patient Last Name" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXFilterComboBox fx:id="assignedComboBox" floatingText="Assigned Staff" floatingTextGap="10.0" prefHeight="50.0" prefWidth="200.0">
+                          <FlowPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXFilterComboBox>
+                  <Text fx:id="assignedStaffValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Staff" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXFilterComboBox fx:id="locationComboBox" floatingText="Search the map" prefHeight="50.0" prefWidth="200.0" searchText="">
+                          <FlowPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXFilterComboBox>
+                  <Text fx:id="locationValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Location" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXDatePicker fx:id="deliveryDateField" floatingText="Date" prefHeight="50.0" prefWidth="200.0">
+                          <FlowPane.margin>
+                              <Insets />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXDatePicker>
+                  <Text fx:id="dateValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Date" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="15.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
             <FlowPane alignment="CENTER" columnHalignment="CENTER">
                <children>
-                  <MFXComboBox fx:id="hourComboBox" floatingText="Hour">
-                     <FlowPane.margin>
-                        <Insets right="10.0" />
-                     </FlowPane.margin>
-                  </MFXComboBox>
-                  <MFXComboBox fx:id="minComboBox" floatingText="Minutes">
-                     <FlowPane.margin>
-                        <Insets right="10.0" />
-                     </FlowPane.margin>
-                  </MFXComboBox>
+                  <FlowPane prefWrapLength="70.0">
+                     <children>
+                        <MFXComboBox fx:id="hourComboBox" floatingText="Hour">
+                           <FlowPane.margin>
+                              <Insets right="5.0" />
+                           </FlowPane.margin>
+                        </MFXComboBox>
+                        <Text fx:id="hourValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Hour" visible="false">
+                           <FlowPane.margin>
+                              <Insets left="10.0" />
+                           </FlowPane.margin>
+                        </Text>
+                     </children>
+                  </FlowPane>
+                  <FlowPane prefWrapLength="70.0">
+                     <children>
+                        <MFXComboBox fx:id="minComboBox" floatingText="Minutes">
+                           <FlowPane.margin>
+                              <Insets left="5.0" />
+                           </FlowPane.margin>
+                        </MFXComboBox>
+                        <Text fx:id="minuteValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Minute" visible="false">
+                           <FlowPane.margin>
+                              <Insets left="15.0" />
+                           </FlowPane.margin>
+                        </Text>
+                     </children>
+                  </FlowPane>
                </children>
             </FlowPane>
                 <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="50.0" prefWidth="220.0">
@@ -202,7 +283,7 @@
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
                             <font>
-                                <Font name="Times New Roman" size="18.0" />
+                                <Font size="18.0" />
                             </font>
                             <FlowPane.margin>
                                 <Insets />
@@ -210,7 +291,7 @@
                         </Text>
                         <Text fx:id="shopName" strokeType="OUTSIDE" strokeWidth="0.0" text="EDIBLE ARRANGEMENTS">
                             <font>
-                                <Font name="Times New Roman" size="22.0" />
+                                <Font size="22.0" />
                             </font>
                         </Text>
                     </children>
@@ -242,7 +323,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </FlowPane.margin>
                   </FlowPane>
-                      <MFXButton id="normalButton" fx:id="submitButton" prefHeight="30.0" prefWidth="350" text="Submit" />
+                      <MFXButton id="normalButton" fx:id="submitButton" disable="true" prefHeight="30.0" prefWidth="350" text="Submit" />
                </children>
             </FlowPane>
             </bottom>
