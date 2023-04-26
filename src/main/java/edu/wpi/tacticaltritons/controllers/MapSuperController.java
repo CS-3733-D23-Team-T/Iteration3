@@ -706,6 +706,11 @@ public class MapSuperController {
     }
 
     public void pathfinding(int startNodeID, int endNodeID) {
+        try {
+            shortestPathMap.add(getNodeHashMap().get(startNodeID));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         shortestPathMap.clear();
         xCoord.clear();
         yCoord.clear();
