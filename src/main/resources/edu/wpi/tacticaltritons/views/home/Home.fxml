@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="borderPaneHome" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.home.HomeController">
+<BorderPane fx:id="borderPaneHome" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.home.HomeController">
     <top>
         <BorderPane fx:id="announcementsPane">
 
@@ -44,6 +44,7 @@
                <center>
                         <FlowPane fx:id="eventsPane" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER" />
                </center>
+
             </BorderPane>
             <BorderPane style="-fx-background-color: white; -fx-background-radius: 10;" GridPane.columnIndex="1">
                <GridPane.margin>
@@ -62,13 +63,14 @@
                <center>
                       <FlowPane fx:id="requestsPane" style="-fx-background-color: white;" BorderPane.alignment="CENTER" />
                </center>
+
             </BorderPane>
             <BorderPane style="-fx-background-color: white; -fx-background-radius: 10;" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets bottom="20.0" />
                </GridPane.margin>
                <top>
-                  <FlowPane fx:id="titleFlowPane" alignment="TOP_CENTER" columnHalignment="CENTER" prefWidth="300.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                  <FlowPane fx:id="titleFlowPane" alignment="TOP_CENTER" columnHalignment="CENTER" prefWidth="300.0" style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
                      <padding>
                         <Insets bottom="10.0" />
                      </padding>

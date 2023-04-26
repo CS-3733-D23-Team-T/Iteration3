@@ -449,11 +449,9 @@ public class MealDeliveryEntity {
                 StackPane stackPane2; //stack text and rectangle
                 VBox vBox = new VBox(top, body);
                 vBox.setPadding(new Insets(10));
-
-                if (type) { //if restaurant, rectangle should be horizontal
+                if(type) { //if restaurant, rectangle should be horizontal
                     rectangle.getStyleClass().add("rectangle");
                     imageView.fitWidthProperty().bind(Bindings.max(150.0, imageViewWidth));
-                    rectangle.widthProperty().bind(Bindings.max(302.0, imageViewWidth.multiply(2)));
                     rectangle.heightProperty().bind(Bindings.max(155.0, imageViewWidth.multiply(1.05)));
                     top.getStyleClass().add("text-header");
 
