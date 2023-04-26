@@ -27,7 +27,7 @@
                                  <Insets bottom="10.0" />
                               </StackPane.margin>
                            </Rectangle>
-                           <VBox fx:id="orderListPane" prefHeight="310.0" prefWidth="350.0" spacing="10.0" style="-fx-background-color: ffffff; -fx-background-radius: 10;">
+                           <VBox fx:id="orderListPane" minWidth="350.0" prefHeight="310.0" spacing="10.0" style="-fx-background-color: ffffff; -fx-background-radius: 10;">
                               <children>
                                  <Label fx:id="restaurantDisplayHeader1" alignment="TOP_LEFT" styleClass="text-header" text="Restaurant Name" />
                                  <Label fx:id="priceDisplay" styleClass="text-general" text="Price" />
