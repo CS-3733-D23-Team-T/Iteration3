@@ -149,7 +149,7 @@ public class CreateAccountController {
                         this.usernameField.getText(),
                         this.passwordField.getText(),
                         this.emailField.getText(),
-                        this.passwordField.getText(),
+                        this.firstNameField.getText(),
                         this.lastNameField.getText(),
                         false);
                 if (retValue == 1) {
