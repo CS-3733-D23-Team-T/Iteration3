@@ -7,6 +7,7 @@ import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
+import edu.wpi.tacticaltritons.pathfinding.Directions;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
@@ -43,7 +44,8 @@ public class NewPathfindingController extends MapSuperController {
     @FXML
     private Text textForDirections;
 
-    @FXML private Text pathfindingComment;
+    @FXML
+    private Text pathfindingComment;
 
     public NewPathfindingController() throws SQLException {
     }
@@ -70,10 +72,9 @@ public class NewPathfindingController extends MapSuperController {
                         break;
 
                 }
-                if(pathfindingCommentString == null){
+                if (pathfindingCommentString == null) {
                     pathfindingComment.setText("Nothing here");
-                }
-                else{
+                } else {
                     pathfindingComment.setText(pathfindingCommentString);
                 }
             } else {
@@ -84,6 +85,20 @@ public class NewPathfindingController extends MapSuperController {
         this.editMap.setOnAction(event -> {
             Navigation.navigate(Screen.EDIT_MAP);
         });
+    }
+
+    public void setTextDirections(List<Node> shortestPathMap) throws SQLException {
+        Directions directions = new Directions(shortestPathMap);
+
+        List<String> position = directions.printDirections();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < position.size(); i++) {
+            sb.append(position.get(i));
+            sb.append("\n");
+        }
+        String allPositions = sb.toString();
+        System.out.println(allPositions);
+        textDirections.setText(allPositions);
     }
 
     public void initialize() throws SQLException {
@@ -151,17 +166,11 @@ public class NewPathfindingController extends MapSuperController {
                             }
                         });
                         pathfinding(startNodeID[0], endNodeID[0]);
+                        setTextDirections(shortestPathMap);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
                 });
-
-
-        this.gesturePane.setOnKeyPressed(ke -> {
-            if (ke.getCode().equals(KeyCode.ENTER)) {
-
-            }
-        });
     }
 
 

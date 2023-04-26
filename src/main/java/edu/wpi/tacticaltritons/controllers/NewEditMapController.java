@@ -8,6 +8,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -30,7 +31,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import net.kurobako.gesturefx.GesturePane;
 
-import javax.script.Bindings;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
@@ -203,12 +203,15 @@ public class NewEditMapController extends MapSuperController {
                     longName.setFont(Font.font("Ariel", FontWeight.BOLD, 15));
                     longName.toFront();
 
-                    setLongNamePosition(longName, value.getXcoord() - (longName.getLayoutBounds().getWidth() / 2), value.getYcoord() + (circle.getRadius() * 2) + 5);
-
-
                     if (firstFind == 1) {
                         circleHashMap.put(value.getNodeID(), circle);
                     }
+
+//                    longName.layoutXProperty().bind(Bindings.subtract((longName.getLayoutBounds().getWidth() / 2) , circleHashMap.get(value.getNodeID()).centerXProperty()));
+//                    longName.layoutYProperty().bind(Bindings.add(25 , circleHashMap.get(value.getNodeID()).centerYProperty()));
+
+                    setLongNamePosition(longName, value.getXcoord() - (longName.getLayoutBounds().getWidth() / 2), value.getYcoord() + (circle.getRadius() * 2) + 5);
+
 
                     switch (value.getFloor()) {
                         case "L1":
@@ -333,6 +336,10 @@ public class NewEditMapController extends MapSuperController {
                 System.out.println(lineHashMap.get(circleRightClick.get(1)));
 
                 lineHashMap.get(circleRightClick.get(0)).add(line);
+                line.startXProperty().bind(circleHashMap.get(circleRightClick.get(0)).centerXProperty());
+                line.startYProperty().bind(circleHashMap.get(circleRightClick.get(0)).centerYProperty());
+                line.endXProperty().bind(circleHashMap.get(circleRightClick.get(1)).centerXProperty());
+                line.endYProperty().bind(circleHashMap.get(circleRightClick.get(1)).centerYProperty());
                 clearAllCircles();
                 clearAllLines();
                 try {

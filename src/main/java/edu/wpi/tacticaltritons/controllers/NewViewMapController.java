@@ -343,6 +343,7 @@ public class NewViewMapController extends MapSuperController {
             }
             Point2D centrePoint = new Point2D(circle.getCenterX(), circle.getCenterY());
             gesturePane.centreOn(centrePoint);
+            shortestPathMap.clear();
         });
 
 
