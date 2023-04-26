@@ -197,7 +197,6 @@ public class NewEditMapController extends MapSuperController {
                     }
 
 
-
                     if (!getMoveHashMap().get(value.getNodeID()).getLocation().getNodeType().equals("HALL")) {
                         longName.setText(getMoveHashMap().get(value.getNodeID()).getLocation().getShortName());
                     }
@@ -318,49 +317,43 @@ public class NewEditMapController extends MapSuperController {
             circle.setFill(Color.BLACK);
             circle.setStroke(Color.RED);
             circleRightClick.add(node.getNodeID());
-            if(circleRightClick.size() == 2)
-            {
+            if (circleRightClick.size() == 2) {
                 circleHashMap.get(circleRightClick.get(0)).setFill(Color.RED);
                 circleHashMap.get(circleRightClick.get(0)).setStroke(Color.BLACK);
                 circleHashMap.get(circleRightClick.get(1)).setFill(Color.RED);
                 circleHashMap.get(circleRightClick.get(1)).setStroke(Color.BLACK);
                 Line line = null;
                 try {
-                    line = drawLine(getNodeHashMap().get(circleRightClick.get(0)).getXcoord(),getNodeHashMap().get(circleRightClick.get(0)).getYcoord(),getNodeHashMap().get(circleRightClick.get(1)).getXcoord(),getNodeHashMap().get(circleRightClick.get(1)).getYcoord(), Color.GREEN);
+                    line = drawLine(getNodeHashMap().get(circleRightClick.get(0)).getXcoord(), getNodeHashMap().get(circleRightClick.get(0)).getYcoord(), getNodeHashMap().get(circleRightClick.get(1)).getXcoord(), getNodeHashMap().get(circleRightClick.get(1)).getYcoord(), Color.GREEN);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
 
                 System.out.println(lineHashMap.get(circleRightClick.get(0)));
                 System.out.println(lineHashMap.get(circleRightClick.get(1)));
-                if(lineHashMap.get(circleRightClick.get(0)) != null)
-                {
-                    lineHashMap.get(circleRightClick.get(0)).add(line);
-                }
-                else{
-                    lineHashMap.get(circleRightClick.get(1)).add(line);
-                }
+
+                lineHashMap.get(circleRightClick.get(0)).add(line);
                 switch (selectedFloor.FLOOR.floor) {
                     case "L1":
-                        this.L1Group.getChildren().add(1,line);
+                        this.L1Group.getChildren().add(1, line);
                         break;
                     case "L2":
-                        this.L2Group.getChildren().add(1,line);
+                        this.L2Group.getChildren().add(1, line);
                         break;
                     case "1":
-                        this.floor1Group.getChildren().add(1,line);
+                        this.floor1Group.getChildren().add(1, line);
                         break;
                     case "2":
-                        this.floor2Group.getChildren().add(1,line);
+                        this.floor2Group.getChildren().add(1, line);
                         break;
                     case "3":
-                        this.floor3Group.getChildren().add(1,line);
+                        this.floor3Group.getChildren().add(1, line);
                         break;
                 }
                 clearAllCircles();
                 clearAllLines();
                 try {
-                    findAllNodesEdit(allNodeTypes,selectedFloor.FLOOR.floor, "EditMap");
+                    findAllNodesEdit(allNodeTypes, selectedFloor.FLOOR.floor, "EditMap");
                     findAllEdges(selectedFloor.FLOOR.floor);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -599,10 +592,10 @@ public class NewEditMapController extends MapSuperController {
                 throw new RuntimeException(e);
             }
 
-            circleHashMap.forEach((key,value) -> {
+            circleHashMap.forEach((key, value) -> {
                 try {
-                    getNodeHashMap().get(key).setXcoord((int)value.getCenterX());
-                    getNodeHashMap().get(key).setYcoord((int)value.getCenterY());
+                    getNodeHashMap().get(key).setXcoord((int) value.getCenterX());
+                    getNodeHashMap().get(key).setYcoord((int) value.getCenterY());
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -622,20 +615,15 @@ public class NewEditMapController extends MapSuperController {
         });
 
 
-
-
-
         this.gesturePane.setOnKeyPressed(ke -> {
             if (ke.getCode().equals(KeyCode.ENTER)) {
                 System.out.println("enter");
 
 
-
-                if(deleteLine!=null)
-                {
-                    lineHashMap.forEach((key,value) -> {
-                        for(Line line : deleteLine) {
-                            if (value.contains(line)){
+                if (deleteLine != null) {
+                    lineHashMap.forEach((key, value) -> {
+                        for (Line line : deleteLine) {
+                            if (value.contains(line)) {
                                 value.remove(line);
                             }
                         }
@@ -722,7 +710,7 @@ public class NewEditMapController extends MapSuperController {
                 }
 
                 try {
-                    Line line = drawLine(getNodeHashMap().get(currentNodeSelectedId).getXcoord(),getNodeHashMap().get(currentNodeSelectedId).getYcoord(), getNodeHashMap().get(newEdgeNodeId).getXcoord(), getNodeHashMap().get(newEdgeNodeId).getYcoord(), Color.GREEN);
+                    Line line = drawLine(getNodeHashMap().get(currentNodeSelectedId).getXcoord(), getNodeHashMap().get(currentNodeSelectedId).getYcoord(), getNodeHashMap().get(newEdgeNodeId).getXcoord(), getNodeHashMap().get(newEdgeNodeId).getYcoord(), Color.GREEN);
                     lineHashMap.get(currentNodeSelectedId).add(line);
                     findAllEdges(selectedFloor.FLOOR.floor);
                 } catch (SQLException e) {
