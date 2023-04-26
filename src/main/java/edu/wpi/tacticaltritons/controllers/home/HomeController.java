@@ -104,40 +104,31 @@ public class HomeController {
 
         } else {
             for (int i = 0; i < announcementsList.size(); i++) {
-                if(i == 0)
-                {
-                    FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
-                    //GridPane gridPane = loader.load();
-                    setContent(loader.load(),announcementsList.get(i));
-                    //announcementGridPane.add(gridPane, 0,0);
-                }
-                else
-                {
+                if (i == 0) {
                     FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
                     GridPane gridPane = loader.load();
-                    announcementGridPane.addColumn(i,gridPane);
+                    setContent(gridPane, announcementsList.get(i));
+                    announcementGridPane.add(gridPane, 0,0);
+                } else {
+                    FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
+                    GridPane gridPane = loader.load();
+                    setContent(gridPane, announcementsList.get(i));
+                    announcementGridPane.addColumn(i, gridPane);
                 }
             }
         }
     }
 
-    private void setContent(GridPane gridPane, Announcements announcements)
-    {
+    private void setContent(GridPane gridPane, Announcements announcements) {
         List<Node> nodes = gridPane.getChildren();
-
-        for(Node node : nodes)
-        {
-            System.out.println("Found a label with id: " + node.getId());
-            if(node.getClass().equals(Label.class))
-            {
-                if(node.getId().equals("titleLabel"))
-                {
-                    ((Label) node).setText(announcements.getTitle());
-                } else if(node.getId().equals("dateLabel"))
-                {
-                    ((Label) node).setText(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(announcements.getEffectiveDate().toLocalDateTime()));
-                } else if (node.getId().equals("discriptionLabel")) {
+        for (Node node : nodes) {
+            if (node.getClass().equals(Label.class)) {
+                if (node.getId().equals("discriptionLabel")) {
                     ((Label) node).setText(announcements.getContent());
+                }else if (node.getId().equals("titleLabel")) {
+                    ((Label) node).setText(announcements.getTitle());
+                } else if (node.getId().equals("dateLabel")) {
+                    ((Label) node).setText(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(announcements.getEffectiveDate().toLocalDateTime()));
                 }
             }
         }
