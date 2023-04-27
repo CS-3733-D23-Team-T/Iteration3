@@ -5,6 +5,7 @@ import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.styling.ThemeColors;
+import edu.wpi.tacticaltritons.styling.Translation;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -85,12 +86,18 @@ public class HomeController {
 
     @FXML
     private GridPane announcementGridPane;
+    @FXML Text eventsText;
+    @FXML Text requestText;
+    @FXML Text moveText;
 
     TableView<HomeServiceRequests> tableServiceRequest = new TableView<>();
     TableView<Invitations> tableInvitation = new TableView<>();
 
     @FXML
     public void initialize() throws SQLException, IOException {
+        eventsText.setText(Translation.translate(eventsText.getText()));
+        requestText.setText(Translation.translate(requestText.getText()));
+        moveText.setText(Translation.translate(moveText.getText()));
         initAnnouncements();
         initEventTable();
         initMoveTable();

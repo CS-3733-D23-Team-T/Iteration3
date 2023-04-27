@@ -47,7 +47,7 @@
                               <Insets bottom="20.0" />
                           </GridPane.margin>
                           <top>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Upcoming Events" BorderPane.alignment="CENTER">
+                              <Text fx:id="eventsText" strokeType="OUTSIDE" strokeWidth="0.0" text="Upcoming Events" BorderPane.alignment="CENTER">
                                   <font>
                                       <Font size="30.0" />
                                   </font>
@@ -65,7 +65,7 @@
                               <Insets bottom="20.0" left="20.0" right="20.0" />
                           </GridPane.margin>
                           <top>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Assigned Service Request" BorderPane.alignment="CENTER">
+                              <Text fx:id="requestText" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Assigned Service Request" BorderPane.alignment="CENTER">
                                   <font>
                                       <Font size="30.0" />
                                   </font>
@@ -88,7 +88,7 @@
                                       <Insets bottom="10.0" />
                                   </padding>
                                   <children>
-                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Upcoming Moves">
+                                      <Text fx:id="moveText" strokeType="OUTSIDE" strokeWidth="0.0" text="Upcoming Moves">
                                           <font>
                                               <Font size="30.0" />
                                           </font>
