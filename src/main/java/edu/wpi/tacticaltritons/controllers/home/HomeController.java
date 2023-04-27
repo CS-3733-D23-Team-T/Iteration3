@@ -248,6 +248,7 @@ public class HomeController {
         eventsPane.getChildren().clear();
         eventsPane.getChildren().add(tableInvitation);
         tableInvitation.setFocusTraversable(false);
+        tableInvitation.setPlaceholder(new Label("No Pending Events"));
     }
 
     private void initMoveTable() throws SQLException {
@@ -459,6 +460,7 @@ public class HomeController {
             requestsPane.getChildren().add(tableServiceRequest);
         });
         tableServiceRequest.setFocusTraversable(false);
+        tableServiceRequest.setPlaceholder(new Label("No Pending Requests"));
     }
 
 
