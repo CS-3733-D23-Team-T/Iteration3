@@ -23,12 +23,12 @@ public class UserOptionsController {
 
     @FXML
     private void initialize() throws IOException {
-        userHeader.setText(GoogleTranslate.translate("User Options"));
-        editUserButton.setText(GoogleTranslate.translate("Edit User Info"));
-        changeEmailButton.setText(GoogleTranslate.translate("Change Email"));
-        changePasswordButton.setText(GoogleTranslate.translate("Change Password"));
-        twoFactorButton.setText(GoogleTranslate.translate("Two-Factor Auth"));
-        createAccountButton.setText(GoogleTranslate.translate("Create Account"));
+        userHeader.setText(GoogleTranslate.getString("userOptions"));
+        editUserButton.setText(GoogleTranslate.getString("editUserInfo"));
+        changeEmailButton.setText(GoogleTranslate.getString("changeEmail"));
+        changePasswordButton.setText(GoogleTranslate.getString("changePassword"));
+        twoFactorButton.setText(GoogleTranslate.getString("twoFactorAuth"));
+        createAccountButton.setText(GoogleTranslate.getString("createAccount"));
 
 
         editUserButton.setOnAction(event -> SettingsNavigation.navigate(Screen.EDIT_USER));

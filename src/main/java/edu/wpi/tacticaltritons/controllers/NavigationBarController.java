@@ -41,18 +41,10 @@ public class NavigationBarController {
         nameDisplay.textProperty().bind(UserSessionToken.fullNameProperty);
         UserSessionToken.adminProperty.addListener((obs, o, n) -> {
             if(n){
-                try {
-                    accountTypeDisplay.setText(GoogleTranslate.translate("Admin"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                accountTypeDisplay.setText(GoogleTranslate.getString("admin"));
             }
             else{
-                try {
-                    accountTypeDisplay.setText(GoogleTranslate.translate("Staff"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                accountTypeDisplay.setText(GoogleTranslate.getString("staff"));
             }
         });
 
@@ -87,18 +79,18 @@ public class NavigationBarController {
 
         this.dateAndTime.textProperty().bind(this.dateTime);
 
-        MenuItem settingsItem = new MenuItem(GoogleTranslate.translate("Settings"));
+        MenuItem settingsItem = new MenuItem(GoogleTranslate.getString("settings"));
         settingsItem.setOnAction(event -> Navigation.navigate(Screen.SETTINGS));
-        MenuItem logoutItem = new MenuItem(GoogleTranslate.translate("Logout"));
+        MenuItem logoutItem = new MenuItem(GoogleTranslate.getString("logout"));
         logoutItem.setOnAction(event -> {
             UserSessionToken.revoke();
             Navigation.navigate(Screen.LOGIN);
         });
-        MenuItem exitItem = new MenuItem(GoogleTranslate.translate("Exit"));
+        MenuItem exitItem = new MenuItem(GoogleTranslate.getString("exit"));
         exitItem.setOnAction(event -> App.getPrimaryStage().close());
-        MenuItem aboutItem = new MenuItem(GoogleTranslate.translate("About"));
+        MenuItem aboutItem = new MenuItem(GoogleTranslate.getString("about"));
         aboutItem.setOnAction(event -> Navigation.navigate(Screen.ABOUT));
-        MenuItem creditsItem = new MenuItem(GoogleTranslate.translate("Credits"));
+        MenuItem creditsItem = new MenuItem(GoogleTranslate.getString("credits"));
         creditsItem.setOnAction(event -> Navigation.navigate(Screen.CREDITS));
 
         this.menuButton.getItems().add(settingsItem);

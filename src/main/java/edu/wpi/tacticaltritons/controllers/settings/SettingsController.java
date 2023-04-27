@@ -56,14 +56,14 @@ public class SettingsController {
 
     @FXML
     private void initialize() throws SQLException, IOException {
-        preferenceText.setText(GoogleTranslate.translate("Preferences"));
-        languageText.setText(GoogleTranslate.translate("Language"));
-        frequencyText.setText(GoogleTranslate.translate("Two Factor Frequency"));
-        algoText.setText(GoogleTranslate.translate("Algorithm Preference"));
-        tokenText.setText(GoogleTranslate.translate("Token Time Limit"));
-        warningText.setText(GoogleTranslate.translate("Warning: This Effects All Users"));
-        narrationCheckBox.setText(GoogleTranslate.translate("Narration"));
-        requireTwoFactorCheckBox.setText(GoogleTranslate.translate("Require Two Factor"));
+        preferenceText.setText(GoogleTranslate.getString("preferences"));
+        languageText.setText(GoogleTranslate.getString("language"));
+        frequencyText.setText(GoogleTranslate.getString("twoFactorFrequency"));
+        algoText.setText(GoogleTranslate.getString("algorithmPreference"));
+        tokenText.setText(GoogleTranslate.getString("tokenTimeLimit"));
+        warningText.setText(GoogleTranslate.getString("warningSettings"));
+        narrationCheckBox.setText(GoogleTranslate.getString("narration"));
+        requireTwoFactorCheckBox.setText(GoogleTranslate.getString("requireTwoFactor"));
 
 
         Login user = DAOFacade.getLogin(UserSessionToken.getUser().getUsername());

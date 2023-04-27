@@ -1,5 +1,6 @@
 package edu.wpi.tacticaltritons.controllers.navigation;
 
+import com.sun.java.accessibility.util.Translator;
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
 import edu.wpi.tacticaltritons.styling.GoogleTranslate;
@@ -43,10 +44,10 @@ public class AdminQuickNavigationController {
         announcementsButton.addEventHandler(EventType.ROOT,
                 QuickNavigationMenuButtons.generateQuickNavEventHandler());
 
-        serviceRequestMenuButton.setText(GoogleTranslate.translate("Service Request"));
-        hospitalMapMenuButton.setText(GoogleTranslate.translate("Hospital Map"));
-        signageMenuButton.setText(GoogleTranslate.translate("Signage"));
-        databaseMenuButton.setText(GoogleTranslate.translate("Database"));
-        announcementsButton.setText(GoogleTranslate.translate("Announcements"));
+        serviceRequestMenuButton.setText(GoogleTranslate.getString("serviceRequest"));
+        hospitalMapMenuButton.setText(GoogleTranslate.getString("hospitalMap"));
+        signageMenuButton.setText(GoogleTranslate.getString("signage"));
+        databaseMenuButton.setText(GoogleTranslate.getString("database"));
+        announcementsButton.setText(GoogleTranslate.getString("announcements"));
     }
 }

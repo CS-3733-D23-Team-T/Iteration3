@@ -11,9 +11,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import org.json.JSONArray;
 
@@ -31,12 +29,26 @@ public final class GoogleTranslate { //Class marked as final since all methods a
      */
     private static final String GOOGLE_TRANSLATE_URL = "http://translate.google.com/translate_a/single";
     private static String language = "es";
+    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("edu.wpi.tacticaltritons.language", new Locale(language));
 
     /**
      * Private to prevent instantiation
      */
     private GoogleTranslate() {
     };
+
+    public static String getString(String text){
+        String output;
+        try {
+            output = RESOURCE_BUNDLE.getString(text);
+        } catch (MissingResourceException e){
+            return text;
+        }
+        output = output.replace("\"", "");
+        return output;
+    }
+
+
 
     /**
      * Converts the ISO-639 code into a friendly language code in the user's default language For example, if the language is English and the default

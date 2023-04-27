@@ -19,11 +19,7 @@ public class Navigation {
     public static SimpleStringProperty pageName;
 
     static {
-        try {
-            pageName = new SimpleStringProperty(GoogleTranslate.translate(DEFAULT_SCREEN.formatScreenName()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        pageName = new SimpleStringProperty(GoogleTranslate.getString(DEFAULT_SCREEN.formatScreenName()));
     }
 
     public static SimpleObjectProperty<Screen> screen = new SimpleObjectProperty<>(DEFAULT_SCREEN);
@@ -55,7 +51,7 @@ public class Navigation {
             }
         }
         try {
-            pageName.set(GoogleTranslate.translate(destination.formatScreenName()));
+            pageName.set(GoogleTranslate.getString(destination.formatScreenName()));
             screen.set(destination);
             final var resource = App.class.getResource(destination.getFilename());
             final FXMLLoader loader = new FXMLLoader(resource);
@@ -81,8 +77,6 @@ public class Navigation {
             App.getRootPane().setTop(App.getNavBar());
         } catch (NullPointerException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
     public static void goForward() {

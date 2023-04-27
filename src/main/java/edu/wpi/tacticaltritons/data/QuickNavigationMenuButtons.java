@@ -25,28 +25,28 @@ public class QuickNavigationMenuButtons {
 
     public enum QuickNavigationMenu{SERVICE_REQUEST, HOSPITAL_MAP, SIGNAGE, DATABASE, ANNOUNCEMENTS}
     public QuickNavigationMenuButtons() throws IOException {
-        serviceRequestNavigationMap.put(GoogleTranslate.translate("Meal Request"), Screen.MEAL_RESTAURANT);
-        serviceRequestNavigationMap.put(GoogleTranslate.translate("Flower Request"), Screen.FLOWER_CHOICE);
-        serviceRequestNavigationMap.put(GoogleTranslate.translate("Furniture Request"), Screen.FURNITURE_DELIVERY);
-        serviceRequestNavigationMap.put(GoogleTranslate.translate("Office Supply Request"), Screen.SUPPLY_CHOICE);
-        serviceRequestNavigationMap.put(GoogleTranslate.translate("Conference Room Request"), Screen.CONFERENCE_ROOM);
-        serviceRequestNavigationMap.put(GoogleTranslate.translate("View Service Request"), Screen.VIEW_SERVICE_REQUEST);
+        serviceRequestNavigationMap.put(GoogleTranslate.getString("mealRequest"), Screen.MEAL_RESTAURANT);
+        serviceRequestNavigationMap.put(GoogleTranslate.getString("flowerRequest"), Screen.FLOWER_CHOICE);
+        serviceRequestNavigationMap.put(GoogleTranslate.getString("furnitureRequest"), Screen.FURNITURE_DELIVERY);
+        serviceRequestNavigationMap.put(GoogleTranslate.getString("officeSupplyRequest"), Screen.SUPPLY_CHOICE);
+        serviceRequestNavigationMap.put(GoogleTranslate.getString("conferenceRoomRequest"), Screen.CONFERENCE_ROOM);
+        serviceRequestNavigationMap.put(GoogleTranslate.getString("viewServiceRequest"), Screen.VIEW_SERVICE_REQUEST);
 
 
-        hospitalMapNavigationMap.put(GoogleTranslate.translate("Hospital Map"), Screen.VIEW_MAP);
-        hospitalMapNavigationMap.put(GoogleTranslate.translate("Edit Hospital Map"), Screen.EDIT_MAP);
-        hospitalMapNavigationMap.put(GoogleTranslate.translate("Pathfinding"), Screen.PATHFINDING);
+        hospitalMapNavigationMap.put(GoogleTranslate.getString("hospitalMap"), Screen.VIEW_MAP);
+        hospitalMapNavigationMap.put(GoogleTranslate.getString("editHospitalMap"), Screen.EDIT_MAP);
+        hospitalMapNavigationMap.put(GoogleTranslate.getString("pathfinding"), Screen.PATHFINDING);
 
-        signageNavigationMap.put(GoogleTranslate.translate("Signage"), Screen.SIGNAGE);
-        signageNavigationMap.put(GoogleTranslate.translate("Edit Signage"), Screen.EDIT_SIGNAGE);
-        signageNavigationMap.put(GoogleTranslate.translate("Move Signage"), Screen.MOVE_SIGN);
+        signageNavigationMap.put(GoogleTranslate.getString("signage"), Screen.SIGNAGE);
+        signageNavigationMap.put(GoogleTranslate.getString("editSignage"), Screen.EDIT_SIGNAGE);
+        signageNavigationMap.put(GoogleTranslate.getString("moveSignage"), Screen.MOVE_SIGN);
 
-        databaseNavigationMap.put(GoogleTranslate.translate("Database"), Screen.DATABASE);
-        databaseNavigationMap.put(GoogleTranslate.translate("Edit Database"), Screen.EDIT_DATABASE);
-        databaseNavigationMap.put(GoogleTranslate.translate("Database Help"), Screen.DATABASE_HELP);
+        databaseNavigationMap.put(GoogleTranslate.getString("Database"), Screen.DATABASE);
+        databaseNavigationMap.put(GoogleTranslate.getString("editDatabase"), Screen.EDIT_DATABASE);
+        databaseNavigationMap.put(GoogleTranslate.getString("databaseHelp"), Screen.DATABASE_HELP);
 
-        announcementNavigationMap.put(GoogleTranslate.translate("Edit Announcements"), Screen.EDIT_ANNOUNCEMENTS);
-        announcementNavigationMap.put(GoogleTranslate.translate("Create Announcements"), Screen.CREATE_ANNOUNCEMENTS);
+        announcementNavigationMap.put(GoogleTranslate.getString("editAnnouncements"), Screen.EDIT_ANNOUNCEMENTS);
+        announcementNavigationMap.put(GoogleTranslate.getString("createAnnouncements"), Screen.CREATE_ANNOUNCEMENTS);
     }
     public List<MenuItem> generateMenuButton(boolean admin, QuickNavigationMenu menu){
         List<MenuItem> list = new ArrayList<>();
