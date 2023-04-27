@@ -4,6 +4,7 @@ import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import edu.wpi.tacticaltritons.styling.ThemeColors;
 import edu.wpi.tacticaltritons.styling.Translation;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -95,9 +96,9 @@ public class HomeController {
 
     @FXML
     public void initialize() throws SQLException, IOException {
-        eventsText.setText(Translation.translate(eventsText.getText()));
-        requestText.setText(Translation.translate(requestText.getText()));
-        moveText.setText(Translation.translate(moveText.getText()));
+        eventsText.setText(GoogleTranslate.translate(eventsText.getText()));
+        requestText.setText(GoogleTranslate.translate(requestText.getText()));
+        moveText.setText(GoogleTranslate.translate(moveText.getText()));
         initAnnouncements();
         initEventTable();
         initMoveTable();
