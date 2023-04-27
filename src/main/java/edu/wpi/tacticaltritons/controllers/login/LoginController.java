@@ -9,6 +9,7 @@ import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.navigation.LoginNavigation;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.BooleanProperty;
@@ -31,6 +32,15 @@ public class LoginController {
 
     @FXML
     private void initialize() {
+        usernameField.setPromptText(GoogleTranslate.getString("username"));
+        usernameField.setFloatingText(GoogleTranslate.getString("username"));
+        passwordField.setPromptText(GoogleTranslate.getString("password"));
+        passwordField.setFloatingText(GoogleTranslate.getString("password"));
+        loginButton.setText(GoogleTranslate.getString("Login"));
+        resetPasswordLink.setText(GoogleTranslate.getString("resetPassword"));
+        usernameValidator.setText(GoogleTranslate.getString("usernameValidator"));
+        passwordValidator.setText(GoogleTranslate.getString("passwordValidator"));
+
         BooleanProperty validUsername = new SimpleBooleanProperty(false);
         this.usernameField.textProperty().addListener(Validator.generateValidatorListener(validUsername, "[0-9A-Za-z]{3,32}",
                 this.usernameValidator.getText(), this.usernameValidator));
