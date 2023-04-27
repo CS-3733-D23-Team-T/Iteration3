@@ -30,6 +30,7 @@ public final class GoogleTranslate { //Class marked as final since all methods a
      * URL to query for Translation
      */
     private static final String GOOGLE_TRANSLATE_URL = "http://translate.google.com/translate_a/single";
+    private static String language = "ja";
 
     /**
      * Private to prevent instantiation
@@ -132,7 +133,7 @@ public final class GoogleTranslate { //Class marked as final since all methods a
      *             if it cannot complete the request
      */
     public static String translate(String targetLanguage , String text) throws IOException {
-        return translate("auto", "es", text);
+        return translate("auto", language, text);
     }
 
     /**

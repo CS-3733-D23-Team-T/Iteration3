@@ -55,7 +55,7 @@ public class Navigation {
             }
         }
         try {
-            pageName.set(destination.formatScreenName());
+            pageName.set(GoogleTranslate.translate(destination.formatScreenName()));
             screen.set(destination);
             final var resource = App.class.getResource(destination.getFilename());
             final FXMLLoader loader = new FXMLLoader(resource);
@@ -81,6 +81,8 @@ public class Navigation {
             App.getRootPane().setTop(App.getNavBar());
         } catch (NullPointerException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     public static void goForward() {

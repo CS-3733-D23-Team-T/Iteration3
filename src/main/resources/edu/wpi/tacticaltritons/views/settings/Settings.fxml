@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="650.0" prefWidth="1280.0" stylesheets="@../../stylesheets/Settings.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.settings.SettingsController">
+<BorderPane prefHeight="650.0" prefWidth="1280.0" stylesheets="@../../stylesheets/Settings.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.settings.SettingsController">
    <left>
       <fx:include source="UserOptions.fxml" />
    </left>
    <center>
       <BorderPane style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
          <top>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Preferences" underline="true" BorderPane.alignment="CENTER">
+            <Text fx:id="preferenceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Preferences" underline="true" BorderPane.alignment="CENTER">
                <font>
                   <Font size="32.0" />
                </font>
@@ -30,7 +35,7 @@
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </BorderPane.margin>
                <children>
-                  <CheckBox fx:id="narrationCheckBox" mnemonicParsing="false" text="Narriation">
+                  <CheckBox fx:id="narrationCheckBox" mnemonicParsing="false" text="Narration">
                      <FlowPane.margin>
                         <Insets left="20.0" right="20.0" />
                      </FlowPane.margin>
@@ -45,12 +50,12 @@
                               <Font size="18.0" />
                            </font>
                         </CheckBox>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Warning: This Effects All Users" />
+                        <Text fx:id="warningText" strokeType="OUTSIDE" strokeWidth="0.0" text="Warning: This Effects All Users" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Label text="Language">
+                        <Label fx:id="languageText" text="Language">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -60,7 +65,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Label text="Two Factor Frequency">
+                        <Label fx:id="frequencyText" text="Two Factor Frequency">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -70,7 +75,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Label text="Algorithm Preference">
+                        <Label fx:id="algoText" text="Algorithm Preference">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -80,7 +85,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Label text="Token Time Limit">
+                        <Label fx:id="tokenText" text="Token Time Limit">
                            <font>
                               <Font size="18.0" />
                            </font>

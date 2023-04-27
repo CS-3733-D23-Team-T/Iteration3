@@ -6,6 +6,7 @@ import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.database.Session;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -20,6 +21,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
@@ -29,6 +31,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.apache.commons.validator.routines.EmailValidator;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +47,25 @@ public class SettingsController {
     @FXML private ComboBox<String> twoFactorFrequencyComboBox;
     @FXML private ComboBox<String> tokenTimeComboBox;
     @FXML private ComboBox<String> algorithmPreferenceComboBox;
+    @FXML private Label languageText;
+    @FXML private Label frequencyText;
+    @FXML private Label algoText;
+    @FXML private Label tokenText;
+    @FXML private Text warningText;
+    @FXML private Text preferenceText;
+
     @FXML
-    private void initialize() throws SQLException {
+    private void initialize() throws SQLException, IOException {
+        preferenceText.setText(GoogleTranslate.translate("Preferences"));
+        languageText.setText(GoogleTranslate.translate("Language"));
+        frequencyText.setText(GoogleTranslate.translate("Two Factor Frequency"));
+        algoText.setText(GoogleTranslate.translate("Algorithm Preference"));
+        tokenText.setText(GoogleTranslate.translate("Token Time Limit"));
+        warningText.setText(GoogleTranslate.translate("Warning: This Effects All Users"));
+        narrationCheckBox.setText(GoogleTranslate.translate("Narration"));
+        requireTwoFactorCheckBox.setText(GoogleTranslate.translate("Require Two Factor"));
+
+
         Login user = DAOFacade.getLogin(UserSessionToken.getUser().getUsername());
 
         //todo reenable me soon
