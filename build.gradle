@@ -47,6 +47,8 @@ dependencies {
             'com.github.hervegirod:fxsvgimage:1.1',
             'net.java.dev.jna:jna:5.12.1',
     )
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation 'javax.mail:mail:1.5.0-b01'
 
     String javaFxVersion = "19"
