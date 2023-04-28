@@ -82,7 +82,8 @@ public class Account {
                         null,
                         UserSessionToken.DEFAULT_SESSION_TIME,
                         AlgorithmSingleton.ASTAR.name(),
-                        false));
+                        false,
+                        "WPI database"));
 
         return 1;
 
