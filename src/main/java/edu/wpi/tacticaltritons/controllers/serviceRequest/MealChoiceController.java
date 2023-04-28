@@ -60,7 +60,7 @@ public class MealChoiceController {
 
         uniqueShops.forEach((key, value) -> {
             //This is going to give the image of the flower shops need to look into where the pics for marks code is
-            createShopButton(value, App.flowerHashMap.get(value.getRestaurant()));
+            createShopButton(value, App.mealHashMap.get(value.getRestaurant()));
         });
     }
 

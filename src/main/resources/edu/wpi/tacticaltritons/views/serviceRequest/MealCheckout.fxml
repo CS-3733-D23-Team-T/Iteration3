@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import net.kurobako.gesturefx.GesturePane?>
+
+<BorderPane fx:id="basePane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.FlowerCheckoutController">
+    <center>
+        <StackPane id="block" alignment="TOP_CENTER" prefHeight="600" BorderPane.alignment="CENTER">
+            <children>
+                <GesturePane fx:id="groundFloor">
+                    <StackPane fx:id="selectedFloorPane">
+                        <children>
+                            <Group fx:id="groundGroup">
+                                <children>
+                                    <ImageView fx:id="groundFloorImage" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="L1Group">
+                                <children>
+                                    <ImageView fx:id="lowerLevel1Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="L2Group">
+                                <children>
+                                    <ImageView fx:id="lowerLevel2Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="floor1Group">
+                                <children>
+                                    <ImageView fx:id="floor1Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="floor2Group">
+                                <children>
+                                    <ImageView fx:id="floor2Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+
+                            <Group fx:id="floor3Group">
+                                <children>
+                                    <ImageView fx:id="floor3Image" pickOnBounds="true" preserveRatio="true" visible="false">
+                                        <image>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Group>
+                        </children>
+                    </StackPane>
+               <StackPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </StackPane.margin>
+                </GesturePane>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="20" top="20" />
+            </BorderPane.margin>
+        </StackPane>
+    </center>
+    <left>
+        <FlowPane id="block" alignment="CENTER" columnHalignment="CENTER" prefHeight="600" prefWidth="400.0" BorderPane.alignment="CENTER">
+            <children>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXTextField fx:id="userFirstField" floatingText="First Name" prefHeight="50.0" prefWidth="200.0">
+                          <FlowPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXTextField>
+                  <Text fx:id="userFirstValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid User First Name" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXTextField fx:id="userLastField" floatingText="Last Name" prefHeight="50.0" prefWidth="200.0">
+                          <FlowPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXTextField>
+                  <Text fx:id="userLastValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid User Last Name" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXTextField fx:id="patientFirstField" floatingText="Patient's First Name" prefHeight="50.0" prefWidth="200.0">
+                          <FlowPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXTextField>
+                  <Text fx:id="patientFirstValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Patient First Name" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXTextField fx:id="patientLastField" floatingText="Patient's Last Name" prefHeight="50.0" prefWidth="200.0">
+                          <FlowPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXTextField>
+                  <Text fx:id="patientLastValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Patient Last Name" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXFilterComboBox fx:id="assignedComboBox" floatingText="Assigned Staff" floatingTextGap="10.0" prefHeight="50.0" prefWidth="200.0">
+                          <FlowPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXFilterComboBox>
+                  <Text fx:id="assignedStaffValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Staff" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXFilterComboBox fx:id="locationComboBox" floatingText="Search the map" prefHeight="50.0" prefWidth="200.0" searchText="">
+                          <FlowPane.margin>
+                              <Insets left="5.0" right="5.0" />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXFilterComboBox>
+                  <Text fx:id="locationValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Location" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="20.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane prefWrapLength="70.0">
+               <children>
+                      <MFXDatePicker fx:id="deliveryDateField" floatingText="Date" prefHeight="50.0" prefWidth="200.0">
+                          <FlowPane.margin>
+                              <Insets />
+                          </FlowPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                      </MFXDatePicker>
+                  <Text fx:id="dateValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Date" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="15.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER" columnHalignment="CENTER">
+               <children>
+                  <FlowPane prefWrapLength="70.0">
+                     <children>
+                        <MFXComboBox fx:id="hourComboBox" floatingText="Hour">
+                           <FlowPane.margin>
+                              <Insets right="5.0" />
+                           </FlowPane.margin>
+                        </MFXComboBox>
+                        <Text fx:id="hourValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Hour" visible="false">
+                           <FlowPane.margin>
+                              <Insets left="10.0" />
+                           </FlowPane.margin>
+                        </Text>
+                     </children>
+                  </FlowPane>
+                  <FlowPane prefWrapLength="70.0">
+                     <children>
+                        <MFXComboBox fx:id="minComboBox" floatingText="Minutes">
+                           <FlowPane.margin>
+                              <Insets left="5.0" />
+                           </FlowPane.margin>
+                        </MFXComboBox>
+                        <Text fx:id="minuteValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Minute" visible="false">
+                           <FlowPane.margin>
+                              <Insets left="15.0" />
+                           </FlowPane.margin>
+                        </Text>
+                     </children>
+                  </FlowPane>
+               </children>
+            </FlowPane>
+                <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="50.0" prefWidth="220.0">
+                    <children>
+                        <MFXButton id="cancelButton" fx:id="cancelButton" prefHeight="29.0" prefWidth="100.0" text="Cancel">
+                            <FlowPane.margin>
+                                <Insets right="20.0" />
+                            </FlowPane.margin>
+                        </MFXButton>
+                        <MFXButton id="clearButton" fx:id="clearButton" prefHeight="29.0" prefWidth="100.0" text="Clear">
+                            <FlowPane.margin>
+                                <Insets />
+                            </FlowPane.margin>
+                        </MFXButton>
+                    </children>
+                </FlowPane>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </BorderPane.margin>
+        </FlowPane>
+    </left>
+    <right>
+        <BorderPane id="block" prefHeight="600" prefWidth="400.0" BorderPane.alignment="CENTER">
+            <center>
+                <MFXScrollPane id="dashBoard" prefWidth="300.0" BorderPane.alignment="CENTER">
+                    <content>
+                        <FlowPane fx:id="checkoutFlowplan" alignment="TOP_CENTER" columnHalignment="CENTER" prefWidth="350.0">
+                            <padding>
+                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                            </padding>
+                        </FlowPane>
+                    </content>
+                    <BorderPane.margin>
+                        <Insets bottom="15.0" left="25.0" right="25.0" top="25.0" />
+                    </BorderPane.margin>
+                </MFXScrollPane>
+            </center>
+            <top>
+                <FlowPane orientation="VERTICAL" prefHeight="50.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <FlowPane.margin>
+                                <Insets />
+                            </FlowPane.margin>
+                        </Text>
+                        <Text fx:id="shopName" strokeType="OUTSIDE" strokeWidth="0.0" text="EDIBLE ARRANGEMENTS">
+                            <font>
+                                <Font size="22.0" />
+                            </font>
+                        </Text>
+                    </children>
+                    <BorderPane.margin>
+                        <Insets left="25.0" right="25.0" top="25.0" />
+                    </BorderPane.margin>
+                </FlowPane>
+            </top>
+            <bottom>
+            <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="25.0" />
+               </BorderPane.margin>
+               <children>
+                  <FlowPane alignment="CENTER" columnHalignment="CENTER">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price: ">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="priceText" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                     <FlowPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </FlowPane.margin>
+                  </FlowPane>
+                      <MFXButton id="normalButton" fx:id="submitButton" disable="true" prefHeight="30.0" prefWidth="350" text="Submit" />
+               </children>
+            </FlowPane>
+            </bottom>
+            <BorderPane.margin>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </BorderPane.margin>
+        </BorderPane>
+    </right>
+</BorderPane>

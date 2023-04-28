@@ -43,6 +43,7 @@ public class App extends Application {
   public static QuickNavigationMenuButtons quickNavigationMenuButtons;
   public static HashMap<String, Image> flowerHashMap;
   public static HashMap<String, Image> furnitureHashMap;
+  public static HashMap<String, Image> mealHashMap;
 
   @Override
   public void init() {
