@@ -28,7 +28,7 @@ int baseSpeed = 20;
 
 void setLED(bool value)
 {
-  Serial.println("setLED()");
+  Serial.print("setLED()");
   digitalWrite(13, value);
 }
 
@@ -47,7 +47,7 @@ bool checkMessage(){
 
 //check for messages and process complete ones for relevant info
 void handleMessage(){ 
-  Serial.println("Received_[" + rxString + "]_from app");
+  Serial.print("Received_[" + rxString + "]_from app");
   now = millis();
   switch (rxString.charAt(0))
   {
@@ -56,11 +56,11 @@ void handleMessage(){
       chassis.driveFor(distance,baseSpeed);
       while(!chassis.checkMotionComplete()){
         if(millis() - now > 500){
-          Serial.println("Driving"); //TODO get distance
+          Serial.print("Driving"); //TODO get distance
           now = millis();
         }
       }
-      Serial.println("Done");
+      Serial.print("Done");
       break;
     }
 
@@ -69,11 +69,11 @@ void handleMessage(){
       chassis.turnFor(angle, baseSpeed);   
       while(!chassis.checkMotionComplete()){
         if(millis() - now > 500){
-          Serial.println("Rotating" + (String)angle); //TODO get rotation
+          Serial.print("Rotating" + (String)angle); //TODO get rotation
           now = millis();
         }
       }
-      Serial.println("Done");
+      Serial.print("Done");
       break;
     }
 
