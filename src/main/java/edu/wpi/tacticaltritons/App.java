@@ -3,10 +3,8 @@ package edu.wpi.tacticaltritons;
 import edu.wpi.tacticaltritons.data.FlowerHashMap;
 import edu.wpi.tacticaltritons.data.FurnitureHashMap;
 import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
-import edu.wpi.tacticaltritons.database.DAOFacade;
-import edu.wpi.tacticaltritons.database.LocationName;
+import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.database.Node;
-import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import javafx.application.Application;
@@ -28,7 +26,10 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -121,7 +122,7 @@ public class App extends Application {
         Translate pivot = new Translate();
         Rotate yRotate = new Rotate(-45, Rotate.Y_AXIS);
         Rotate xRotate = new Rotate(-45, Rotate.X_AXIS);
-        Translate zoom = new Translate(0,0,-300);
+        Translate zoom = new Translate(0,0,-1000);
 
 // Create and position camera
         PerspectiveCamera camera = new PerspectiveCamera(true);
@@ -149,24 +150,71 @@ public class App extends Application {
 //        nodes.stream().filter(node -> node.getFloor().equals("2")).forEach(node -> {
 //            locations.forEach(location -> {
 //                if(!location.getNodeType().equals("HALL")){
-//                    Sphere s = new Sphere(15);
-//                    s.setMaterial(new PhongMaterial(Color.RED));
-//                    s.setTranslateZ(node.getYcoord());
-//                    s.setTranslateX(node.getXcoord());
-//                    root.getChildren().add(s);
+
 //                }
 //            });
 //        });
 //
-//        Node start = nodes.stream().filter(node -> node.getNodeID() == 2435).toList().get(0);
-//        Node end = nodes.stream().filter(node -> node.getNodeID() == 1555).toList().get(0);
-//        List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, end);
-//        path.forEach(event -> {
-//            Box line = new Box();
-//        });
+
         root.getChildren().add(camera);
         root.getChildren().add(box);
         root.getChildren().add(sphere);
+
+        List<Node> nodes = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now())).stream()
+                .filter(move -> !move.getLocation().getNodeType().equals("HALL"))
+                .map(Move::getNode)
+                .filter(node -> node.getFloor().equals("2")).toList();
+
+        List<Node> pathToCompute = new ArrayList<>();
+        nodes.forEach(node -> {
+            Sphere s = new Sphere(15);
+            s.setOnMouseClicked(event -> {
+                if(pathToCompute.size() == 0){
+                    pathToCompute.add(node);
+                    System.out.println("selected: " + node.getNodeID());
+                }
+                else{
+                    Node start = pathToCompute.get(0);
+                    System.out.println("computing: " + start.getNodeID() + " to " + node.getNodeID());
+
+                    root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("pathBlock"));
+
+                    try {
+                        List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
+
+                        for(int i = 0; i < path.size() - 1; i++){
+
+                            double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
+                                    Math.pow(path.get(i + 1).getYcoord() - path.get(i).getYcoord(), 2));
+
+                            double opp = path.get(i + 1).getXcoord() - path.get(i).getXcoord();
+                            double adj = path.get(i + 1).getYcoord() - path.get(i).getYcoord();
+                            double angle = Math.atan(opp / adj) * (180 / Math.PI);
+
+
+                            System.out.println(opp + ", " + adj + ", " + angle);
+
+                            Box line = new Box(10,10, distance);
+                            line.setId("pathBlock");
+                            line.setTranslateZ(path.get(i).getYcoord() + adj / 2);
+                            line.setTranslateX(path.get(i).getXcoord() + opp / 2);
+                            line.getTransforms().add(new Rotate(angle, Rotate.Y_AXIS));
+                            line.setMaterial(new PhongMaterial(Color.BLUE));
+
+                            root.getChildren().add(line);
+                        }
+
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    pathToCompute.clear();
+                }
+            });
+            s.setMaterial(new PhongMaterial(Color.RED));
+            s.setTranslateZ(node.getYcoord());
+            s.setTranslateX(node.getXcoord());
+            root.getChildren().add(s);
+        });
 
 
 
@@ -225,6 +273,8 @@ public class App extends Application {
         PixelWriter pixelWriter = writer.getPixelWriter();
         PixelReader pixelReader = writer.getPixelReader();
 
+
+
         for(int i = 0; i < writer.getHeight(); i++){
             for(int j = 0; j < writer.getWidth(); j++){
                 Color c = pixelReader.getColor(j, i);
@@ -253,7 +303,7 @@ public class App extends Application {
             double screenIncrement = sceneSize / 5;
             if(event.isShiftDown() && event.getCode() == KeyCode.EQUALS){
                 camera.getTransforms().stream().filter(node -> (node instanceof Translate)).forEach(node -> {
-                    if(((Translate) node).getZ() <= -75 && ((Translate) node).getZ() >= -sceneSize){
+                    if(((Translate) node).getZ() <= -75){
                         ((Translate) node).setZ(((Translate) node).getZ() + screenIncrement);
                     }
                 });
