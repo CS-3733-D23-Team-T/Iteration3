@@ -4,6 +4,8 @@ import edu.wpi.tacticaltritons.data.FlowerHashMap;
 import edu.wpi.tacticaltritons.data.FurnitureHashMap;
 import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
 import edu.wpi.tacticaltritons.database.DAOFacade;
+import edu.wpi.tacticaltritons.database.LocationName;
+import edu.wpi.tacticaltritons.database.Node;
 import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
@@ -27,10 +29,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Slf4j
 public class App extends Application {
@@ -138,21 +137,33 @@ public class App extends Application {
 // Build the Scene Graph
         Group root = new Group();
 
-        List<edu.wpi.tacticaltritons.database.Node> nodes = DAOFacade.getAllNodes();
-        nodes.stream().filter(node -> node.getFloor().equals("2")).forEach(node -> {
-            Sphere s = new Sphere(15);
-            s.setMaterial(new PhongMaterial(Color.RED));
-            s.setTranslateZ(node.getYcoord());
-            s.setTranslateX(node.getXcoord());
-            root.getChildren().add(s);
-        });
-
-        edu.wpi.tacticaltritons.database.Node start = nodes.stream().filter(node -> node.getNodeID() == 2435).toList().get(0);
-        edu.wpi.tacticaltritons.database.Node end = nodes.stream().filter(node -> node.getNodeID() == 1555).toList().get(0);
-        List<edu.wpi.tacticaltritons.database.Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, end);
-        path.forEach(event -> {
-            Box line = new Box();
-        });
+        Map<Integer, String> locations = new HashMap<>();
+//        DAOFacade.getAllLocationNames().forEach(location -> {
+//            locations.put(location.)
+//        });
+//        DAOFacade.getAllNodes().forEach(node -> {
+//            if(node.getFloor().equals("2"))
+//        });
+//        Map<Node, String> nodes = ;
+//        List<LocationName> locations = DAOFacade.getAllLocationNames().stream().filter();
+//        nodes.stream().filter(node -> node.getFloor().equals("2")).forEach(node -> {
+//            locations.forEach(location -> {
+//                if(!location.getNodeType().equals("HALL")){
+//                    Sphere s = new Sphere(15);
+//                    s.setMaterial(new PhongMaterial(Color.RED));
+//                    s.setTranslateZ(node.getYcoord());
+//                    s.setTranslateX(node.getXcoord());
+//                    root.getChildren().add(s);
+//                }
+//            });
+//        });
+//
+//        Node start = nodes.stream().filter(node -> node.getNodeID() == 2435).toList().get(0);
+//        Node end = nodes.stream().filter(node -> node.getNodeID() == 1555).toList().get(0);
+//        List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, end);
+//        path.forEach(event -> {
+//            Box line = new Box();
+//        });
         root.getChildren().add(camera);
         root.getChildren().add(box);
         root.getChildren().add(sphere);
