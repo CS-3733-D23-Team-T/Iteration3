@@ -6,6 +6,20 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<GridPane id="block" fx:id="basePane" fx:controller="edu.wpi.tacticaltritons.controllers.signage.PresetButtonController" alignment="CENTER" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="180" prefWidth="300">
-   <Label fx:id="presetName" text="Preset" style="-fx-font-size: 25; " GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+<?import io.github.palexdev.materialfx.font.MFXFontIcon?>
+<?import javafx.geometry.Insets?>
+<GridPane id="block" fx:id="basePane" fx:controller="edu.wpi.tacticaltritons.controllers.signage.PresetButtonController" alignment="TOP_LEFT" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="180" prefWidth="350">
+   <MFXButton id="deleteButton" text="" fx:id="delete" prefHeight="60" prefWidth="60" minWidth="60" minHeight="60" GridPane.rowIndex="0">
+      <GridPane.margin>
+         <Insets top="10" bottom="10" left="10" right="10"/>
+      </GridPane.margin>
+      <graphic>
+         <MFXFontIcon description="mfx-x-alt" style="-mfx-color: white" size="30"/>
+      </graphic>
+   </MFXButton>
+   <Label fx:id="presetName" text="Preset" style="-fx-font-size: 25; " GridPane.rowIndex="1">
+      <GridPane.margin>
+         <Insets top="10" bottom="10" left="10" right="10"/>
+      </GridPane.margin>
+   </Label>
 </GridPane>

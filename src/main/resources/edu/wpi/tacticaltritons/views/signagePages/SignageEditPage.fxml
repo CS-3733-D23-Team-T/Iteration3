@@ -6,10 +6,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<StackPane  pickOnBounds="false" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.wpi.tacticaltritons.controllers.signage.SignageEditController" prefHeight="650" prefWidth="1280">
-    <AnchorPane pickOnBounds="false" fx:id="addPresetButtonPane" >
-        <MFXButton id="normalButton" fx:id="addPresetButton" text="+" style="-fx-background-radius: 50;-fx-font-size: 50" prefWidth="100" prefHeight="100" layoutX="1130" layoutY="500"/>
-    </AnchorPane>
+<?import javafx.geometry.Insets?>
+<StackPane pickOnBounds="false" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.wpi.tacticaltritons.controllers.signage.SignageEditController" prefHeight="650" prefWidth="1280">
     <FlowPane pickOnBounds="false" fx:id="basePane">
     </FlowPane>
+    <BorderPane pickOnBounds="false" fx:id="addPresetButtonPane" >
+        <right>
+            <VBox fx:id="buttonsBar" pickOnBounds="false" alignment="BOTTOM_CENTER">
+                <MFXButton id="normalButton" fx:id="addPresetButton" text="+" style="-fx-background-radius: 50;-fx-font-size: 50" prefWidth="100" prefHeight="100" >
+                    <VBox.margin>
+                        <Insets right="20" bottom="20"/>
+                    </VBox.margin>
+                </MFXButton>
+            </VBox>
+        </right>
+    </BorderPane>
 </StackPane>

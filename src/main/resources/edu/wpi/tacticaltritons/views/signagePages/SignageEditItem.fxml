@@ -20,7 +20,7 @@
             <MFXFontIcon description="mfx-x-alt" style="-mfx-color: white" size="30"/>
         </graphic>
     </MFXButton>
-    <MFXTextField fx:id="content" prefHeight="60" prefWidth="483">
+    <MFXTextField fx:id="content" floatingText="content" prefHeight="60" prefWidth="483">
         <HBox.margin>
             <Insets top="10" bottom="10" right="10"/>
         </HBox.margin>

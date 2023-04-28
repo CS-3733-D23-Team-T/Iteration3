@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<HBox id="block" fx:id="SelectionPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="145" prefWidth="400" maxHeight="145" maxWidth="400" alignment="CENTER" spacing="10">
+    <MFXButton id="normalButton" fx:id="confirmCancelButton" prefWidth="180" prefHeight="125" text="Four Direction Signage" GridPane.columnIndex="0"/>
+    <MFXButton id="normalButton" fx:id="confirmButton" prefWidth="180" prefHeight="125" text="Single Signage" GridPane.columnIndex="1"/>
+</HBox>
