@@ -7,21 +7,23 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="gridMeal" stylesheets="@../../stylesheets/ServiceRequest.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.MealDeliveryRequestRestaurantController">
+<GridPane fx:id="gridMeal" stylesheets="@../../stylesheets/ServiceRequest.css" xmlns="http://javafx.com/javafx/19"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.MealDeliveryRequestRestaurantController">
     <BorderPane fx:id="content" GridPane.rowIndex="1">
         <center>
             <MFXScrollPane fx:id="scrollPane" style="-fx-background-color: f5f5f5;" BorderPane.alignment="CENTER">
                 <content>
-                    <FlowPane fx:id="restaurantPane" prefWidth="1080.0" />
+                    <FlowPane fx:id="restaurantPane" prefWidth="1080.0"/>
                 </content>
             </MFXScrollPane>
         </center>
     </BorderPane>
     <columnConstraints>
-        <ColumnConstraints />
+        <ColumnConstraints/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints />
-        <RowConstraints />
+        <RowConstraints/>
+        <RowConstraints/>
     </rowConstraints>
 </GridPane>

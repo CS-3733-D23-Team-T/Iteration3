@@ -35,8 +35,8 @@ public enum Screen {
 
 
   CONFERENCE_ROOM_REQUEST("views/serviceRequest/ConferenceRoomRequest.fxml"),
-  MEAL_RESTAURANT("views/serviceRequest/MealDeliveryRestaurants.fxml"),
-  MEAL_REQUEST("views/serviceRequest/MealDeliveryItems.fxml"),
+  MEAL_RESTAURANT("views/serviceRequest/MealChoice.fxml"),
+  MEAL_REQUEST("views/serviceRequest/MealChoice.fxml"),
   MEAL_SUBMIT("views/serviceRequest/MealDeliverySubmit.fxml"),
 
   FLOWER_REQUEST("views/serviceRequest/FlowerDelivery.fxml"),
