@@ -7,7 +7,19 @@
 <?import javafx.scene.layout.*?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<HBox id="block" fx:id="SelectionPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="145" prefWidth="400" maxHeight="145" maxWidth="400" alignment="CENTER" spacing="10">
-    <MFXButton id="normalButton" fx:id="confirmCancelButton" prefWidth="180" prefHeight="125" text="Four Direction Signage" GridPane.columnIndex="0"/>
-    <MFXButton id="normalButton" fx:id="confirmButton" prefWidth="180" prefHeight="125" text="Single Signage" GridPane.columnIndex="1"/>
-</HBox>
+<?import io.github.palexdev.materialfx.font.MFXFontIcon?>
+<?import javafx.geometry.Insets?>
+<VBox id="block" fx:id="basePane" prefWidth="400" prefHeight="180" maxWidth="400" maxHeight="180" spacing="10" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" alignment="CENTER_LEFT">
+    <MFXButton id="cancelButton" text="" fx:id="delete" prefHeight="60" prefWidth="60" minWidth="60" minHeight="60"  GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <graphic>
+            <MFXFontIcon description="mfx-x-alt" style="-mfx-color: white" size="30"/>
+        </graphic>
+        <VBox.margin>
+            <Insets left="10" top="10"/>
+        </VBox.margin>
+    </MFXButton>
+    <HBox fx:id="SelectionPane" prefHeight="100" prefWidth="400" maxHeight="100" maxWidth="400" alignment="CENTER" spacing="10">
+        <MFXButton id="normalButton" fx:id="confirmCancelButton" prefWidth="185" prefHeight="80" text="Four Direction Signage" GridPane.columnIndex="0"/>
+        <MFXButton id="normalButton" fx:id="confirmButton" prefWidth="185" prefHeight="80" text="Single Signage" GridPane.columnIndex="1"/>
+    </HBox>
+</VBox>

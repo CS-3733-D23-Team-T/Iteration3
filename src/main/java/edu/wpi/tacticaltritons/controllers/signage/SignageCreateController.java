@@ -67,7 +67,7 @@ public class SignageCreateController {
     private ArrayList<String> rightLocations;
     private ArrayList<String> backLocations;
     
-    public void initialize(){
+    public void initialize() throws IOException {
 
         if(SignagePageInteraction.createSingleDisplay){
             formatAsSingleDisplay();
@@ -76,7 +76,9 @@ public class SignageCreateController {
         leftLocations = new ArrayList<>();
         rightLocations = new ArrayList<>();
         backLocations = new ArrayList<>();
-        
+        if(SignagePageInteraction.editingSignage){
+            loadPresetForEdit();
+        }
         horizontalResizing(App.getPrimaryStage().getWidth());
         basePaneContainer.setFitToWidth(true);
         basePaneContainer.setFitToHeight(true);
@@ -176,14 +178,32 @@ public class SignageCreateController {
             }
         }
     }
+    private void loadPresetForEdit() throws IOException {
+        addNewSignageItems(signageForwardLocations,SignagePageInteraction.forwardLocations);
+        if(!SignagePageInteraction.createSingleDisplay){
+            addNewSignageItems(signageLeftLocations,SignagePageInteraction.leftLocations);
+            addNewSignageItems(signageRightLocations,SignagePageInteraction.rightLocations);
+            addNewSignageItems(signageBackLocations,SignagePageInteraction.backLocations);
+        }
+    }
     private void addNewSignageItem(VBox target) throws IOException {
+        addNewSignageItem(target,"");
+    }
+    private void addNewSignageItem(VBox target, String content) throws IOException {
         FXMLLoader loader = new FXMLLoader(signageItemPath);
         HBox signageItem = loader.load();
         MFXButton deleteButton = (MFXButton) signageItem.getChildren().get(0);
+        MFXTextField contentInput = (MFXTextField) signageItem.getChildren().get(1);
+        contentInput.setText(content);
         deleteButton.setOnAction(event -> {
             target.getChildren().remove(signageItem);
         });
         target.getChildren().add(target.getChildren().size() - 1,signageItem);
+    }
+    private void addNewSignageItems(VBox target, String[] contents) throws IOException {
+        for(String content: contents){
+            addNewSignageItem(target,content);
+        }
     }
     private void generatePreset(VBox input, ArrayList<String> output){
         ObservableList<Node> inputList= input.getChildren();
@@ -205,26 +225,39 @@ public class SignageCreateController {
         HBox buttons = (HBox)confirmPage.getChildren().get(1);
         MFXButton cancelButton = (MFXButton) buttons.getChildren().get(0);
         MFXButton confirmButton = (MFXButton) buttons.getChildren().get(1);
+        if(SignagePageInteraction.editingSignage){presetName.setText(SignagePageInteraction.presetName);}
         buttonsPane.setOnKeyPressed(event -> {
-            System.out.println(event.getCode());
+            if(event.getCode().equals(KeyCode.ENTER)){
+                confirmButton.fire();
+            }
+        });
+        presetName.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                confirmButton.fire();
+            }
+        });
+        buttonsPane.setOnKeyPressed(event -> {
             if(event.getCode().equals(KeyCode.ESCAPE)){;
-                buttonsPane.getChildren().remove(1);
+                cancelButton.fire();
             }
         });
         cancelButton.setOnAction(event -> {
-            buttonsPane.getChildren().remove(1);
+            buttonsPane.setCenter(null);
         });
         confirmButton.setOnAction(event -> {
             if(presetName.getText().isEmpty()){
                 EffectGenerator.alertOn(presetName,"please input a name");
             }else{
-                upload(presetName.getText());
+                try {
+                    upload(presetName.getText());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
         buttonsPane.setCenter(confirmPage);
         EffectGenerator.generateShadowEffect(buttonsPane);
     }
-
     private void confirmSave() throws IOException{
         generatePreset(signageForwardLocations,forwardLocations);
         if(!SignagePageInteraction.createSingleDisplay){
@@ -235,11 +268,14 @@ public class SignageCreateController {
         displayConfirmPage();
     }
 
-    private void upload(String presetName){
+    private void upload(String presetName) throws SQLException {
         String[] forwardDir = forwardLocations.toArray(new String[0]);
         String[] leftDir = leftLocations.toArray(new String[0]);
         String[] rightDir = rightLocations.toArray(new String[0]);
         String[] backDir = backLocations.toArray(new String[0]);
+        if(SignagePageInteraction.editingSignage){
+            DAOFacade.deleteSignage(new Signage(presetName,null,null,null,null,false));
+        }
         Signage signage = new Signage(presetName,forwardDir,leftDir,rightDir,backDir,SignagePageInteraction.createSingleDisplay);
         try {
             DAOFacade.insertSignage(signage);

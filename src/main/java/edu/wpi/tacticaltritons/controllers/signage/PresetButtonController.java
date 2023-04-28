@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class PresetButtonController {
     @FXML private GridPane basePane;
     @FXML private Label presetName;
-    @FXML private MFXButton delete;
+    @FXML private MFXButton edit;
     String[] forwardLocations;
     String[] leftLocations;
     String[] rightLocations;
@@ -32,6 +32,9 @@ public class PresetButtonController {
                     }
                 }
         );
+        edit.setOnAction(event -> {
+            editSignage();
+        });
         basePane.setOnMouseEntered(event -> {
             presetName.setStyle("-fx-text-fill: " + ThemeColors.YELLOW.getColor()+ "; -fx-font-size: 25");
         });
@@ -74,13 +77,25 @@ public class PresetButtonController {
     }
 
     private void loadData(){
+        loadForInteraction();
+        SignagePageInteraction.firstDisplay = false;
+        Navigation.navigate(Screen.SIGNAGE);
+    }
+
+    private void loadForInteraction(){
         SignagePageInteraction.forwardLocations = forwardLocations;
         SignagePageInteraction.leftLocations = leftLocations;
         SignagePageInteraction.rightLocations = rightLocations;
         SignagePageInteraction.backLocations = backLocations;
         SignagePageInteraction.signleDisplay = singleDisplay;
-        SignagePageInteraction.firstDisplay = false;
-        Navigation.navigate(Screen.SIGNAGE);
+    }
+
+    private void editSignage(){
+        loadForInteraction();
+        SignagePageInteraction.presetName = presetName.getText();
+        SignagePageInteraction.createSingleDisplay = singleDisplay;
+        SignagePageInteraction.editingSignage = true;
+        Navigation.navigate(Screen.CREATE_SIGNAGE);
     }
 
 

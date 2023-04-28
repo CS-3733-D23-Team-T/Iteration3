@@ -7,7 +7,6 @@ import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.styling.*;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXScrollPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -36,7 +35,7 @@ public class SignageEditController {
         }
         addPresetButton.setOnAction(event -> {
             try {
-                navigateToCreateSignagePage();
+                displayCreateSignageSelectionWindow();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -95,7 +94,9 @@ public class SignageEditController {
     private void addPreset(String presetName, boolean singleDisplay, String[] forward, String[] left, String[] right, String[] back) throws IOException {
         FXMLLoader loader = new FXMLLoader(presetButtonPath);
         GridPane presetButton = loader.load();
-        MFXButton deleteButton = (MFXButton) presetButton.getChildren().get(0);
+        HBox buttonBar = (HBox) presetButton.getChildren().get(0);
+        MFXButton deleteButton = (MFXButton) buttonBar.getChildren().get(0);
+        MFXButton editButton = (MFXButton) buttonBar.getChildren().get(1);
         PresetButtonController controller = loader.getController();
         deleteButton.setOnAction(event -> {
             controller.deleteSignage();
@@ -106,17 +107,24 @@ public class SignageEditController {
         basePane.getChildren().add(presetButton);
     }
 
-    private void navigateToCreateSignagePage() throws IOException {
+    private void displayCreateSignageSelectionWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader(signageCreateSelectionPath);
-        HBox signageCreateSelectionPage = loader.load();
-        MFXButton selectFourDirectionPage = (MFXButton) signageCreateSelectionPage.getChildren().get(0);
-        MFXButton selectSinglePage = (MFXButton) signageCreateSelectionPage.getChildren().get(1);
+        VBox signageCreateSelectionPage = loader.load();
+        HBox selectionButtons = (HBox) signageCreateSelectionPage.getChildren().get(1);
+        MFXButton cancelButton = (MFXButton) signageCreateSelectionPage.getChildren().get(0);
+        MFXButton selectFourDirectionPage = (MFXButton) selectionButtons.getChildren().get(0);
+        MFXButton selectSinglePage = (MFXButton) selectionButtons.getChildren().get(1);
+        cancelButton.setOnAction(event -> {
+            addPresetButtonPane.setCenter(null);
+        });
         selectFourDirectionPage.setOnAction(event -> {
-            SignagePageInteraction.createSingleDisplay=false;
+            SignagePageInteraction.createSingleDisplay = false;
+            SignagePageInteraction.editingSignage = false;
             Navigation.navigate(Screen.CREATE_SIGNAGE);
         });
         selectSinglePage.setOnAction(event -> {
-            SignagePageInteraction.createSingleDisplay=true;
+            SignagePageInteraction.createSingleDisplay = true;
+            SignagePageInteraction.editingSignage = false;
             Navigation.navigate(Screen.CREATE_SIGNAGE);
         });
         addPresetButtonPane.setCenter(signageCreateSelectionPage);
