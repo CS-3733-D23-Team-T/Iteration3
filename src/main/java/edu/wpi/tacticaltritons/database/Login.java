@@ -22,6 +22,8 @@ public class Login {
   private String algorithmPreference;
   private boolean darkMode;
 
+  private String database;
+
   public Login(
       String username,
       String salt,
@@ -38,7 +40,8 @@ public class Login {
       String twoFactorFrequency,
       int tokenTime,
       String algorithmPreference,
-      boolean darkMode) {
+      boolean darkMode,
+      String database) {
     this.username = username;
     this.salt = salt;
     this.password = password;
@@ -55,6 +58,7 @@ public class Login {
     this.tokenTime = tokenTime;
     this.algorithmPreference = algorithmPreference;
     this.darkMode = darkMode;
+    this.database = database;
   }
 
   public String getUsername() {
@@ -181,5 +185,13 @@ public class Login {
 
   public boolean getDarkMode() {
     return darkMode;
+  }
+
+  public String getDatabase() {
+    return database;
+  }
+
+  public void setDatabase(String database) {
+    this.database = database;
   }
 }
