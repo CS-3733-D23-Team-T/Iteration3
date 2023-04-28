@@ -115,14 +115,21 @@ public class FlowerCheckoutController {
 
     public void initialize() throws SQLException {
         userFirstField.setPromptText(GoogleTranslate.getString("firstName"));
+        userFirstField.setFloatingText(GoogleTranslate.getString("firstName"));
         userLastField.setPromptText(GoogleTranslate.getString("lastName"));
+        userLastField.setFloatingText(GoogleTranslate.getString("lastName"));
         patientFirstField.setPromptText(GoogleTranslate.getString("patientFirstName"));
+        patientFirstField.setFloatingText(GoogleTranslate.getString("patientFirstName"));
         patientLastField.setPromptText(GoogleTranslate.getString("patientLastName"));
+        patientLastField.setFloatingText(GoogleTranslate.getString("patientLastName"));
         assignedComboBox.setPromptText(GoogleTranslate.getString("assignedStaff"));
+        assignedComboBox.setFloatingText(GoogleTranslate.getString("assignedStaff"));
         deliveryDateField.setPromptText(GoogleTranslate.getString("date"));
         locationComboBox.setFloatingText(GoogleTranslate.getString("searchTheMap"));
         hourComboBox.setPromptText(GoogleTranslate.getString("hour"));
+        hourComboBox.setFloatingText(GoogleTranslate.getString("hour"));
         minComboBox.setPromptText(GoogleTranslate.getString("minutes"));
+        minComboBox.setFloatingText(GoogleTranslate.getString("minutes"));
         cancelButton.setText(GoogleTranslate.getString("cancel"));
         clearButton.setText(GoogleTranslate.getString("clear"));
         submitButton.setText(GoogleTranslate.getString("submit"));
