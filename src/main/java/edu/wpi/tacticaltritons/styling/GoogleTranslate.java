@@ -27,7 +27,7 @@ public final class GoogleTranslate { //Class marked as final since all methods a
      * URL to query for Translation
      */
     private static final String GOOGLE_TRANSLATE_URL = "http://translate.google.com/translate_a/single";
-    private static String language = "el";
+    private static String language = "ko";
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("edu.wpi.tacticaltritons.languages.language", new Locale(language));
 
     /**
@@ -44,10 +44,7 @@ public final class GoogleTranslate { //Class marked as final since all methods a
             return text;
         }
         output = output.replace("\"", "");
-        String encoded;
-        encoded = URLEncoder.encode(output, (StandardCharsets.UTF_8)); //Encode
-        encoded = URLDecoder.decode(encoded, (StandardCharsets.UTF_8)); //Decode
-        return encoded;
+        return output;
     }
 
 
