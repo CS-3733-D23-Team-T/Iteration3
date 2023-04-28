@@ -8,6 +8,7 @@ import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import edu.wpi.tacticaltritons.pathfinding.Directions;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
@@ -102,6 +103,9 @@ public class NewPathfindingController extends MapSuperController {
     }
 
     public void initialize() throws SQLException {
+        viewNodes.setText(GoogleTranslate.getString("viewNodes"));
+        directions.setText(GoogleTranslate.getString("directions"));
+        textForDirections.setText(GoogleTranslate.getString("directions"));
 
         date.setValue(java.time.LocalDate.now());
         selectedFloor.FLOOR.floor = "1";
