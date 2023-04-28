@@ -3,8 +3,10 @@ package edu.wpi.tacticaltritons;
 import edu.wpi.tacticaltritons.data.FlowerHashMap;
 import edu.wpi.tacticaltritons.data.FurnitureHashMap;
 import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
+import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -118,9 +120,9 @@ public class App extends Application {
         box.setMaterial(new PhongMaterial(Color.RED));
 
         Translate pivot = new Translate();
-        Rotate yRotate = new Rotate(0, Rotate.Y_AXIS);
+        Rotate yRotate = new Rotate(-45, Rotate.Y_AXIS);
         Rotate xRotate = new Rotate(-45, Rotate.X_AXIS);
-        Translate zoom = new Translate(0,0,-50);
+        Translate zoom = new Translate(0,0,-300);
 
 // Create and position camera
         PerspectiveCamera camera = new PerspectiveCamera(true);
@@ -131,17 +133,26 @@ public class App extends Application {
                 zoom
         );
         camera.setNearClip(1);
-        camera.setFarClip(2000);
+        camera.setFarClip(12000);
 
 // Build the Scene Graph
         Group root = new Group();
 
-//        DAOFacade.getAllNodes().forEach(node -> {
-//            Sphere s = new Sphere(2.5);
-//            s.setTranslateZ(node.getYcoord());
-//            s.setTranslateX(node.getXcoord());
-//            root.getChildren().add(s);
-//        });
+        List<edu.wpi.tacticaltritons.database.Node> nodes = DAOFacade.getAllNodes();
+        nodes.stream().filter(node -> node.getFloor().equals("2")).forEach(node -> {
+            Sphere s = new Sphere(15);
+            s.setMaterial(new PhongMaterial(Color.RED));
+            s.setTranslateZ(node.getYcoord());
+            s.setTranslateX(node.getXcoord());
+            root.getChildren().add(s);
+        });
+
+        edu.wpi.tacticaltritons.database.Node start = nodes.stream().filter(node -> node.getNodeID() == 2435).toList().get(0);
+        edu.wpi.tacticaltritons.database.Node end = nodes.stream().filter(node -> node.getNodeID() == 1555).toList().get(0);
+        List<edu.wpi.tacticaltritons.database.Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, end);
+        path.forEach(event -> {
+            Box line = new Box();
+        });
         root.getChildren().add(camera);
         root.getChildren().add(box);
         root.getChildren().add(sphere);
@@ -197,7 +208,7 @@ public class App extends Application {
             }
         });
 
-        Image image = new Image(Objects.requireNonNull(App.class.getResource("images/clean_map/map_firstfloor_clean.png")).toString());
+        Image image = new Image(Objects.requireNonNull(App.class.getResource("images/clean_map/map_secondfloor_clean.png")).toString());
 
         WritableImage writer = new WritableImage(image.getPixelReader(), (int) image.getWidth(), (int) image.getHeight());
         PixelWriter pixelWriter = writer.getPixelWriter();
@@ -220,8 +231,6 @@ public class App extends Application {
         }
 
         ImageView iv = new ImageView(writer);
-        iv.setFitWidth(1280);
-        iv.setFitHeight(720);
         iv.getTransforms().add(new Rotate(90,Rotate.X_AXIS));
         root.getChildren().add(iv);
 
@@ -240,22 +249,22 @@ public class App extends Application {
             }
             else if(event.isShiftDown() && event.getCode() == KeyCode.MINUS){
                 camera.getTransforms().stream().filter(node -> (node instanceof Translate)).forEach(node -> {
-                    if(((Translate) node).getZ() <= -50 && ((Translate) node).getZ() >= -sceneSize){
+                    if(((Translate) node).getZ() <= -50){
                         ((Translate) node).setZ(((Translate) node).getZ() - screenIncrement);
                     }
                 });
             }
             else if(event.getCode() == KeyCode.W){
-                camera.setTranslateY(camera.getTranslateZ() + screenIncrement);
+                camera.setTranslateZ(camera.getTranslateZ() + screenIncrement);
             }
             else if(event.getCode() == KeyCode.D){
-                camera.setTranslateX(camera.getTranslateY() + screenIncrement);
+                camera.setTranslateX(camera.getTranslateX() + screenIncrement);
             }
             else if(event.getCode() == KeyCode.S){
-                camera.setTranslateY(camera.getTranslateZ() - screenIncrement);
+                camera.setTranslateZ(camera.getTranslateZ() - screenIncrement);
             }
             else if(event.getCode() == KeyCode.A){
-                camera.setTranslateX(camera.getTranslateY() - screenIncrement);
+                camera.setTranslateX(camera.getTranslateX() - screenIncrement);
             }
         });
         primaryStage.setScene(scene);
