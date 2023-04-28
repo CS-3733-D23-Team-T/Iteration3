@@ -19,7 +19,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Sphere;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
@@ -138,35 +141,23 @@ public class App extends Application {
 // Build the Scene Graph
         Group root = new Group();
 
-        Map<Integer, String> locations = new HashMap<>();
-//        DAOFacade.getAllLocationNames().forEach(location -> {
-//            locations.put(location.)
-//        });
-//        DAOFacade.getAllNodes().forEach(node -> {
-//            if(node.getFloor().equals("2"))
-//        });
-//        Map<Node, String> nodes = ;
-//        List<LocationName> locations = DAOFacade.getAllLocationNames().stream().filter();
-//        nodes.stream().filter(node -> node.getFloor().equals("2")).forEach(node -> {
-//            locations.forEach(location -> {
-//                if(!location.getNodeType().equals("HALL")){
-
-//                }
-//            });
-//        });
-//
-
         root.getChildren().add(camera);
         root.getChildren().add(box);
         root.getChildren().add(sphere);
 
-        List<Node> nodes = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now())).stream()
+        List<Node> nodes = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now())).parallelStream()
                 .filter(move -> !move.getLocation().getNodeType().equals("HALL"))
                 .map(Move::getNode)
                 .filter(node -> node.getFloor().equals("2")).toList();
 
+        Map<Node, String> l = new HashMap<>();
+        List<Move> moves = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now()));
+        nodes.forEach(node -> l.put(node, moves.parallelStream().filter(move -> move.getNode().getNodeID() == node.getNodeID()).toList().get(0).getLocation().getShortName()));
+
         List<Node> pathToCompute = new ArrayList<>();
         nodes.forEach(node -> {
+            Text t = new Text(l.get(node));
+            t.setId("nodeText");
             Sphere s = new Sphere(15);
             s.setOnMouseClicked(event -> {
                 if(pathToCompute.size() == 0){
@@ -210,10 +201,30 @@ public class App extends Application {
                     pathToCompute.clear();
                 }
             });
+            s.setOnMouseEntered(event -> {
+                t.setVisible(true);
+            });
+            s.setOnMouseExited(event -> {
+                t.setVisible(false);
+            });
             s.setMaterial(new PhongMaterial(Color.RED));
             s.setTranslateZ(node.getYcoord());
             s.setTranslateX(node.getXcoord());
-            root.getChildren().add(s);
+
+
+//            Rectangle rect = new Rectangle(node.getXcoord(), node.getYcoord());
+//            rect.setTranslateZ(node.getYcoord() + 10);
+//            rect.setTranslateX(node.getXcoord() + 10);
+//            t.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
+            t.getTransforms().addAll(
+                    new Rotate(-45, Rotate.Y_AXIS),
+                    new Rotate(-45, Rotate.X_AXIS));
+            t.setVisible(false);
+            t.setTranslateZ(node.getYcoord() - t.getLayoutBounds().getWidth());
+            t.setTranslateX(node.getXcoord() - t.getLayoutBounds().getWidth());
+            t.setFont(new Font(32));
+            t.setTranslateY(-30);
+            root.getChildren().addAll(s, t);
         });
 
 
