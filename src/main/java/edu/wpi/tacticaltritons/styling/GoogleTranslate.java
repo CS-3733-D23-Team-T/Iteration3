@@ -29,7 +29,7 @@ public final class GoogleTranslate { //Class marked as final since all methods a
      */
     private static final String GOOGLE_TRANSLATE_URL = "http://translate.google.com/translate_a/single";
     private static String language = "es";
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("edu.wpi.tacticaltritons.language", new Locale(language));
+    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("edu.wpi.tacticaltritons.languages.language", new Locale(language));
 
     /**
      * Private to prevent instantiation
