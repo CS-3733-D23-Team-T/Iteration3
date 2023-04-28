@@ -145,7 +145,12 @@ public final class GoogleTranslate { //Class marked as final since all methods a
      *             if it cannot complete the request
      */
     public static String translate(String targetLanguage , String text) throws IOException {
-        return translate("auto", language, text);
+        if(language.equals("en")){
+            return text;
+        }
+        else {
+            return translate("auto", language, text);
+        }
     }
 
     /**

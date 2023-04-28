@@ -6,6 +6,7 @@ import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.FurnitureRequestOptions;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXScrollPane;
@@ -29,6 +30,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +40,7 @@ public class FurnitureDeliveryController {
     private String shopName;
     @FXML
     private Label checkoutLabel;
-
+    @FXML Text furnitureFromText;
     @FXML
     public FlowPane checkoutFlowpane;
     @FXML
@@ -64,14 +66,20 @@ public class FurnitureDeliveryController {
     private List<FurnitureRequestOptions> furnitureRequestOptionsList;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
+        furnitureFromText.setText(GoogleTranslate.getString("furnitureFrom"));
+        checkoutButton.setText(GoogleTranslate.getString("checkout"));
+        clearButton.setText(GoogleTranslate.getString("clear"));
+        itemValidator.setText(GoogleTranslate.getString("itemValidator"));
+
+
         BooleanProperty validItems = new SimpleBooleanProperty(false);
         checkoutFlowpane.getChildren().addListener(Validator.generateFormListener(validItems, checkoutButton, 1,
                 itemValidator.getText(), itemValidator));
 
         this.shopName = "Storage";
         // Sets the label to the name of the shop that was selected
-        checkoutLabel.setText(shopName);
+        checkoutLabel.setText(GoogleTranslate.getString(shopName));
 
         try {
             furnitureRequestOptionsList = DAOFacade.getAllFurnitureRequestOptions();
@@ -86,9 +94,19 @@ public class FurnitureDeliveryController {
         // Create the individual tabs based on the number of types of items that the shop has
         numberOfTabs.forEach((key, value) ->
         {
-            Tab tab = new Tab(value);
+            Tab tab = null;
+            try {
+                tab = new Tab(GoogleTranslate.translate(value));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             tab.setId(value);
-            ScrollPane scrollPane = createShopItems(shopItems, value, App.furnitureHashMap);
+            ScrollPane scrollPane = null;
+            try {
+                scrollPane = createShopItems(shopItems, value, App.furnitureHashMap);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             tab.setContent(scrollPane);
             tabPane.getTabs().add(tab);
             tabPane.getStyleClass().add("tab-pane");
@@ -112,7 +130,7 @@ public class FurnitureDeliveryController {
         });
     }
 
-    private ScrollPane createShopItems(ArrayList<FurnitureRequestOptions> furnitureRequestOptionsArrayList, String value, HashMap<String, Image> imageHashMap) {
+    private ScrollPane createShopItems(ArrayList<FurnitureRequestOptions> furnitureRequestOptionsArrayList, String value, HashMap<String, Image> imageHashMap) throws IOException {
         int counter = 0;
         MFXScrollPane scrollPane = new MFXScrollPane();
         scrollPane.setPrefWidth(600);
@@ -150,7 +168,7 @@ public class FurnitureDeliveryController {
 
                 // creates the Shope name lable
                 Label itemTitle = new Label();
-                itemTitle.setText(options.getItemName());
+                itemTitle.setText(GoogleTranslate.translate(options.getItemName()));
                 itemTitle.setWrapText(true);
                 itemTitle.setFont(new Font(defaultTitleFontSize));
                 itemTitle.setAlignment(Pos.CENTER);
@@ -161,7 +179,7 @@ public class FurnitureDeliveryController {
                 //creates the discription label
                 Label discriptionLabel = new Label();
                 discriptionLabel.setPrefWidth(flowPane.getPrefWidth());
-                discriptionLabel.setText(options.getItemDescription());
+                discriptionLabel.setText(GoogleTranslate.translate(options.getItemDescription()));
                 discriptionLabel.setFont(new Font(defaultDiscriptionFontSize));
                 discriptionLabel.setWrapText(true);
                 discriptionLabel.setPadding(new Insets(0, 10, 0, 10));
@@ -175,7 +193,11 @@ public class FurnitureDeliveryController {
 
                 flowPane.setOnMouseClicked(event ->
                 {
-                    updatedCheckoutBox(options, imageHashMap);
+                    try {
+                        updatedCheckoutBox(options, imageHashMap);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
                 mainFlowPane.getChildren().add(flowPane);
 
@@ -194,10 +216,18 @@ public class FurnitureDeliveryController {
                     itemTitle.setPrefHeight((defaultTitleHeight * newValue.doubleValue()) / 680);
                     discriptionLabel.prefHeightProperty().bind(Bindings.divide(flowPane.heightProperty(), 5));
 
-                    itemTitle.setText(options.getItemName());
+                    try {
+                        itemTitle.setText(GoogleTranslate.translate(options.getItemName()));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     itemTitle.setFont(new Font((defaultTitleFontSize * newValue.doubleValue()) / 680));
 
-                    discriptionLabel.setText(options.getItemDescription());
+                    try {
+                        discriptionLabel.setText(GoogleTranslate.translate(options.getItemDescription()));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     discriptionLabel.setFont(new Font((defaultDiscriptionFontSize * newValue.doubleValue()) / 680));
                 });
             }
@@ -211,7 +241,7 @@ public class FurnitureDeliveryController {
         return scrollPane;
     }
 
-    private void updatedCheckoutBox(FurnitureRequestOptions options,HashMap<String, Image> imageHashMap ) {
+    private void updatedCheckoutBox(FurnitureRequestOptions options,HashMap<String, Image> imageHashMap ) throws IOException {
         if (!checkoutItems.containsKey(options.getItemName())) {
             checkoutItems.put(options.getItemName(), 1);
             FlowPane flowPane = createCheckoutNode(options, imageHashMap.get(options.getItemName()));
@@ -222,7 +252,7 @@ public class FurnitureDeliveryController {
     }
 
 
-    private FlowPane createCheckoutNode(FurnitureRequestOptions options, Image furnitureImage) {
+    private FlowPane createCheckoutNode(FurnitureRequestOptions options, Image furnitureImage) throws IOException {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(400);
         flowPane.setPrefHeight(100);
@@ -243,7 +273,7 @@ public class FurnitureDeliveryController {
         Label itemTitle = new Label();
         itemTitle.setPrefWidth(200);
         itemTitle.setPrefHeight(50);
-        itemTitle.setText(options.getItemName());
+        itemTitle.setText(GoogleTranslate.translate(options.getItemName()));
         itemTitle.setFont(new Font(15));
         itemTitle.setWrapText(true);
         itemTitle.setPadding(new Insets(0, 20, 0, 20));
