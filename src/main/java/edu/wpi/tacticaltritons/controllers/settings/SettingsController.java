@@ -5,6 +5,7 @@ import edu.wpi.tacticaltritons.auth.*;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.database.Session;
+import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
@@ -44,6 +45,7 @@ public class SettingsController {
     @FXML private ComboBox<String> twoFactorFrequencyComboBox;
     @FXML private ComboBox<String> tokenTimeComboBox;
     @FXML private ComboBox<String> algorithmPreferenceComboBox;
+    @FXML private ComboBox<String> databaseComboBox;
     @FXML
     private void initialize() throws SQLException {
         Login user = DAOFacade.getLogin(UserSessionToken.getUser().getUsername());
@@ -136,6 +138,24 @@ public class SettingsController {
                         throw new RuntimeException(e);
                     }
                 }).start();
+            }
+        });
+
+        List<String> databaseList = new ArrayList<>();
+        databaseList.add("WPI database");
+        databaseList.add("AWS database");
+
+        databaseComboBox.setItems(FXCollections.observableList(databaseList));
+        databaseComboBox.setValue("WPI database");
+
+        databaseComboBox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
+            if(!Objects.equals(n, o)){
+                    if(n.equals("WPI database")){
+                        Tdb.setInstance(Tdb.WPI_DB);
+                    }
+                    else if(n.equals("AWS database")){
+                        Tdb.setInstance(Tdb.AWS);
+                    }
             }
         });
     }
