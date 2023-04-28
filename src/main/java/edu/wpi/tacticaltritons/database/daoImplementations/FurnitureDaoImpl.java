@@ -17,7 +17,7 @@ public class FurnitureDaoImpl implements FurnitureDao {
         ResultSet rs = null;
         Furniture furniture = null;
         try {
-            connection = Tdb.INSTANCE.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
 
             String sql = "SELECT * FROM FurnitureForms WHERE orderNum = ?;";
@@ -72,7 +72,7 @@ public class FurnitureDaoImpl implements FurnitureDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql =
                     "UPDATE FurnitureForms SET "
                             + "firstName = ?,"
@@ -119,7 +119,7 @@ public class FurnitureDaoImpl implements FurnitureDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql =
                     "INSERT INTO FurnitureForms (firstName, lastName, "
                             + "assignedStaffFirst, assignedStaffLast, date, location, items, status) "
@@ -158,7 +158,7 @@ public class FurnitureDaoImpl implements FurnitureDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "DELETE FROM FurnitureForms WHERE orderNum = ?";
 
             ps = connection.prepareStatement(sql);
@@ -188,7 +188,7 @@ public class FurnitureDaoImpl implements FurnitureDao {
         ResultSet rs = null;
         List<Furniture> furnitures = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM FurnitureForms ORDER BY status, date;";
             statement = connection.createStatement();

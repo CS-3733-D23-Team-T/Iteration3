@@ -17,7 +17,7 @@ public class AnnouncementsDaoImpl implements AnnouncementsDao {
         ResultSet rs = null;
         List<Announcements> announcements = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM announcements " +
                     "WHERE effectiveDate >= ? " +
@@ -65,7 +65,7 @@ public class AnnouncementsDaoImpl implements AnnouncementsDao {
         ResultSet rs = null;
         List<Announcements> announcements = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM announcements;";
 
@@ -108,7 +108,7 @@ public class AnnouncementsDaoImpl implements AnnouncementsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "INSERT INTO announcements (id, " +
                     "title, " +
                     "content, " +
@@ -151,7 +151,7 @@ public class AnnouncementsDaoImpl implements AnnouncementsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "DELETE FROM announcements WHERE id = ?";
 
             ps = connection.prepareStatement(sql);
@@ -179,7 +179,7 @@ public class AnnouncementsDaoImpl implements AnnouncementsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "UPDATE announcements SET " +
                     "title = ?, " +
                     "content = ?, " +
@@ -223,7 +223,7 @@ public class AnnouncementsDaoImpl implements AnnouncementsDao {
         ResultSet rs = null;
         Announcements announcement = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM announcements WHERE id = ?;";
             ps = connection.prepareStatement(sql);

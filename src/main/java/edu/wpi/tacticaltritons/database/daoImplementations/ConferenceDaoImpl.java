@@ -17,7 +17,7 @@ public class ConferenceDaoImpl implements ConferenceDao {
         ResultSet rs = null;
         Conference conference = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
 
             String sql = "SELECT * FROM Conference WHERE orderNum = ?;";
@@ -70,7 +70,7 @@ public class ConferenceDaoImpl implements ConferenceDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql =
                     "UPDATE Conference SET "
                             + "firstName = ?, "
@@ -115,7 +115,7 @@ public class ConferenceDaoImpl implements ConferenceDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql =
                     "INSERT INTO Conference (firstName, lastName, " +
                             "date, attendance, expectedSize, location, status) "
@@ -155,7 +155,7 @@ public class ConferenceDaoImpl implements ConferenceDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "DELETE FROM Conference WHERE orderNum = ?";
 
             ps = connection.prepareStatement(sql);
@@ -187,7 +187,7 @@ public class ConferenceDaoImpl implements ConferenceDao {
         ResultSet rs = null;
         List<Conference> conferences = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM Conference ORDER BY status, date;";
             statement = connection.createStatement();

@@ -16,7 +16,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
         ResultSet rs = null;
         SupplyRequestOptions supplyRequestOptions = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM officesuppliesrequestoptions WHERE itemName = ? AND shop  = ?;";
             ps = connection.prepareStatement(sql);
@@ -53,7 +53,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
         List<SupplyRequestOptions> supplyRequestOptions = new ArrayList<>();
 
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "SELECT * FROM officesuppliesrequestoptions;";
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
@@ -91,7 +91,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "INSERT INTO officesuppliesrequestoptions (itemName, prices, shop, itemType, itemDescription) VALUES (?, ?, ?, ?, ?, ?)";
 
             ps = connection.prepareStatement(sql);
@@ -124,7 +124,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "DELETE FROM officesuppliesrequestoptions WHERE (itemName = ? AND shop = ?)";
 
             ps = connection.prepareStatement(sql);
@@ -154,7 +154,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
         ResultSet rs = null;
         List<SupplyRequestOptions> supplyRequestOptions = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM officesuppliesrequestoptions WHERE shop = ?;";
             ps = connection.prepareStatement(sql);
@@ -192,7 +192,7 @@ public class SupplyRequestOptionsDaoImpl implements SupplyRequestOptionsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "UPDATE officesuppliesrequestoptions SET price = ? where (itemName = ? AND shop = ?)";
 
             ps = connection.prepareStatement(sql);
