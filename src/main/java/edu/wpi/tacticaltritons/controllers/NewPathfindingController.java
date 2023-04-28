@@ -1,5 +1,7 @@
 package edu.wpi.tacticaltritons.controllers;
 
+import arduino.Arduino;
+import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Move;
 import edu.wpi.tacticaltritons.database.Node;
@@ -8,6 +10,7 @@ import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import edu.wpi.tacticaltritons.pathfinding.Directions;
+import edu.wpi.tacticaltritons.robot.RobotComm;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
@@ -15,6 +18,7 @@ import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -35,6 +39,9 @@ public class NewPathfindingController extends MapSuperController {
 
     @FXML
     private TextArea textDirections;
+
+    @FXML
+    private ImageView robotIcon;
 
     @FXML
     private MFXButton directions;
@@ -108,6 +115,7 @@ public class NewPathfindingController extends MapSuperController {
         findAllNodes(allNodeTypes, selectedFloor.FLOOR.floor, "Pathfinding");
 
         initializeImages();
+        robotIcon.setImage(App.robot);
         initalizeFloorButtons();
         initializeGesturePane();
         initializeMenuButton("Pathfinding");
@@ -171,6 +179,22 @@ public class NewPathfindingController extends MapSuperController {
                         throw new RuntimeException(e);
                     }
                 });
+        this.robotIcon.setOnMouseClicked(event -> {
+            RobotComm.checkConnection(new Arduino(RobotComm.getCom(),RobotComm.getBaud()));
+            if(RobotComm.isCheckConnection() && shortestPathMap.size() > 0){
+                Node startNode = shortestPathMap.get(0);
+                Node previousNode = startNode;
+                for(Node node: shortestPathMap){
+                    if(!node.equals(startNode)){
+                        int xDiff = startNode.getXcoord() - previousNode.getXcoord();
+                        int yDiff = startNode.getYcoord() - previousNode.getYcoord();
+                        float distance = (float)Math.sqrt(Math.pow(xDiff,2) + Math.pow(yDiff,2));
+                        float angle = (float)Math.atan2(yDiff,xDiff);
+                        RobotComm.runRobot(angle,distance);
+                    }
+                }
+            }
+        });
     }
 
 

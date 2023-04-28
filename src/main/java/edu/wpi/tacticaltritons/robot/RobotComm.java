@@ -1,26 +1,41 @@
 package edu.wpi.tacticaltritons.robot;
 
 import arduino.Arduino;
+import lombok.Getter;
 
+import java.awt.*;
 import java.io.Serial;
 
 public class RobotComm {
 
+    @Getter
     private static String com = "COM5"; //TODO change COM if necessary
+    @Getter
     private static int baud = 115200;
+    @Getter
+    private static boolean checkConnection = true; //true for able to connect, false if unable to connect
+
+    /**
+     * re-check if the program can communicate with the robot, does not always need to be called
+     * @param arduino the robot to check connection status
+     */
+    public static void checkConnection(Arduino arduino){
+        checkConnection = arduino.openConnection();
+        arduino.closeConnection();
+    }
 
     private static String in = "";
 
     public static void readData(){
         Arduino robot = new Arduino(com, baud);
         in = "";
-        if(!robot.openConnection()){
+        if(checkConnection && !robot.openConnection()){
             System.out.println("Error connecting to robot");
+            checkConnection = false;
         } else{
-            while(in.equals("")){ //TODO make sure blocking code isn't blocking anything
+            while(in.equals("")){
                 in = robot.serialRead();
             }
-//            in = in.substring(in.indexOf('\n')+1,in.indexOf('\n',in.indexOf('\n')+1));
             System.out.println("Read [" + in + "] from robot");
             robot.closeConnection();
         }
@@ -28,8 +43,9 @@ public class RobotComm {
 
     private static void sendData(String data){
         Arduino robot = new Arduino(com, baud);
-        if(!robot.openConnection()){
+        if(checkConnection && !robot.openConnection()){
             System.out.println("Error connecting to robot");
+            checkConnection = false;
         } else{
             robot.serialWrite(data + '\n');
             System.out.println("Wrote [" + data + "] to robot");
@@ -58,14 +74,13 @@ public class RobotComm {
         sendData("l:" + (on == true?"1":"0"));
     }
 
-/*    Runnable robotRunnable = new Runnable() {
-        @Override
-        public void run() {
-            RobotComm.setLED(true);
-            RobotComm.drive(20,20);
-        }
-    };
-
-    Thread robotThread = new Thread(robotRunnable);
-    robotThread.start();*/
+    public static void runRobot(float angle, float drive){
+        Runnable robotRunnable = () -> {
+            setLED(true);
+            drive(angle,drive);
+            setLED(false);
+        };
+        Thread robotThread = new Thread(robotRunnable);
+        robotThread.start();
+    }
 }

@@ -37,6 +37,7 @@ public class App extends Application {
   public static Image thirdfloor;
   public static Image menuBar;
   public static Image pathfinding;
+  public static Image robot;
   public static Image importExport;
 
   public static String invalidMFXTextField;
@@ -76,6 +77,9 @@ public class App extends Application {
 
     pathfinding =
             new Image(Objects.requireNonNull(getClass().getResource("images/map_page/pathfindingButton.png")).toString());
+
+    robot =
+            new Image(Objects.requireNonNull(getClass().getResource("images/map_page/robotIcon.png")).toString());
 
     importExport = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/export.png")).toString());
 
