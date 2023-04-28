@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="610" prefWidth="300.0" style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.settings.UserOptionsController">
+    <BorderPane.margin>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </BorderPane.margin>
+    <center>
+        <FlowPane fx:id="userContent" alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets top="10.0" />
+            </BorderPane.margin>
+            <children>
+                <MFXButton id="normalButton" fx:id="editUserButton" alignment="CENTER" minHeight="33.0" minWidth="122.0" text="Edit User Info">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <FlowPane.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                    </FlowPane.margin>
+                </MFXButton>
+                <MFXButton id="normalButton" fx:id="changeEmailButton" alignment="CENTER" minHeight="33.0" minWidth="154.0" text="Change Email">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <FlowPane.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                    </FlowPane.margin>
+                </MFXButton>
+                <MFXButton id="normalButton" fx:id="changePasswordButton" alignment="CENTER" minHeight="33.0" minWidth="154.0" text="Change Password">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <FlowPane.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                    </FlowPane.margin>
+                </MFXButton>
+                <MFXButton id="normalButton" fx:id="twoFactorButton" alignment="CENTER" minHeight="33.0" minWidth="70.0" text="Two-Factor Auth">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <FlowPane.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                    </FlowPane.margin>
+                </MFXButton>
+                <MFXButton id="normalButton" fx:id="createAccountButton" alignment="CENTER" layoutX="125.0" layoutY="372.0" minHeight="33.0" minWidth="135.0" text="Create Account">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <FlowPane.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                    </FlowPane.margin>
+                </MFXButton>
+            </children>
+        </FlowPane>
+    </center>
+    <top>
+        <Text fx:id="userHeader" strokeType="OUTSIDE" strokeWidth="0.0" text="User Options" underline="true" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="32.0" />
+            </font>
+            <BorderPane.margin>
+                <Insets top="5.0" />
+            </BorderPane.margin>
+        </Text>
+    </top>
+    <bottom>
+        <FlowPane fx:id="userBottomPane" alignment="CENTER" columnHalignment="CENTER" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="20.0" />
+            </BorderPane.margin>
+        </FlowPane>
+    </bottom>
+</BorderPane>

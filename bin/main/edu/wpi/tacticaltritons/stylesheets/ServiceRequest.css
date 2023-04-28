@@ -1,0 +1,55 @@
+.button{
+    -fx-text-fill: white;
+    -fx-padding: 7;
+    -fx-background-radius: 20;
+}
+
+.button:hover{
+    -fx-text-fill: black;
+}
+
+.button-submit {
+    -fx-background-color: #002D59;
+}
+
+.button-cancel{
+    -fx-background-color: #d2d2d2;
+}
+
+.button-clear{
+    -fx-background-color: #f0ab0b;
+}
+
+.text-functional{
+    -fx-font-size: 30px;
+    -fx-font-family: "Sans";
+}
+
+.text-header{
+    -fx-font-family: "Palatino Linotype";
+    -fx-font-size:28px;
+    -fx-font-weight: bold;
+}
+
+.text-general{
+    -fx-font-family:"Arial";
+    -fx-font-size:16px;
+}
+
+.rectangle {
+    -fx-background-color: white;
+    -fx-fill: white;
+    -fx-stroke-width: 0;
+    -fx-arc-height: 10;
+    -fx-arc-width: 10;
+}
+
+.rectangle-gray{
+    -fx-fill:#f1f1f1;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0;
+    -fx-arc-height: 10;
+    -fx-arc-width: 10;
+}
+
+/*different button types, different rectangle types*/
