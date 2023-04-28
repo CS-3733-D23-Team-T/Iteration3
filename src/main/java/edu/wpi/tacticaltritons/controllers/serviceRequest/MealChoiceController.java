@@ -2,7 +2,7 @@ package edu.wpi.tacticaltritons.controllers.serviceRequest;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.database.DAOFacade;
-import edu.wpi.tacticaltritons.database.FlowerRequestOptions;
+import edu.wpi.tacticaltritons.database.RequestOptions;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import javafx.fxml.FXML;
@@ -48,22 +48,23 @@ public class MealChoiceController {
     public void initialize() throws NullPointerException {
         // This gets all the entrys in the database into a list locally so it is only one database call
 
-        HashMap<String, FlowerRequestOptions> uniqueShops = new HashMap<>();
-        List<FlowerRequestOptions> flowerRequestOptionsList;
+        HashMap<String, RequestOptions> uniqueShops = new HashMap<>();
+        List<RequestOptions> MealRequestOptionsList;
         try {
-            flowerRequestOptionsList = DAOFacade.getAllFlowerRequestOptions();
+            MealRequestOptionsList = DAOFacade.getAllOptions();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        uniqueShops = findNumberOfShops(flowerRequestOptionsList);
+        uniqueShops = findNumberOfShops(MealRequestOptionsList);
 
         uniqueShops.forEach((key, value) -> {
-            createFlowerShopButton(value, App.flowerHashMap.get(value.getShop()));
+            //This is going to give the image of the flower shops need to look into where the pics for marks code is
+            createShopButton(value, App.flowerHashMap.get(value.getRestaurant()));
         });
     }
 
-    private void createFlowerShopButton(FlowerRequestOptions value, Image shopImage) {
+    private void createShopButton(RequestOptions value, Image shopImage) {
         // created the outer flow pane
         FlowPane flowPaneOuter = new FlowPane();
         flowPaneOuter.setPrefWidth(defaultOuterFlowPanePrefWidth);
@@ -93,10 +94,14 @@ public class MealChoiceController {
 
         // creates the Shope name lable
         Label shopNameLabel = new Label();
-        shopNameLabel.setText(value.getShop());
+        shopNameLabel.setText(value.getRestaurant());
         shopNameLabel.setWrapText(true);
         shopNameLabel.setFont(new Font(defaultTitleFontSize));
 
+
+        /*
+        TODO
+        make a shop discription
 
         //creates the discription label
         Label discriptionLabel = new Label();
@@ -106,10 +111,12 @@ public class MealChoiceController {
         discriptionLabel.setWrapText(true);
         discriptionLabel.setPadding(new Insets(0, 20, 0, 20));
 
+         */
+
 
         // added thins to the inner flowplane
         flowPaneInner.getChildren().add(shopNameLabel);
-        flowPaneInner.getChildren().add(discriptionLabel);
+        //flowPaneInner.getChildren().add(discriptionLabel);
 
         // added things to the other flowpane
         flowPaneOuter.getChildren().add(imageView);
@@ -121,17 +128,17 @@ public class MealChoiceController {
 
         flowPaneOuter.setOnMouseClicked(event ->
         {
-            name = value.getShop();
-            Navigation.navigate(Screen.FLOWER_REQUEST);
+            name = value.getRestaurant();
+            Navigation.navigate(Screen.MEAL_REQUEST);
         });
 
-        startUpSize(flowPaneOuter, flowPaneInner, imageView, shopNameLabel, discriptionLabel);
-        windowChangingSize(flowPaneOuter, flowPaneInner, imageView, shopNameLabel, discriptionLabel);
+        startUpSize(flowPaneOuter, flowPaneInner, imageView, shopNameLabel);
+        windowChangingSize(flowPaneOuter, flowPaneInner, imageView, shopNameLabel);
 
 
     }
 
-    private void startUpSize(FlowPane flowPaneOuter, FlowPane flowPaneInner, ImageView imageView, Label shopNameLabel, Label discriptionLabel) {
+    private void startUpSize(FlowPane flowPaneOuter, FlowPane flowPaneInner, ImageView imageView, Label shopNameLabel) {
         double newOuterFlowPaneWidth = defaultOuterFlowPanePrefWidth * App.getPrimaryStage().getWidth() / noramlWidth;
         double newInnerFlowPaneWidth = defaultInerFlowPanePrefWidth * App.getPrimaryStage().getWidth() / noramlWidth;
         double newImageWidth = defaultImageViewFitWidth * App.getPrimaryStage().getWidth() / noramlWidth;
@@ -164,14 +171,12 @@ public class MealChoiceController {
 
         if (shopTitleTextSize <= MAX_FONT_SIZE) {
             shopNameLabel.setFont(new Font(shopDiscriptionTextSize));
-            discriptionLabel.setFont(new Font(shopTitleTextSize));
         } else {
             shopNameLabel.setFont(new Font(MAX_FONT_SIZE));
-            discriptionLabel.setFont(new Font(MAX_FONT_SIZE - 10));
         }
     }
 
-    private void windowChangingSize(FlowPane flowPaneOuter, FlowPane flowPaneInner, ImageView imageView, Label shopNameLabel, Label discriptionLabel) {
+    private void windowChangingSize(FlowPane flowPaneOuter, FlowPane flowPaneInner, ImageView imageView, Label shopNameLabel) {
         App.getPrimaryStage().widthProperty().addListener(((observable, oldValue, newValue) ->
         {
             double newOuterFlowPaneWidth = defaultOuterFlowPanePrefWidth * newValue.doubleValue() / noramlWidth;
@@ -216,10 +221,8 @@ public class MealChoiceController {
 
                 if (shopTitleTextSize <= MAX_FONT_SIZE) {
                     shopNameLabel.setFont(new Font(shopDiscriptionTextSize));
-                    discriptionLabel.setFont(new Font(shopTitleTextSize));
                 } else {
                     shopNameLabel.setFont(new Font(MAX_FONT_SIZE));
-                    discriptionLabel.setFont(new Font(MAX_FONT_SIZE - 10));
                 }
 
             } else {
@@ -227,19 +230,17 @@ public class MealChoiceController {
                 flowPaneInner.setPrefHeight(defaultInerFlowPanePrefWidth);
                 imageView.setFitHeight(defaultImageViewFitWidth);
                 shopNameLabel.setFont(new Font(defaultTitleFontSize));
-                discriptionLabel.setFont(new Font(defaultDiscriptionFontSize));
-
             }
         });
     }
 
 //    private ChangeListener<? super Number> generateWidthScaler(Map<Node, Map<Class<?>, List<Double> nodes)
 
-    private HashMap<String, FlowerRequestOptions> findNumberOfShops(List<FlowerRequestOptions> flowerRequestOptionsList) {
-        HashMap<String, FlowerRequestOptions> hash = new HashMap<>();
+    private HashMap<String, RequestOptions> findNumberOfShops(List<RequestOptions> MealRequestOptionsList) {
+        HashMap<String, RequestOptions> hash = new HashMap<>();
 
-        for (FlowerRequestOptions options : flowerRequestOptionsList) {
-            hash.putIfAbsent(options.getShop(), options);
+        for (RequestOptions options : MealRequestOptionsList) {
+            hash.putIfAbsent(options.getRestaurant(), options);
         }
 
         return hash;
