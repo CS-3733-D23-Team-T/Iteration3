@@ -1,45 +1,34 @@
 package edu.wpi.tacticaltritons;
 
-import com.google.common.util.concurrent.AtomicDouble;
 import edu.wpi.tacticaltritons.data.FlowerHashMap;
 import edu.wpi.tacticaltritons.data.FurnitureHashMap;
 import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
-import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.navigation.Screen;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.*;
-import javafx.scene.image.Image;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
-import org.opencv.core.Mat;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 public class App extends Application {
@@ -119,121 +108,156 @@ public class App extends Application {
         loader = new FXMLLoader(App.class.getResource("views/navigation/AdminQuickNavigation.fxml"));
         adminQuickNavigation = loader.load();
 
-//        Sphere sphere = new Sphere(2.5);
-//        sphere.setMaterial(new PhongMaterial(Color.FORESTGREEN));
-//
-//        sphere.setTranslateZ(7);
-//        sphere.setTranslateX(2);
-//
-//        Box box = new Box(5, 5, 5);
-//        box.setMaterial(new PhongMaterial(Color.RED));
-//
-//        Translate pivot = new Translate();
-//        Rotate yRotate = new Rotate(-45, Rotate.Y_AXIS);
-//        Rotate xRotate = new Rotate(-45, Rotate.X_AXIS);
-//        Translate zoom = new Translate(0,0,-50);
-//
-//// Create and position camera
-//        PerspectiveCamera camera = new PerspectiveCamera(true);
-//        camera.getTransforms().addAll (
-//                pivot,
-//                yRotate,
-//                xRotate,
-//                zoom
-//        );
-//
-//// Build the Scene Graph
-//        Group root = new Group();
-//
-////        DAOFacade.getAllNodes().forEach(node -> {
-////            Sphere s = new Sphere(2.5);
-////            s.setTranslateZ(node.getYcoord());
-////            s.setTranslateX(node.getXcoord());
-////            root.getChildren().add(s);
-////        });
-//        root.getChildren().add(camera);
-//        root.getChildren().add(box);
-//        root.getChildren().add(sphere);
-//
-//
-//
-//// Use a SubScene
-//        SubScene subScene = new SubScene(
-//                root,
-//                300,300,
-//                true,
-//                SceneAntialiasing.BALANCED
-//        );
-//        subScene.setFill(Color.ALICEBLUE);
-//        subScene.setCamera(camera);
-//        Group group = new Group();
-//        group.getChildren().add(subScene);
-//
-//        List<Point2D> points = new ArrayList<>();
-//        subScene.setOnMouseDragged(event -> {
-//            System.out.println("(" + event.getSceneX() + ", " + event.getSceneY() + ")");
-//            if(points.size() == 0){
-//                points.add(new Point2D(event.getSceneX(), event.getSceneY()));
-//            }
-//            else{
-//                Point2D secondPoint = new Point2D(event.getSceneX(), event.getSceneY());
-//
-//                double hyp = points.get(0).distance(secondPoint);
-//                double opp = Math.abs(secondPoint.getY() - points.get(0).getY());
-//                double adj = Math.abs(secondPoint.getX() - points.get(0).getX());
-//
-//                double magnitude = hyp / Math.sqrt(subScene.getWidth() * subScene.getHeight());
-//
-//                double xMultiplier = secondPoint.getY() < points.get(0).getY() ? 1 : -1;
-//                double xAngle = magnitude * xMultiplier * Math.atan(opp/adj) * (180 / Math.PI);
-//
-//                double yMultiplier = secondPoint.getX() < points.get(0).getX() ? -1 : 1;
-//                double yAngle = magnitude * yMultiplier * Math.atan(adj/opp) * (180 / Math.PI);
-//
-//                camera.getTransforms().stream().filter(node -> (node instanceof Rotate)).forEach(node -> {
-//                    if(((Rotate) node).getAxis().equals(Rotate.X_AXIS) && !Double.isNaN(xAngle)){
-//                        if(((Rotate) node).getAngle() <= -10 && ((Rotate) node).getAngle() >= -80) {
-//                            if(!(((Rotate) node).getAngle() + xAngle >= -10 || ((Rotate) node).getAngle() + xAngle <= -80)){
-//                                ((Rotate) node).setAngle(((Rotate) node).getAngle() + xAngle);
-//                                System.out.println("Current X Angle = " + ((Rotate) node).getAngle());
-//                            }
-//                        }
-//                    }
-//                    else if(((Rotate) node).getAxis().equals(Rotate.Y_AXIS) && !Double.isNaN(yAngle)){
-//                        ((Rotate) node).setAngle(((Rotate) node).getAngle() + yAngle);
-//                        System.out.println("Current Y Angle = " + ((Rotate) node).getAngle());
-//                    }
-//                });
-//
-//                System.out.println("X Translate Angle = " + xAngle + ", Y Translate Angle = " + yAngle);
-//
-//
-//                points.clear();
-//            }
+        Sphere sphere = new Sphere(2.5);
+        sphere.setMaterial(new PhongMaterial(Color.FORESTGREEN));
+
+        sphere.setTranslateZ(7);
+        sphere.setTranslateX(2);
+
+        Box box = new Box(5, 5, 5);
+        box.setMaterial(new PhongMaterial(Color.RED));
+
+        Translate pivot = new Translate();
+        Rotate yRotate = new Rotate(0, Rotate.Y_AXIS);
+        Rotate xRotate = new Rotate(-45, Rotate.X_AXIS);
+        Translate zoom = new Translate(0,0,-50);
+
+// Create and position camera
+        PerspectiveCamera camera = new PerspectiveCamera(true);
+        camera.getTransforms().addAll (
+                pivot,
+                yRotate,
+                xRotate,
+                zoom
+        );
+        camera.setNearClip(1);
+        camera.setFarClip(2000);
+
+// Build the Scene Graph
+        Group root = new Group();
+
+//        DAOFacade.getAllNodes().forEach(node -> {
+//            Sphere s = new Sphere(2.5);
+//            s.setTranslateZ(node.getYcoord());
+//            s.setTranslateX(node.getXcoord());
+//            root.getChildren().add(s);
 //        });
-//
-        final Scene scene = new Scene(rootPane);
-//        scene.setOnKeyPressed(event -> {
-//            double sceneSize = Math.sqrt(scene.getWidth() * scene.getHeight());
-//            if(event.isShiftDown() && event.getCode() == KeyCode.EQUALS){
-//                camera.getTransforms().stream().filter(node -> (node instanceof Translate)).forEach(node -> {
-//                    System.out.println(((Translate) node).getZ());
-//                    if(((Translate) node).getZ() <= -75 && ((Translate) node).getZ() >= -sceneSize){
-//                        System.out.println("hi");
-//                        ((Translate) node).setZ(((Translate) node).getZ() + 25);
-//                    }
-//                });
-//            }
-//            else if(event.isShiftDown() && event.getCode() == KeyCode.MINUS){
-//                camera.getTransforms().stream().filter(node -> (node instanceof Translate)).forEach(node -> {
-//                    System.out.println(((Translate) node).getZ());
-//                    if(((Translate) node).getZ() <= -50 && ((Translate) node).getZ() >= -sceneSize){
-//                        System.out.println("hi1");
-//                        ((Translate) node).setZ(((Translate) node).getZ() - 25);
-//                    }
-//                });
-//            }
-//        });
+        root.getChildren().add(camera);
+        root.getChildren().add(box);
+        root.getChildren().add(sphere);
+
+
+
+// Use a SubScene
+        SubScene subScene = new SubScene(
+                root,
+                1280,720,
+                true,
+                SceneAntialiasing.BALANCED
+        );
+        subScene.setFill(Color.ALICEBLUE);
+        subScene.setCamera(camera);
+        Group group = new Group();
+        group.getChildren().add(subScene);
+
+        List<Point2D> points = new ArrayList<>();
+        subScene.setOnMouseDragged(event -> {
+            if(points.size() == 0){
+                points.add(new Point2D(event.getSceneX(), event.getSceneY()));
+            }
+            else{
+                Point2D secondPoint = new Point2D(event.getSceneX(), event.getSceneY());
+
+                double hyp = points.get(0).distance(secondPoint);
+                double opp = Math.abs(secondPoint.getY() - points.get(0).getY());
+                double adj = Math.abs(secondPoint.getX() - points.get(0).getX());
+
+                double magnitude = hyp / Math.sqrt(subScene.getWidth() * subScene.getHeight());
+
+                double xMultiplier = secondPoint.getY() < points.get(0).getY() ? 1 : -1;
+                double xAngle = magnitude * xMultiplier * Math.atan(opp/adj) * (180 / Math.PI);
+
+                double yMultiplier = secondPoint.getX() < points.get(0).getX() ? -1 : 1;
+                double yAngle = magnitude * yMultiplier * Math.atan(adj/opp) * (180 / Math.PI);
+
+                camera.getTransforms().stream().filter(node -> (node instanceof Rotate)).forEach(node -> {
+                    if(((Rotate) node).getAxis().equals(Rotate.X_AXIS) && !Double.isNaN(xAngle)){
+                        if(((Rotate) node).getAngle() <= -10 && ((Rotate) node).getAngle() >= -80) {
+                            if(!(((Rotate) node).getAngle() + xAngle >= -10 || ((Rotate) node).getAngle() + xAngle <= -80)){
+                                ((Rotate) node).setAngle(((Rotate) node).getAngle() + xAngle);
+                            }
+                        }
+                    }
+                    else if(((Rotate) node).getAxis().equals(Rotate.Y_AXIS) && !Double.isNaN(yAngle)){
+                        ((Rotate) node).setAngle(((Rotate) node).getAngle() + yAngle);
+                    }
+                });
+
+                points.clear();
+            }
+        });
+
+        Image image = new Image(Objects.requireNonNull(App.class.getResource("images/clean_map/map_firstfloor_clean.png")).toString());
+
+        WritableImage writer = new WritableImage(image.getPixelReader(), (int) image.getWidth(), (int) image.getHeight());
+        PixelWriter pixelWriter = writer.getPixelWriter();
+        PixelReader pixelReader = writer.getPixelReader();
+
+        for(int i = 0; i < writer.getHeight(); i++){
+            for(int j = 0; j < writer.getWidth(); j++){
+                Color c = pixelReader.getColor(j, i);
+                double red = c.getRed() * 255;
+                double green = c.getRed() * 255;
+                double blue = c.getBlue() * 255;
+
+                if(red < 230 && green < 230 && blue < 230){
+                    pixelWriter.setColor(j, i, Color.BLACK);
+                }
+                else {
+                    pixelWriter.setColor(j, i, Color.WHITE);
+                }
+            }
+        }
+
+        ImageView iv = new ImageView(writer);
+        iv.setFitWidth(1280);
+        iv.setFitHeight(720);
+        iv.getTransforms().add(new Rotate(90,Rotate.X_AXIS));
+        root.getChildren().add(iv);
+
+
+
+        final Scene scene = new Scene(group);
+        scene.setOnKeyPressed(event -> {
+            double sceneSize = Math.sqrt(scene.getWidth() * scene.getHeight());
+            double screenIncrement = sceneSize / 5;
+            if(event.isShiftDown() && event.getCode() == KeyCode.EQUALS){
+                camera.getTransforms().stream().filter(node -> (node instanceof Translate)).forEach(node -> {
+                    if(((Translate) node).getZ() <= -75 && ((Translate) node).getZ() >= -sceneSize){
+                        ((Translate) node).setZ(((Translate) node).getZ() + screenIncrement);
+                    }
+                });
+            }
+            else if(event.isShiftDown() && event.getCode() == KeyCode.MINUS){
+                camera.getTransforms().stream().filter(node -> (node instanceof Translate)).forEach(node -> {
+                    if(((Translate) node).getZ() <= -50 && ((Translate) node).getZ() >= -sceneSize){
+                        ((Translate) node).setZ(((Translate) node).getZ() - screenIncrement);
+                    }
+                });
+            }
+            else if(event.getCode() == KeyCode.W){
+                camera.setTranslateY(camera.getTranslateZ() + screenIncrement);
+            }
+            else if(event.getCode() == KeyCode.D){
+                camera.setTranslateX(camera.getTranslateY() + screenIncrement);
+            }
+            else if(event.getCode() == KeyCode.S){
+                camera.setTranslateY(camera.getTranslateZ() - screenIncrement);
+            }
+            else if(event.getCode() == KeyCode.A){
+                camera.setTranslateX(camera.getTranslateY() - screenIncrement);
+            }
+        });
         primaryStage.setScene(scene);
         primaryStage.setTitle("CS3733 - Tactical Tritons");
         primaryStage.show();

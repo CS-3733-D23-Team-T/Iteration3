@@ -53,8 +53,6 @@ dependencies {
             'com.github.hervegirod:fxsvgimage:1.1',
             'net.java.dev.jna:jna:5.12.1',
 
-            'opencv:opencv:4.0.0-0',
-
             'com.calendarfx:view:11.12.5'
 
     )
