@@ -3,16 +3,15 @@ package edu.wpi.tacticaltritons.styling;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.net.*;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+import com.google.common.base.Charsets;
 import org.json.JSONArray;
 
 /***************************************************************************************************************
@@ -28,7 +27,7 @@ public final class GoogleTranslate { //Class marked as final since all methods a
      * URL to query for Translation
      */
     private static final String GOOGLE_TRANSLATE_URL = "http://translate.google.com/translate_a/single";
-    private static String language = "es";
+    private static String language = "zh";
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("edu.wpi.tacticaltritons.languages.language", new Locale(language));
 
     /**
@@ -37,7 +36,7 @@ public final class GoogleTranslate { //Class marked as final since all methods a
     private GoogleTranslate() {
     };
 
-    public static String getString(String text){
+    public static String getString(String text) {
         String output;
         try {
             output = RESOURCE_BUNDLE.getString(text);
@@ -45,7 +44,10 @@ public final class GoogleTranslate { //Class marked as final since all methods a
             return text;
         }
         output = output.replace("\"", "");
-        return output;
+        String encoded;
+        encoded = URLEncoder.encode(output, (StandardCharsets.UTF_8)); //Encode
+        encoded = URLDecoder.decode(encoded, (StandardCharsets.UTF_8)); //Decode
+        return encoded;
     }
 
 
