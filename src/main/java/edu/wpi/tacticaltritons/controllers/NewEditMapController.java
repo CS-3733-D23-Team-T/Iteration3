@@ -253,12 +253,14 @@ public class NewEditMapController extends MapSuperController {
                         break;
                     case "EditMap":
                         componentShift(340);
+                        importExport.setTranslateX(340);
                         break;
 
                 }
             } else {
                 menuPane.setVisible(false);
                 componentShift(0);
+                importExport.setTranslateX(0);
             }
         });
         this.editMap.setOnAction(event -> {
@@ -449,6 +451,7 @@ public class NewEditMapController extends MapSuperController {
                         this.floor3Group.getChildren().add(addCircle);
                         break;
                 }
+
             }
         });
 

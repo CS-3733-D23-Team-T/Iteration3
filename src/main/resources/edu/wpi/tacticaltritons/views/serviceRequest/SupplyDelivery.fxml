@@ -22,12 +22,12 @@
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
                            <font>
-                              <Font name="Times New Roman" size="18.0" />
+                              <Font name="Times New Roman" size="20.0" />
                            </font>
                         </Text>
                         <Label fx:id="checkoutLabel" text="This is the Name of Shop" textAlignment="CENTER" wrapText="true">
                            <font>
-                              <Font name="Times New Roman" size="20.0" />
+                              <Font name="Times New Roman" size="15.0" />
                            </font>
                         </Label>
                      </children>
