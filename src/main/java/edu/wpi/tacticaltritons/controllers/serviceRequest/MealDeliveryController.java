@@ -2,7 +2,7 @@ package edu.wpi.tacticaltritons.controllers.serviceRequest;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.database.DAOFacade;
-import edu.wpi.tacticaltritons.database.FlowerRequestOptions;
+import edu.wpi.tacticaltritons.database.RequestOptions;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -49,9 +49,10 @@ public class MealDeliveryController {
     private final TabPane tabPane = new TabPane();
 
     static public ObservableMap<String, Integer> checkoutItems = FXCollections.observableHashMap();
-    static public double flowerTotal;
+
+    static public double total;
     public ObservableMap<String, Double> priceOfItems = FXCollections.observableHashMap();
-    private List<FlowerRequestOptions> flowerRequestOptionsList;
+    private List<RequestOptions> mealRequestOptionsList;
 
     private final double noramlWidth = 1280;
     private final double normalHeight = 720;
@@ -64,25 +65,20 @@ public class MealDeliveryController {
     private final double defaultDiscriptionFontSize = 15;
     private final double defaultDiscriptionHeight = 50;
 
-    DoubleProperty childWidthProperty = new SimpleDoubleProperty();
-    DoubleProperty childHeightProperty = new SimpleDoubleProperty();
-
     @FXML
     public void initialize() {
 
-
-//        EffectGenerator.generateShadowEffect(basePane);
-        this.shopName = FlowerChoiceController.name;
+        this.shopName = MealChoiceController.name;
         // Sets the label to the name of the shop that was selected
         checkoutLabel.setText(shopName);
 
         try {
-            flowerRequestOptionsList = DAOFacade.getAllFlowerRequestOptions();
+            mealRequestOptionsList = DAOFacade.getAllOptions();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        ArrayList<FlowerRequestOptions> shopItems = getFlowerItems(flowerRequestOptionsList);
+        ArrayList<RequestOptions> shopItems = getItems(mealRequestOptionsList);
         HashMap<String, String> numberOfTabs = getNumberOfTables(shopItems);
 
 
@@ -91,7 +87,7 @@ public class MealDeliveryController {
         {
             Tab tab = new Tab(value);
             tab.setId(value);
-            ScrollPane scrollPane = createShopIteams(shopItems, value, App.flowerHashMap);
+            ScrollPane scrollPane = createShopIteams(shopItems, value, App.mealHashMap);
             tab.setContent(scrollPane);
             tabPane.getTabs().add(tab);
             tabPane.getStyleClass().add("tab-pane");
@@ -106,21 +102,21 @@ public class MealDeliveryController {
         {
             priceOfItems.clear();
             checkoutItems.clear();
-            updatePriceFlowerRequest();
+            updatePriceRequest();
             checkoutFlowpane.getChildren().clear();
         });
 
         checkoutButton.setOnAction(event ->
         {
             if (checkoutFlowpane.getChildren().size() > 0) {
-                flowerTotal = Double.parseDouble(priceLable.getText());
-                Navigation.navigate(Screen.FLOWER_CHECKOUT);
+                total = Double.parseDouble(priceLable.getText());
+                Navigation.navigate(Screen.MEAL_SUBMIT);
                 priceOfItems.clear();
             }
         });
     }
 
-    private MFXScrollPane createShopIteams(ArrayList<FlowerRequestOptions> flowerRequestOptionsArrayList, String value, HashMap<String, Image> imageHashMap) {
+    private MFXScrollPane createShopIteams(ArrayList<RequestOptions> MealRequestOptionsArrayList, String value, HashMap<String, Image> imageHashMap) {
         int counter = 0;
         MFXScrollPane scrollPane = new MFXScrollPane();
         scrollPane.setPrefWidth(600);
@@ -133,8 +129,8 @@ public class MealDeliveryController {
         mainFlowPane.setAlignment(Pos.TOP_LEFT);
 
 
-        for (FlowerRequestOptions options : flowerRequestOptionsArrayList) {
-            if (options.getItemType().equals(value)) {
+        for (RequestOptions options : MealRequestOptionsArrayList) {
+            if (options.getRestaurant().equals(value)) {
                 counter++;
                 // Creates the outer flowpane to hold all the infomation
 
@@ -233,7 +229,7 @@ public class MealDeliveryController {
         return scrollPane;
     }
 
-    private void updatedCheckoutBox(FlowerRequestOptions options, HashMap<String, Image> imageHashMap) {
+    private void updatedCheckoutBox(RequestOptions options, HashMap<String, Image> imageHashMap) {
         if (!checkoutItems.containsKey(options.getItemName())) {
             checkoutItems.put(options.getItemName(), 1);
             priceOfItems.put(options.getItemName(), options.getPrice());
@@ -242,10 +238,10 @@ public class MealDeliveryController {
         } else {
             checkoutItems.put(options.getItemName(), checkoutItems.get(options.getItemName()) + 1);
         }
-        updatePriceFlowerRequest();
+        updatePriceRequest();
     }
 
-    private void updatePriceFlowerRequest() {
+    private void updatePriceRequest() {
         DoubleProperty totalPrice = new SimpleDoubleProperty();
 
         checkoutItems.forEach((key, value) ->
@@ -256,7 +252,7 @@ public class MealDeliveryController {
 
     }
 
-    private FlowPane createCheckoutNode(FlowerRequestOptions options, Image flowerImage) {
+    private FlowPane createCheckoutNode(RequestOptions options, Image flowerImage) {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(400);
         flowPane.setPrefHeight(100);
@@ -306,7 +302,7 @@ public class MealDeliveryController {
                 checkoutItems.remove(options.getItemName());
                 priceOfItems.remove(options.getItemName());
             }
-            updatePriceFlowerRequest();
+            updatePriceRequest();
         });
 
         Button add = new Button();
@@ -320,7 +316,7 @@ public class MealDeliveryController {
         add.setOnMouseClicked(event ->
         {
             checkoutItems.put(options.getItemName(), checkoutItems.get(options.getItemName()) + 1);
-            updatePriceFlowerRequest();
+            updatePriceRequest();
         });
 
         flowPane.getChildren().add(imageView);
@@ -331,21 +327,21 @@ public class MealDeliveryController {
         return flowPane;
     }
 
-    private HashMap<String, String> getNumberOfTables(ArrayList<FlowerRequestOptions> shopItems) {
+    private HashMap<String, String> getNumberOfTables(ArrayList<RequestOptions> shopItems) {
         HashMap<String, String> numberOfTabs = new HashMap<>();
-        for (FlowerRequestOptions options : shopItems) {
-            if (options.getShop().equals(shopName)) {
+        for (RequestOptions options : shopItems) {
+            if (options.getRestaurant().equals(shopName)) {
                 numberOfTabs.putIfAbsent(options.getItemType(), options.getItemType());
             }
         }
         return numberOfTabs;
     }
 
-    private ArrayList<FlowerRequestOptions> getFlowerItems(List<FlowerRequestOptions> flowerRequestOptionsList) {
-        ArrayList<FlowerRequestOptions> shopIteams = new ArrayList<>();
+    private ArrayList<RequestOptions> getItems(List<RequestOptions> mealRequestOptionsList) {
+        ArrayList<RequestOptions> shopIteams = new ArrayList<>();
 
-        for (FlowerRequestOptions options : flowerRequestOptionsList) {
-            if (options.getShop().equals(shopName)) {
+        for (RequestOptions options : mealRequestOptionsList) {
+            if (options.getRestaurant().equals(shopName)) {
                 shopIteams.add(options);
             }
         }
