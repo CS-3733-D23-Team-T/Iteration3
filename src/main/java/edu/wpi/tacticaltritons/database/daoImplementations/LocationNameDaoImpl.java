@@ -16,7 +16,7 @@ public class LocationNameDaoImpl implements LocationNameDao {
     ResultSet rs = null;
     LocationName location = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
       String sql = "SELECT * FROM LocationName WHERE longName = ?;";
       ps = connection.prepareStatement(sql);
@@ -51,7 +51,7 @@ public class LocationNameDaoImpl implements LocationNameDao {
     ResultSet rs = null;
     List<LocationName> locations = new ArrayList<>();
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
       String sql = "SELECT * FROM LocationName ORDER BY longName ASC;";
       statement = connection.createStatement();
@@ -87,7 +87,7 @@ public class LocationNameDaoImpl implements LocationNameDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "INSERT INTO LocationName (longName, shortName, nodeType) VALUES (?, ?, ?)";
 
       ps = connection.prepareStatement(sql);
@@ -117,7 +117,7 @@ public class LocationNameDaoImpl implements LocationNameDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "UPDATE LocationName SET shortName = ?, nodeType = ? WHERE longName = ?";
 
       ps = connection.prepareStatement(sql);
@@ -145,7 +145,7 @@ public class LocationNameDaoImpl implements LocationNameDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "UPDATE LocationName SET longName = ?, shortName = ?, nodeType = ? WHERE longName = ?";
 
       ps = connection.prepareStatement(sql);
@@ -174,7 +174,7 @@ public class LocationNameDaoImpl implements LocationNameDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "DELETE FROM LocationName WHERE longName = ?";
 
       ps = connection.prepareStatement(sql);

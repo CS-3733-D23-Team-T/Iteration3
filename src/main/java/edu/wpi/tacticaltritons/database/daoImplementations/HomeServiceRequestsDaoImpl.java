@@ -23,7 +23,7 @@ public class HomeServiceRequestsDaoImpl implements HomeServiceRequestsDao {
         List<HomeServiceRequests> homeServiceRequests = new ArrayList<>();
 
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "Select * FROM" +
                             "(SELECT L.firstname, L.lastname, 'Meal' as requestType, M.ordernum, M.deliverydate, M.deliverytime, M.patientfirst, M.patientlast, M.items, M.location " +
                             "FROM Login L " +

@@ -14,7 +14,7 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
         ResultSet rs = null;
         RequestOptions requestOptions = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM RequestOptions WHERE itemName = ? AND restaurant  = ?;";
             ps = connection.prepareStatement(sql);
@@ -47,7 +47,7 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
         ResultSet rs = null;
         List<RequestOptions> requestOptions = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM RequestOptions;";
             statement = connection.createStatement();
@@ -81,7 +81,7 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "INSERT INTO RequestOptions (itemName, prices, restaurant) VALUES (?, ?, ?)";
 
             ps = connection.prepareStatement(sql);
@@ -111,7 +111,7 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "DELETE FROM RequestOptions WHERE (itemName = ? AND restaurant = ?)";
 
             ps = connection.prepareStatement(sql);
@@ -141,7 +141,7 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
         ResultSet rs = null;
         List<RequestOptions> requestOptions = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM RequestOptions WHERE restaurant = ?;";
             ps = connection.prepareStatement(sql);
@@ -175,7 +175,7 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "UPDATE RequestOptions SET prices = ? where (itemName = ? AND restaurant = ?)";
 
             ps = connection.prepareStatement(sql);
