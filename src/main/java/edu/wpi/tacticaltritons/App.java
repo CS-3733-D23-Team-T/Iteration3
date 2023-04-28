@@ -7,6 +7,7 @@ import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.database.Node;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -14,6 +15,7 @@ import javafx.scene.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -335,7 +337,14 @@ public class App extends Application {
         iv.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
         root.getChildren().add(iv);
 
-        final Scene scene = new Scene(group);
+        AnchorPane pane = new AnchorPane();
+        pane.setPrefSize(1280,720);
+        MFXButton button = new MFXButton("CLICK ME");
+        pane.getChildren().add(button);
+        pane.getChildren().add(group);
+        group.toBack();
+
+        final Scene scene = new Scene(pane);
         scene.setOnKeyPressed(event -> {
             double sceneSize = Math.sqrt(scene.getWidth() * scene.getHeight());
             double screenIncrement = sceneSize / 5;
@@ -361,6 +370,8 @@ public class App extends Application {
                 camera.setTranslateX(camera.getTranslateX() - screenIncrement);
             }
         });
+
+
         primaryStage.setScene(scene);
         primaryStage.setTitle("CS3733 - Tactical Tritons");
         primaryStage.show();
