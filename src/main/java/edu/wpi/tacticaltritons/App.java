@@ -38,12 +38,18 @@ import java.util.*;
 @Slf4j
 public class App extends Application {
 
-    @Getter private static Stage primaryStage;
-    @Getter private static BorderPane rootPane;
-    @Getter private static BorderPane navBar;
-    @Getter private static GridPane loginQuickNavigation;
-    @Getter private static GridPane staffQuickNavigation;
-    @Getter private static GridPane adminQuickNavigation;
+    @Getter
+    private static Stage primaryStage;
+    @Getter
+    private static BorderPane rootPane;
+    @Getter
+    private static BorderPane navBar;
+    @Getter
+    private static GridPane loginQuickNavigation;
+    @Getter
+    private static GridPane staffQuickNavigation;
+    @Getter
+    private static GridPane adminQuickNavigation;
     public static Image groundfloor;
     public static Image lowerlevel1;
     public static Image lowerlevel2;
@@ -125,11 +131,11 @@ public class App extends Application {
         Translate pivot = new Translate();
         Rotate yRotate = new Rotate(-45, Rotate.Y_AXIS);
         Rotate xRotate = new Rotate(-45, Rotate.X_AXIS);
-        Translate zoom = new Translate(0,0,-1000);
+        Translate zoom = new Translate(0, 0, -1000);
 
 // Create and position camera
         PerspectiveCamera camera = new PerspectiveCamera(true);
-        camera.getTransforms().addAll (
+        camera.getTransforms().addAll(
                 pivot,
                 yRotate,
                 xRotate,
@@ -137,6 +143,7 @@ public class App extends Application {
         );
         camera.setNearClip(1);
         camera.setFarClip(12000);
+
 
 // Build the Scene Graph
         Group root = new Group();
@@ -160,11 +167,10 @@ public class App extends Application {
             t.setId("nodeText");
             Sphere s = new Sphere(15);
             s.setOnMouseClicked(event -> {
-                if(pathToCompute.size() == 0){
+                if (pathToCompute.size() == 0) {
                     pathToCompute.add(node);
                     System.out.println("selected: " + node.getNodeID());
-                }
-                else{
+                } else {
                     Node start = pathToCompute.get(0);
                     System.out.println("computing: " + start.getNodeID() + " to " + node.getNodeID());
 
@@ -173,7 +179,7 @@ public class App extends Application {
                     try {
                         List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
 
-                        for(int i = 0; i < path.size() - 1; i++){
+                        for (int i = 0; i < path.size() - 1; i++) {
 
                             double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
                                     Math.pow(path.get(i + 1).getYcoord() - path.get(i).getYcoord(), 2));
@@ -185,7 +191,7 @@ public class App extends Application {
 
                             System.out.println(opp + ", " + adj + ", " + angle);
 
-                            Box line = new Box(10,10, distance);
+                            Box line = new Box(10, 10, distance);
                             line.setId("pathBlock");
                             line.setTranslateZ(path.get(i).getYcoord() + adj / 2);
                             line.setTranslateX(path.get(i).getXcoord() + opp / 2);
@@ -228,11 +234,10 @@ public class App extends Application {
         });
 
 
-
 // Use a SubScene
         SubScene subScene = new SubScene(
                 root,
-                1280,720,
+                1280, 720,
                 true,
                 SceneAntialiasing.BALANCED
         );
@@ -243,10 +248,9 @@ public class App extends Application {
 
         List<Point2D> points = new ArrayList<>();
         subScene.setOnMouseDragged(event -> {
-            if(points.size() == 0){
+            if (points.size() == 0) {
                 points.add(new Point2D(event.getSceneX(), event.getSceneY()));
-            }
-            else{
+            } else {
                 Point2D secondPoint = new Point2D(event.getSceneX(), event.getSceneY());
 
                 double hyp = points.get(0).distance(secondPoint);
@@ -256,20 +260,19 @@ public class App extends Application {
                 double magnitude = hyp / Math.sqrt(subScene.getWidth() * subScene.getHeight());
 
                 double xMultiplier = secondPoint.getY() < points.get(0).getY() ? 1 : -1;
-                double xAngle = magnitude * xMultiplier * Math.atan(opp/adj) * (180 / Math.PI);
+                double xAngle = magnitude * xMultiplier * Math.atan(opp / adj) * (180 / Math.PI);
 
                 double yMultiplier = secondPoint.getX() < points.get(0).getX() ? -1 : 1;
-                double yAngle = magnitude * yMultiplier * Math.atan(adj/opp) * (180 / Math.PI);
+                double yAngle = magnitude * yMultiplier * Math.atan(adj / opp) * (180 / Math.PI);
 
                 camera.getTransforms().stream().filter(node -> (node instanceof Rotate)).forEach(node -> {
-                    if(((Rotate) node).getAxis().equals(Rotate.X_AXIS) && !Double.isNaN(xAngle)){
-                        if(((Rotate) node).getAngle() <= -10 && ((Rotate) node).getAngle() >= -80) {
-                            if(!(((Rotate) node).getAngle() + xAngle >= -10 || ((Rotate) node).getAngle() + xAngle <= -80)){
+                    if (((Rotate) node).getAxis().equals(Rotate.X_AXIS) && !Double.isNaN(xAngle)) {
+                        if (((Rotate) node).getAngle() <= -10 && ((Rotate) node).getAngle() >= -80) {
+                            if (!(((Rotate) node).getAngle() + xAngle >= -10 || ((Rotate) node).getAngle() + xAngle <= -80)) {
                                 ((Rotate) node).setAngle(((Rotate) node).getAngle() + xAngle);
                             }
                         }
-                    }
-                    else if(((Rotate) node).getAxis().equals(Rotate.Y_AXIS) && !Double.isNaN(yAngle)){
+                    } else if (((Rotate) node).getAxis().equals(Rotate.Y_AXIS) && !Double.isNaN(yAngle)) {
                         ((Rotate) node).setAngle(((Rotate) node).getAngle() + yAngle);
                     }
                 });
@@ -285,57 +288,76 @@ public class App extends Application {
         PixelReader pixelReader = writer.getPixelReader();
 
 
-
-        for(int i = 0; i < writer.getHeight(); i++){
-            for(int j = 0; j < writer.getWidth(); j++){
+        int[][] matrix = new int[(int) writer.getHeight()][(int) writer.getWidth()];
+        for (int i = 0; i < writer.getHeight(); i++) {
+            for (int j = 0; j < writer.getWidth(); j++) {
                 Color c = pixelReader.getColor(j, i);
                 double red = c.getRed() * 255;
                 double green = c.getRed() * 255;
                 double blue = c.getBlue() * 255;
 
-                if(red < 230 && green < 230 && blue < 230){
-                    pixelWriter.setColor(j, i, Color.BLACK);
-                }
-                else {
+                if (red < 230 && green < 230 && blue < 230) {
+//                    pixelWriter.setColor(j, i, Color.BLACK);
+                    matrix[i][j] = 1;
+                } else {
                     pixelWriter.setColor(j, i, Color.WHITE);
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                if (matrix[i][j] == 1) {
+                    if (i< matrix.length-1 && j<matrix[i].length-1) {
+                        if (matrix[i + 1][j] == 0 || matrix[i + 1][j + 1] == 0 || matrix[i][j + 1] == 0) {
+                            Box b = new Box(1, 30, 1);
+                            b.setTranslateZ(i);
+                            b.setTranslateX(j);
+                            b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
+                            root.getChildren().add(b);
+                        }
+                    }
+                    if(i>1 && j>1){
+                        if(matrix[i - 1][j] == 0 || matrix[i - 1][j - 1] == 0 || matrix[i][j - 1] == 0){
+                            Box b = new Box(1, 30, 1);
+                            b.setTranslateZ(i);
+                            b.setTranslateX(j);
+                            b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
+                            root.getChildren().add(b);
+                        }
+                    }
                 }
             }
         }
 
         ImageView iv = new ImageView(writer);
-        iv.getTransforms().add(new Rotate(90,Rotate.X_AXIS));
+        iv.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
         root.getChildren().add(iv);
-
-
 
         final Scene scene = new Scene(group);
         scene.setOnKeyPressed(event -> {
             double sceneSize = Math.sqrt(scene.getWidth() * scene.getHeight());
             double screenIncrement = sceneSize / 5;
-            if(event.isShiftDown() && event.getCode() == KeyCode.EQUALS){
+            if (event.isShiftDown() && event.getCode() == KeyCode.EQUALS) {
                 camera.getTransforms().stream().filter(node -> (node instanceof Translate)).forEach(node -> {
-                    if(((Translate) node).getZ() <= -75){
+                    if (((Translate) node).getZ() <= -75) {
                         ((Translate) node).setZ(((Translate) node).getZ() + screenIncrement);
                     }
                 });
-            }
-            else if(event.isShiftDown() && event.getCode() == KeyCode.MINUS){
+            } else if (event.isShiftDown() && event.getCode() == KeyCode.MINUS) {
                 camera.getTransforms().stream().filter(node -> (node instanceof Translate)).forEach(node -> {
-                    if(((Translate) node).getZ() <= -50){
+                    if (((Translate) node).getZ() <= -50) {
                         ((Translate) node).setZ(((Translate) node).getZ() - screenIncrement);
                     }
                 });
-            }
-            else if(event.getCode() == KeyCode.W){
+            } else if (event.getCode() == KeyCode.W) {
                 camera.setTranslateZ(camera.getTranslateZ() + screenIncrement);
-            }
-            else if(event.getCode() == KeyCode.D){
+            } else if (event.getCode() == KeyCode.D) {
                 camera.setTranslateX(camera.getTranslateX() + screenIncrement);
-            }
-            else if(event.getCode() == KeyCode.S){
+            } else if (event.getCode() == KeyCode.S) {
                 camera.setTranslateZ(camera.getTranslateZ() - screenIncrement);
-            }
-            else if(event.getCode() == KeyCode.A){
+            } else if (event.getCode() == KeyCode.A) {
                 camera.setTranslateX(camera.getTranslateX() - screenIncrement);
             }
         });
