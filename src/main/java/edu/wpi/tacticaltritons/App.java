@@ -16,7 +16,9 @@ import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -160,13 +162,16 @@ public class App extends Application {
         Rotate xRotate = new Rotate(135, Rotate.X_AXIS);
 
 // Create and position camera
+        DoubleProperty cameraX = new SimpleDoubleProperty(matrix.length / 2.0);
+        DoubleProperty cameraY = new SimpleDoubleProperty(1000);
+        DoubleProperty cameraZ = new SimpleDoubleProperty(matrix[0].length / 2.0);
         PerspectiveCamera camera = new PerspectiveCamera(true);
         camera.getTransforms().addAll(
                 yRotate,
                 xRotate);
-        camera.setTranslateY(1000);
-        camera.setTranslateZ(matrix[0].length / 2.0);
-        camera.setTranslateX(matrix.length / 2.0);
+        camera.translateXProperty().bindBidirectional(cameraX);
+        camera.translateYProperty().bindBidirectional(cameraY);
+        camera.translateZProperty().bindBidirectional(cameraZ);
         camera.setNearClip(1);
         camera.setFarClip(12000);
 
@@ -347,7 +352,8 @@ public class App extends Application {
                                 }
                             }
                         }
-                    } else if (((Rotate) node).getAxis().equals(Rotate.Y_AXIS) && !Double.isNaN(yAngle)) {
+                    }
+                    else if (((Rotate) node).getAxis().equals(Rotate.Y_AXIS) && !Double.isNaN(yAngle)) {
                         if(Math.abs(yAngle) < 30) {
                             ((Rotate) node).setAngle(((Rotate) node).getAngle() + yAngle);
                         }
@@ -488,8 +494,12 @@ public class App extends Application {
 //                camera.setTranslateZ(camera.getTranslateZ() + zDisplacement.get());
 //                camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
             }
-            else if (event.getCode() == KeyCode.L) {
+            else if (event.getCode() == KeyCode.L && pathTransition.get() == null) {
                 //Move camera to node start
+                camera.translateXProperty().unbindBidirectional(cameraX);
+                camera.translateYProperty().unbindBidirectional(cameraY);
+                camera.translateZProperty().unbindBidirectional(cameraZ);
+
                 camera.setTranslateX(walkingPath.get().get(0).getXcoord());
                 camera.setTranslateZ(walkingPath.get().get(0).getYcoord());
 
@@ -498,7 +508,8 @@ public class App extends Application {
                 double adj = walkingPath.get().get(1).getYcoord() - walkingPath.get().get(0).getYcoord();
                 double angle = Math.toDegrees(Math.atan2(opp, adj));
                 Rotate rotateY = new Rotate(angle, Rotate.Y_AXIS);
-                camera.getTransforms().addAll(rotateY);
+                Rotate rotateX = new Rotate(180, Rotate.X_AXIS);
+                camera.getTransforms().addAll(rotateY, rotateX);
                 camera.setTranslateY(10);
 
                 //Transition from node to node
@@ -522,6 +533,7 @@ public class App extends Application {
                     //Animation for rotating
                     if(i < walkingPath.get().size() - 2){
                         camera.getTransforms().clear();
+                        camera.getTransforms().add(rotateX);
                         opp = walkingPath.get().get(i + 2).getXcoord() - walkingPath.get().get(i+1).getXcoord();
                         adj = walkingPath.get().get(i + 2).getYcoord() - walkingPath.get().get(i+1).getYcoord();
                         angle = Math.toDegrees(Math.atan2(opp, adj));
@@ -540,7 +552,6 @@ public class App extends Application {
                     }
                 }
                 pathTransition.get().play();
-                pathTransition.get().setOnFinished(status -> pathTransition.set(null));
             }
             else if (event.getCode() == KeyCode.E) { // Turn Camera Right
                 camera.getTransforms().stream().filter(node -> node instanceof Rotate).forEach(transform -> {
@@ -558,11 +569,19 @@ public class App extends Application {
             }
             else if(event.getCode() == KeyCode.ESCAPE){
                 if(pathFinding.get()) {
-                    if (pathTransition.get() == null) {
-
-                    }
-                    if (pathTransition.get().getStatus() == Animation.Status.RUNNING) {
-                        pathTransition.get().stop();
+                    if (pathTransition.get() != null) {
+                        if (pathTransition.get().getStatus() == Animation.Status.RUNNING) {
+                            pathTransition.get().stop();
+                        }
+                        pathTransition.set(null);
+                        camera.getTransforms().clear();
+                        camera.getTransforms().addAll(
+                                xRotate,
+                                yRotate
+                        );
+                        camera.translateXProperty().bindBidirectional(cameraX);
+                        camera.translateYProperty().bindBidirectional(cameraY);
+                        camera.translateZProperty().bindBidirectional(cameraZ);
                     }
                 }
             }
