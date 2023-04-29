@@ -501,7 +501,7 @@ public class App extends Application {
                 camera.getTransforms().clear();
                 double opp = walkingPath.get().get(1).getXcoord() - walkingPath.get().get(0).getXcoord();
                 double adj = walkingPath.get().get(1).getYcoord() - walkingPath.get().get(0).getYcoord();
-                double angle = Math.toDegrees(Math.atan2(opp, adj));
+                double angle = 180 + Math.toDegrees(Math.atan2(opp, adj));
                 Rotate rotateY = new Rotate(angle, Rotate.Y_AXIS);
                 Rotate rotateX = new Rotate(180, Rotate.X_AXIS);
                 camera.getTransforms().addAll(rotateY, rotateX);
@@ -531,7 +531,7 @@ public class App extends Application {
                         camera.getTransforms().add(rotateX);
                         opp = walkingPath.get().get(i + 2).getXcoord() - walkingPath.get().get(i+1).getXcoord();
                         adj = walkingPath.get().get(i + 2).getYcoord() - walkingPath.get().get(i+1).getYcoord();
-                        angle = Math.toDegrees(Math.atan2(opp, adj));
+                        angle = 180 + Math.toDegrees(Math.atan2(opp, adj));
 
                         double rotationSpeed = 100;
                         double rotateDuration = Math.abs(angle) / rotationSpeed;
