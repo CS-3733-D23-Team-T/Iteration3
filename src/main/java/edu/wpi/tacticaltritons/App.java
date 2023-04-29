@@ -50,18 +50,12 @@ import java.util.concurrent.atomic.AtomicReference;
 @Slf4j
 public class App extends Application {
 
-    @Getter
-    private static Stage primaryStage;
-    @Getter
-    private static BorderPane rootPane;
-    @Getter
-    private static BorderPane navBar;
-    @Getter
-    private static GridPane loginQuickNavigation;
-    @Getter
-    private static GridPane staffQuickNavigation;
-    @Getter
-    private static GridPane adminQuickNavigation;
+    @Getter private static Stage primaryStage;
+    @Getter private static BorderPane rootPane;
+    @Getter private static BorderPane navBar;
+    @Getter private static GridPane loginQuickNavigation;
+    @Getter private static GridPane staffQuickNavigation;
+    @Getter private static GridPane adminQuickNavigation;
     public static Image groundfloor;
     public static Image lowerlevel1;
     public static Image lowerlevel2;
@@ -449,7 +443,8 @@ public class App extends Application {
                 //translating the camera
                 camera.setTranslateZ(camera.getTranslateZ() + zDisplacement.get());
                 camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
-            } else if (event.getCode() == KeyCode.D) {
+            }
+            else if (event.getCode() == KeyCode.D) {
 //                AtomicDouble zDisplacement = new AtomicDouble(0);
 //                AtomicDouble xDisplacement = new AtomicDouble(0);
 //                camera.getTransforms().forEach(transform -> {
@@ -576,8 +571,8 @@ public class App extends Application {
                         pathTransition.set(null);
                         camera.getTransforms().clear();
                         camera.getTransforms().addAll(
-                                xRotate,
-                                yRotate
+                                yRotate,
+                                xRotate
                         );
                         camera.translateXProperty().bindBidirectional(cameraX);
                         camera.translateYProperty().bindBidirectional(cameraY);
