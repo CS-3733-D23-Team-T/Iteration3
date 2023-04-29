@@ -8,11 +8,14 @@ import edu.wpi.tacticaltritons.database.Node;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.animation.RotateTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.scene.*;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
@@ -21,21 +24,22 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 public class App extends Application {
@@ -162,12 +166,12 @@ public class App extends Application {
         Map<Node, String> l = new HashMap<>();
         List<Move> moves = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now()));
         nodes.forEach(node -> l.put(node, moves.parallelStream().filter(move -> move.getNode().getNodeID() == node.getNodeID()).toList().get(0).getLocation().getShortName()));
-
+        AtomicReference<List<Node>> walkingPath = new AtomicReference<>(new ArrayList<>());
         List<Node> pathToCompute = new ArrayList<>();
         nodes.forEach(node -> {
             Text t = new Text(l.get(node));
             t.setId("nodeText");
-            Sphere s = new Sphere(15);
+            Box s = new Box(7,7,7);
             s.setOnMouseClicked(event -> {
                 if (pathToCompute.size() == 0) {
                     pathToCompute.add(node);
@@ -180,6 +184,7 @@ public class App extends Application {
 
                     try {
                         List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
+                        walkingPath.set(path);
 
                         for (int i = 0; i < path.size() - 1; i++) {
 
@@ -345,6 +350,8 @@ public class App extends Application {
         group.toBack();
 
         final Scene scene = new Scene(pane);
+
+        AtomicInteger nodeCounter = new AtomicInteger();
         scene.setOnKeyPressed(event -> {
             double sceneSize = Math.sqrt(scene.getWidth() * scene.getHeight());
             double screenIncrement = sceneSize / 5;
@@ -368,6 +375,69 @@ public class App extends Application {
                 camera.setTranslateZ(camera.getTranslateZ() - screenIncrement);
             } else if (event.getCode() == KeyCode.A) {
                 camera.setTranslateX(camera.getTranslateX() - screenIncrement);
+            }  else if (event.getCode() == KeyCode.L) {
+                //Change angle of camera to be eye level
+                camera.getTransforms().stream().filter(node -> (node instanceof Rotate)).forEach(node -> {
+                    ((Rotate) node).setAngle(0);
+                });
+
+                //Move camera to node start
+                camera.setTranslateX(walkingPath.get().get(0).getXcoord());
+                camera.setTranslateZ(walkingPath.get().get(0).getYcoord());
+
+                camera.getTransforms().clear();
+                double opp = walkingPath.get().get(1).getXcoord() - walkingPath.get().get(0).getXcoord();
+                double adj = walkingPath.get().get(1).getYcoord() - walkingPath.get().get(0).getYcoord();
+                double angle = Math.toDegrees(Math.atan2(opp, adj));
+                Rotate rotateX = new Rotate(angle, Rotate.Y_AXIS);
+                camera.getTransforms().addAll(rotateX);
+                camera.setTranslateY(-10);
+
+                //Transition from node to node
+                SequentialTransition seqTransition = new SequentialTransition();
+                for (int i = nodeCounter.get(); i < walkingPath.get().size() - 1; i++) {
+                    //animation from node to node
+                    Point3D currentPosition = new Point3D(walkingPath.get().get(i).getXcoord(), -10, walkingPath.get().get(i).getYcoord());
+                    Point3D endPosition = new Point3D(walkingPath.get().get(i + 1).getXcoord(), -10, walkingPath.get().get(i + 1).getYcoord());
+
+                    Point3D translation = endPosition.subtract(currentPosition);
+
+                    double distance = translation.magnitude();
+                    double speed = 75;
+                    double duration = distance / speed;
+
+                    TranslateTransition transition = new TranslateTransition(Duration.seconds(duration), camera);
+                    transition.setByX(translation.getX());
+                    transition.setByY(translation.getY());
+                    transition.setByZ(translation.getZ());
+
+                    //Animation for rotating
+                    if(i<walkingPath.get().size()-2){
+                        camera.getTransforms().clear();
+                        opp = walkingPath.get().get(i + 2).getXcoord() - walkingPath.get().get(i+1).getXcoord();
+                        adj = walkingPath.get().get(i + 2).getYcoord() - walkingPath.get().get(i+1).getYcoord();
+                        angle = Math.toDegrees(Math.atan2(opp, adj));
+
+                        double rotationSpeed = 100;
+                        double rotateDuration = Math.abs(angle) / rotationSpeed;
+
+                        RotateTransition rotateTransition = new RotateTransition(Duration.seconds(rotateDuration), camera);
+                        rotateTransition.setToAngle(angle);
+                        rotateTransition.setAxis(Rotate.Y_AXIS);
+
+                        seqTransition.getChildren().addAll(transition, rotateTransition);
+                    } else {
+                        seqTransition.getChildren().add(transition);
+                    }
+                }
+                seqTransition.play();
+            }   else if (event.getCode() == KeyCode.M) { // Turn
+                Rotate rotateX = new Rotate(5, Rotate.Y_AXIS);
+                camera.getTransforms().addAll(rotateX);
+            }
+            else if (event.getCode() == KeyCode.N) { // Turn
+                Rotate rotateX = new Rotate(-5, Rotate.Y_AXIS);
+                camera.getTransforms().addAll(rotateX);
             }
         });
 
