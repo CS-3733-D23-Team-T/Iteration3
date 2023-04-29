@@ -1,5 +1,6 @@
 package edu.wpi.tacticaltritons;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import edu.wpi.tacticaltritons.data.FlowerHashMap;
 import edu.wpi.tacticaltritons.data.FurnitureHashMap;
 import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
@@ -8,6 +9,7 @@ import edu.wpi.tacticaltritons.database.Node;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXToggleButton;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
@@ -24,6 +26,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -125,18 +128,9 @@ public class App extends Application {
         loader = new FXMLLoader(App.class.getResource("views/navigation/AdminQuickNavigation.fxml"));
         adminQuickNavigation = loader.load();
 
-        Sphere sphere = new Sphere(2.5);
-        sphere.setMaterial(new PhongMaterial(Color.FORESTGREEN));
-
-        sphere.setTranslateZ(7);
-        sphere.setTranslateX(2);
-
-        Box box = new Box(5, 5, 5);
-        box.setMaterial(new PhongMaterial(Color.RED));
-
         Translate pivot = new Translate();
         Rotate yRotate = new Rotate(-45, Rotate.Y_AXIS);
-        Rotate xRotate = new Rotate(-45, Rotate.X_AXIS);
+        Rotate xRotate = new Rotate(135, Rotate.X_AXIS);
         Translate zoom = new Translate(0, 0, -1000);
 
 // Create and position camera
@@ -155,8 +149,6 @@ public class App extends Application {
         Group root = new Group();
 
         root.getChildren().add(camera);
-        root.getChildren().add(box);
-        root.getChildren().add(sphere);
 
         List<Node> nodes = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now())).parallelStream()
                 .filter(move -> !move.getLocation().getNodeType().equals("HALL"))
@@ -171,7 +163,7 @@ public class App extends Application {
         nodes.forEach(node -> {
             Text t = new Text(l.get(node));
             t.setId("nodeText");
-            Box s = new Box(7,7,7);
+            Box s = new Box(10,10,10);
             s.setOnMouseClicked(event -> {
                 if (pathToCompute.size() == 0) {
                     pathToCompute.add(node);
@@ -215,6 +207,8 @@ public class App extends Application {
                 }
             });
             s.setOnMouseEntered(event -> {
+//                t.getTransforms().clear();
+//                t.getTransforms().addAll(xRotate, yRotate);
                 t.setVisible(true);
             });
             s.setOnMouseExited(event -> {
@@ -229,14 +223,17 @@ public class App extends Application {
 //            rect.setTranslateZ(node.getYcoord() + 10);
 //            rect.setTranslateX(node.getXcoord() + 10);
 //            t.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
+//            t.getTransforms().addAll(
+//                    xRotate,
+//                    yRotate);
             t.getTransforms().addAll(
-                    new Rotate(-45, Rotate.Y_AXIS),
-                    new Rotate(-45, Rotate.X_AXIS));
+                    new Rotate(180, Rotate.Z_AXIS),
+                    new Rotate(180, Rotate.Y_AXIS));
             t.setVisible(false);
-            t.setTranslateZ(node.getYcoord() - t.getLayoutBounds().getWidth());
+            t.setTranslateZ(node.getYcoord());
             t.setTranslateX(node.getXcoord() - t.getLayoutBounds().getWidth());
             t.setFont(new Font(32));
-            t.setTranslateY(-30);
+            t.setTranslateY(25);
             root.getChildren().addAll(s, t);
         });
 
@@ -255,16 +252,17 @@ public class App extends Application {
 
         List<Point2D> points = new ArrayList<>();
         subScene.setOnMouseDragged(event -> {
-            if (points.size() == 0) {
+            if(points.size() == 0){
                 points.add(new Point2D(event.getSceneX(), event.getSceneY()));
-            } else {
+            }
+            else {
                 Point2D secondPoint = new Point2D(event.getSceneX(), event.getSceneY());
 
                 double hyp = points.get(0).distance(secondPoint);
                 double opp = Math.abs(secondPoint.getY() - points.get(0).getY());
                 double adj = Math.abs(secondPoint.getX() - points.get(0).getX());
 
-                double magnitude = hyp / Math.sqrt(subScene.getWidth() * subScene.getHeight());
+                double magnitude = (hyp * 2.5) / Math.sqrt(subScene.getWidth() * subScene.getHeight());
 
                 double xMultiplier = secondPoint.getY() < points.get(0).getY() ? 1 : -1;
                 double xAngle = magnitude * xMultiplier * Math.atan(opp / adj) * (180 / Math.PI);
@@ -274,13 +272,17 @@ public class App extends Application {
 
                 camera.getTransforms().stream().filter(node -> (node instanceof Rotate)).forEach(node -> {
                     if (((Rotate) node).getAxis().equals(Rotate.X_AXIS) && !Double.isNaN(xAngle)) {
-                        if (((Rotate) node).getAngle() <= -10 && ((Rotate) node).getAngle() >= -80) {
-                            if (!(((Rotate) node).getAngle() + xAngle >= -10 || ((Rotate) node).getAngle() + xAngle <= -80)) {
-                                ((Rotate) node).setAngle(((Rotate) node).getAngle() + xAngle);
+                        if (((Rotate) node).getAngle() >= 90 && ((Rotate) node).getAngle() <= 170) {
+                            if ((((Rotate) node).getAngle() + xAngle >= 90) && (((Rotate) node).getAngle() + xAngle <= 170)) {
+                                if(Math.abs(xAngle) < 30) {
+                                    ((Rotate) node).setAngle(((Rotate) node).getAngle() + xAngle);
+                                }
                             }
                         }
                     } else if (((Rotate) node).getAxis().equals(Rotate.Y_AXIS) && !Double.isNaN(yAngle)) {
-                        ((Rotate) node).setAngle(((Rotate) node).getAngle() + yAngle);
+                        if(Math.abs(yAngle) < 30) {
+                            ((Rotate) node).setAngle(((Rotate) node).getAngle() + yAngle);
+                        }
                     }
                 });
 
@@ -313,30 +315,30 @@ public class App extends Application {
             }
         }
 
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                if (matrix[i][j] == 1) {
-                    if (i< matrix.length-1 && j<matrix[i].length-1) {
-                        if (matrix[i + 1][j] == 0 || matrix[i + 1][j + 1] == 0 || matrix[i][j + 1] == 0) {
-                            Box b = new Box(1, 30, 1);
-                            b.setTranslateZ(i);
-                            b.setTranslateX(j);
-                            b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
-                            root.getChildren().add(b);
-                        }
-                    }
-                    if(i>1 && j>1){
-                        if(matrix[i - 1][j] == 0 || matrix[i - 1][j - 1] == 0 || matrix[i][j - 1] == 0){
-                            Box b = new Box(1, 30, 1);
-                            b.setTranslateZ(i);
-                            b.setTranslateX(j);
-                            b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
-                            root.getChildren().add(b);
-                        }
-                    }
-                }
-            }
-        }
+//        for (int i = 0; i < matrix.length; i++) {
+//            for (int j = 0; j < matrix[i].length; j++) {
+//                if (matrix[i][j] == 1) {
+//                    if (i< matrix.length-1 && j<matrix[i].length-1) {
+//                        if (matrix[i + 1][j] == 0 || matrix[i + 1][j + 1] == 0 || matrix[i][j + 1] == 0) {
+//                            Box b = new Box(1, 30, 1);
+//                            b.setTranslateZ(i);
+//                            b.setTranslateX(j);
+//                            b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
+//                            root.getChildren().add(b);
+//                        }
+//                    }
+//                    if(i>1 && j>1){
+//                        if(matrix[i - 1][j] == 0 || matrix[i - 1][j - 1] == 0 || matrix[i][j - 1] == 0){
+//                            Box b = new Box(1, 30, 1);
+//                            b.setTranslateZ(i);
+//                            b.setTranslateX(j);
+//                            b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
+//                            root.getChildren().add(b);
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         ImageView iv = new ImageView(writer);
         iv.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
@@ -344,8 +346,14 @@ public class App extends Application {
 
         AnchorPane pane = new AnchorPane();
         pane.setPrefSize(1280,720);
-        MFXButton button = new MFXButton("CLICK ME");
-        pane.getChildren().add(button);
+        MFXToggleButton pathFindingButton = new MFXToggleButton("Path Finding");
+        Rectangle background = new Rectangle(300,720);
+        background.setFill(Color.WHITE);
+        background.setArcHeight(20);
+        background.setArcWidth(20);
+        pathFindingButton.setStyle("-fx-text-fill: blue");
+        pane.getChildren().add(background);
+        pane.getChildren().add(pathFindingButton);
         pane.getChildren().add(group);
         group.toBack();
 
@@ -368,14 +376,61 @@ public class App extends Application {
                     }
                 });
             } else if (event.getCode() == KeyCode.W) {
-                camera.setTranslateZ(camera.getTranslateZ() + screenIncrement);
+                AtomicDouble zDisplacement = new AtomicDouble(0);
+                AtomicDouble xDisplacement = new AtomicDouble(0);
+                camera.getTransforms().forEach(transform -> {
+                    if(transform instanceof Rotate){
+                        if(((Rotate) transform).getAxis().equals(Rotate.Y_AXIS)){
+                            xDisplacement.set(-1 * screenIncrement * Math.sin(Math.toRadians(((Rotate) transform).getAngle())));
+                            zDisplacement.set(-1 * screenIncrement * Math.cos(Math.toRadians(((Rotate) transform).getAngle())));
+                        }
+                    }
+                });
+                camera.setTranslateZ(camera.getTranslateZ() + zDisplacement.get());
+                camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
             } else if (event.getCode() == KeyCode.D) {
-                camera.setTranslateX(camera.getTranslateX() + screenIncrement);
-            } else if (event.getCode() == KeyCode.S) {
-                camera.setTranslateZ(camera.getTranslateZ() - screenIncrement);
-            } else if (event.getCode() == KeyCode.A) {
-                camera.setTranslateX(camera.getTranslateX() - screenIncrement);
-            }  else if (event.getCode() == KeyCode.L) {
+//                AtomicDouble zDisplacement = new AtomicDouble(0);
+//                AtomicDouble xDisplacement = new AtomicDouble(0);
+//                camera.getTransforms().forEach(transform -> {
+//                    if(transform instanceof Rotate){
+//                        if(((Rotate) transform).getAxis().equals(Rotate.Y_AXIS)){
+//                            xDisplacement.set(-1 * screenIncrement * Math.sin(Math.toRadians(((Rotate) transform).getAngle())));
+//                            zDisplacement.set(screenIncrement * Math.cos(Math.toRadians(((Rotate) transform).getAngle())));
+//                        }
+//                    }
+//                });
+//                camera.setTranslateZ(camera.getTranslateZ() + zDisplacement.get());
+//                camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
+            }
+            else if (event.getCode() == KeyCode.S) {
+                AtomicDouble zDisplacement = new AtomicDouble(0);
+                AtomicDouble xDisplacement = new AtomicDouble(0);
+                camera.getTransforms().forEach(transform -> {
+                    if(transform instanceof Rotate){
+                        if(((Rotate) transform).getAxis().equals(Rotate.Y_AXIS)){
+                            xDisplacement.set(screenIncrement * Math.sin(Math.toRadians(((Rotate) transform).getAngle())));
+                            zDisplacement.set(screenIncrement * Math.cos(Math.toRadians(((Rotate) transform).getAngle())));
+                        }
+                    }
+                });
+                camera.setTranslateZ(camera.getTranslateZ() + zDisplacement.get());
+                camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
+            }
+            else if (event.getCode() == KeyCode.A) {
+//                AtomicDouble zDisplacement = new AtomicDouble(0);
+//                AtomicDouble xDisplacement = new AtomicDouble(0);
+//                camera.getTransforms().forEach(transform -> {
+//                    if(transform instanceof Rotate){
+//                        if(((Rotate) transform).getAxis().equals(Rotate.Y_AXIS)){
+//                            xDisplacement.set(screenIncrement * Math.cos((Math.PI / 2) + Math.toRadians(((Rotate) transform).getAngle())));
+//                            zDisplacement.set(screenIncrement * Math.sin((Math.PI / 2) + Math.toRadians(((Rotate) transform).getAngle())));
+//                        }
+//                    }
+//                });
+//                camera.setTranslateZ(camera.getTranslateZ() + zDisplacement.get());
+//                camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
+            }
+            else if (event.getCode() == KeyCode.L) {
                 //Change angle of camera to be eye level
                 camera.getTransforms().stream().filter(node -> (node instanceof Rotate)).forEach(node -> {
                     ((Rotate) node).setAngle(0);
@@ -431,7 +486,8 @@ public class App extends Application {
                     }
                 }
                 seqTransition.play();
-            }   else if (event.getCode() == KeyCode.M) { // Turn
+            }
+            else if (event.getCode() == KeyCode.M) { // Turn
                 Rotate rotateX = new Rotate(5, Rotate.Y_AXIS);
                 camera.getTransforms().addAll(rotateX);
             }
