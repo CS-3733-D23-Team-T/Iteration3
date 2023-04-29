@@ -10,10 +10,13 @@ import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXToggleButton;
+import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
@@ -27,11 +30,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lombok.Getter;
@@ -128,19 +129,44 @@ public class App extends Application {
         loader = new FXMLLoader(App.class.getResource("views/navigation/AdminQuickNavigation.fxml"));
         adminQuickNavigation = loader.load();
 
-        Translate pivot = new Translate();
-        Rotate yRotate = new Rotate(-45, Rotate.Y_AXIS);
+        Image image = new Image(Objects.requireNonNull(App.class.getResource("images/clean_map/map_secondfloor_clean.png")).toString());
+
+        WritableImage writer = new WritableImage(image.getPixelReader(), (int) image.getWidth(), (int) image.getHeight());
+        PixelWriter pixelWriter = writer.getPixelWriter();
+        PixelReader pixelReader = writer.getPixelReader();
+
+
+        int[][] matrix = new int[(int) writer.getHeight()][(int) writer.getWidth()];
+        for (int i = 0; i < writer.getHeight(); i++) {
+            for (int j = 0; j < writer.getWidth(); j++) {
+                Color c = pixelReader.getColor(j, i);
+                double red = c.getRed() * 255;
+                double green = c.getRed() * 255;
+                double blue = c.getBlue() * 255;
+
+                if (red < 230 && green < 230 && blue < 230) {
+                    matrix[i][j] = 1;
+                } else {
+                    pixelWriter.setColor(j, i, Color.WHITE);
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        ImageView iv = new ImageView(writer);
+        iv.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
+
+        Rotate yRotate = new Rotate(315, Rotate.Y_AXIS);
         Rotate xRotate = new Rotate(135, Rotate.X_AXIS);
-        Translate zoom = new Translate(0, 0, -1000);
 
 // Create and position camera
         PerspectiveCamera camera = new PerspectiveCamera(true);
         camera.getTransforms().addAll(
-                pivot,
                 yRotate,
-                xRotate,
-                zoom
-        );
+                xRotate);
+        camera.setTranslateY(1000);
+        camera.setTranslateZ(matrix[0].length / 2.0);
+        camera.setTranslateX(matrix.length / 2.0);
         camera.setNearClip(1);
         camera.setFarClip(12000);
 
@@ -150,73 +176,106 @@ public class App extends Application {
 
         root.getChildren().add(camera);
 
+        AtomicInteger floorNumber = new AtomicInteger(2);
         List<Node> nodes = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now())).parallelStream()
-                .filter(move -> !move.getLocation().getNodeType().equals("HALL"))
+//                .filter(move -> !move.getLocation().getNodeType().equals("HALL"))
                 .map(Move::getNode)
-                .filter(node -> node.getFloor().equals("2")).toList();
+                .filter(node -> node.getFloor().equals(String.valueOf(floorNumber))).toList();
 
-        Map<Node, String> l = new HashMap<>();
+        Map<Node, String> shortNames = new HashMap<>();
+        Map<Node, String> locationTypes = new HashMap<>();
+        Map<Node, String> longNames = new HashMap<>();
         List<Move> moves = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now()));
-        nodes.forEach(node -> l.put(node, moves.parallelStream().filter(move -> move.getNode().getNodeID() == node.getNodeID()).toList().get(0).getLocation().getShortName()));
+        nodes.forEach(node -> {
+            Move m = moves.parallelStream().filter(move -> move.getNode().getNodeID() == node.getNodeID()).toList().get(0);
+            shortNames.put(node, m.getLocation().getShortName());
+            locationTypes.put(node, m.getLocation().getNodeType());
+            longNames.put(node, m.getLocation().getLongName());
+
+        });
         AtomicReference<List<Node>> walkingPath = new AtomicReference<>(new ArrayList<>());
         List<Node> pathToCompute = new ArrayList<>();
+        List<Box> visibleNodes = new ArrayList<>();
+
+        BooleanProperty pathFinding = new SimpleBooleanProperty(true);
+
+        MFXButton newPathButton = new MFXButton("New Path");
+        newPathButton.setOnAction(event -> {
+            root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("pathBlock"));
+            visibleNodes.forEach(box -> box.setMaterial(new PhongMaterial(Color.RED)));
+            root.getChildren().addAll(visibleNodes);
+        });
+        //drawing nodes
         nodes.forEach(node -> {
-            Text t = new Text(l.get(node));
-            t.setId("nodeText");
-            Box s = new Box(10,10,10);
-            s.setOnMouseClicked(event -> {
-                if (pathToCompute.size() == 0) {
-                    pathToCompute.add(node);
-                    System.out.println("selected: " + node.getNodeID());
-                } else {
-                    Node start = pathToCompute.get(0);
-                    System.out.println("computing: " + start.getNodeID() + " to " + node.getNodeID());
+            if(!locationTypes.get(node).equals("HALL")) {
+                Text t = new Text(shortNames.get(node));
+                t.setId("nodeText");
+                Box s = new Box(10, 10, 10);
+                s.setOnMouseClicked(event -> {
+                    //pathfinding
+                    if (pathFinding.get()) {
+                        //starting point
+                        s.setMaterial(new PhongMaterial(Color.GREEN));
+                        if (pathToCompute.size() == 0) {
+                            pathToCompute.add(node);
 
-                    root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("pathBlock"));
-
-                    try {
-                        List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
-                        walkingPath.set(path);
-
-                        for (int i = 0; i < path.size() - 1; i++) {
-
-                            double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
-                                    Math.pow(path.get(i + 1).getYcoord() - path.get(i).getYcoord(), 2));
-
-                            double opp = path.get(i + 1).getXcoord() - path.get(i).getXcoord();
-                            double adj = path.get(i + 1).getYcoord() - path.get(i).getYcoord();
-                            double angle = Math.atan(opp / adj) * (180 / Math.PI);
-
-
-                            System.out.println(opp + ", " + adj + ", " + angle);
-
-                            Box line = new Box(10, 10, distance);
-                            line.setId("pathBlock");
-                            line.setTranslateZ(path.get(i).getYcoord() + adj / 2);
-                            line.setTranslateX(path.get(i).getXcoord() + opp / 2);
-                            line.getTransforms().add(new Rotate(angle, Rotate.Y_AXIS));
-                            line.setMaterial(new PhongMaterial(Color.BLUE));
-
-                            root.getChildren().add(line);
+//                            System.out.println("selected: " + node.getNodeID());
                         }
+                        //ending point
+                        else {
+                            Node start = pathToCompute.get(0);
+//                            System.out.println("computing: " + start.getNodeID() + " to " + node.getNodeID());
 
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
+                            //removing old paths
+                            root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("pathBlock"));
+                            root.getChildren().removeIf(i -> i.getId() != null && i.getId().contains("node")
+                                    && !i.getId().contains(String.valueOf(start.getNodeID()))
+                                    && !i.getId().contains(String.valueOf(node.getNodeID())));
+
+                            try {
+                                //Pathfinding
+                                List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
+                                walkingPath.set(path);
+
+                                for (int i = 0; i < path.size() - 1; i++) {
+
+                                    //formula
+                                    double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
+                                            Math.pow(path.get(i + 1).getYcoord() - path.get(i).getYcoord(), 2));
+
+                                    double opp = path.get(i + 1).getXcoord() - path.get(i).getXcoord();
+                                    double adj = path.get(i + 1).getYcoord() - path.get(i).getYcoord();
+                                    double angle = Math.atan(opp / adj) * (180 / Math.PI);
+
+                                    Box line = new Box(5, 5, distance);
+                                    line.setId("pathBlock");
+                                    line.setTranslateZ(path.get(i).getYcoord() + adj / 2);
+                                    line.setTranslateX(path.get(i).getXcoord() + opp / 2);
+                                    line.getTransforms().add(new Rotate(angle, Rotate.Y_AXIS));
+                                    line.setMaterial(new PhongMaterial(Color.BLUE));
+
+                                    root.getChildren().add(line);
+                                }
+
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                            pathToCompute.clear();
+                        }
                     }
-                    pathToCompute.clear();
-                }
-            });
-            s.setOnMouseEntered(event -> {
-//                t.getTransforms().clear();
-//                t.getTransforms().addAll(xRotate, yRotate);
-                t.setVisible(true);
-            });
-            s.setOnMouseExited(event -> {
-                t.setVisible(false);
-            });
-            s.setMaterial(new PhongMaterial(Color.RED));
-            s.setTranslateZ(node.getYcoord());
-            s.setTranslateX(node.getXcoord());
+                });
+                s.setOnMouseEntered(event -> {
+                    System.out.println(yRotate.getAngle());
+                    t.setVisible(true);
+                });
+                s.setOnMouseExited(event -> {
+                    t.setVisible(false);
+                });
+                s.setId("node"+node.getNodeID());
+                s.setMaterial(new PhongMaterial(Color.RED));
+                s.setTranslateZ(node.getYcoord());
+                s.setTranslateX(node.getXcoord());
+                visibleNodes.add(s);
 
 
 //            Rectangle rect = new Rectangle(node.getXcoord(), node.getYcoord());
@@ -226,15 +285,19 @@ public class App extends Application {
 //            t.getTransforms().addAll(
 //                    xRotate,
 //                    yRotate);
-            t.getTransforms().addAll(
-                    new Rotate(180, Rotate.Z_AXIS),
-                    new Rotate(180, Rotate.Y_AXIS));
-            t.setVisible(false);
-            t.setTranslateZ(node.getYcoord());
-            t.setTranslateX(node.getXcoord() - t.getLayoutBounds().getWidth());
-            t.setFont(new Font(32));
-            t.setTranslateY(25);
-            root.getChildren().addAll(s, t);
+
+
+                //drawing the floating text
+                t.getTransforms().addAll(
+                        new Rotate(180, Rotate.Z_AXIS),
+                        new Rotate(180, Rotate.Y_AXIS));
+                t.setVisible(false);
+                t.setTranslateZ(node.getYcoord());
+                t.setTranslateX(node.getXcoord() - t.getLayoutBounds().getWidth());
+                t.setFont(new Font(32));
+                t.setTranslateY(25);
+                root.getChildren().addAll(s, t);
+            }
         });
 
 
@@ -250,14 +313,18 @@ public class App extends Application {
         Group group = new Group();
         group.getChildren().add(subScene);
 
+        //mouse drag event
         List<Point2D> points = new ArrayList<>();
         subScene.setOnMouseDragged(event -> {
             if(points.size() == 0){
+                //initial point
                 points.add(new Point2D(event.getSceneX(), event.getSceneY()));
             }
             else {
+                //second point
                 Point2D secondPoint = new Point2D(event.getSceneX(), event.getSceneY());
 
+                //formula
                 double hyp = points.get(0).distance(secondPoint);
                 double opp = Math.abs(secondPoint.getY() - points.get(0).getY());
                 double adj = Math.abs(secondPoint.getX() - points.get(0).getX());
@@ -270,6 +337,7 @@ public class App extends Application {
                 double yMultiplier = secondPoint.getX() < points.get(0).getX() ? -1 : 1;
                 double yAngle = magnitude * yMultiplier * Math.atan(adj / opp) * (180 / Math.PI);
 
+                //updating the transform
                 camera.getTransforms().stream().filter(node -> (node instanceof Rotate)).forEach(node -> {
                     if (((Rotate) node).getAxis().equals(Rotate.X_AXIS) && !Double.isNaN(xAngle)) {
                         if (((Rotate) node).getAngle() >= 90 && ((Rotate) node).getAngle() <= 170) {
@@ -290,102 +358,89 @@ public class App extends Application {
             }
         });
 
-        Image image = new Image(Objects.requireNonNull(App.class.getResource("images/clean_map/map_secondfloor_clean.png")).toString());
 
-        WritableImage writer = new WritableImage(image.getPixelReader(), (int) image.getWidth(), (int) image.getHeight());
-        PixelWriter pixelWriter = writer.getPixelWriter();
-        PixelReader pixelReader = writer.getPixelReader();
-
-
-        int[][] matrix = new int[(int) writer.getHeight()][(int) writer.getWidth()];
-        for (int i = 0; i < writer.getHeight(); i++) {
-            for (int j = 0; j < writer.getWidth(); j++) {
-                Color c = pixelReader.getColor(j, i);
-                double red = c.getRed() * 255;
-                double green = c.getRed() * 255;
-                double blue = c.getBlue() * 255;
-
-                if (red < 230 && green < 230 && blue < 230) {
-//                    pixelWriter.setColor(j, i, Color.BLACK);
-                    matrix[i][j] = 1;
-                } else {
-                    pixelWriter.setColor(j, i, Color.WHITE);
-                    matrix[i][j] = 0;
-                }
-            }
-        }
-
-//        for (int i = 0; i < matrix.length; i++) {
-//            for (int j = 0; j < matrix[i].length; j++) {
-//                if (matrix[i][j] == 1) {
-//                    if (i< matrix.length-1 && j<matrix[i].length-1) {
-//                        if (matrix[i + 1][j] == 0 || matrix[i + 1][j + 1] == 0 || matrix[i][j + 1] == 0) {
-//                            Box b = new Box(1, 30, 1);
-//                            b.setTranslateZ(i);
-//                            b.setTranslateX(j);
-//                            b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
-//                            root.getChildren().add(b);
-//                        }
-//                    }
-//                    if(i>1 && j>1){
-//                        if(matrix[i - 1][j] == 0 || matrix[i - 1][j - 1] == 0 || matrix[i][j - 1] == 0){
-//                            Box b = new Box(1, 30, 1);
-//                            b.setTranslateZ(i);
-//                            b.setTranslateX(j);
-//                            b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
-//                            root.getChildren().add(b);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
-        ImageView iv = new ImageView(writer);
-        iv.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
         root.getChildren().add(iv);
 
+        //pane stuff
         AnchorPane pane = new AnchorPane();
         pane.setPrefSize(1280,720);
-        MFXToggleButton pathFindingButton = new MFXToggleButton("Path Finding");
+        MFXToggleButton pathFindingToggle = new MFXToggleButton("Path Finding");
+        pathFindingToggle.setStyle("-fx-text-fill: blue");
+        pathFindingToggle.selectedProperty().bindBidirectional(pathFinding);
+
+        MFXToggleButton wallsToggle = new MFXToggleButton("Walls");
+        wallsToggle.setStyle("-fx-text-fill: blue");
+        wallsToggle.setLayoutY(25);
+        wallsToggle.selectedProperty().addListener((obs, o, n) -> {
+            if(n){
+                for (int i = 0; i < matrix.length; i++) {
+                    for (int j = 0; j < matrix[i].length; j++) {
+                        if (matrix[i][j] == 1) {
+                            if (i< matrix.length-1 && j<matrix[i].length-1) {
+                                if (matrix[i + 1][j] == 0 || matrix[i + 1][j + 1] == 0 || matrix[i][j + 1] == 0) {
+                                    Box b = new Box(1, 30, 1);
+                                    b.setTranslateZ(i);
+                                    b.setTranslateX(j);
+                                    b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
+                                    b.setId("wall");
+                                    root.getChildren().add(b);
+                                }
+                            }
+                            if(i>1 && j>1){
+                                if(matrix[i - 1][j] == 0 || matrix[i - 1][j - 1] == 0 || matrix[i][j - 1] == 0){
+                                    Box b = new Box(1, 30, 1);
+                                    b.setTranslateZ(i);
+                                    b.setTranslateX(j);
+                                    b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
+                                    b.setId("wall");
+                                    root.getChildren().add(b);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else{
+                root.getChildren().removeIf(node -> node.getId() != null && node.getId().equals("wall"));
+            }
+        });
+
         Rectangle background = new Rectangle(300,720);
         background.setFill(Color.WHITE);
         background.setArcHeight(20);
         background.setArcWidth(20);
-        pathFindingButton.setStyle("-fx-text-fill: blue");
         pane.getChildren().add(background);
-        pane.getChildren().add(pathFindingButton);
+        pane.getChildren().add(pathFindingToggle);
+        pane.getChildren().add(wallsToggle);
         pane.getChildren().add(group);
         group.toBack();
 
         final Scene scene = new Scene(pane);
 
         AtomicInteger nodeCounter = new AtomicInteger();
+        AtomicReference<SequentialTransition> pathTransition = new AtomicReference<>();
         scene.setOnKeyPressed(event -> {
             double sceneSize = Math.sqrt(scene.getWidth() * scene.getHeight());
             double screenIncrement = sceneSize / 5;
             if (event.isShiftDown() && event.getCode() == KeyCode.EQUALS) {
-                camera.getTransforms().stream().filter(node -> (node instanceof Translate)).forEach(node -> {
-                    if (((Translate) node).getZ() <= -75) {
-                        ((Translate) node).setZ(((Translate) node).getZ() + screenIncrement);
-                    }
-                });
-            } else if (event.isShiftDown() && event.getCode() == KeyCode.MINUS) {
-                camera.getTransforms().stream().filter(node -> (node instanceof Translate)).forEach(node -> {
-                    if (((Translate) node).getZ() <= -50) {
-                        ((Translate) node).setZ(((Translate) node).getZ() - screenIncrement);
-                    }
-                });
-            } else if (event.getCode() == KeyCode.W) {
+                camera.setTranslateY(camera.getTranslateY() + screenIncrement);
+            }
+            else if (event.isShiftDown() && event.getCode() == KeyCode.MINUS) {
+                camera.setTranslateY(camera.getTranslateY() - screenIncrement);
+            }
+            else if (event.getCode() == KeyCode.W) {
                 AtomicDouble zDisplacement = new AtomicDouble(0);
                 AtomicDouble xDisplacement = new AtomicDouble(0);
                 camera.getTransforms().forEach(transform -> {
                     if(transform instanceof Rotate){
                         if(((Rotate) transform).getAxis().equals(Rotate.Y_AXIS)){
+                            //calculating the x and z displacement (x-z plane is what we are viewing)
                             xDisplacement.set(-1 * screenIncrement * Math.sin(Math.toRadians(((Rotate) transform).getAngle())));
                             zDisplacement.set(-1 * screenIncrement * Math.cos(Math.toRadians(((Rotate) transform).getAngle())));
                         }
                     }
                 });
+                //translating the camera
                 camera.setTranslateZ(camera.getTranslateZ() + zDisplacement.get());
                 camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
             } else if (event.getCode() == KeyCode.D) {
@@ -403,16 +458,19 @@ public class App extends Application {
 //                camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
             }
             else if (event.getCode() == KeyCode.S) {
+                //opposite math of the W key press
                 AtomicDouble zDisplacement = new AtomicDouble(0);
                 AtomicDouble xDisplacement = new AtomicDouble(0);
                 camera.getTransforms().forEach(transform -> {
                     if(transform instanceof Rotate){
                         if(((Rotate) transform).getAxis().equals(Rotate.Y_AXIS)){
+                            //getting the pivot
                             xDisplacement.set(screenIncrement * Math.sin(Math.toRadians(((Rotate) transform).getAngle())));
                             zDisplacement.set(screenIncrement * Math.cos(Math.toRadians(((Rotate) transform).getAngle())));
                         }
                     }
                 });
+                //moving the pivot
                 camera.setTranslateZ(camera.getTranslateZ() + zDisplacement.get());
                 camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
             }
@@ -431,11 +489,6 @@ public class App extends Application {
 //                camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
             }
             else if (event.getCode() == KeyCode.L) {
-                //Change angle of camera to be eye level
-                camera.getTransforms().stream().filter(node -> (node instanceof Rotate)).forEach(node -> {
-                    ((Rotate) node).setAngle(0);
-                });
-
                 //Move camera to node start
                 camera.setTranslateX(walkingPath.get().get(0).getXcoord());
                 camera.setTranslateZ(walkingPath.get().get(0).getYcoord());
@@ -444,16 +497,16 @@ public class App extends Application {
                 double opp = walkingPath.get().get(1).getXcoord() - walkingPath.get().get(0).getXcoord();
                 double adj = walkingPath.get().get(1).getYcoord() - walkingPath.get().get(0).getYcoord();
                 double angle = Math.toDegrees(Math.atan2(opp, adj));
-                Rotate rotateX = new Rotate(angle, Rotate.Y_AXIS);
-                camera.getTransforms().addAll(rotateX);
-                camera.setTranslateY(-10);
+                Rotate rotateY = new Rotate(angle, Rotate.Y_AXIS);
+                camera.getTransforms().addAll(rotateY);
+                camera.setTranslateY(10);
 
                 //Transition from node to node
-                SequentialTransition seqTransition = new SequentialTransition();
+                pathTransition.set(new SequentialTransition());
                 for (int i = nodeCounter.get(); i < walkingPath.get().size() - 1; i++) {
                     //animation from node to node
-                    Point3D currentPosition = new Point3D(walkingPath.get().get(i).getXcoord(), -10, walkingPath.get().get(i).getYcoord());
-                    Point3D endPosition = new Point3D(walkingPath.get().get(i + 1).getXcoord(), -10, walkingPath.get().get(i + 1).getYcoord());
+                    Point3D currentPosition = new Point3D(walkingPath.get().get(i).getXcoord(), 10, walkingPath.get().get(i).getYcoord());
+                    Point3D endPosition = new Point3D(walkingPath.get().get(i + 1).getXcoord(), 10, walkingPath.get().get(i + 1).getYcoord());
 
                     Point3D translation = endPosition.subtract(currentPosition);
 
@@ -467,7 +520,7 @@ public class App extends Application {
                     transition.setByZ(translation.getZ());
 
                     //Animation for rotating
-                    if(i<walkingPath.get().size()-2){
+                    if(i < walkingPath.get().size() - 2){
                         camera.getTransforms().clear();
                         opp = walkingPath.get().get(i + 2).getXcoord() - walkingPath.get().get(i+1).getXcoord();
                         adj = walkingPath.get().get(i + 2).getYcoord() - walkingPath.get().get(i+1).getYcoord();
@@ -480,20 +533,38 @@ public class App extends Application {
                         rotateTransition.setToAngle(angle);
                         rotateTransition.setAxis(Rotate.Y_AXIS);
 
-                        seqTransition.getChildren().addAll(transition, rotateTransition);
-                    } else {
-                        seqTransition.getChildren().add(transition);
+                        pathTransition.get().getChildren().addAll(transition, rotateTransition);
+                    }
+                    else {
+                        pathTransition.get().getChildren().add(transition);
                     }
                 }
-                seqTransition.play();
+                pathTransition.get().play();
+                pathTransition.get().setOnFinished(status -> pathTransition.set(null));
             }
-            else if (event.getCode() == KeyCode.M) { // Turn
-                Rotate rotateX = new Rotate(5, Rotate.Y_AXIS);
-                camera.getTransforms().addAll(rotateX);
+            else if (event.getCode() == KeyCode.E) { // Turn Camera Right
+                camera.getTransforms().stream().filter(node -> node instanceof Rotate).forEach(transform -> {
+                    if(((Rotate) transform).getAxis() == Rotate.Y_AXIS){
+                        ((Rotate) transform).setAngle(((Rotate) transform).getAngle() - 5);
+                    }
+                });
             }
-            else if (event.getCode() == KeyCode.N) { // Turn
-                Rotate rotateX = new Rotate(-5, Rotate.Y_AXIS);
-                camera.getTransforms().addAll(rotateX);
+            else if (event.getCode() == KeyCode.Q) { // Turn Camera Left
+                camera.getTransforms().stream().filter(node -> node instanceof Rotate).forEach(transform -> {
+                    if(((Rotate) transform).getAxis() == Rotate.Y_AXIS){
+                        ((Rotate) transform).setAngle(((Rotate) transform).getAngle() + 5);
+                    }
+                });
+            }
+            else if(event.getCode() == KeyCode.ESCAPE){
+                if(pathFinding.get()) {
+                    if (pathTransition.get() == null) {
+
+                    }
+                    if (pathTransition.get().getStatus() == Animation.Status.RUNNING) {
+                        pathTransition.get().stop();
+                    }
+                }
             }
         });
 
