@@ -2,6 +2,7 @@ package edu.wpi.tacticaltritons.auth;
 
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
+import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 
 import java.nio.charset.StandardCharsets;
@@ -83,7 +84,7 @@ public class Account {
                         UserSessionToken.DEFAULT_SESSION_TIME,
                         AlgorithmSingleton.ASTAR.name(),
                         false,
-                        "WPI database"));
+                        Tdb.WPI_DATABASE.name()));
 
         return 1;
 

@@ -20,6 +20,12 @@ public interface PathFindingAlgorithm {
         return neighborMap;
     }
 
+    default double manhattanDistance(Node a, Node b) {
+        int deltaX = Math.abs(a.getXcoord() - b.getXcoord());
+        int deltaY = Math.abs(a.getYcoord() - b.getYcoord());
+        return deltaX + deltaY;
+    }
+
     default List<Node> reconstructPath(Map<Node, Node> cameFrom, Node startNode, Node current) {
         List<Node> path = new ArrayList<>();
         while (current != null && !current.equals(startNode)) {
