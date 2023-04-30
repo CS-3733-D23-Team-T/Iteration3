@@ -1,27 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.StackPane?>
 
-<BorderPane prefHeight="620.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.login.LoginRootController">
-   <center>
-      <FlowPane fx:id="loginCeneterFlowPane" alignment="CENTER" columnHalignment="CENTER" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-         </BorderPane.margin>
-         <children>
-            <ImageView fx:id="loginImageView" fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image preserveRatio="false" smooth="false" url="@/edu/wpi/tacticaltritons/images/login_page/hospital_login_picture.png" />
-               </image>
-            </ImageView>
-         </children>
-      </FlowPane>
-   </center>
-   <right>
-      <fx:include source="LoginContainer.fxml" />
-   </right>
-</BorderPane>
+<StackPane fx:id="loginStackPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.login.LoginRootController">
+   <children>
+      <ImageView fx:id="loginImageView" fitHeight="650.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image preserveRatio="false" smooth="false" url="@/edu/wpi/tacticaltritons/images/login_page/BWH_HomePhoto2.png" />
+         </image>
+      </ImageView>
+      <fx:include maxHeight="1.7976931348623157E308" maxWidth="400.0" source="LoginContainer.fxml" StackPane.alignment="CENTER_RIGHT" />
+   </children>
+</StackPane>

@@ -7,7 +7,6 @@
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
@@ -162,13 +161,6 @@
                </BorderPane.margin>
             </HBox>
          </bottom>
-         <effect>
-            <DropShadow>
-               <color>
-                  <Color opacity="0.3199999928474426" />
-               </color>
-            </DropShadow>
-         </effect>
       </BorderPane>
    </left>
    <center>
@@ -247,13 +239,7 @@
                </children>
             </VBox>
          </center>
-         <effect>
-            <DropShadow>
-               <color>
-                  <Color opacity="0.3199999928474426" />
-               </color>
-            </DropShadow>
-         </effect>
+
       </BorderPane>
    </center>
 </BorderPane>

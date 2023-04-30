@@ -1,0 +1,17 @@
+.table-view{
+    -fx-background-color: white;
+}
+
+.table-view:focused{
+    -fx-background-color: white;
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: #f1f1f1;
+}
+
+.table-view .column-header{
+    -fx-background-color: #f1f1f1;
+}
+
+

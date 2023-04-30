@@ -95,6 +95,9 @@ public class HomeController {
         initEventTable();
         initMoveTable();
         initServiceTable();
+
+        tableServiceRequest.getStylesheets().add("/edu/wpi/tacticaltritons/stylesheets/HomeTab.css");
+        tableInvitation.getStylesheets().add("/edu/wpi/tacticaltritons/stylesheets/HomeTab.css");
     }
 
     private void initAnnouncements() throws SQLException, IOException {
@@ -432,7 +435,6 @@ public class HomeController {
         TableColumn<HomeServiceRequests, String> title = new TableColumn<>("Service Request Table");
 
         tableServiceRequest.getColumns().addAll(completed, serviceType, items, location, fullNameCol, deliveryDate, deliveryTime);
-
 
         tableServiceRequest.getItems().addAll(requestObservableList);
         tableServiceRequest.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);

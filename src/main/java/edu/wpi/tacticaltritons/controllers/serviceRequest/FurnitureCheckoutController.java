@@ -298,7 +298,6 @@ public class FurnitureCheckoutController {
         });
 
         groundFloor.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
-
     }
 
     private FlowPane createCheckoutNode(String key, int value, Image furnitureImage) {

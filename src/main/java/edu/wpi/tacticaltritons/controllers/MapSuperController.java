@@ -262,35 +262,35 @@ public class MapSuperController {
         switch (thisFloor) {
             case "L1":
                 resetButtons();
-                this.lowerLevel1.setStyle("-fx-background-color: BLUE");
+                this.lowerLevel1.setStyle("-fx-background-color: #f0ab0b");
                 resetImages();
                 L1Group.setVisible(true);
                 lowerLevel1Image.setVisible(true);
                 break;
             case "L2":
                 resetButtons();
-                this.lowerLevel2.setStyle("-fx-background-color: BLUE");
+                this.lowerLevel2.setStyle("-fx-background-color: #f0ab0b");
                 resetImages();
                 L2Group.setVisible(true);
                 lowerLevel2Image.setVisible(true);
                 break;
             case "1":
                 resetButtons();
-                this.floor1.setStyle("-fx-background-color: BLUE");
+                this.floor1.setStyle("-fx-background-color: #f0ab0b");
                 resetImages();
                 floor1Group.setVisible(true);
                 floor1Image.setVisible(true);
                 break;
             case "2":
                 resetButtons();
-                this.floor2.setStyle("-fx-background-color: BLUE");
+                this.floor2.setStyle("-fx-background-color: #f0ab0b");
                 resetImages();
                 floor2Group.setVisible(true);
                 floor2Image.setVisible(true);
                 break;
             case "3":
                 resetButtons();
-                this.floor3.setStyle("-fx-background-color: BLUE");
+                this.floor3.setStyle("-fx-background-color: #f0ab0b");
                 resetImages();
                 floor3Group.setVisible(true);
                 floor3Image.setVisible(true);
@@ -301,7 +301,7 @@ public class MapSuperController {
     public void initalizeFloorButtons() {
         this.lowerLevel1.setOnAction(event -> {
             resetButtons();
-            this.lowerLevel1.setStyle("-fx-background-color: BLUE");
+            this.lowerLevel1.setStyle("-fx-background-color: #f0ab0b");
             resetImages();
             L1Group.setVisible(true);
             lowerLevel1Image.setVisible(true);
@@ -309,7 +309,7 @@ public class MapSuperController {
         });
         this.lowerLevel2.setOnAction(event -> {
             resetButtons();
-            this.lowerLevel2.setStyle("-fx-background-color: BLUE");
+            this.lowerLevel2.setStyle("-fx-background-color: #f0ab0b");
             resetImages();
             L2Group.setVisible(true);
             lowerLevel2Image.setVisible(true);
@@ -317,7 +317,7 @@ public class MapSuperController {
         });
         this.floor1.setOnAction(event -> {
             resetButtons();
-            this.floor1.setStyle("-fx-background-color: BLUE");
+            this.floor1.setStyle("-fx-background-color: #f0ab0b");
             resetImages();
             floor1Group.setVisible(true);
             floor1Image.setVisible(true);
@@ -325,7 +325,7 @@ public class MapSuperController {
         });
         this.floor2.setOnAction(event -> {
             resetButtons();
-            this.floor2.setStyle("-fx-background-color: BLUE");
+            this.floor2.setStyle("-fx-background-color: #f0ab0b");
             resetImages();
             floor2Group.setVisible(true);
             floor2Image.setVisible(true);
@@ -333,7 +333,7 @@ public class MapSuperController {
         });
         this.floor3.setOnAction(event -> {
             resetButtons();
-            this.floor3.setStyle("-fx-background-color: BLUE");
+            this.floor3.setStyle("-fx-background-color: #f0ab0b");
             resetImages();
             floor3Group.setVisible(true);
             floor3Image.setVisible(true);
