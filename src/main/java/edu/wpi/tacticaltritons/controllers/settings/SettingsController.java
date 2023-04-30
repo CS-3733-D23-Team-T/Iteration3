@@ -142,21 +142,35 @@ public class SettingsController {
         });
 
         List<String> databaseList = new ArrayList<>();
-        databaseList.add("WPI database");
-        databaseList.add("AWS database");
+        databaseList.add(Tdb.WPI_DATABASE.formalName());
+        databaseList.add(Tdb.AWS_DATABASE.formalName());
 
+        databaseComboBox.setValue(Tdb.parseTdb(user.getDatabase()).formalName());
         databaseComboBox.setItems(FXCollections.observableList(databaseList));
-        databaseComboBox.setValue("WPI database");
+        String database = Tdb.parseTdb(user.getDatabase()).formalName();
+        if(database == null){
+            database = Tdb.getInstance().formalName();
+            databaseComboBox.getSelectionModel.select(database);
+
+        }
 
         databaseComboBox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
             if(!Objects.equals(n, o)){
-                    if(n.equals("WPI database")){
-                        Tdb.setInstance(Tdb.WPI_DB);
-                    }
-                    else if(n.equals("AWS database")){
-                        Tdb.setInstance(Tdb.AWS);
-                    }
+                if(n.equals("WPI database")){
+                    Tdb.setInstance(Tdb.WPI_DATABASE);
+                }
+                else if(n.equals("AWS database")){
+                    Tdb.setInstance(Tdb.AWS_DATABASE);
+                }
             }
+            user.setDatabase(Tdb.getInstance().name());
+            new Thread(() -> {
+                try {
+                    DAOFacade.updateLogin(user);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
         });
     }
 }
