@@ -150,7 +150,7 @@ public class SettingsController {
         String database = Tdb.parseTdb(user.getDatabase()).formalName();
         if(database == null){
             database = Tdb.getInstance().formalName();
-            databaseComboBox.getSelectionModel.select(database);
+            databaseComboBox.getSelectionModel().select(database);
 
         }
 
