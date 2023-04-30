@@ -92,11 +92,6 @@ public class AStarAlgorithm implements PathFindingAlgorithm {
     return distance;
   }
 
-  private double manhattanDistance(Node a, Node b) {
-    int deltaX = Math.abs(a.getXcoord() - b.getXcoord());
-    int deltaY = Math.abs(a.getYcoord() - b.getYcoord());
-    return deltaX + deltaY;
-  }
 }
 
 
