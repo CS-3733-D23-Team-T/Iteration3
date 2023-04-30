@@ -580,6 +580,18 @@ public class App extends Application {
                     }
                 }
             }
+            else if(event.getCode() == KeyCode.SPACE){
+                if(pathFinding.get()){
+                    if(pathTransition.get() != null){
+                        if(pathTransition.get().getStatus() == Animation.Status.RUNNING){
+                            pathTransition.get().stop();
+                        }
+                        else if(pathTransition.get().getStatus() == Animation.Status.STOPPED){
+                            pathTransition.get().play();
+                        }
+                    }
+                }
+            }
         });
 
 
