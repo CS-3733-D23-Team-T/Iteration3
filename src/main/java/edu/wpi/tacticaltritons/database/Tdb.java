@@ -23,9 +23,15 @@ public enum Tdb {
     String[] strings = this.name().split("_");
     StringBuilder sb = new StringBuilder();
     for(String string : strings){
-      sb.append(string.charAt(0)).append(string.toLowerCase(Locale.getDefault()).substring(1)).append(" ");
+      if(string.equals("DATABASE")){
+        sb.append(string.substring(0,1)).append(string.substring(1).toLowerCase());
+
+      }
+      else {
+        sb.append(string).append(" ");
+      }
     }
-    return sb.substring(0,sb.length() - 1);
+    return sb.substring(0,sb.length());
   }
   public static Tdb parseTdb(String string){
     if(string == null) return null;
