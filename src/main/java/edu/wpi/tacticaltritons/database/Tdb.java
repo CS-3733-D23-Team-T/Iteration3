@@ -29,6 +29,8 @@ public enum Tdb {
   }
   public static Tdb parseTdb(String string){
     if(string == null) return null;
+    string = string.toUpperCase(Locale.ROOT);
+    string = string.replaceAll(" ", "_");
 
     if(string.equals(AWS_DATABASE.name())) return AWS_DATABASE;
     else if(string.equals(WPI_DATABASE.name())) return WPI_DATABASE;

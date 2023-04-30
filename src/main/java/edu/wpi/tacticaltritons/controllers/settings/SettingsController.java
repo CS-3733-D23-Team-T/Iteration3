@@ -145,21 +145,27 @@ public class SettingsController {
         databaseList.add(Tdb.WPI_DATABASE.formalName());
         databaseList.add(Tdb.AWS_DATABASE.formalName());
 
-        databaseComboBox.setValue(Tdb.parseTdb(user.getDatabase()).formalName());
         databaseComboBox.setItems(FXCollections.observableList(databaseList));
-        String database = Tdb.parseTdb(user.getDatabase()).formalName();
+        Tdb database = Tdb.parseTdb(user.getDatabase());
         if(database == null){
-            database = Tdb.getInstance().formalName();
-            databaseComboBox.getSelectionModel().select(database);
-
+            database = Tdb.getInstance();
+            new Thread(() -> {
+                user.setDatabase(Tdb.getInstance().name());
+                try {
+                    DAOFacade.updateLogin(user);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
         }
+        databaseComboBox.getSelectionModel().select(database.formalName());
 
         databaseComboBox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
             if(!Objects.equals(n, o)){
-                if(n.equals("WPI database")){
+                if(n.equals(Tdb.WPI_DATABASE.formalName())){
                     Tdb.setInstance(Tdb.WPI_DATABASE);
                 }
-                else if(n.equals("AWS database")){
+                else if(n.equals(Tdb.AWS_DATABASE.formalName())){
                     Tdb.setInstance(Tdb.AWS_DATABASE);
                 }
             }
