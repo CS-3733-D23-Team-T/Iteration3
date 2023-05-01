@@ -43,6 +43,8 @@ public class NewPathfindingController extends MapSuperController {
     @FXML
     private StackPane directionsPane;
 
+    @FXML
+    private Text textForDirections;
 
     @FXML
     private Text pathfindingComment;
@@ -64,6 +66,7 @@ public class NewPathfindingController extends MapSuperController {
 
     public void showDirections(boolean bool) {
         directionsPane.setVisible(bool);
+        textForDirections.setVisible(bool);
     }
 
     public void initializeMenuButton(String page) {
@@ -135,7 +138,6 @@ public class NewPathfindingController extends MapSuperController {
 
     public void initialize() throws SQLException {
 
-
         addStop.setImage(App.addStop);
         addStop.setRotate(45);
 
@@ -178,11 +180,17 @@ public class NewPathfindingController extends MapSuperController {
             } else {
                 showDirections(false);
             }
+
         });
 
         this.addStop.setOnMouseClicked(event -> {
             MFXFilterComboBox addedStop = new MFXFilterComboBox<>();
-            addedStop.setPrefSize(300, 50);
+
+            HBox thisStop = new HBox();
+            thisStop.setAlignment(Pos.CENTER_LEFT);
+            thisStop.setSpacing(10);
+
+            addedStop.setMinSize(300, 50);
             try {
                 getLocationNameHashMap().forEach(((key, value) -> {
                     if (!value.getNodeType().equals("HALL")) {
@@ -192,18 +200,42 @@ public class NewPathfindingController extends MapSuperController {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            allStops.getChildren().add(addedStop);
+
+            ImageView removeStop = new ImageView();
+            removeStop.setImage(App.addStop);
+            removeStop.setFitWidth(50);
+            removeStop.setFitHeight(50);
+
+            thisStop.getChildren().add(addedStop);
+            thisStop.getChildren().add(removeStop);
+
+            allStops.getChildren().add(thisStop);
             allLongNames.add(addedStop);
+
+            removeStop.setOnMouseClicked(event1 -> {
+                allStops.getChildren().remove(thisStop);
+            });
         });
 
         this.pathfinding.setOnMouseClicked(
                 event -> {
+                    if (allDirections.getChildren().size() > 1) {
+                        List<javafx.scene.Node> allHBox = new ArrayList<>();
+                        for (javafx.scene.Node node : allDirections.getChildren()) {
+                            if(node instanceof HBox) {
+                                allHBox.add(node);
+                            }
+                        }
+                        allDirections.getChildren().removeAll(allHBox);
+                        allHBox.clear();
+                    }
+
                     clearAllNodes();
-                    for (int i = 1; i <= allLongNames.size()-1; i++) {
+                    for (int i = 1; i <= allLongNames.size() - 1; i++) {
                         today = java.sql.Date.valueOf(date.getValue());
                         final int[] startNodeID = {0};
                         final int[] endNodeID = {0};
-                        String start = allLongNames.get(i-1).getSelectedItem().toString();
+                        String start = allLongNames.get(i - 1).getSelectedItem().toString();
                         String end = allLongNames.get(i).getSelectedItem().toString();
                         try {
                             List<Move> allCurrentMoves = DAOFacade.getAllCurrentMoves(today);
@@ -222,18 +254,17 @@ public class NewPathfindingController extends MapSuperController {
                                 }
                             });
                             pathfinding(startNodeID[0], endNodeID[0]);
-                            shortestPath.addAll(shortestPathMap);
+//                            shortestPath.addAll(shortestPathMap);
+                            try {
+                                setTextDirections(shortestPathMap);
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    try {
-                        setTextDirections(shortestPath);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
                     shortestPath.clear();
-                    allDirections.getChildren().removeAll();
                 });
     }
 

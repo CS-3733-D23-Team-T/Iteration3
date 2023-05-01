@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import net.kurobako.gesturefx.GesturePane?>
 
@@ -125,8 +126,15 @@
                      <content>
                         <VBox fx:id="allDirections" maxWidth="300.0" prefWidth="300.0" spacing="20.0">
                            <padding>
-                              <Insets left="20.0" top="80.0" />
+                              <Insets left="20.0" top="30.0" />
                            </padding>
+                           <children>
+                              <Text fx:id="textForDirections" strokeType="OUTSIDE" strokeWidth="0.0" text="Directions">
+                                 <font>
+                                    <Font name="Arial Bold" size="24.0" />
+                                 </font>
+                              </Text>
+                           </children>
                         </VBox>
                      </content>
                   </MFXScrollPane>
@@ -157,11 +165,6 @@
                         <Insets left="690.0" top="20.0" />
                     </StackPane.margin>
                 </MFXButton>
-                <ImageView fx:id="pathfinding" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
-                    <StackPane.margin>
-                        <Insets left="390.0" top="20.0" />
-                    </StackPane.margin>
-                </ImageView>
                 <ImageView fx:id="menuBar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
                     <StackPane.margin>
                         <Insets left="20.0" top="20.0" />
@@ -172,25 +175,30 @@
                         <Insets left="750.0" top="20.0" />
                     </StackPane.margin>
                 </MFXButton>
-            <ImageView fx:id="addStop" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
-               <StackPane.margin>
-                  <Insets left="397.0" top="87.0" />
-               </StackPane.margin>
-            </ImageView>
                 <MFXButton fx:id="directions" text="DIRECTIONS" StackPane.alignment="TOP_RIGHT">
                     <StackPane.margin>
                         <Insets right="30.0" top="30.0" />
                     </StackPane.margin>
                 </MFXButton>
-            <VBox fx:id="allStops" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" StackPane.alignment="TOP_LEFT">
+            <VBox fx:id="allStops" maxHeight="-Infinity" maxWidth="360.0" spacing="10.0" StackPane.alignment="TOP_LEFT">
                <StackPane.margin>
-                  <Insets left="80.0" right="900.0" top="20.0" />
+                  <Insets left="80.0" top="20.0" />
                </StackPane.margin>
                <children>
                       <MFXFilterComboBox fx:id="startLocation" minHeight="50.0" prefWidth="300.0" />
                       <MFXFilterComboBox fx:id="endLocation" minHeight="50.0" prefWidth="300.0" />
                </children>
             </VBox>
+            <ImageView fx:id="addStop" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="397.0" top="87.0" />
+               </StackPane.margin>
+            </ImageView>
+                <ImageView fx:id="pathfinding" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
+                    <StackPane.margin>
+                        <Insets left="390.0" top="20.0" />
+                    </StackPane.margin>
+                </ImageView>
             </children>
             <BorderPane.margin>
                 <Insets />
