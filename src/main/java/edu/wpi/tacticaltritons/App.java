@@ -481,33 +481,57 @@ log.info("Starting Up");
         wallsToggle.setLayoutY(25);
         wallsToggle.selectedProperty().addListener((obs, o, n) -> {
             if(n){
+//                for (int i = 0; i < matrix.length; i++) {
+//                    for (int j = 0; j < matrix[i].length; j++) {
+//                        if (matrix[i][j] == 1) {
+//                            if (i< matrix.length-1 && j<matrix[i].length-1) {
+//                                if (matrix[i + 1][j] == 0 || matrix[i + 1][j + 1] == 0 || matrix[i][j + 1] == 0) {
+//                                    Box b = new Box(1, 30, 1);
+//                                    b.setTranslateZ(i);
+//                                    b.setTranslateX(j);
+//                                    b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
+//                                    b.setId("wall");
+//                                    root.getChildren().add(b);
+//                                }
+//                            }
+//                            if(i>1 && j>1){
+//                                if(matrix[i - 1][j] == 0 || matrix[i - 1][j - 1] == 0 || matrix[i][j - 1] == 0){
+//                                    Box b = new Box(1, 30, 1);
+//                                    b.setTranslateZ(i);
+//                                    b.setTranslateX(j);
+//                                    b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
+//                                    b.setId("wall");
+//                                    root.getChildren().add(b);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
                 for (int i = 0; i < matrix.length; i++) {
                     for (int j = 0; j < matrix[i].length; j++) {
                         if (matrix[i][j] == 1) {
-                            if (i< matrix.length-1 && j<matrix[i].length-1) {
-                                if (matrix[i + 1][j] == 0 || matrix[i + 1][j + 1] == 0 || matrix[i][j + 1] == 0) {
-                                    Box b = new Box(1, 30, 1);
-                                    b.setTranslateZ(i);
-                                    b.setTranslateX(j);
-                                    b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
-                                    b.setId("wall");
-                                    root.getChildren().add(b);
+                            int wallWidth = 0;
+                            for (int k = j; k < matrix[i].length; k++) {
+                                if (matrix[i][k] == 1) {
+                                    wallWidth++;
+                                } else {
+                                    break;
                                 }
                             }
-                            if(i>1 && j>1){
-                                if(matrix[i - 1][j] == 0 || matrix[i - 1][j - 1] == 0 || matrix[i][j - 1] == 0){
-                                    Box b = new Box(1, 30, 1);
-                                    b.setTranslateZ(i);
-                                    b.setTranslateX(j);
-                                    b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
-                                    b.setId("wall");
-                                    root.getChildren().add(b);
-                                }
+                            if (wallWidth >= 2) {
+                                Box b = new Box(wallWidth, 30, 1);
+                                b.setTranslateZ(i);
+                                b.setTranslateX(j + wallWidth/2.0);
+                                b.setMaterial(new PhongMaterial(Color.web("#A17A4B")));
+                                b.setId("wall");
+                                root.getChildren().add(b);
+                                j += wallWidth;
                             }
                         }
                     }
                 }
-            }
+
+        }
             else{
                 root.getChildren().removeIf(node -> node.getId() != null && node.getId().equals("wall"));
             }
