@@ -138,8 +138,6 @@ public class SupplyCheckoutController {
         floor1Image.setImage(App.firstfloor);
         floor2Image.setImage(App.secondfloor);
         floor3Image.setImage(App.thirdfloor);
-        HashMap<String, Image> imageHashMap = new HashMap<>();
-
 
 //    EffectGenerator.generateShadowEffect(basePane); //shadow generator
         lowerLevel1Image.setImage(App.lowerlevel1);
@@ -159,7 +157,7 @@ public class SupplyCheckoutController {
 
         checkoutItems.forEach((key, value) ->
         {
-            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, imageHashMap.get(key)));
+            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, App.supplyHashMap ));
         });
         checkoutFlowplan.setAlignment(Pos.CENTER);
         ;
@@ -303,7 +301,7 @@ public class SupplyCheckoutController {
 
     }
 
-    private FlowPane createCheckoutNode(String key, int value, Image supplyImage) {
+    private FlowPane createCheckoutNode(String key, int value, HashMap<String, Image> ImageHashMap)  {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(200);
         flowPane.setPrefHeight(100);
@@ -316,7 +314,7 @@ public class SupplyCheckoutController {
         flowPane.setBackground(Background.fill(Color.WHITE));
 
         // Creates the image view
-        Image image = supplyImage;
+        Image image = ImageHashMap.get(key);
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);

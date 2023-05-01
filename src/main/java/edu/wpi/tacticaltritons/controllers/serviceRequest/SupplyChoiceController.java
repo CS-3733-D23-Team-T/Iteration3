@@ -48,15 +48,6 @@ public class SupplyChoiceController {
 
     public void initialize() throws NullPointerException {
 
-        //Image HashMap
-        HashMap<String, Image> imageHashMap = new HashMap<>();
-        imageHashMap.put("Blossom Path", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/BlossomPath.png")).toString()));
-        imageHashMap.put("Garden Grace", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/GardenGrace.png")).toString()));
-        imageHashMap.put("Tropical Blooms", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/TropicalBlooms.png")).toString()));
-        imageHashMap.put("Wildflower Emporium", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WildflowerEmporium.png")).toString()));
-        imageHashMap.put("Petal Boutique", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/PetalBoutique.png")).toString()));
-        imageHashMap.put("Free Mont Flowers", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/FreeMontFlowers.png")).toString()));
-
 
         // This gets all the entrys in the database into a list locally so it is only one database call
 
@@ -71,11 +62,11 @@ public class SupplyChoiceController {
         uniqueShops = findNumberOfShops(supplyRequestOptionsList);
 
         uniqueShops.forEach((key, value) -> {
-            createSupplyShopButton(value, imageHashMap.get(value.getShop()));
+            createSupplyShopButton(value, App.supplyHashMap);
         });
     }
 
-    private void createSupplyShopButton(SupplyRequestOptions value, Image shopImage) {
+    private void createSupplyShopButton(SupplyRequestOptions value, HashMap<String, Image> imageHashMap) {
         // created the outer flow pane
         FlowPane flowPaneOuter = new FlowPane();
         flowPaneOuter.setPrefWidth(defaultOuterFlowPanePrefWidth);
@@ -98,7 +89,7 @@ public class SupplyChoiceController {
         flowPaneInner.setAlignment(Pos.CENTER);
 
         // creates the imageview
-        Image image = shopImage;
+        Image image = imageHashMap.get(value);
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(defaultImageViewFitWidth);
         imageView.setFitHeight(defaultImageViewFitHeight);
