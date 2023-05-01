@@ -134,9 +134,11 @@ public class SignageCreateController {
         App.getPrimaryStage().widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                basePaneContainer.setPrefWidth(newValue.doubleValue());
-                basePane.setPrefWidth(newValue.doubleValue());
-                horizontalResizing(newValue);
+                if(newValue.doubleValue() > 600){
+                    basePaneContainer.setPrefWidth(newValue.doubleValue());
+                    basePane.setPrefWidth(newValue.doubleValue());
+                    horizontalResizing(newValue);
+                }
             }
         });
 

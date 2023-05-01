@@ -118,8 +118,10 @@ public class SignagePageController {
         App.getPrimaryStage().widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                horizontalResizing(newValue);
-                resizeTexts(newValue);
+                if(newValue.doubleValue() > 600){
+                    horizontalResizing(newValue);
+                    resizeTexts(newValue);
+                }
             }
         });
         signageForwardBlock.heightProperty().addListener(new ChangeListener<Number>() {
