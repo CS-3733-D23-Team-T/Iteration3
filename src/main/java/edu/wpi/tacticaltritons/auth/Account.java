@@ -118,7 +118,8 @@ public class Account {
                         return 2;
                     }
                 }
-
+                Tdb.setInstance(Tdb.parseTdb(login.getDatabase()));
+                AlgorithmSingleton.setInstance(AlgorithmSingleton.parseAlgorithm(login.getAlgorithmPreference()));
                 UserSessionToken.registerToken(login);
                 DAOFacade.updateLogin(login);
             } catch (SQLException e) {
