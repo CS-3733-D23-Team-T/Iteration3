@@ -30,8 +30,8 @@ public class QuickNavigationMenuButtons {
         serviceRequestNavigationMap.put("Conference Room Request", Screen.CONFERENCE_ROOM);
         serviceRequestNavigationMap.put("View Service Request", Screen.VIEW_SERVICE_REQUEST);
 
-
-        hospitalMapNavigationMap.put("Hospital Map", Screen.VIEW_MAP);
+        hospitalMapNavigationMap.put("3D Hospital Map", Screen.THREED_MAP);
+        hospitalMapNavigationMap.put("2D Hospital Map", Screen.VIEW_MAP);
         hospitalMapNavigationMap.put("Edit Hospital Map", Screen.EDIT_MAP);
         hospitalMapNavigationMap.put("Pathfinding", Screen.PATHFINDING);
 
