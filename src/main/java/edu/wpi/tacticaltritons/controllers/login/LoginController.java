@@ -1,9 +1,6 @@
 package edu.wpi.tacticaltritons.controllers.login;
 
-import edu.wpi.tacticaltritons.auth.Account;
-import edu.wpi.tacticaltritons.auth.AuthenticationMethod;
-import edu.wpi.tacticaltritons.auth.UserSessionToken;
-import edu.wpi.tacticaltritons.auth.Validator;
+import edu.wpi.tacticaltritons.auth.*;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.navigation.LoginNavigation;
@@ -51,13 +48,15 @@ public class LoginController {
 
         this.loginButton.setOnAction(event -> {
             int ret = Account.attemptLogin(usernameField.getText(), passwordField.getText());
-
+            Login login;
             if (ret == 1) {
                 try {
-                    UserSessionToken.registerToken(DAOFacade.getLogin(usernameField.getText()));
+                    login = DAOFacade.getLogin(usernameField.getText());
+                    UserSessionToken.registerToken(login);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+                GoogleTranslate.setLanguage(Language.parseLanguage(login.getLanguage()).getLanguage());
                 Navigation.navigate(Screen.HOME);
             }
             else if(ret == -1){
