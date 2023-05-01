@@ -1,6 +1,11 @@
 package edu.wpi.tacticaltritons.robot;
 
 import arduino.Arduino;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import lombok.Getter;
 
 import java.util.List;
@@ -14,6 +19,7 @@ public class RobotComm {
     @Getter
     private static boolean checkConnection = true; //true for able to connect, false if unable to connect
     private static boolean checkComplete = false;
+    public static DoubleProperty xRobotCoordinate = new SimpleDoubleProperty(-10), yRobotCoordinate = new SimpleDoubleProperty(-10), angleRobotCoordinate = new SimpleDoubleProperty(0);
 
     /**
      * re-check if the program can communicate with the robot, does not always need to be called
@@ -37,6 +43,20 @@ public class RobotComm {
                 in = robot.serialRead();
             }
             System.out.println("Read [" + in + "] from robot");
+            switch(in.charAt(0)){
+                case 't':{
+                    angleRobotCoordinate.set(Double.parseDouble(in.substring(2)));
+                    break;
+                }
+                case 'd':{
+                    double linearDistance = Double.parseDouble(in.substring(2));
+                    xRobotCoordinate.set(linearDistance * Math.sin(angleRobotCoordinate.get()));
+                    yRobotCoordinate.set(linearDistance * Math.cos(angleRobotCoordinate.get()));
+                    break;
+                }
+                default:
+                    break;
+            }
             robot.closeConnection();
         }
     }
@@ -87,12 +107,13 @@ public class RobotComm {
 
     public static void runRobot(List<Float> angle, List<Float> drive){
         Runnable robotRunnable = () -> {
+            Circle circle = drawObservableCircle();
             setLED(true);
             for(int i = 0; i < angle.size();i++){
                 drive(angle.get(i),drive.get(i));
-                while(!checkComplete);
             }
             setLED(false);
+            circle.setVisible(false);
         };
         Thread robotThread = new Thread(robotRunnable);
         robotThread.start();
@@ -108,6 +129,18 @@ public class RobotComm {
             return true;
         }
         else return false;
+    }
+
+    public static Circle drawObservableCircle() {
+        Circle circle = new Circle();
+        circle.setVisible(true);
+        circle.setFill(Color.BLUE);
+        circle.setStroke(Color.BLACK);
+        circle.setStrokeWidth(3.0f);
+        circle.centerXProperty().bind(xRobotCoordinate);
+        circle.centerYProperty().bind(yRobotCoordinate);
+        circle.setRadius(10.0);
+        return circle;
     }
 }
 
