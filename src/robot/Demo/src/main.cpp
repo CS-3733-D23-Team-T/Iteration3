@@ -25,6 +25,7 @@ const int CCW = -1;
 //speed of each wheel
 int effort = 95;
 int baseSpeed = 20;
+float scaling = .5;
 //store current angle of robot
 float currentAngle = 0, readAngle = 0;
 
@@ -56,10 +57,12 @@ void handleMessage(){
     case 'f': { //forward
       float distance = rxString.substring(2).toFloat();
       if(distance != 0){
-        chassis.driveFor(distance,baseSpeed);
+        chassis.driveFor(distance * scaling,baseSpeed);
+        long deltaT;
         while(!chassis.checkMotionComplete()){
-          if(millis() - now > 500){
-            Serial.print("Driving"); //TODO get distance
+          deltaT = millis() - now;
+          if(deltaT % 500 < 3){
+            Serial.print("d:" + (String)(baseSpeed * deltaT)); //TODO get distance
             now = millis();
           }
         }
@@ -73,16 +76,16 @@ void handleMessage(){
       float deltaAngle = readAngle - currentAngle;
       deltaAngle = ((int)deltaAngle + 540) % 360 - 180;
       if(deltaAngle != 0){
-        chassis.turnFor(deltaAngle, baseSpeed);   
+        chassis.turnFor(deltaAngle, baseSpeed*2);  
+        long deltaT; 
         while(!chassis.checkMotionComplete()){
-          if(millis() - now > 500){
-            Serial.print("Rotating" + (String)readAngle); //TODO get rotation
-            now = millis(); //TODO reset angle when done
+          deltaT = millis() - now;
+          if(deltaT % 500 < 3){
+            Serial.print("r:" + (String)(baseSpeed*deltaT)); //TODO get rotation and reset angle when done
           }
         }
         currentAngle += deltaAngle;
       }
-
       Serial.print("Done");
       break;
     }
