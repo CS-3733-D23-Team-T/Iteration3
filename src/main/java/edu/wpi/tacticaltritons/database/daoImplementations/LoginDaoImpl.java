@@ -210,7 +210,7 @@ public class LoginDaoImpl implements LoginDao {
   private void mapStatement(PreparedStatement statement, Login login, Connection connection, boolean type) throws SQLException {
     Timestamp timestamp = login.getLastLogin() == null ? null : Timestamp.valueOf(login.getLastLogin());
 
-    statement.setString(type ? 1 : 16, login.getUsername());
+    statement.setString(type ? 1 : 17, login.getUsername());
     statement.setString(type ? 2 : 1, login.getEmail());
     statement.setString(type ? 3 : 2, login.getFirstName());
     statement.setString(type ? 4 : 3, login.getLastName());

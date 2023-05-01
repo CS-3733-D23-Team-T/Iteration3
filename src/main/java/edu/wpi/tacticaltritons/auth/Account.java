@@ -84,7 +84,7 @@ public class Account {
                         UserSessionToken.DEFAULT_SESSION_TIME,
                         AlgorithmSingleton.ASTAR.name(),
                         false,
-                        Tdb.getInstance().name()));
+                        Tdb.WPI_DATABASE.name()));
 
         return 1;
 
