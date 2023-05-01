@@ -186,14 +186,16 @@ public class NewPathfindingController extends MapSuperController {
                 Node previousNode = startNode;
                 List<Float> distance = new ArrayList<>(), angle = new ArrayList<>();
                 for(Node node: shortestPathMap){
+                    System.out.println(node.getXcoord() + "\t" + node.getYcoord());
                     if(!node.equals(startNode)){
-                        int xDiff = startNode.getXcoord() - previousNode.getXcoord();
-                        int yDiff = startNode.getYcoord() - previousNode.getYcoord();
+                        int xDiff = node.getXcoord() - previousNode.getXcoord();
+                        int yDiff = -1*(node.getYcoord() - previousNode.getYcoord()); //inverted
                         float dist = (float)Math.sqrt(Math.pow(xDiff,2) + Math.pow(yDiff,2));
                         float ang = (float)Math.toDegrees(Math.atan2(yDiff,xDiff));
                         distance.add(dist);
                         angle.add(ang);
-//                        RobotComm.runRobot(angle,distance);
+                        System.out.println(xDiff + "\t" + yDiff + "\t" + dist + "\t" + ang);
+                        previousNode = node;
                     }
                 }
                 RobotComm.runRobot(angle,distance);

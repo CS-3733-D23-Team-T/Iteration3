@@ -64,7 +64,6 @@ public class RobotComm {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("test");
         sendData("f:" + distance);
         while(!checkComplete()){
             readData();

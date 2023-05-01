@@ -25,6 +25,8 @@ const int CCW = -1;
 //speed of each wheel
 int effort = 95;
 int baseSpeed = 20;
+//store current angle of robot
+float currentAngle = 0, readAngle = 0;
 
 void setLED(bool value)
 {
@@ -47,17 +49,19 @@ bool checkMessage(){
 
 //check for messages and process complete ones for relevant info
 void handleMessage(){ 
-  Serial.print("Received_[" + rxString + "]_from app");
+  // Serial.print("Received_[" + rxString + "]_from app");
   now = millis();
   switch (rxString.charAt(0))
   {
     case 'f': { //forward
       float distance = rxString.substring(2).toFloat();
-      chassis.driveFor(distance,baseSpeed);
-      while(!chassis.checkMotionComplete()){
-        if(millis() - now > 500){
-          Serial.print("Driving"); //TODO get distance
-          now = millis();
+      if(distance != 0){
+        chassis.driveFor(distance,baseSpeed);
+        while(!chassis.checkMotionComplete()){
+          if(millis() - now > 500){
+            Serial.print("Driving"); //TODO get distance
+            now = millis();
+          }
         }
       }
       Serial.print("Done");
@@ -65,15 +69,18 @@ void handleMessage(){
     }
 
     case 't':{
-      float angle = rxString.substring(2).toFloat();
-      if(angle != 0){
-        chassis.turnFor(angle, baseSpeed);   
+      readAngle = rxString.substring(2).toFloat();
+      float deltaAngle = readAngle - currentAngle;
+      deltaAngle = ((int)deltaAngle + 540) % 360 - 180;
+      if(deltaAngle != 0){
+        chassis.turnFor(deltaAngle, baseSpeed);   
         while(!chassis.checkMotionComplete()){
           if(millis() - now > 500){
-            Serial.print("Rotating" + (String)angle); //TODO get rotation
-            now = millis();
+            Serial.print("Rotating" + (String)readAngle); //TODO get rotation
+            now = millis(); //TODO reset angle when done
           }
         }
+        currentAngle += deltaAngle;
       }
 
       Serial.print("Done");
