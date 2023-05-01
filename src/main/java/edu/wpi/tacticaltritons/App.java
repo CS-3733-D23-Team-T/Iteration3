@@ -9,6 +9,7 @@ import edu.wpi.tacticaltritons.database.Node;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.MFXToggleButton;
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
@@ -155,13 +156,22 @@ log.info("Starting Up");
         ImageView iv = new ImageView(writer);
         iv.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
 
-        Rotate yRotate = new Rotate(315, Rotate.Y_AXIS);
-        Rotate xRotate = new Rotate(135, Rotate.X_AXIS);
+        Rotate yRotate = new Rotate(180, Rotate.Y_AXIS);
+        Rotate xRotate = new Rotate(90, Rotate.X_AXIS);
+
+        AtomicInteger floorNumber = new AtomicInteger(2);
+        List<Node> nodes = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now())).parallelStream()
+//                        .filter(move -> !move.getLocation().getNodeType().equals("HALL"))
+                .map(Move::getNode)
+                .filter(node -> node.getFloor().equals(String.valueOf(floorNumber))).toList();
+
 
         // Create and position camera
-        DoubleProperty cameraX = new SimpleDoubleProperty(matrix.length / 2.0);
-        DoubleProperty cameraY = new SimpleDoubleProperty(1000);
-        DoubleProperty cameraZ = new SimpleDoubleProperty(matrix[0].length / 2.0);
+        DoubleProperty cameraX = new SimpleDoubleProperty(computeMidPoint(nodes.parallelStream().map(Node::getXcoord).toList()));
+        double std = computeSTD(nodes.parallelStream().map(node -> new Point2D(node.getXcoord(), node.getYcoord())).toList());
+        System.out.println(std);
+        DoubleProperty cameraY = new SimpleDoubleProperty(3 * std);
+        DoubleProperty cameraZ = new SimpleDoubleProperty(computeMidPoint(nodes.parallelStream().map(Node::getYcoord).toList()));
         PerspectiveCamera camera = new PerspectiveCamera(true);
         camera.getTransforms().addAll(
                 yRotate,
@@ -179,11 +189,7 @@ log.info("Starting Up");
 
         root.getChildren().add(camera);
 
-        AtomicInteger floorNumber = new AtomicInteger(2);
-        List<Node> nodes = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now())).parallelStream()
-//                        .filter(move -> !move.getLocation().getNodeType().equals("HALL"))
-                        .map(Move::getNode)
-                        .filter(node -> node.getFloor().equals(String.valueOf(floorNumber))).toList();
+
 
         Map<Node, LocationName> locations = new HashMap<>();
         List<Move> moves = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now()));
@@ -208,13 +214,14 @@ log.info("Starting Up");
         BooleanProperty pathFinding = new SimpleBooleanProperty(false);
 
         List<AtomicBoolean> permVisibleTexts = new ArrayList<>();
+
         MFXButton newPathButton = new MFXButton("New Path");
         newPathButton.disableProperty().bind(pathFinding.not());
         newPathButton.setOnAction(event -> {
             root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("pathBlock"));
             root.getChildren().removeIf(i -> i.getId() != null && i.getId().contains("bNode"));
             root.getChildren().forEach(node -> {
-                if(node.getId() != null && node.getId().equals("nodeText")){
+                if(node.getId() != null && node.getId().contains("nodeText")){
                     node.setVisible(false);
                 }
             });
@@ -230,6 +237,28 @@ log.info("Starting Up");
         });
         sidePane.getChildren().add(newPathButton);
 
+        MFXFilterComboBox<String> nodeSearchBox = new MFXFilterComboBox<>();
+        nodeSearchBox.setPromptText("Find a Location");
+        nodeSearchBox.getItems().addAll(locations.values().parallelStream().map(LocationName::getLongName).toList());
+        nodeSearchBox.setPrefWidth(200);
+        nodeSearchBox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
+            locations.forEach((k, v) -> {
+                if(v.getLongName().equals(n)){
+                    cameraZ.set(k.getYcoord() + 500);
+                    cameraX.set(k.getXcoord());
+                    cameraY.set(500);
+                    yRotate.setAngle(0);
+                    xRotate.setAngle(135);
+
+                    root.getChildren().parallelStream().forEach(node -> {
+                        if(node.getId() != null && node.getId().contains("nodeText" + k.getNodeID())){
+                            node.setVisible(true);
+                        }
+                    });
+                }
+            });
+        });
+//        sidePane.getChildren().add(0, nodeSearchBox);
 
 
         //drawing nodes
@@ -237,7 +266,7 @@ log.info("Starting Up");
             if(!locations.get(node).getNodeType().equals("HALL")) {
                 Text t = new Text(locations.get(node).getShortName());
                 Rectangle rect = new Rectangle();
-                t.setId("nodeText");
+                t.setId("nodeText"+node.getNodeID());
                 Box s = new Box(10, 10, 10);
                 AtomicBoolean permVisibleText = new AtomicBoolean(false);
                 s.setOnMouseClicked(event -> {
@@ -354,12 +383,12 @@ log.info("Starting Up");
                             t.setFont(new Font(24));
                             t.setTranslateX(node.getXcoord() - (t.getLayoutBounds().getWidth() / 2));
 
-                            rect.setTranslateY(rect.getTranslateY() - rect.getHeight());
+                            rect.setTranslateY(100);
                             rect.setWidth(t.getLayoutBounds().getWidth() + 20);
                             rect.setHeight(t.getLayoutBounds().getHeight());
                             rect.setTranslateX(node.getXcoord() - (rect.getWidth() / 2));
 
-                            t.setTranslateY(rect.getTranslateY() - (t.getLayoutBounds().getHeight() / 2) - 2);
+                            t.setTranslateY(80);
                         }
                     }
                 });
@@ -463,8 +492,30 @@ log.info("Starting Up");
                     points.clear();
                 }
             }
-        });
+            else{
+                if (points.size() == 0) {
+                    //initial point
+                    points.add(new Point2D(event.getSceneX(), event.getSceneY()));
+                }
+                else {
+                    //second point
+                    Point2D secondPoint = new Point2D(event.getSceneX(), event.getSceneY());
 
+                    //formula
+                    double opp = secondPoint.getY() - points.get(0).getY();
+                    double adj = secondPoint.getX() - points.get(0).getX();
+
+                    double magnitude = (subScene.getWidth() + subScene.getHeight()) / Math.sqrt(subScene.getWidth() * subScene.getHeight());
+
+                    if(Math.abs(opp) < 50 && Math.abs(adj) < 50) {
+                        cameraZ.set(cameraZ.get() - opp * magnitude);
+                        cameraX.set(cameraX.get() - adj * magnitude);
+                    }
+
+                    points.clear();
+                }
+            }
+        });
 
         root.getChildren().add(iv);
 
@@ -474,11 +525,10 @@ log.info("Starting Up");
         MFXToggleButton pathFindingToggle = new MFXToggleButton("Path Finding");
         pathFindingToggle.setStyle("-fx-text-fill: blue");
         pathFindingToggle.selectedProperty().bindBidirectional(pathFinding);
-        sidePane.getChildren().add(0, pathFindingToggle);
+        sidePane.getChildren().add(1, pathFindingToggle);
 
         MFXToggleButton wallsToggle = new MFXToggleButton("Walls");
         wallsToggle.setStyle("-fx-text-fill: blue");
-        wallsToggle.setLayoutY(25);
         wallsToggle.selectedProperty().addListener((obs, o, n) -> {
             if(n){
 //                for (int i = 0; i < matrix.length; i++) {
@@ -540,10 +590,9 @@ log.info("Starting Up");
 
 
         MFXToggleButton movementToggle = new MFXToggleButton("Toggle Movement");
-        wallsToggle.setStyle("-fx-text-fill: blue");
-        wallsToggle.setLayoutY(75);
-        wallsToggle.selectedProperty().bindBidirectional(movement);
-        sidePane.getChildren().add(0, movementToggle);
+        movementToggle.setStyle("-fx-text-fill: blue");
+        movementToggle.selectedProperty().bindBidirectional(movement);
+        sidePane.getChildren().add(1, movementToggle);
 
 
 
@@ -563,6 +612,13 @@ log.info("Starting Up");
         scene.setOnKeyPressed(event -> {
             double sceneSize = Math.sqrt(scene.getWidth() * scene.getHeight());
             double screenIncrement = sceneSize / 5;
+
+            double angleY = Math.toRadians(yRotate.getAngle());
+            double dxForward = screenIncrement * Math.sin(angleY);
+            double dzForward = screenIncrement * Math.cos(angleY);
+            double dxNormal = screenIncrement * Math.cos(angleY);
+            double dzNormal = screenIncrement * -1 * Math.sin(angleY);
+
             if (event.isShiftDown() && event.getCode() == KeyCode.EQUALS) {
                 camera.setTranslateY(camera.getTranslateY() + screenIncrement);
             }
@@ -570,68 +626,52 @@ log.info("Starting Up");
                 camera.setTranslateY(camera.getTranslateY() - screenIncrement);
             }
             else if (event.getCode() == KeyCode.W) {
-                AtomicDouble zDisplacement = new AtomicDouble(0);
-                AtomicDouble xDisplacement = new AtomicDouble(0);
-                camera.getTransforms().forEach(transform -> {
-                    if(transform instanceof Rotate){
-                        if(((Rotate) transform).getAxis().equals(Rotate.Y_AXIS)){
-                        //calculating the x and z displacement (x-z plane is what we are viewing)
-                        xDisplacement.set(-1 * screenIncrement * Math.sin(Math.toRadians(((Rotate) transform).getAngle())));
-                        zDisplacement.set(-1 * screenIncrement * Math.cos(Math.toRadians(((Rotate) transform).getAngle())));
-                        }
-                    }
-                });
-                //translating the camera
-                camera.setTranslateZ(camera.getTranslateZ() + zDisplacement.get());
-                camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
+                double forwardDir = -1;
+                double normalDir = 0;
+
+                // w = -1
+                // s = 1
+                // d = 1
+                // a = -1
+
+                cameraX.set(cameraX.get() + forwardDir * dxForward + normalDir * dxNormal);
+                cameraZ.set(cameraZ.get() + forwardDir * dzForward + normalDir * dzNormal);
             }
             else if (event.getCode() == KeyCode.D) {
-            //                AtomicDouble zDisplacement = new AtomicDouble(0);
-            //                AtomicDouble xDisplacement = new AtomicDouble(0);
-            //                camera.getTransforms().forEach(transform -> {
-            //                    if(transform instanceof Rotate){
-            //                        if(((Rotate) transform).getAxis().equals(Rotate.Y_AXIS)){
-            //                            double angle = 90 - (((Rotate) transform).getAngle() % 180);
-            //                            System.out.println(angle);
-            //                            xDisplacement.set(screenIncrement * Math.sin(Math.toRadians(angle)));
-            //                            zDisplacement.set(screenIncrement * Math.cos(Math.toRadians(angle)));
-            //                        }
-            //                    }
-            //                });
-            //
-            //                camera.setTranslateZ(camera.getTranslateZ() + zDisplacement.get());
-            //                camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
+                double forwardDir = 0;
+                double normalDir = 1;
+
+                // w = -1
+                // s = 1
+                // d = 1
+                // a = -1
+
+                cameraX.set(cameraX.get() + forwardDir * dxForward + normalDir * dxNormal);
+                cameraZ.set(cameraZ.get() + forwardDir * dzForward + normalDir * dzNormal);
             }
             else if (event.getCode() == KeyCode.S) {
-            //opposite math of the W key press
-                AtomicDouble zDisplacement = new AtomicDouble(0);
-                AtomicDouble xDisplacement = new AtomicDouble(0);
-                camera.getTransforms().forEach(transform -> {
-                    if(transform instanceof Rotate){
-                        if(((Rotate) transform).getAxis().equals(Rotate.Y_AXIS)){
-                        //getting the pivot
-                        xDisplacement.set(screenIncrement * Math.sin(Math.toRadians(((Rotate) transform).getAngle())));
-                        zDisplacement.set(screenIncrement * Math.cos(Math.toRadians(((Rotate) transform).getAngle())));
-                        }
-                    }
-                });
-                //moving the pivot
-                camera.setTranslateZ(camera.getTranslateZ() + zDisplacement.get());
-                camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
+                double forwardDir = 1;
+                double normalDir = 0;
+
+                // w = -1
+                // s = 1
+                // d = 1
+                // a = -1
+
+                cameraX.set(cameraX.get() + forwardDir * dxForward + normalDir * dxNormal);
+                cameraZ.set(cameraZ.get() + forwardDir * dzForward + normalDir * dzNormal);
             }
             else if (event.getCode() == KeyCode.A) {
-            //                AtomicDouble zDisplacement = new AtomicDouble(0);
-            //                AtomicDouble xDisplacement = new AtomicDouble(0);
-            //                camera.getTransforms().forEach(transform -> {
-            //                    if(transform instanceof Rotate){
-            //                        if(((Rotate) transform).getAxis().equals(Rotate.Y_AXIS)){
-            //                            xDisplacement.set(screenIncrement * Math.cos((Math.PI / 2) + Math.toRadians(((Rotate) transform).getAngle())));
-            //                            zDisplacement.set(screenIncrement * Math.sin((Math.PI / 2) + Math.toRadians(((Rotate) transform).getAngle())));
-            //                        }
-            //                    }
-            //                });
-            //                camera.setTranslateZ(camera.getTranslateZ() + zDisplacement.get());
-            //                camera.setTranslateX(camera.getTranslateX() + xDisplacement.get());
+                double forwardDir = 0;
+                double normalDir = -1;
+
+                // w = -1
+                // s = 1
+                // d = 1
+                // a = -1
+
+                cameraX.set(cameraX.get() + forwardDir * dxForward + normalDir * dxNormal);
+                cameraZ.set(cameraZ.get() + forwardDir * dzForward + normalDir * dzNormal);
             }
             else if (event.getCode() == KeyCode.L && pathTransition.get() == null) {
                 //Move camera to node start
@@ -701,18 +741,18 @@ log.info("Starting Up");
                 pathTransition.get().play();
             }
             else if (event.getCode() == KeyCode.E) { // Turn Camera Right
-            camera.getTransforms().stream().filter(node -> node instanceof Rotate).forEach(transform -> {
-                if(((Rotate) transform).getAxis() == Rotate.Y_AXIS){
-                    ((Rotate) transform).setAngle(((Rotate) transform).getAngle() - 5);
-                }
-            });
+                camera.getTransforms().stream().filter(node -> node instanceof Rotate).forEach(transform -> {
+                    if(((Rotate) transform).getAxis() == Rotate.Y_AXIS){
+                        ((Rotate) transform).setAngle(((Rotate) transform).getAngle() - 7.5);
+                    }
+                });
             }
             else if (event.getCode() == KeyCode.Q) { // Turn Camera Left
-            camera.getTransforms().stream().filter(node -> node instanceof Rotate).forEach(transform -> {
-                if(((Rotate) transform).getAxis() == Rotate.Y_AXIS){
-                    ((Rotate) transform).setAngle(((Rotate) transform).getAngle() + 5);
-                }
-            });
+                camera.getTransforms().stream().filter(node -> node instanceof Rotate).forEach(transform -> {
+                    if(((Rotate) transform).getAxis() == Rotate.Y_AXIS){
+                        ((Rotate) transform).setAngle(((Rotate) transform).getAngle() + 7.5);
+                    }
+                });
             }
             else if(event.getCode() == KeyCode.ESCAPE){
                 if(pathFinding.get()) {
@@ -733,6 +773,13 @@ log.info("Starting Up");
                     else if(walkingPath.get() != null){
                         newPathButton.fire();
                     }
+                }
+                else{
+                    permVisibleTexts.forEach(bool -> bool.set(false));
+                    permVisibleTexts.clear();
+                    root.getChildren().forEach(node -> {
+                        if(node.getId() != null && node.getId().contains("nodeText")) node.setVisible(false);
+                    });
                 }
             }
             else if(event.getCode() == KeyCode.SPACE){
@@ -769,6 +816,35 @@ log.info("Starting Up");
             sum += item;
         }
         return sum;
+    }
+    private double computeSum(List<Integer> items){
+        double sum = 0;
+        if(items == null) return sum;
+        for(int item : items){
+            sum += item;
+        }
+        return sum;
+    }
+    private double computeMidPoint(List<Integer> items){
+        if(items == null) return 0;
+        return computeSum(items) / items.size();
+    }
+    private double computeSTD(List<Point2D> items){
+        if(items == null) return 0;
+
+        double sumX = computeSum(items.parallelStream().map(x -> (int) x.getX()).toList());
+        double sumY = computeSum(items.parallelStream().map(y -> (int) y.getY()).toList());
+
+        double meanX = sumX / items.size();
+        double meanY = sumY / items.size();
+
+        double stdX = 0, stdY = 0;
+        for(Point2D point : items){
+            stdX += Math.pow(point.getX() - meanX, 2);
+            stdY += Math.pow(point.getY() - meanY, 2);
+        }
+
+        return Math.sqrt(Math.sqrt(stdX / items.size()) * Math.sqrt(stdY / items.size()));
     }
 
 
