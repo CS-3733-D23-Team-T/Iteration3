@@ -121,6 +121,11 @@ public class MealDeliveryController {
         MFXScrollPane scrollPane = new MFXScrollPane();
         scrollPane.setPrefWidth(600);
 
+        MealRequestOptionsArrayList.forEach(requestOptions -> {
+            System.out.println(requestOptions.getItemName());
+        });
+
+
         FlowPane mainFlowPane = new FlowPane();
         mainFlowPane.setPrefHeight(150);
         mainFlowPane.setOrientation(Orientation.HORIZONTAL);
