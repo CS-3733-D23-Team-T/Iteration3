@@ -99,10 +99,6 @@ public class MealChoiceController {
         shopNameLabel.setFont(new Font(defaultTitleFontSize));
 
 
-        /*
-        TODO
-        make a shop discription
-
         //creates the discription label
         Label discriptionLabel = new Label();
         discriptionLabel.setPrefWidth(flowPaneInner.getPrefWidth());
@@ -110,8 +106,6 @@ public class MealChoiceController {
         discriptionLabel.setFont(new Font(defaultDiscriptionFontSize));
         discriptionLabel.setWrapText(true);
         discriptionLabel.setPadding(new Insets(0, 20, 0, 20));
-
-         */
 
 
         // added thins to the inner flowplane
@@ -133,7 +127,7 @@ public class MealChoiceController {
         });
 
         startUpSize(flowPaneOuter, flowPaneInner, imageView, shopNameLabel);
-        windowChangingSize(flowPaneOuter, flowPaneInner, imageView, shopNameLabel);
+        windowChangingSize(flowPaneOuter, flowPaneInner, imageView, shopNameLabel,discriptionLabel);
 
 
     }
@@ -176,7 +170,7 @@ public class MealChoiceController {
         }
     }
 
-    private void windowChangingSize(FlowPane flowPaneOuter, FlowPane flowPaneInner, ImageView imageView, Label shopNameLabel) {
+    private void windowChangingSize(FlowPane flowPaneOuter, FlowPane flowPaneInner, ImageView imageView, Label shopNameLabel, Label discriptionLabel) {
         App.getPrimaryStage().widthProperty().addListener(((observable, oldValue, newValue) ->
         {
             double newOuterFlowPaneWidth = defaultOuterFlowPanePrefWidth * newValue.doubleValue() / noramlWidth;
@@ -221,8 +215,10 @@ public class MealChoiceController {
 
                 if (shopTitleTextSize <= MAX_FONT_SIZE) {
                     shopNameLabel.setFont(new Font(shopDiscriptionTextSize));
+                    discriptionLabel.setFont(new Font(shopTitleTextSize));
                 } else {
                     shopNameLabel.setFont(new Font(MAX_FONT_SIZE));
+                    discriptionLabel.setFont(new Font(MAX_FONT_SIZE - 10));
                 }
 
             } else {
@@ -230,6 +226,8 @@ public class MealChoiceController {
                 flowPaneInner.setPrefHeight(defaultInerFlowPanePrefWidth);
                 imageView.setFitHeight(defaultImageViewFitWidth);
                 shopNameLabel.setFont(new Font(defaultTitleFontSize));
+                discriptionLabel.setFont(new Font(defaultDiscriptionFontSize));
+
             }
         });
     }
