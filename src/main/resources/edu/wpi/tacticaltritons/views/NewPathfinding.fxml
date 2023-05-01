@@ -3,6 +3,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.effect.DropShadow?>
@@ -12,7 +13,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import net.kurobako.gesturefx.GesturePane?>
 
@@ -121,21 +121,15 @@
                         </DropShadow>
                     </effect>
                     <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="30.0">
-                     <children>
-                              <Text fx:id="textForDirections" strokeType="OUTSIDE" strokeWidth="0.0" text="DIRECTIONS">
-                                  <font>
-                                      <Font name="Open Sans Regular" size="18.0" />
-                                  </font>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                              </Text>
-                     </children>
-                     <padding>
-                        <Insets left="20.0" top="30.0" />
-                     </padding>
-                  </VBox>
+                  <MFXScrollPane hbarPolicy="NEVER">
+                     <content>
+                        <VBox fx:id="allDirections" maxWidth="300.0" prefWidth="300.0" spacing="20.0">
+                           <padding>
+                              <Insets left="20.0" top="80.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </MFXScrollPane>
                     </children>
                 </StackPane>
                 <MFXButton fx:id="lowerLevel1" prefHeight="50.0" prefWidth="50.0" text="L2" StackPane.alignment="TOP_LEFT">
@@ -188,7 +182,7 @@
                         <Insets right="30.0" top="30.0" />
                     </StackPane.margin>
                 </MFXButton>
-            <VBox fx:id="allStops" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+            <VBox fx:id="allStops" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" StackPane.alignment="TOP_LEFT">
                <StackPane.margin>
                   <Insets left="80.0" right="900.0" top="20.0" />
                </StackPane.margin>

@@ -42,6 +42,8 @@ public class App extends Application {
   public static Image goRight;
   public static Image goLeft;
 
+  public static Image arrived;
+
 
   public static Image importExport;
 
@@ -89,6 +91,7 @@ public class App extends Application {
     goRight = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/goRight.png")).toString());
     goLeft = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/goLeft.png")).toString());
 
+    arrived = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/Arrived.png")).toString());
 
 
     importExport = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/export.png")).toString());

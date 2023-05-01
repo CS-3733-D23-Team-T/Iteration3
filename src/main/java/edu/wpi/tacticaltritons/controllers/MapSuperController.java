@@ -714,7 +714,6 @@ public class MapSuperController {
         xCoord.clear();
         yCoord.clear();
         startEnd.clear();
-        clearAllNodes();
         int startNodeId;
         int endNodeId;
         Node endNode1 = null;
@@ -727,7 +726,6 @@ public class MapSuperController {
             startNode1 = DAOFacade.getNode(startNodeId);
             endNode1 = DAOFacade.getNode(endNodeId);
             shortestPathMap = AlgorithmSingleton.getInstance().algorithm.findShortestPath(startNode1, endNode1);
-            System.out.println(shortestPathMap.get(0).getXcoord() + "," + shortestPathMap.get(0).getYcoord());
         } catch (SQLException e) {
             e.printStackTrace();
         }

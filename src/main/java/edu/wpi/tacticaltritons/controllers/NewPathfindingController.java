@@ -14,10 +14,13 @@ import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -40,8 +43,6 @@ public class NewPathfindingController extends MapSuperController {
     @FXML
     private StackPane directionsPane;
 
-    @FXML
-    private Text textForDirections;
 
     @FXML
     private Text pathfindingComment;
@@ -52,12 +53,17 @@ public class NewPathfindingController extends MapSuperController {
     @FXML
     private VBox allStops;
 
+    @FXML
+    private VBox allDirections;
+
+    List<MFXFilterComboBox> allLongNames = new ArrayList<>();
+    List<Node> shortestPath = new ArrayList<>();
+
     public NewPathfindingController() throws SQLException {
     }
 
     public void showDirections(boolean bool) {
         directionsPane.setVisible(bool);
-        textForDirections.setVisible(bool);
     }
 
     public void initializeMenuButton(String page) {
@@ -95,17 +101,40 @@ public class NewPathfindingController extends MapSuperController {
         Directions directions = new Directions(shortestPathMap);
 
         List<String> position = directions.printDirections();
-        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < position.size(); i++) {
-            sb.append(position.get(i));
-            sb.append("\n");
+            HBox thisDirection = new HBox();
+            thisDirection.setPrefSize(260, 50);
+            thisDirection.setMaxSize(260, 50);
+            thisDirection.setMinSize(260, 50);
+            thisDirection.setAlignment(Pos.CENTER_LEFT);
+            thisDirection.setStyle("-fx-background-color: WHITE;-fx-background-radius: 10;-fx-effect: dropshadow(three-pass-box, #000000, 10, 0.1, 0.1, 0.1)");
+            thisDirection.setPadding(new Insets(10));
+            thisDirection.setSpacing(20);
+            Text textDirection = new Text(position.get(i));
+            textDirection.setFont(new Font("Ariel", 11));
+
+            ImageView direction = new ImageView();
+            direction.setFitWidth(30);
+            direction.setFitHeight(30);
+
+            if (position.get(i).contains("Go Straight")) {
+                direction.setImage(App.goStraight);
+            } else if (position.get(i).contains("Turn Right")) {
+                direction.setImage(App.goRight);
+            } else if (position.get(i).contains("Turn Left")) {
+                direction.setImage(App.goLeft);
+            } else {
+                direction.setImage(App.arrived);
+                thisDirection.setStyle("-fx-background-color: LIGHTGREEN;-fx-background-radius: 10;-fx-effect: dropshadow(three-pass-box, #000000, 10, 0.1, 0.1, 0.1)");
+            }
+            thisDirection.getChildren().add(direction);
+            thisDirection.getChildren().add(textDirection);
+            allDirections.getChildren().add(thisDirection);
         }
-        String allPositions = sb.toString();
-        System.out.println(allPositions);
-//        textDirections.setText(allPositions);
     }
 
     public void initialize() throws SQLException {
+
 
         addStop.setImage(App.addStop);
         addStop.setRotate(45);
@@ -113,6 +142,9 @@ public class NewPathfindingController extends MapSuperController {
         date.setValue(java.time.LocalDate.now());
         selectedFloor.FLOOR.floor = "1";
         findAllNodes(allNodeTypes, selectedFloor.FLOOR.floor, "Pathfinding");
+
+        allLongNames.add(startLocation);
+        allLongNames.add(endLocation);
 
         initializeImages();
         initalizeFloorButtons();
@@ -146,7 +178,6 @@ public class NewPathfindingController extends MapSuperController {
             } else {
                 showDirections(false);
             }
-
         });
 
         this.addStop.setOnMouseClicked(event -> {
@@ -162,14 +193,18 @@ public class NewPathfindingController extends MapSuperController {
                 throw new RuntimeException(e);
             }
             allStops.getChildren().add(addedStop);
+            allLongNames.add(addedStop);
         });
 
         this.pathfinding.setOnMouseClicked(
                 event -> {
-                    if (allStops.getChildren().size() == 2) {
+                    clearAllNodes();
+                    for (int i = 1; i <= allLongNames.size()-1; i++) {
                         today = java.sql.Date.valueOf(date.getValue());
                         final int[] startNodeID = {0};
                         final int[] endNodeID = {0};
+                        String start = allLongNames.get(i-1).getSelectedItem().toString();
+                        String end = allLongNames.get(i).getSelectedItem().toString();
                         try {
                             List<Move> allCurrentMoves = DAOFacade.getAllCurrentMoves(today);
 
@@ -179,24 +214,26 @@ public class NewPathfindingController extends MapSuperController {
                                 hash.put(move.getNode().getNodeID(), move);
                             }
                             hash.forEach((key, value) -> {
-                                if (value.getLocation().getLongName().equals(startLocation.getSelectedItem())) {
-                                    System.out.println("it works");
+                                if (value.getLocation().getLongName().equals(start)) {
                                     startNodeID[0] = key;
                                 }
-                                if (value.getLocation().getLongName().equals(endLocation.getSelectedItem())) {
-                                    System.out.println("it works");
+                                if (value.getLocation().getLongName().equals(end)) {
                                     endNodeID[0] = key;
                                 }
                             });
                             pathfinding(startNodeID[0], endNodeID[0]);
-                            setTextDirections(shortestPathMap);
+                            shortestPath.addAll(shortestPathMap);
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                    else{
-
+                    try {
+                        setTextDirections(shortestPath);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
                     }
+                    shortestPath.clear();
+                    allDirections.getChildren().removeAll();
                 });
     }
 
