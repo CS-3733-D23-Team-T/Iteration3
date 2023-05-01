@@ -66,13 +66,16 @@ void handleMessage(){
 
     case 't':{
       float angle = rxString.substring(2).toFloat();
-      chassis.turnFor(angle, baseSpeed);   
-      while(!chassis.checkMotionComplete()){
-        if(millis() - now > 500){
-          Serial.print("Rotating" + (String)angle); //TODO get rotation
-          now = millis();
+      if(angle != 0){
+        chassis.turnFor(angle, baseSpeed);   
+        while(!chassis.checkMotionComplete()){
+          if(millis() - now > 500){
+            Serial.print("Rotating" + (String)angle); //TODO get rotation
+            now = millis();
+          }
         }
       }
+
       Serial.print("Done");
       break;
     }
@@ -94,6 +97,7 @@ void setup()
   //initialize blue motor and servo
   Serial.begin(1152000);
   chassis.init();
+
 }
 
 

@@ -184,15 +184,19 @@ public class NewPathfindingController extends MapSuperController {
             if(RobotComm.isCheckConnection() && shortestPathMap.size() > 0){
                 Node startNode = shortestPathMap.get(0);
                 Node previousNode = startNode;
+                List<Float> distance = new ArrayList<>(), angle = new ArrayList<>();
                 for(Node node: shortestPathMap){
                     if(!node.equals(startNode)){
                         int xDiff = startNode.getXcoord() - previousNode.getXcoord();
                         int yDiff = startNode.getYcoord() - previousNode.getYcoord();
-                        float distance = (float)Math.sqrt(Math.pow(xDiff,2) + Math.pow(yDiff,2));
-                        float angle = (float)Math.atan2(yDiff,xDiff);
-                        RobotComm.runRobot(angle,distance);
+                        float dist = (float)Math.sqrt(Math.pow(xDiff,2) + Math.pow(yDiff,2));
+                        float ang = (float)Math.toDegrees(Math.atan2(yDiff,xDiff));
+                        distance.add(dist);
+                        angle.add(ang);
+//                        RobotComm.runRobot(angle,distance);
                     }
                 }
+                RobotComm.runRobot(angle,distance);
             }
         });
     }

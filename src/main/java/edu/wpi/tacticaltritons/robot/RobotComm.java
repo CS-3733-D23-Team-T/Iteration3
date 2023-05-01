@@ -3,8 +3,7 @@ package edu.wpi.tacticaltritons.robot;
 import arduino.Arduino;
 import lombok.Getter;
 
-import java.awt.*;
-import java.io.Serial;
+import java.util.List;
 
 public class RobotComm {
 
@@ -14,6 +13,7 @@ public class RobotComm {
     private static int baud = 115200;
     @Getter
     private static boolean checkConnection = true; //true for able to connect, false if unable to connect
+    private static boolean checkComplete = false;
 
     /**
      * re-check if the program can communicate with the robot, does not always need to be called
@@ -53,9 +53,10 @@ public class RobotComm {
         }
     }
 
-    public static void drive(float angle, float distance){
+    private static void drive(float angle, float distance){
+        checkComplete = false;
         sendData("t:" + angle);
-        while(!in.contains("Done")){
+        while(!checkComplete()){
             readData();
         }
         try {
@@ -65,16 +66,17 @@ public class RobotComm {
         }
         System.out.println("test");
         sendData("f:" + distance);
-        while(!in.contains("Done")){
+        while(!checkComplete()){
             readData();
         }
+        checkComplete = true;
     }
 
     public static void setLED(boolean on){
         sendData("l:" + (on == true?"1":"0"));
     }
 
-    public static void runRobot(float angle, float drive){
+/*    public static void runRobot(float angle, float drive){
         Runnable robotRunnable = () -> {
             setLED(true);
             drive(angle,drive);
@@ -82,5 +84,31 @@ public class RobotComm {
         };
         Thread robotThread = new Thread(robotRunnable);
         robotThread.start();
+    }*/
+
+    public static void runRobot(List<Float> angle, List<Float> drive){
+        Runnable robotRunnable = () -> {
+            setLED(true);
+            for(int i = 0; i < angle.size();i++){
+                drive(angle.get(i),drive.get(i));
+                while(!checkComplete);
+            }
+            setLED(false);
+        };
+        Thread robotThread = new Thread(robotRunnable);
+        robotThread.start();
+    }
+
+
+    /**
+     * checks if the current task is reported finished by the robot
+     * @return true if finished, false if still running
+     */
+    public static boolean checkComplete(){
+        if(in.contains("Done")){
+            return true;
+        }
+        else return false;
     }
 }
+
