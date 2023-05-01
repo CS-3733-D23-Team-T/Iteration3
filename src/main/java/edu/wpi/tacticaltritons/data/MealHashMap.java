@@ -24,6 +24,30 @@ public class MealHashMap extends HashMap<String, Image> {
         this.put("Turkey Sub", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Au Bon Pain/Turkey Sub.png")).toString()));
         this.put("water", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Au Bon Pain/water.png")).toString()));
 
+        //Cafe
+        this.put("Brownie", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Cafe/Brownie.png")).toString()));
+        this.put("Brownie (V)", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Cafe/Brownie (V).png")).toString()));
+        this.put("Cold Water", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Cafe/Cold Water.png")).toString()));
+        this.put("Cookie", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Cafe/Cookie.png")).toString()));
+        this.put("Cookie (V)", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Cafe/Cookie (V).png")).toString()));
+        this.put("Hot Chocolate", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Cafe/Hot Chocolate.png")).toString()));
+        this.put("Hot Water", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Cafe/Hot Water.png")).toString()));
+        this.put("Milk", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Cafe/Milk.png")).toString()));
+        this.put("Regular Coffee", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Cafe/Regular Coffee.png")).toString()));
+        this.put("Tap Water", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Cafe/Tap Water.png")).toString()));
 
+        //Pizzeria
+        this.put("Cheese Pizza", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Pizzeria/Cheese Pizza.png")).toString()));
+        this.put("Cold Pizza", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Pizzeria/Cold Pizza.png")).toString()));
+        this.put("Peperoni Pizza", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Pizzeria/Peperoni Pizza.png")).toString()));
+        this.put("Tap Waters", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Pizzeria/Tap Water.png")).toString()));
+
+        //Pretzels
+        this.put("Cheese Pretzel", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Pretzels/Cheese Pretzel.png")).toString()));
+        this.put("Pretzel", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Pretzels/Pretzel.png")).toString()));
+        this.put("Pretzel (Extra Salt)", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Pretzels/Pretzel (Extra Salt).png")).toString()));
+        this.put("Pretzel (V)", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Pretzels/Pretzel (V).png")).toString()));
+        this.put("Stale Pretzel", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Pretzels/Stale Pretzel.png")).toString()));
+        this.put("Faucet Water", new Image(Objects.requireNonNull(App.class.getResource("images/restaurants/Pretzels/Tap Water.png")).toString()));
     }
 }

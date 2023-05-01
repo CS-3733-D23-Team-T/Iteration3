@@ -111,7 +111,7 @@ public class MealChoiceController {
 
         // added thins to the inner flowplane
         flowPaneInner.getChildren().add(shopNameLabel);
-        //flowPaneInner.getChildren().add(discriptionLabel);
+        flowPaneInner.getChildren().add(discriptionLabel);
 
         // added things to the other flowpane
         flowPaneOuter.getChildren().add(imageView);
@@ -129,8 +129,6 @@ public class MealChoiceController {
 
         startUpSize(flowPaneOuter, flowPaneInner, imageView, shopNameLabel);
         windowChangingSize(flowPaneOuter, flowPaneInner, imageView, shopNameLabel,discriptionLabel);
-
-
     }
 
     private void startUpSize(FlowPane flowPaneOuter, FlowPane flowPaneInner, ImageView imageView, Label shopNameLabel) {

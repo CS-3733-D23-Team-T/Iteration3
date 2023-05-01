@@ -85,6 +85,7 @@ public class MealDeliveryController {
         // Create the individual tabs based on the number of types of items that the shop has
         numberOfTabs.forEach((key, value) ->
         {
+            System.out.println(value);
             Tab tab = new Tab(value);
             tab.setId(value);
             ScrollPane scrollPane = createShopIteams(shopItems, value, App.mealHashMap);
@@ -121,11 +122,6 @@ public class MealDeliveryController {
         MFXScrollPane scrollPane = new MFXScrollPane();
         scrollPane.setPrefWidth(600);
 
-        MealRequestOptionsArrayList.forEach(requestOptions -> {
-            System.out.println(requestOptions.getItemName());
-        });
-
-
         FlowPane mainFlowPane = new FlowPane();
         mainFlowPane.setPrefHeight(150);
         mainFlowPane.setOrientation(Orientation.HORIZONTAL);
@@ -135,7 +131,7 @@ public class MealDeliveryController {
 
 
         for (RequestOptions options : MealRequestOptionsArrayList) {
-            if (options.getRestaurant().equals(value)) {
+            if (options.getItemType().equals(value)) {
                 counter++;
                 // Creates the outer flowpane to hold all the infomation
 
