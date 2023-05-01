@@ -27,8 +27,8 @@ public final class GoogleTranslate { //Class marked as final since all methods a
      * URL to query for Translation
      */
     private static final String GOOGLE_TRANSLATE_URL = "http://translate.google.com/translate_a/single";
-    private static String language = "ko";
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("edu.wpi.tacticaltritons.languages.language", new Locale(language));
+    private static String language = "en";
+    private static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("edu.wpi.tacticaltritons.languages.language", new Locale("en"));
 
     /**
      * Private to prevent instantiation
@@ -45,6 +45,11 @@ public final class GoogleTranslate { //Class marked as final since all methods a
         }
         output = output.replace("\"", "");
         return output;
+    }
+
+    public static void setLanguage(String text){
+        language = text;
+        RESOURCE_BUNDLE = ResourceBundle.getBundle("edu.wpi.tacticaltritons.languages.language", new Locale(language));
     }
 
 
@@ -144,7 +149,7 @@ public final class GoogleTranslate { //Class marked as final since all methods a
      *             if it cannot complete the request
      */
     public static String translate(String targetLanguage , String text) throws IOException {
-        if(language.equals("en")){
+        if(language.equals("en") || language == null){
             return text;
         }
         else {

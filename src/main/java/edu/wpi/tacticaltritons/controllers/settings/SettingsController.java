@@ -6,6 +6,9 @@ import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.database.Session;
 import edu.wpi.tacticaltritons.database.Tdb;
+import edu.wpi.tacticaltritons.navigation.Navigation;
+import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.navigation.SettingsNavigation;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -80,7 +83,25 @@ public class SettingsController {
         requireTwoFactorCheckBox.setDisable(true);
 
         //todo implement me
-        languageComboBox.setDisable(true);
+        List<String> languageList = new ArrayList<>();
+        languageList.add(Language.English.formalName());
+        languageList.add(Language.Español.formalName());
+        languageComboBox.setItems(FXCollections.observableList(languageList));
+        languageComboBox.setValue(Language.parseLanguage(user.getLanguage()).formalName());
+
+        languageComboBox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
+            if(!Objects.equals(n, o)){
+                user.setLanguage(Language.parseLanguage(n).formalName());
+                GoogleTranslate.setLanguage(Language.parseLanguage(n).getLanguage());
+                new Thread(() -> {
+                    try{
+                        DAOFacade.updateLogin(user);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).start();
+            }
+        });
 
         List<String> frequencyList = new ArrayList<>();
         frequencyList.add(TwoFactorFrequency.DAILY.formalName());
