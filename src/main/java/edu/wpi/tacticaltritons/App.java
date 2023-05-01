@@ -37,6 +37,12 @@ public class App extends Application {
   public static Image thirdfloor;
   public static Image menuBar;
   public static Image pathfinding;
+  public static Image addStop;
+  public static Image goStraight;
+  public static Image goRight;
+  public static Image goLeft;
+
+
   public static Image importExport;
 
   public static String invalidMFXTextField;
@@ -77,8 +83,15 @@ public class App extends Application {
     pathfinding =
             new Image(Objects.requireNonNull(getClass().getResource("images/map_page/pathfindingButton.png")).toString());
 
-    importExport = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/export.png")).toString());
+    addStop = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/addStopButton.png")).toString());
 
+    goStraight = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/goStraight.png")).toString());
+    goRight = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/goRight.png")).toString());
+    goLeft = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/goLeft.png")).toString());
+
+
+
+    importExport = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/export.png")).toString());
 
     invalidMFXTextField =
             Objects.requireNonNull(getClass().getResource("stylesheets/InvalidMFXTextFields.css")).toString();

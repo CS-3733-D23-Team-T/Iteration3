@@ -207,8 +207,6 @@ public class MapSuperController {
 
     }
 
-
-
     public void componentShift(int translate) {
         menuBar.setTranslateX(translate);
         searchOnMap.setTranslateX(translate);

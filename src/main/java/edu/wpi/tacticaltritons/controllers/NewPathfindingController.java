@@ -1,5 +1,6 @@
 package edu.wpi.tacticaltritons.controllers;
 
+import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Move;
 import edu.wpi.tacticaltritons.database.Node;
@@ -15,8 +16,10 @@ import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
@@ -32,10 +35,6 @@ import java.util.List;
 
 public class NewPathfindingController extends MapSuperController {
 
-
-    @FXML
-    private TextArea textDirections;
-
     @FXML
     private MFXButton directions;
     @FXML
@@ -47,12 +46,17 @@ public class NewPathfindingController extends MapSuperController {
     @FXML
     private Text pathfindingComment;
 
+    @FXML
+    private ImageView addStop;
+
+    @FXML
+    private VBox allStops;
+
     public NewPathfindingController() throws SQLException {
     }
 
     public void showDirections(boolean bool) {
         directionsPane.setVisible(bool);
-        textDirections.setVisible(bool);
         textForDirections.setVisible(bool);
     }
 
@@ -98,10 +102,13 @@ public class NewPathfindingController extends MapSuperController {
         }
         String allPositions = sb.toString();
         System.out.println(allPositions);
-        textDirections.setText(allPositions);
+//        textDirections.setText(allPositions);
     }
 
     public void initialize() throws SQLException {
+
+        addStop.setImage(App.addStop);
+        addStop.setRotate(45);
 
         date.setValue(java.time.LocalDate.now());
         selectedFloor.FLOOR.floor = "1";
@@ -142,33 +149,53 @@ public class NewPathfindingController extends MapSuperController {
 
         });
 
+        this.addStop.setOnMouseClicked(event -> {
+            MFXFilterComboBox addedStop = new MFXFilterComboBox<>();
+            addedStop.setPrefSize(300, 50);
+            try {
+                getLocationNameHashMap().forEach(((key, value) -> {
+                    if (!value.getNodeType().equals("HALL")) {
+                        addedStop.getItems().add(key);
+                    }
+                }));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            allStops.getChildren().add(addedStop);
+        });
+
         this.pathfinding.setOnMouseClicked(
                 event -> {
-                    today = java.sql.Date.valueOf(date.getValue());
-                    final int[] startNodeID = {0};
-                    final int[] endNodeID = {0};
-                    try {
-                        List<Move> allCurrentMoves = DAOFacade.getAllCurrentMoves(today);
+                    if (allStops.getChildren().size() == 2) {
+                        today = java.sql.Date.valueOf(date.getValue());
+                        final int[] startNodeID = {0};
+                        final int[] endNodeID = {0};
+                        try {
+                            List<Move> allCurrentMoves = DAOFacade.getAllCurrentMoves(today);
 
-                        HashMap<Integer, Move> hash = new HashMap<>();
+                            HashMap<Integer, Move> hash = new HashMap<>();
 
-                        for (Move move : allCurrentMoves) {
-                            hash.put(move.getNode().getNodeID(), move);
+                            for (Move move : allCurrentMoves) {
+                                hash.put(move.getNode().getNodeID(), move);
+                            }
+                            hash.forEach((key, value) -> {
+                                if (value.getLocation().getLongName().equals(startLocation.getSelectedItem())) {
+                                    System.out.println("it works");
+                                    startNodeID[0] = key;
+                                }
+                                if (value.getLocation().getLongName().equals(endLocation.getSelectedItem())) {
+                                    System.out.println("it works");
+                                    endNodeID[0] = key;
+                                }
+                            });
+                            pathfinding(startNodeID[0], endNodeID[0]);
+                            setTextDirections(shortestPathMap);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
                         }
-                        hash.forEach((key, value) -> {
-                            if (value.getLocation().getLongName().equals(startLocation.getSelectedItem())) {
-                                System.out.println("it works");
-                                startNodeID[0] = key;
-                            }
-                            if (value.getLocation().getLongName().equals(endLocation.getSelectedItem())) {
-                                System.out.println("it works");
-                                endNodeID[0] = key;
-                            }
-                        });
-                        pathfinding(startNodeID[0], endNodeID[0]);
-                        setTextDirections(shortestPathMap);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
+                    }
+                    else{
+
                     }
                 });
     }
