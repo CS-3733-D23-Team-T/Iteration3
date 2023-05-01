@@ -104,7 +104,7 @@ public class MealCheckoutController {
     private int min;
     private String location;
     RequestStatus status = RequestStatus.BLANK;
-    private double flowerTotal;
+    private double Total;
     private ObservableMap<String, Integer> checkoutItems = FXCollections.observableHashMap();
 
 
@@ -134,19 +134,19 @@ public class MealCheckoutController {
         groundFloor.setVisible(true);
         floor1Image.setVisible(true);
 
-        this.checkoutItems = FlowerDeliveryController.checkoutItems;
-        this.flowerTotal = FlowerDeliveryController.flowerTotal;
-        priceText.setText(Double.toString(flowerTotal));
+        this.checkoutItems = MealDeliveryController.checkoutItems;
+        this.Total = MealDeliveryController.total;
+        priceText.setText(Double.toString(Total));
 
 
         checkoutItems.forEach((key, value) ->
         {
-            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, App.flowerHashMap.get(key)));
+            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, App.mealHashMap.get(key)));
         });
         checkoutFlowplan.setAlignment(Pos.CENTER);
         ;
 
-        shopName.setText(FlowerChoiceController.name);
+        shopName.setText(MealChoiceController.name);
 
         clearButton.setOnMouseClicked(event -> clearForm());
 
@@ -352,7 +352,7 @@ public class MealCheckoutController {
 
     }
 
-    private FlowPane createCheckoutNode(String key, int value, Image flowerImage) {
+    private FlowPane createCheckoutNode(String key, int value, Image Image) {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(200);
         flowPane.setPrefHeight(100);
@@ -365,7 +365,7 @@ public class MealCheckoutController {
         flowPane.setBackground(Background.fill(Color.WHITE));
 
         // Creates the image view
-        Image image = flowerImage;
+        Image image = Image;
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
@@ -397,7 +397,7 @@ public class MealCheckoutController {
         {
             items.set(items.get() + key + "(" + value + ")\n");
         });
-        int total = (int) flowerTotal;
+        int total = (int) Total;
         if (assignedComboBox.getSelectedItem() != null) {
             staffFirst = assignedComboBox.getSelectedItem().toString().substring(0, assignedComboBox.getSelectedItem().toString().indexOf(' '));
             staffLast = assignedComboBox.getSelectedItem().toString().substring(assignedComboBox.getSelectedItem().toString().indexOf(' ') + 1, assignedComboBox.getSelectedItem().toString().length());
@@ -410,8 +410,8 @@ public class MealCheckoutController {
 
         deliveryTime = Time.valueOf(Integer.toString(hour) + ":" + min + ":00");
 
-        Flower flower = new Flower(userFirst, userLast, patientFirst, patientLast, staffFirst, staffLast, deliveryDate, deliveryTime, location, items.get(), total, status);
-        DAOFacade.addFlower(flower);
+        Meal meal = new Meal(userFirst, userLast, patientFirst, patientLast, staffFirst, staffLast, deliveryDate, deliveryTime, location, items.get(), total, status);
+        DAOFacade.addMeal(meal);
         FlowerDeliveryController.checkoutItems.clear();
     }
 
