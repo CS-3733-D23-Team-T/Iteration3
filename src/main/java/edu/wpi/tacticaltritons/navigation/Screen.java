@@ -52,6 +52,7 @@ public enum Screen {
   PATHFINDING("views/NewPathfinding.fxml"),
   EDIT_MAP("views/NewEditMap.fxml"),
   VIEW_MAP("views/NewViewMap.fxml"),
+  THREED_MAP("views/THREEDMap.fxml"),
 
   DATABASE("views/database/Database.fxml"),
   DATABASE_HELP("views/database/DatabaseHelp.fxml"),
