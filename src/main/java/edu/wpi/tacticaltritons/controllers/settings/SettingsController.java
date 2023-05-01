@@ -48,12 +48,14 @@ public class SettingsController {
     @FXML private ComboBox<String> twoFactorFrequencyComboBox;
     @FXML private ComboBox<String> tokenTimeComboBox;
     @FXML private ComboBox<String> algorithmPreferenceComboBox;
+    @FXML private ComboBox<String> databaseComboBox;
     @FXML private Label languageText;
     @FXML private Label frequencyText;
     @FXML private Label algoText;
     @FXML private Label tokenText;
     @FXML private Text warningText;
     @FXML private Text preferenceText;
+    @FXML private Label databaseConnectionLabel;
 
     @FXML
     private void initialize() throws SQLException, IOException {
@@ -65,6 +67,7 @@ public class SettingsController {
         warningText.setText(GoogleTranslate.getString("warningSettings"));
         narrationCheckBox.setText(GoogleTranslate.getString("narration"));
         requireTwoFactorCheckBox.setText(GoogleTranslate.getString("requireTwoFactor"));
+        databaseConnectionLabel.setText(GoogleTranslate.getString("databaseConnection"));
 
 
         Login user = DAOFacade.getLogin(UserSessionToken.getUser().getUsername());

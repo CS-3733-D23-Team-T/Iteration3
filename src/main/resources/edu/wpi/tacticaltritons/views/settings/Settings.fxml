@@ -95,7 +95,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Label text="Database Connection">
+                        <Label fx:id="databaseConnectionLabel" text="Database Connection">
                            <font>
                               <Font size="18.0" />
                            </font>
