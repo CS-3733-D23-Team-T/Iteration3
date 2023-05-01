@@ -133,11 +133,11 @@
                 </FlowPane>
                 <FlowPane prefHeight="70.0" prefWidth="200.0" prefWrapLength="70.0">
                     <children>
-                        <MFXComboBox fx:id="assignedStaffComboBox" prefHeight="50.0" prefWidth="200.0" promptText="Assigned Staff">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </MFXComboBox>
+                  <MFXFilterComboBox fx:id="assignedStaffComboBox" prefHeight="50.0" prefWidth="200.0" promptText="Assigned Staff">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </MFXFilterComboBox>
                         <Text fx:id="assignedFirstValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Assigned Staff" visible="false">
                             <FlowPane.margin>
                                 <Insets left="10.0" />
