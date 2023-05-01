@@ -65,6 +65,7 @@ public class MealChoiceController {
     }
 
     private void createShopButton(RequestOptions value, Image shopImage) {
+
         // created the outer flow pane
         FlowPane flowPaneOuter = new FlowPane();
         flowPaneOuter.setPrefWidth(defaultOuterFlowPanePrefWidth);
@@ -227,7 +228,6 @@ public class MealChoiceController {
                 imageView.setFitHeight(defaultImageViewFitWidth);
                 shopNameLabel.setFont(new Font(defaultTitleFontSize));
                 discriptionLabel.setFont(new Font(defaultDiscriptionFontSize));
-
             }
         });
     }

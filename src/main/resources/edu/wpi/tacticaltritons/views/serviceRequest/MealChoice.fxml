@@ -8,7 +8,7 @@
             fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.MealChoiceController">
     <center>
         <FlowPane fx:id="leftFlowPane" alignment="CENTER" columnHalignment="CENTER" minHeight="-Infinity"
-                  minWidth="-Infinity" orientation="VERTICAL" prefHeight="500.0" prefWidth="1000.0"
+                  minWidth="-Infinity" orientation = "HORIZONTAL" prefHeight="500.0" prefWidth="1000.0"
                   BorderPane.alignment="CENTER"/>
     </center>
 </BorderPane>
