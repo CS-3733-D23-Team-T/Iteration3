@@ -14,6 +14,7 @@ public enum Tdb {
   private final String user;
   private final String pass;
   private static Tdb INSTANCE = WPI_DATABASE;
+  private static Connection connection;
   Tdb(String url, String user, String pass){
     this.url = url;
     this.user = user;
@@ -51,9 +52,30 @@ public enum Tdb {
     INSTANCE = instance;
   }
 
+//  public Connection getConnection() throws SQLException, ClassNotFoundException {
+//    Class.forName("org.postgresql.Driver");
+//    return DriverManager.getConnection(this.url, this.user, this.pass);
+//  }
+
   public Connection getConnection() throws SQLException, ClassNotFoundException {
     Class.forName("org.postgresql.Driver");
-    return DriverManager.getConnection(this.url, this.user, this.pass);
+    if(connection == null || connection.isClosed()){
+      connection = createConnection();
+    }
+    return connection;
+  }
+
+  private Connection createConnection() {
+    try {
+      System.out.println("TEST?");
+      Class.forName("org.postgresql.Driver");
+      connection = DriverManager.getConnection(this.url, this.user, this.pass);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+    return connection;
   }
 
 }
