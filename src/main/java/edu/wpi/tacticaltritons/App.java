@@ -16,11 +16,13 @@ import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.NodeOrientation;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
@@ -260,7 +262,6 @@ log.info("Starting Up");
         });
 //        sidePane.getChildren().add(0, nodeSearchBox);
 
-
         //drawing nodes
         nodes.forEach(node -> {
             if(!locations.get(node).getNodeType().equals("HALL")) {
@@ -395,6 +396,7 @@ log.info("Starting Up");
                 s.setOnMouseEntered(event -> {
                     if(!permVisibleText.get()) {
                         t.setVisible(true);
+                        System.out.println(t.getRotate() + " " + yRotate.getAngle());
                     }
                 });
                 s.setOnMouseExited(event -> {
@@ -429,6 +431,11 @@ log.info("Starting Up");
                 rect.setStrokeWidth(5);
                 rect.visibleProperty().bind(t.visibleProperty());
                 rect.getTransforms().addAll(t.getTransforms());
+
+                t.layoutYProperty().bind(xRotate.pivotXProperty());
+                t.setRotationAxis(Rotate.Y_AXIS);
+                t.rotateProperty().bind(yRotate.angleProperty());
+                t.getTransforms().addAll(xRotate, new Rotate(180, Rotate.X_AXIS));
 
                 root.getChildren().addAll(s, t, rect);
             }
