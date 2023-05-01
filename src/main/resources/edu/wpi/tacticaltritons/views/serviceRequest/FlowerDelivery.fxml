@@ -18,16 +18,16 @@
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                </BorderPane.margin>
                <children>
-                  <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0">
+                  <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWrapLength="200.0">
                      <children>
-                        <Text fx:id="orderFromText" strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
+                        <Text fx:id="orderFromText" strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM" textAlignment="CENTER">
                            <font>
-                              <Font size="17.0" />
+                              <Font size="20.0" />
                            </font>
                         </Text>
                         <Label fx:id="checkoutLabel" text="This is the Name of Shop" textAlignment="CENTER" wrapText="true">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="15.0" />
                            </font>
                         </Label>
                      </children>

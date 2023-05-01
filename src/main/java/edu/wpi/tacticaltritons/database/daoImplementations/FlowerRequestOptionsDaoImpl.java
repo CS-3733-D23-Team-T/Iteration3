@@ -14,7 +14,7 @@ public class FlowerRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
         ResultSet rs = null;
         FlowerRequestOptions flowerRequestOptions = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM FlowerRequestOptions WHERE itemName = ? AND shop  = ?;";
             ps = connection.prepareStatement(sql);
@@ -51,7 +51,7 @@ public class FlowerRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
         List<FlowerRequestOptions> flowerRequestOptions = new ArrayList<>();
 
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "SELECT * FROM FlowerRequestOptions;";
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
@@ -89,7 +89,7 @@ public class FlowerRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "INSERT INTO FlowerRequestOptions (itemName, prices, shop, shopDescription, itemType, itemDescription) VALUES (?, ?, ?, ?, ?, ?)";
 
             ps = connection.prepareStatement(sql);
@@ -122,7 +122,7 @@ public class FlowerRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "DELETE FROM FlowerRequestOptions WHERE (itemName = ? AND shop = ?)";
 
             ps = connection.prepareStatement(sql);
@@ -152,7 +152,7 @@ public class FlowerRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
         ResultSet rs = null;
         List<FlowerRequestOptions> flowerRequestOptions = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getInstance().getConnection();
 
             String sql = "SELECT * FROM FlowerRequestOptions WHERE shop = ?;";
             ps = connection.prepareStatement(sql);
@@ -190,7 +190,7 @@ public class FlowerRequestOptionsDaoImpl implements FlowerRequestOptionsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "UPDATE FlowerRequestOptions SET prices = ? where (itemName = ? AND shop = ?)";
 
             ps = connection.prepareStatement(sql);

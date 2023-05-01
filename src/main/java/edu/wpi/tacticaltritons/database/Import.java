@@ -23,7 +23,7 @@ public class Import {
   public static void importFile(File file, String tableName) throws IOException, SQLException, ParseException {
     Connection connection = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       BufferedReader br = new BufferedReader(new FileReader(file));
       String headerLine = br.readLine().toLowerCase();
       CopyManager copyManager = new CopyManager((BaseConnection) connection);

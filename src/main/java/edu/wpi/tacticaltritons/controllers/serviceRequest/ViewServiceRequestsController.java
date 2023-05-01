@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -196,6 +197,7 @@ public class ViewServiceRequestsController {
             tableMeal.setPrefHeight(newValue.doubleValue());
             mealRequests.getChildren().add(tableMeal);
         });
+        tableMeal.setPlaceholder(new Label("No Pending Meal Requests"));
         tableMeal.getStyleClass().add("table-view");
     }
 
@@ -325,6 +327,7 @@ public class ViewServiceRequestsController {
             tableSupply.setPrefHeight(newValue.doubleValue());
             officeSupplyRequest.getChildren().add(tableSupply);
         });
+        tableSupply.setPlaceholder(new Label("No Pending Supply Requests"));
         tableSupply.getStyleClass().add("table-view");
     }
 
@@ -451,6 +454,7 @@ public class ViewServiceRequestsController {
             tableFurniture.setPrefHeight(newValue.doubleValue());
             furnitureRequest.getChildren().add(tableFurniture);
         });
+        tableFurniture.setPlaceholder(new Label("No Pending Furniture Requests"));
         tableFurniture.getStyleClass().add("table-view");
     }
 
@@ -589,6 +593,7 @@ public class ViewServiceRequestsController {
             tableFlower.setPrefHeight(newValue.doubleValue());
             flowerRequests.getChildren().add(tableFlower);
         });
+        tableFlower.setPlaceholder(new Label("No Pending Flower Requests"));
         tableFlower.getStyleClass().add("table-view");
     }
 
@@ -686,6 +691,7 @@ public class ViewServiceRequestsController {
             tableConference.setPrefHeight(newValue.doubleValue());
             conferenceRoomRequest.getChildren().add(tableConference);
         });
+        tableConference.setPlaceholder(new Label("No Pending Conference Requests"));
         tableConference.getStyleClass().add("table-view");
     }
 }

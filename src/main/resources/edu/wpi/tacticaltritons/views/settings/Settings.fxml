@@ -93,6 +93,16 @@
                         <ComboBox fx:id="tokenTimeComboBox" prefWidth="150.0" promptText="1 Hour" />
                      </children>
                   </VBox>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <Label text="Database Connection">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="databaseComboBox" prefWidth="150.0" promptText="WPI Database" />
+                     </children>
+                  </VBox>
                </children>
             </FlowPane>
          </center>

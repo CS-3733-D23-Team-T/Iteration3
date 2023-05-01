@@ -22,12 +22,12 @@
                      <children>
                         <Text fx:id="furnitureFromText" strokeType="OUTSIDE" strokeWidth="0.0" text="FURNITURE FROM">
                            <font>
-                              <Font size="15.0" />
+                              <Font size="20.0" />
                            </font>
                         </Text>
                         <Label fx:id="checkoutLabel" text="This is the Name of Shop" textAlignment="CENTER" wrapText="true">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="15.0" />
                            </font>
                         </Label>
                      </children>

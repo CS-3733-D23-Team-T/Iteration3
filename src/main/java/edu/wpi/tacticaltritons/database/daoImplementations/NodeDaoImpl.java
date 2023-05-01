@@ -18,7 +18,7 @@ public class NodeDaoImpl implements NodeDao {
     ResultSet rs = null;
     Node node = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
       String sql = "SELECT * FROM Node WHERE nodeID = ?;";
       ps = connection.prepareStatement(sql);
@@ -55,7 +55,7 @@ public class NodeDaoImpl implements NodeDao {
     ResultSet rs = null;
     Node node = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
       String sql =
               "SELECT Node.*"
@@ -99,7 +99,7 @@ public class NodeDaoImpl implements NodeDao {
     ResultSet rs = null;
     List<Node> nodes = new ArrayList<>();
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
 
       String sql = "SELECT * FROM Node;";
@@ -138,7 +138,7 @@ public class NodeDaoImpl implements NodeDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql =
               "INSERT INTO Node (nodeID, xcoord, ycoord, floor, building) VALUES (?, ?, ?, ?, ?)";
 
@@ -171,7 +171,7 @@ public class NodeDaoImpl implements NodeDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql =
               "UPDATE Node SET xcoord = ?, ycoord = ?, floor = ?, building = ? where nodeID = ?";
 
@@ -203,7 +203,7 @@ public class NodeDaoImpl implements NodeDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql =
               "UPDATE Node SET nodeID = ?, xcoord = ?, ycoord = ?, floor = ?, building = ? " +
                       "where nodeID = ?";
@@ -238,7 +238,7 @@ public class NodeDaoImpl implements NodeDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "DELETE FROM Node WHERE nodeID = ?";
 
       ps = connection.prepareStatement(sql);
@@ -267,7 +267,7 @@ public class NodeDaoImpl implements NodeDao {
     ResultSet rs = null;
     HashMap<Integer, ArrayList<Node>> hash = new HashMap<>();
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
 
       String sql = "SELECT n.nodeid, " +

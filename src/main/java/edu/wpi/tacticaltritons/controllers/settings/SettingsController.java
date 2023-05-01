@@ -5,6 +5,7 @@ import edu.wpi.tacticaltritons.auth.*;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.database.Session;
+import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -157,6 +158,44 @@ public class SettingsController {
                     }
                 }).start();
             }
+        });
+
+        List<String> databaseList = new ArrayList<>();
+        databaseList.add(Tdb.WPI_DATABASE.formalName());
+        databaseList.add(Tdb.AWS_DATABASE.formalName());
+
+        databaseComboBox.setItems(FXCollections.observableList(databaseList));
+        Tdb database = Tdb.parseTdb(user.getDatabase());
+        if(database == null){
+            database = Tdb.getInstance();
+            new Thread(() -> {
+                user.setDatabase(Tdb.getInstance().name());
+                try {
+                    DAOFacade.updateLogin(user);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
+        }
+        databaseComboBox.getSelectionModel().select(database.formalName());
+
+        databaseComboBox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
+            if(!Objects.equals(n, o)){
+                if(n.equals(Tdb.WPI_DATABASE.formalName())){
+                    Tdb.setInstance(Tdb.WPI_DATABASE);
+                }
+                else if(n.equals(Tdb.AWS_DATABASE.formalName())){
+                    Tdb.setInstance(Tdb.AWS_DATABASE);
+                }
+            }
+            user.setDatabase(Tdb.getInstance().name());
+            new Thread(() -> {
+                try {
+                    DAOFacade.updateLogin(user);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
         });
     }
 }
