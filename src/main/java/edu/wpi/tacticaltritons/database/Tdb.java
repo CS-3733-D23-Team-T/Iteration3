@@ -52,6 +52,11 @@ public enum Tdb {
     INSTANCE = instance;
   }
 
+//  public Connection getConnection() throws SQLException, ClassNotFoundException {
+//    Class.forName("org.postgresql.Driver");
+//    return DriverManager.getConnection(this.url, this.user, this.pass);
+//  }
+
   public Connection getConnection() throws SQLException, ClassNotFoundException {
     Class.forName("org.postgresql.Driver");
     if(connection == null || connection.isClosed()){
