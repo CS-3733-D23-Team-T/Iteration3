@@ -506,7 +506,7 @@ public class App extends Application {
                 Rotate rotateX = new Rotate(180, Rotate.X_AXIS);
                 camera.getTransforms().addAll(rotateY, rotateX);
                 camera.setTranslateY(10);
-
+                double oldAngle = angle;
                 //Transition from node to node
                 pathTransition.set(new SequentialTransition());
                 for (int i = nodeCounter.get(); i < walkingPath.get().size() - 1; i++) {
@@ -532,13 +532,21 @@ public class App extends Application {
                         opp = walkingPath.get().get(i + 2).getXcoord() - walkingPath.get().get(i+1).getXcoord();
                         adj = walkingPath.get().get(i + 2).getYcoord() - walkingPath.get().get(i+1).getYcoord();
                         angle = 180 + Math.toDegrees(Math.atan2(opp, adj));
+                        double diff = angle - oldAngle;
+                        if (diff > 180) {
+                            angle -= 360;
+                        } else if (diff < -180) {
+                            angle += 360;
+                        }
 
                         double rotationSpeed = 100;
-                        double rotateDuration = Math.abs(angle) / rotationSpeed;
+                        double rotateDuration = Math.abs(oldAngle-angle) / rotationSpeed;
 
                         RotateTransition rotateTransition = new RotateTransition(Duration.seconds(rotateDuration), camera);
+                        rotateTransition.setFromAngle(oldAngle);
                         rotateTransition.setToAngle(angle);
                         rotateTransition.setAxis(Rotate.Y_AXIS);
+                        oldAngle = angle;
 
                         pathTransition.get().getChildren().addAll(transition, rotateTransition);
                     }
