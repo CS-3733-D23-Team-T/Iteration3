@@ -191,6 +191,8 @@ public class NewPathfindingController extends MapSuperController {
 
     public void initialize() throws SQLException {
 
+        pathfinding.setImage(App.pathfinding);
+
         date.setVisible(true);
 
         gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);

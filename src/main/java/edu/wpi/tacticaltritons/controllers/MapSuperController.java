@@ -230,7 +230,6 @@ public class MapSuperController {
         floor1Image.setImage(App.firstfloor);
         floor2Image.setImage(App.secondfloor);
         floor3Image.setImage(App.thirdfloor);
-        pathfinding.setImage(App.pathfinding);
     }
 
     public void resetButtons() {

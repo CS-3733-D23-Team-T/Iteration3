@@ -124,6 +124,9 @@ public class NewViewMapController extends MapSuperController {
     @FXML
     private void initialize() throws SQLException {
 
+        pathfinding.setImage(App.pathfinding);
+
+
         gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
         gesturePane.reset();
 

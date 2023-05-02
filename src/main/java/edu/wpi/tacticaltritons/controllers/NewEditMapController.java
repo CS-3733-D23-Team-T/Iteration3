@@ -375,6 +375,9 @@ public class NewEditMapController extends MapSuperController {
     @FXML
     private void initialize() throws SQLException {
 
+        pathfinding.setImage(App.pathfinding);
+
+
         allNodes = DAOFacade.getAllNodes();
         allMoves = DAOFacade.getAllCurrentMoves(today);
         allEdges = DAOFacade.getAllEdges();
