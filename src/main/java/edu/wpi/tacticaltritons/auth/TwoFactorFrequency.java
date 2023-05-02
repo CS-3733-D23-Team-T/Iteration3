@@ -18,7 +18,7 @@ public enum TwoFactorFrequency {
         frequency = frequency.toUpperCase(Locale.ROOT);
         if(DAILY.name().equals(frequency)) return DAILY;
         else if(HOURLY.name().equals(frequency)) return HOURLY;
-        else if(EVERY.name().equals(frequency)) return HOURLY;
+        else if(EVERY.name().equals(frequency)) return EVERY;
         return null;
     }
     public String formalName(){
