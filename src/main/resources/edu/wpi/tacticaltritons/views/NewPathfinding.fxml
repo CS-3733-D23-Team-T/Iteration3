@@ -4,6 +4,7 @@
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import io.github.palexdev.materialfx.controls.MFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.effect.DropShadow?>
@@ -12,7 +13,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import net.kurobako.gesturefx.GesturePane?>
@@ -68,48 +68,19 @@
                                     </ImageView>
                                 </children>
                             </Group>
+                     <MFXDatePicker fx:id="date" prefHeight="50.0" prefWidth="170.0" text="Date" StackPane.alignment="TOP_LEFT">
+                        <StackPane.margin>
+                           <Insets left="450.0" top="80.0" />
+                        </StackPane.margin>
+                     </MFXDatePicker>
+                     <MFXToggleButton fx:id="accessible" contentDisposition="CENTER" prefHeight="50.0" prefWidth="80.0" StackPane.alignment="TOP_LEFT">
+                        <StackPane.margin>
+                           <Insets top="70.0" />
+                        </StackPane.margin>
+                     </MFXToggleButton>
                         </children>
                     </StackPane>
                 </GesturePane>
-                <StackPane fx:id="menuPane" maxWidth="220.0" style="-fx-background-color: ffffff; -fx-background-radius: 0;" StackPane.alignment="TOP_LEFT">
-                    <children>
-                        <Line fx:id="filterLine1" endX="70.0" startX="-70.0" stroke="#c6c6c6" StackPane.alignment="TOP_CENTER">
-                            <StackPane.margin>
-                                <Insets top="72.0" />
-                            </StackPane.margin>
-                        </Line>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pathfinding Comment" StackPane.alignment="TOP_CENTER">
-                            <StackPane.margin>
-                                <Insets top="25.0" />
-                            </StackPane.margin>
-                        </Text>
-                        <Text fx:id="pathfindingComment" strokeType="OUTSIDE" strokeWidth="0.0" text="pathfindingComment" StackPane.alignment="TOP_LEFT">
-                            <StackPane.margin>
-                                <Insets left="15.0" top="100.0" />
-                            </StackPane.margin>
-                        </Text>
-                        <MFXButton fx:id="editMap" prefHeight="50.0" prefWidth="110.0" text="EDIT MAP" StackPane.alignment="BOTTOM_CENTER">
-                            <StackPane.margin>
-                                <Insets bottom="20.0" />
-                            </StackPane.margin>
-                        </MFXButton>
-                  <MFXDatePicker fx:id="date" prefHeight="50.0" text="Date" StackPane.alignment="TOP_LEFT">
-                     <StackPane.margin>
-                        <Insets left="10.0" top="200.0" />
-                     </StackPane.margin>
-                  </MFXDatePicker>
-                    </children>
-                    <effect>
-                        <DropShadow>
-                            <color>
-                                <Color opacity="0.3499999940395355" />
-                            </color>
-                        </DropShadow>
-                    </effect>
-                    <StackPane.margin>
-                        <Insets />
-                    </StackPane.margin>
-                </StackPane>
                 <StackPane fx:id="directionsPane" maxWidth="300.0" style="-fx-background-color: ffffff;" StackPane.alignment="TOP_RIGHT">
                     <StackPane.margin>
                         <Insets />
@@ -165,7 +136,7 @@
                         <Insets left="690.0" top="20.0" />
                     </StackPane.margin>
                 </MFXButton>
-                <ImageView fx:id="menuBar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
+                <ImageView fx:id="wheelChair" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
                     <StackPane.margin>
                         <Insets left="20.0" top="20.0" />
                     </StackPane.margin>
