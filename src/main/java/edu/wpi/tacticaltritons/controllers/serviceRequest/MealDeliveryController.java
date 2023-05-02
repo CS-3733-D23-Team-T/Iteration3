@@ -48,9 +48,9 @@ public class MealDeliveryController {
     private BorderPane basePane;
     private final TabPane tabPane = new TabPane();
 
-    static public ObservableMap<String, Integer> checkoutItems = FXCollections.observableHashMap();
-
     static public double total;
+
+    static public ObservableMap<String, Integer> checkoutItems = FXCollections.observableHashMap();
     public ObservableMap<String, Double> priceOfItems = FXCollections.observableHashMap();
     private List<RequestOptions> mealRequestOptionsList;
 
@@ -67,6 +67,11 @@ public class MealDeliveryController {
 
     @FXML
     public void initialize() {
+
+        checkoutItems = FXCollections.observableHashMap();
+        priceOfItems = FXCollections.observableHashMap();
+        mealRequestOptionsList = new ArrayList<>();
+
 
         this.shopName = MealChoiceController.name;
         // Sets the label to the name of the shop that was selected
