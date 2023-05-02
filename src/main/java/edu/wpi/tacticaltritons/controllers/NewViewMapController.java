@@ -4,6 +4,7 @@ import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -35,10 +36,8 @@ public class NewViewMapController extends MapSuperController {
 
     @FXML
     private MFXButton filter;
-
     @FXML
     private MFXCheckbox bathrooms;
-
     @FXML
     private MFXCheckbox restrooms;
     @FXML
@@ -68,8 +67,6 @@ public class NewViewMapController extends MapSuperController {
     @FXML
     private MFXButton applyFilter;
 
-    @FXML
-    private StackPane menuPane;
 
     @FXML
     private StackPane filterPane;
@@ -95,6 +92,7 @@ public class NewViewMapController extends MapSuperController {
         exits.setSelected(bool);
         bathrooms.setSelected(bool);
     }
+
     public void selectNone() {
 
         selectNone(restrooms);
@@ -120,37 +118,27 @@ public class NewViewMapController extends MapSuperController {
         });
     }
 
-    public void initializeMenuButton(String page) {
-        this.menuBar.setOnMouseClicked(event -> {
-            if (!menuPane.isVisible()) {
-                menuPane.setVisible(true);
-                switch (page) {
-                    case "ViewMap":
-                        componentShift(210);
-                        break;
-                    case "Pathfinding":
-                        componentShift(210);
-                        break;
-                    case "EditMap":
-                        componentShift(340);
-                        break;
-
-                }
-            } else {
-                menuPane.setVisible(false);
-                componentShift(0);
-            }
-        });
-        this.editMap.setOnAction(event -> {
-            Navigation.navigate(Screen.EDIT_MAP);
-        });
-    }
-
-
-
 
     @FXML
     private void initialize() throws SQLException {
+        filter.setText(GoogleTranslate.getString("filter"));
+        applyFilter.setText(GoogleTranslate.getString("apply"));
+        restrooms.setText(GoogleTranslate.getString("restrooms"));
+        elevators.setText(GoogleTranslate.getString("elevators"));
+        stairs.setText(GoogleTranslate.getString("stairs"));
+        hallways.setText(GoogleTranslate.getString("hallways"));
+        departments.setText(GoogleTranslate.getString("departments"));
+        labs.setText(GoogleTranslate.getString("labs"));
+        infoDesks.setText(GoogleTranslate.getString("infoDesks"));
+        conferenceRooms.setText(GoogleTranslate.getString("conferenceRooms"));
+        retail.setText(GoogleTranslate.getString("retail"));
+        services.setText(GoogleTranslate.getString("services"));
+        exits.setText(GoogleTranslate.getString("exits"));
+        bathrooms.setText(GoogleTranslate.getString("bathrooms"));
+
+        gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
+        gesturePane.reset();
+
 
         selectedFloor.FLOOR.floor = "1";
 
@@ -168,22 +156,12 @@ public class NewViewMapController extends MapSuperController {
 
         showFilters(false);
         filter.setVisible(true);
-        menuBar.setVisible(true);
-        menuPane.setVisible(false);
         selectAll.setSelected(true);
         filterPane.setVisible(false);
         selectFilters(true);
 
-        floor1.setStyle("-fx-background-color: BLUE");
+        floor1.setStyle("-fx-background-color: #f0ab0b");
         initalizeFloorButtons();
-
-        this.pathfinding.setOnMouseClicked(event -> {
-            Navigation.navigate(Screen.PATHFINDING);
-        });
-
-        this.editMap.setOnAction(event -> {
-            Navigation.navigate(Screen.EDIT_MAP);
-        });
 
         this.selectAll.setOnMouseClicked(event -> {
             if (selectAll.isSelected()) {
@@ -193,7 +171,6 @@ public class NewViewMapController extends MapSuperController {
             }
         });
 
-        initializeMenuButton("ViewMap");
 
         this.applyFilter.setOnAction(event -> {
             clearAllCircles();
@@ -270,8 +247,7 @@ public class NewViewMapController extends MapSuperController {
 
             try {
                 getMoveHashMap().forEach((key, value) -> {
-                    if(value.getLocation().getLongName().equals(this.searchOnMap.getSelectedItem()))
-                    {
+                    if (value.getLocation().getLongName().equals(this.searchOnMap.getSelectedItem())) {
                         try {
                             circleCoord[0] = getNodeHashMap().get(key).getXcoord();
                             circleCoord[1] = getNodeHashMap().get(key).getYcoord();
@@ -291,7 +267,7 @@ public class NewViewMapController extends MapSuperController {
                 throw new RuntimeException(e);
             }
 
-            circle = drawCircle( circleCoord[0],  circleCoord[1], Color.PINK, Color.RED);
+            circle = drawCircle(circleCoord[0], circleCoord[1], Color.PINK, Color.RED);
 
             String endFloor = null;
             endFloor = thisFloor[0];

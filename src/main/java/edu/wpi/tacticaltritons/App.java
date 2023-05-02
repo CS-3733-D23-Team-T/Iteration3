@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -25,12 +26,13 @@ import java.util.Objects;
 @Slf4j
 public class App extends Application {
 
-  @Getter private static Stage primaryStage;
-  @Getter private static BorderPane rootPane;
-  @Getter private static BorderPane navBar;
-  @Getter private static GridPane loginQuickNavigation;
-  @Getter private static GridPane staffQuickNavigation;
-  @Getter private static GridPane adminQuickNavigation;
+  @Getter @Setter
+  static Stage primaryStage;
+  @Getter @Setter private static BorderPane rootPane;
+  @Getter @Setter private static BorderPane navBar;
+  @Getter @Setter private static GridPane loginQuickNavigation;
+  @Getter @Setter private static GridPane staffQuickNavigation;
+  @Getter @Setter private static GridPane adminQuickNavigation;
   public static Image groundfloor;
   public static Image lowerlevel1;
   public static Image lowerlevel2;
@@ -40,6 +42,14 @@ public class App extends Application {
   public static Image menuBar;
   public static Image pathfinding;
   public static Image robot;
+  public static Image addStop;
+  public static Image goStraight;
+  public static Image goRight;
+  public static Image goLeft;
+
+  public static Image arrived;
+
+  public static Image disability;
   public static Image importExport;
 
   public static String invalidMFXTextField;
@@ -90,7 +100,18 @@ public class App extends Application {
             new Image(Objects.requireNonNull(getClass().getResource("images/map_page/robotIcon.png")).toString());
 
     importExport = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/export.png")).toString());
+    addStop = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/addStopButton.png")).toString());
+    goStraight = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/goStraight.png")).toString());
+    goRight = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/goRight.png")).toString());
+    goLeft = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/goLeft.png")).toString());
 
+    arrived = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/Arrived.png")).toString());
+
+    disability = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/disability.png")).toString());
+
+
+
+    importExport = new Image(Objects.requireNonNull(getClass().getResource("images/map_page/export.png")).toString());
 
     invalidMFXTextField =
             Objects.requireNonNull(getClass().getResource("stylesheets/InvalidMFXTextFields.css")).toString();

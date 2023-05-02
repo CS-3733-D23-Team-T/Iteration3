@@ -200,17 +200,17 @@
             <top>
                 <FlowPane orientation="VERTICAL" prefHeight="50.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
+                        <Text fx:id="orderFromText" strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
                             <font>
-                                <Font name="Times New Roman" size="18.0" />
+                                <Font size="18.0" />
                             </font>
                             <FlowPane.margin>
                                 <Insets />
                             </FlowPane.margin>
                         </Text>
-                        <Text fx:id="shopName" strokeType="OUTSIDE" strokeWidth="0.0" text="EDIBLE ARRANGEMENTS">
+                        <Text fx:id="shopName" strokeType="OUTSIDE" strokeWidth="0.0" text="Staples">
                             <font>
-                                <Font name="Times New Roman" size="22.0" />
+                                <Font size="22.0" />
                             </font>
                         </Text>
                     </children>
@@ -227,7 +227,7 @@
                <children>
                   <FlowPane alignment="CENTER" columnHalignment="CENTER">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price: ">
+                        <Text fx:id="totalPriceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Price: ">
                            <font>
                               <Font size="15.0" />
                            </font>

@@ -3,6 +3,7 @@ package edu.wpi.tacticaltritons.navigation;
 import edu.wpi.tacticaltritons.App;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
@@ -26,9 +27,9 @@ public class LoginNavigation {
             final var resource = App.class.getResource(destination.getFilename());
             FXMLLoader loader = new FXMLLoader(login);
 
-            BorderPane rootPane = loader.load();
+            StackPane rootPane = loader.load();
             loader = new FXMLLoader(resource);
-            rootPane.setRight(loader.load());
+            rootPane.getChildren().add(loader.load());
 
             App.getRootPane().setCenter(rootPane);
         } catch (IOException e) {

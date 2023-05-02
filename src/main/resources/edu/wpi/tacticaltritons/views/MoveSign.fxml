@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import net.kurobako.gesturefx.GesturePane?>
 
@@ -21,136 +18,6 @@
     <center>
         <StackPane BorderPane.alignment="CENTER">
             <children>
-            <StackPane fx:id="infoStackPane" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" StackPane.alignment="TOP_LEFT">
-               <children>
-                  <Rectangle fx:id="infoRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="650.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle" width="356.0" StackPane.alignment="CENTER_LEFT">
-                     <StackPane.margin>
-                        <Insets bottom="20.0" left="20.0" top="20.0" />
-                     </StackPane.margin>
-                  </Rectangle>
-                  <VBox prefHeight="650.0" prefWidth="409.0" spacing="20.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-header" text="Information:">
-                           <VBox.margin>
-                              <Insets left="30.0" top="30.0" />
-                           </VBox.margin>
-                        </Text>
-                        <HBox alignment="CENTER" maxWidth="-Infinity" prefHeight="226.0" prefWidth="350.0">
-                           <children>
-                              <VBox alignment="TOP_RIGHT" fillWidth="false" maxWidth="-Infinity" prefHeight="218.0" prefWidth="111.0" spacing="28.0">
-                                 <HBox.margin>
-                                    <Insets top="5.0" />
-                                 </HBox.margin>
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-general" text="Location:" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-general" text="New room #:" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-general" text="New floor:" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-general" text="Move Date:" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-general" text="Your location:" />
-                                 </children>
-                              </VBox>
-                              <VBox alignment="TOP_RIGHT" fillWidth="false" maxWidth="-Infinity" prefHeight="223.0" prefWidth="237.0" spacing="15.0">
-                                 <children>
-                                    <StackPane prefHeight="30.0" prefWidth="170.0">
-                                       <children>
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle-gray" width="225.0">
-                                             <StackPane.margin>
-                                                <Insets right="5.0" />
-                                             </StackPane.margin>
-                                          </Rectangle>
-                                          <Label fx:id="locationNameDisplay" alignment="CENTER" prefWidth="225.0" styleClass="text-general" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane prefHeight="30.0" prefWidth="170.0">
-                                       <children>
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle-gray" width="225.0">
-                                             <StackPane.margin>
-                                                <Insets right="5.0" />
-                                             </StackPane.margin>
-                                          </Rectangle>
-                                          <Label fx:id="roomDisplay" alignment="CENTER" prefWidth="225.0" styleClass="text-general" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane prefHeight="30.0" prefWidth="170.0">
-                                       <children>
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle-gray" width="225.0">
-                                             <StackPane.margin>
-                                                <Insets right="5.0" />
-                                             </StackPane.margin>
-                                          </Rectangle>
-                                          <Label fx:id="floorDisplay" alignment="CENTER" prefWidth="225.0" styleClass="text-general" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane prefHeight="30.0" prefWidth="170.0">
-                                       <children>
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle-gray" width="225.0">
-                                             <StackPane.margin>
-                                                <Insets right="5.0" />
-                                             </StackPane.margin>
-                                          </Rectangle>
-                                          <Label fx:id="dateDisplay" alignment="CENTER" prefWidth="225.0" styleClass="text-general" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane prefHeight="30.0" prefWidth="170.0">
-                                       <children>
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle-gray" width="225.0">
-                                             <StackPane.margin>
-                                                <Insets right="5.0" />
-                                             </StackPane.margin>
-                                          </Rectangle>
-                                          <Label fx:id="signLocationDisplay" alignment="CENTER" prefWidth="225.0" styleClass="text-general" />
-                                       </children>
-                                    </StackPane>
-                                 </children>
-                              </VBox>
-                           </children>
-                           <VBox.margin>
-                              <Insets left="20.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <ScrollPane fx:id="scrollPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="333.0" prefWidth="350.0" style="-fx-background-color: white;">
-                           <VBox.margin>
-                              <Insets bottom="25.0" left="20.0" right="20.0" />
-                           </VBox.margin>
-                           <content>
-                              <VBox fx:id="vBox" alignment="TOP_CENTER" prefHeight="330.0" prefWidth="346.0" spacing="15.0" style="-fx-background-color: white;">
-                                 <children>
-                                    <Label fx:id="bottomTextDisplay" prefHeight="36.0" prefWidth="320.0" styleClass="text-header" text="Label" />
-                                 </children>
-                              </VBox>
-                           </content>
-                        </ScrollPane>
-                     </children>
-                  </VBox>
-               </children>
-            </StackPane>
-                <StackPane fx:id="directionsPane" maxHeight="450.0" maxWidth="200.0" style="-fx-background-color: ffffff; -fx-background-radius: 10;" StackPane.alignment="TOP_RIGHT">
-                    <StackPane.margin>
-                        <Insets right="20.0" top="20.0" />
-                    </StackPane.margin>
-                    <effect>
-                        <DropShadow>
-                            <color>
-                                <Color opacity="0.3499999940395355" />
-                            </color>
-                        </DropShadow>
-                    </effect>
-                    <children>
-                        <TextArea fx:id="textDirections" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
-                            <StackPane.margin>
-                                <Insets bottom="10.0" left="10.0" right="10.0" top="70.0" />
-                            </StackPane.margin>
-                        </TextArea>
-                        <Text fx:id="textForDirections" strokeType="OUTSIDE" strokeWidth="0.0" text="DIRECTIONS" StackPane.alignment="TOP_CENTER">
-                            <StackPane.margin>
-                                <Insets top="40.0" />
-                            </StackPane.margin>
-                            <font>
-                                <Font name="Open Sans Regular" size="18.0" />
-                            </font>
-                        </Text>
-                    </children>
-                </StackPane>
                 <GesturePane fx:id="gesturePane">
                     <StackPane fx:id="selectedFloorPane">
                         <children>
@@ -162,7 +29,6 @@
                                     </ImageView>
                                 </children>
                             </Group>
-
                             <Group fx:id="L2Group">
                                 <children>
                                     <ImageView fx:id="lowerLevel2Image" pickOnBounds="true" preserveRatio="true" visible="false">
@@ -201,6 +67,134 @@
                         </children>
                     </StackPane>
                 </GesturePane>
+                <MFXButton fx:id="lowerLevel1" prefHeight="50.0" prefWidth="50.0" text="L2" StackPane.alignment="TOP_LEFT">
+                    <StackPane.margin>
+                        <Insets left="450.0" top="20.0" />
+                    </StackPane.margin>
+                </MFXButton>
+                <MFXButton fx:id="lowerLevel2" prefHeight="50.0" prefWidth="50.0" text="L1" StackPane.alignment="TOP_LEFT">
+                    <StackPane.margin>
+                        <Insets left="510.0" top="20.0" />
+                    </StackPane.margin>
+                </MFXButton>
+                <MFXButton fx:id="floor1" prefHeight="50.0" prefWidth="50.0" text="1" StackPane.alignment="TOP_LEFT">
+                    <StackPane.margin>
+                        <Insets left="570.0" top="20.0" />
+                    </StackPane.margin>
+                </MFXButton>
+                <MFXButton fx:id="floor2" prefHeight="50.0" prefWidth="50.0" text="2" StackPane.alignment="TOP_LEFT">
+                    <StackPane.margin>
+                        <Insets left="630.0" top="20.0" />
+                    </StackPane.margin>
+                </MFXButton>
+                <MFXButton fx:id="floor3" prefHeight="50.0" prefWidth="50.0" text="3" StackPane.alignment="TOP_LEFT">
+                    <StackPane.margin>
+                        <Insets left="690.0" top="20.0" />
+                    </StackPane.margin>
+                </MFXButton>
+                <StackPane fx:id="infoStackPane" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" StackPane.alignment="TOP_LEFT">
+                    <children>
+                        <Rectangle fx:id="infoRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="650.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle" width="356.0" StackPane.alignment="CENTER_LEFT">
+                            <StackPane.margin>
+                                <Insets bottom="20.0" left="20.0" top="20.0" />
+                            </StackPane.margin>
+                        </Rectangle>
+                        <VBox prefHeight="650.0" prefWidth="409.0" spacing="20.0">
+                            <children>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 24;" styleClass="text-header" text="INFORMATION:">
+                                    <VBox.margin>
+                                        <Insets left="30.0" top="30.0" />
+                                    </VBox.margin>
+                                </Text>
+                                <HBox alignment="CENTER" maxWidth="-Infinity" prefHeight="226.0" prefWidth="350.0">
+                                    <children>
+                                        <VBox alignment="TOP_RIGHT" fillWidth="false" maxWidth="-Infinity" prefHeight="218.0" prefWidth="111.0" spacing="28.0">
+                                            <HBox.margin>
+                                                <Insets top="5.0" />
+                                            </HBox.margin>
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-general" text="Location:" />
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-general" text="New room #:" />
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-general" text="New floor:" />
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-general" text="Move Date:" />
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-general" text="Your location:" />
+                                            </children>
+                                        </VBox>
+                                        <VBox alignment="TOP_RIGHT" fillWidth="false" maxWidth="-Infinity" prefHeight="223.0" prefWidth="237.0" spacing="15.0">
+                                            <children>
+                                                <StackPane prefHeight="30.0" prefWidth="170.0">
+                                                    <children>
+                                                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle-gray" width="225.0">
+                                                            <StackPane.margin>
+                                                                <Insets right="5.0" />
+                                                            </StackPane.margin>
+                                                        </Rectangle>
+                                                        <Label fx:id="locationNameDisplay" alignment="CENTER" prefWidth="225.0" styleClass="text-general" />
+                                                    </children>
+                                                </StackPane>
+                                                <StackPane prefHeight="30.0" prefWidth="170.0">
+                                                    <children>
+                                                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle-gray" width="225.0">
+                                                            <StackPane.margin>
+                                                                <Insets right="5.0" />
+                                                            </StackPane.margin>
+                                                        </Rectangle>
+                                                        <Label fx:id="roomDisplay" alignment="CENTER" prefWidth="225.0" styleClass="text-general" />
+                                                    </children>
+                                                </StackPane>
+                                                <StackPane prefHeight="30.0" prefWidth="170.0">
+                                                    <children>
+                                                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle-gray" width="225.0">
+                                                            <StackPane.margin>
+                                                                <Insets right="5.0" />
+                                                            </StackPane.margin>
+                                                        </Rectangle>
+                                                        <Label fx:id="floorDisplay" alignment="CENTER" prefWidth="225.0" styleClass="text-general" />
+                                                    </children>
+                                                </StackPane>
+                                                <StackPane prefHeight="30.0" prefWidth="170.0">
+                                                    <children>
+                                                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle-gray" width="225.0">
+                                                            <StackPane.margin>
+                                                                <Insets right="5.0" />
+                                                            </StackPane.margin>
+                                                        </Rectangle>
+                                                        <Label fx:id="dateDisplay" alignment="CENTER" prefWidth="225.0" styleClass="text-general" />
+                                                    </children>
+                                                </StackPane>
+                                                <StackPane prefHeight="30.0" prefWidth="170.0">
+                                                    <children>
+                                                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" stroke="BLACK" strokeType="INSIDE" styleClass="rectangle-gray" width="225.0">
+                                                            <StackPane.margin>
+                                                                <Insets right="5.0" />
+                                                            </StackPane.margin>
+                                                        </Rectangle>
+                                                        <Label fx:id="signLocationDisplay" alignment="CENTER" prefWidth="225.0" styleClass="text-general" />
+                                                    </children>
+                                                </StackPane>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets left="20.0" />
+                                    </VBox.margin>
+                                </HBox>
+                                <ScrollPane fx:id="scrollPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="333.0" prefWidth="350.0" style="-fx-background-color: white;">
+                                    <VBox.margin>
+                                        <Insets bottom="25.0" left="20.0" right="20.0" />
+                                    </VBox.margin>
+                                    <content>
+                                        <VBox fx:id="vBox" alignment="TOP_CENTER" prefHeight="330.0" prefWidth="346.0" spacing="15.0" style="-fx-background-color: white;">
+                                            <children>
+                                                <Label fx:id="bottomTextDisplay" prefHeight="36.0" prefWidth="320.0" style="-fx-font-size: 24;" styleClass="text-header" text="Label" />
+                                            </children>
+                                        </VBox>
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+                    </children>
+                </StackPane>
             </children>
             <BorderPane.margin>
                 <Insets />

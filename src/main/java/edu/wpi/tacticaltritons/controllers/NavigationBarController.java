@@ -4,6 +4,7 @@ import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.animation.RotateTransition;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -35,16 +37,15 @@ public class NavigationBarController {
     private SimpleStringProperty dateTime;
 
     @FXML
-    private void initialize() {
+    private void initialize() throws IOException {
         nameDisplay.textProperty().bind(UserSessionToken.fullNameProperty);
-        UserSessionToken.adminProperty.addListener((obs, o, n) -> {
-            if(n){
-                accountTypeDisplay.setText("Admin");
+        if(UserSessionToken.getUser()!=null) {
+            if (UserSessionToken.getUser().isAdmin()) {
+                accountTypeDisplay.setText(GoogleTranslate.getString("admin"));
+            } else {
+                accountTypeDisplay.setText(GoogleTranslate.getString("staff"));
             }
-            else{
-                accountTypeDisplay.setText("Staff");
-            }
-        });
+        }
 
         Navigation.screen.addListener((obs, o ,n) -> {
             if(n != null) {
@@ -77,18 +78,18 @@ public class NavigationBarController {
 
         this.dateAndTime.textProperty().bind(this.dateTime);
 
-        MenuItem settingsItem = new MenuItem("Settings");
+        MenuItem settingsItem = new MenuItem(GoogleTranslate.getString("settings"));
         settingsItem.setOnAction(event -> Navigation.navigate(Screen.SETTINGS));
-        MenuItem logoutItem = new MenuItem("Logout");
+        MenuItem logoutItem = new MenuItem(GoogleTranslate.getString("logout"));
         logoutItem.setOnAction(event -> {
             UserSessionToken.revoke();
             Navigation.navigate(Screen.LOGIN);
         });
-        MenuItem exitItem = new MenuItem("Exit");
+        MenuItem exitItem = new MenuItem(GoogleTranslate.getString("exit"));
         exitItem.setOnAction(event -> App.getPrimaryStage().close());
-        MenuItem aboutItem = new MenuItem("About");
+        MenuItem aboutItem = new MenuItem(GoogleTranslate.getString("about"));
         aboutItem.setOnAction(event -> Navigation.navigate(Screen.ABOUT));
-        MenuItem creditsItem = new MenuItem("Credits");
+        MenuItem creditsItem = new MenuItem(GoogleTranslate.getString("credits"));
         creditsItem.setOnAction(event -> Navigation.navigate(Screen.CREDITS));
 
         this.menuButton.getItems().add(settingsItem);

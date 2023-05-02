@@ -1,24 +1,27 @@
 package edu.wpi.tacticaltritons.controllers.login;
 
-import edu.wpi.tacticaltritons.auth.Account;
-import edu.wpi.tacticaltritons.auth.AuthenticationMethod;
-import edu.wpi.tacticaltritons.auth.UserSessionToken;
-import edu.wpi.tacticaltritons.auth.Validator;
+import edu.wpi.tacticaltritons.App;
+import edu.wpi.tacticaltritons.auth.*;
+import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.navigation.LoginNavigation;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class LoginController {
@@ -31,6 +34,13 @@ public class LoginController {
 
     @FXML
     private void initialize() {
+        usernameField.setPromptText(GoogleTranslate.getString("username"));
+        passwordField.setPromptText(GoogleTranslate.getString("password"));
+        loginButton.setText(GoogleTranslate.getString("Login"));
+        resetPasswordLink.setText(GoogleTranslate.getString("resetPassword"));
+        usernameValidator.setText(GoogleTranslate.getString("usernameValidator"));
+        passwordValidator.setText(GoogleTranslate.getString("passwordValidator"));
+
         BooleanProperty validUsername = new SimpleBooleanProperty(false);
         this.usernameField.textProperty().addListener(Validator.generateValidatorListener(validUsername, "[0-9A-Za-z]{3,32}",
                 this.usernameValidator.getText(), this.usernameValidator));
@@ -41,13 +51,28 @@ public class LoginController {
 
         this.loginButton.setOnAction(event -> {
             int ret = Account.attemptLogin(usernameField.getText(), passwordField.getText());
-
+            Login login;
             if (ret == 1) {
                 try {
-                    UserSessionToken.registerToken(DAOFacade.getLogin(usernameField.getText()));
+                    login = DAOFacade.getLogin(usernameField.getText());
+                    UserSessionToken.registerToken(login);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+                GoogleTranslate.setLanguage(Language.parseLanguage(login.getLanguage()).getLanguage());
+                FXMLLoader navLoader = new FXMLLoader(App.class.getResource("views/NavigationBar.fxml"));
+                FXMLLoader adminLoader = new FXMLLoader(App.class.getResource("views/navigation/AdminQuickNavigation.fxml"));
+                FXMLLoader staffLoader = new FXMLLoader(App.class.getResource("views/navigation/StaffQuickNavigation.fxml"));
+                try {
+                    App.quickNavigationMenuButtons = new QuickNavigationMenuButtons();
+                    App.setAdminQuickNavigation(adminLoader.load());
+                    App.setStaffQuickNavigation(staffLoader.load());
+                    App.setNavBar(navLoader.load());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                App.getPrimaryStage().setScene(App.getRootPane().getScene());
+                App.getPrimaryStage().show();
                 Navigation.navigate(Screen.HOME);
             }
             else if(ret == -1){

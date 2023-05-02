@@ -17,12 +17,12 @@
    <center>
       <BorderPane style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
          <top>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Preferences" underline="true" BorderPane.alignment="CENTER">
+            <Text fx:id="preferenceText" strokeType="OUTSIDE" strokeWidth="0.0" fill="#222222" text="PREFERENCES" BorderPane.alignment="CENTER">
                <font>
-                  <Font size="32.0" />
+                  <Font size="25.0" />
                </font>
                <BorderPane.margin>
-                  <Insets top="5.0" />
+                  <Insets top="10.0" />
                </BorderPane.margin>
             </Text>
          </top>
@@ -50,12 +50,12 @@
                               <Font size="18.0" />
                            </font>
                         </CheckBox>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Warning: This Effects All Users" />
+                        <Text fx:id="warningText" strokeType="OUTSIDE" strokeWidth="0.0" text="Warning: This Effects All Users" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Label text="Language">
+                        <Label fx:id="languageText" text="Language">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -65,7 +65,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Label text="Two Factor Frequency">
+                        <Label fx:id="frequencyText" text="Two Factor Frequency">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -75,7 +75,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Label text="Algorithm Preference">
+                        <Label fx:id="algoText" text="Algorithm Preference">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -85,7 +85,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Label text="Token Time Limit">
+                        <Label fx:id="tokenText" text="Token Time Limit">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -95,7 +95,7 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Label text="Database Connection">
+                        <Label fx:id="databaseConnectionLabel" text="Database Connection">
                            <font>
                               <Font size="18.0" />
                            </font>

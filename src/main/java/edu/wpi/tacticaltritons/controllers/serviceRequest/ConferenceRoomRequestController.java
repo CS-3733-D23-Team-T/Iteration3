@@ -20,6 +20,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -54,6 +55,7 @@ public class ConferenceRoomRequestController {
     @FXML private MFXTextField firstName;
     @FXML private MFXTextField lastName;
     @FXML private MFXDatePicker date;
+    @FXML private Label attendanceLabel;
 
     ObservableList<String> conferenceRooms;
     ObservableList<String> attendances;
@@ -85,6 +87,20 @@ public class ConferenceRoomRequestController {
     @FXML private BorderPane basePane;
 
     public void initialize() throws SQLException{
+        firstName.setFloatingText(GoogleTranslate.getString("firstName"));
+        lastName.setFloatingText(GoogleTranslate.getString("lastName"));
+        peopleSearchBar.setFloatingText(GoogleTranslate.getString("searchUsers"));
+        roomSelection.setFloatingText(GoogleTranslate.getString("findConferenceRoom"));
+        cancelButton.setText(GoogleTranslate.getString("cancel"));
+        clearButton.setText(GoogleTranslate.getString("clear"));
+        submitButton.setText(GoogleTranslate.getString("submit"));
+        preview.setText(GoogleTranslate.getString("preview"));
+        addPeopleButton.setText(GoogleTranslate.getString("add"));
+        deletePeopleButton.setText(GoogleTranslate.getString("delete"));
+        attendanceLabel.setText(GoogleTranslate.getString("attendees"));
+
+
+
         firstName.setText(UserSessionToken.getUser().getFirstname());
         lastName.setText(UserSessionToken.getUser().getLastname());
 
@@ -310,7 +326,7 @@ public class ConferenceRoomRequestController {
             uploadDate =  Date.valueOf(date.getValue());
             EffectGenerator.noDateAlertOff(date);
         }catch (NullPointerException e){
-            date.setFloatingText("Please Select Date");
+            date.setFloatingText(GoogleTranslate.getString("pleaseSelectDate"));
             EffectGenerator.noDateAlertOn(date);
             readyToSubmit = false;
         }
@@ -353,7 +369,7 @@ public class ConferenceRoomRequestController {
             flowPane.setRowValignment(VPos.CENTER);
             flowPane.setColumnHalignment(HPos.CENTER);
             Text text = new Text();
-            text.setText("Your order has been confirmed");
+            text.setText(GoogleTranslate.getString("orderConfirmed"));
             text.setFont(new Font(20));
             text.setStyle("-fx-text-fill: black");
             flowPane.getChildren().add(text);

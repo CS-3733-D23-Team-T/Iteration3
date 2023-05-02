@@ -4,6 +4,7 @@ import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
@@ -32,5 +33,9 @@ public class LoginQuickNavigationController {
                 Navigation.navigate(Screen.LOGIN);
             }
         });
+
+        hospitalMapMenuButton.setText(GoogleTranslate.getString("hospitalMap"));
+        signageMenuButton.setText(GoogleTranslate.getString("signage"));
+        loginButton.setText(GoogleTranslate.getString("Login"));
     }
 }

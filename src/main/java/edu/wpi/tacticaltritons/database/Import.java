@@ -31,8 +31,9 @@ public class Import {
 
       if (headerLine.equals("nodeid,xcoord,ycoord,floor,building") && tableName.equals("node")) {
         copyManager.copyIn("COPY node FROM STDIN (FORMAT csv, HEADER)", fileReader);
-      } else if (headerLine.equals("startnode,endnode") && tableName.equals("edge")) {
-        copyManager.copyIn("COPY edge FROM STDIN (FORMAT csv, HEADER)", fileReader);
+      } else if (headerLine.equals("startnode,endnode")) {
+        copyManager.copyIn(
+                "COPY edge (startNode, endNode) FROM STDIN (FORMAT csv, HEADER)", fileReader);
       } else if (headerLine.equals("longname,shortname,nodetype") && tableName.equals("locationname")) {
         copyManager.copyIn("COPY locationname FROM STDIN (FORMAT csv, HEADER)", fileReader);
       } else if (headerLine.equals("nodeid,longname,date") && tableName.equals("move")) {

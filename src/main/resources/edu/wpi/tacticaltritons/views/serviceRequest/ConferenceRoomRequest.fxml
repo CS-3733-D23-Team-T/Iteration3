@@ -69,7 +69,7 @@
                         <Insets top="20.0" />
                     </FlowPane.margin>
                     <center>
-                        <MFXCheckListView fx:id="selectedAttendanceList" prefHeight="150.0" prefWidth="400.0">
+                        <MFXCheckListView fx:id="selectedAttendanceList" style="-fx-effect: null;" prefHeight="150.0" prefWidth="400.0">
                             <padding>
                                 <Insets left="20.0" right="20.0" />
                             </padding>
