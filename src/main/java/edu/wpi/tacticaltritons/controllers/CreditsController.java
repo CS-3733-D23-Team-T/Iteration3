@@ -98,12 +98,33 @@ public class CreditsController {
     @FXML private Text flowerClickable60;
     @FXML private Text flowerClickable61;
     @FXML private Text flowerClickable62;
-
+    @FXML private Text supplyClickable1;
+    @FXML private Text supplyClickable2;
+    @FXML private Text supplyClickable3;
+    @FXML private Text supplyClickable4;
+    @FXML private Text supplyClickable5;
+    @FXML private Text supplyClickable6;
+    @FXML private Text supplyClickable7;
+    @FXML private Text supplyClickable8;
+    @FXML private Text supplyClickable9;
+    @FXML private Text supplyClickable10;
+    @FXML private Text supplyClickable11;
+    @FXML private Text supplyClickable12;
+    @FXML private Text supplyClickable13;
+    @FXML private Text supplyClickable14;
+    @FXML private Text supplyClickable15;
+    @FXML private Text supplyClickable16;
+    @FXML private Text supplyClickable17;
+    @FXML private Text supplyClickable18;
+    @FXML private Text supplyClickable19;
+    @FXML private Text supplyClickable20;
+    @FXML private Text supplyClickable21;
 
 
     private Map<String, String> furnitureMap = new HashMap<>();
     private Map<String, String> mealMap = new HashMap<>();
     private Map<String, String> flowerMap = new HashMap<>();
+    private Map<String, String> supplyMap = new HashMap<>();
     @FXML
     public void initialize() {
         App.getPrimaryStage().widthProperty().addListener((observable, oldValue, newValue) -> accordion.setMinWidth(newValue.doubleValue()));
@@ -294,6 +315,51 @@ public class CreditsController {
         flowerClickable61.addEventHandler(EventType.ROOT, addEventHandler(flowerClickable61, flowerMap.get("Logos")));
         flowerMap.put("Logos", "https://www.freelogodesign.org/");
         flowerClickable62.addEventHandler(EventType.ROOT, addEventHandler(flowerClickable62, flowerMap.get("Logos")));
+
+
+        //Office Supply Credits
+        supplyMap.put("Binders", "https://www.staples.com/bindets/directory_bindets");
+        supplyClickable1.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable1, supplyMap.get("Binders")));
+        supplyMap.put("Black Pens", "https://www.staples.com/black+pens/directory_black%2520pens");
+        supplyClickable2.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable2, supplyMap.get("Black Pens")));
+        supplyMap.put("Blue Pens", "https://www.staples.com/blue+pens/directory_blue%2520pens");
+        supplyClickable3.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable3, supplyMap.get("Blue Pens")));
+        supplyMap.put("Calenders", "https://www.staples.com/calenders/directory_calenders");
+        supplyClickable4.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable4, supplyMap.get("Calenders")));
+        supplyMap.put("Card Envelopes", "https://www.staples.com/Plain-Window-Envelopes/cat_CL142681?searchRedirect=envelopes");
+        supplyClickable5.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable5, supplyMap.get("Card Evnvelopes")));
+        supplyMap.put("Desk Orginizer", "https://www.staples.com/desk+orginizer/directory_desk%2520orginizer");
+        supplyClickable6.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable6, supplyMap.get("Desk Orginizer")));
+        supplyMap.put("File", "https://www.staples.com/file/directory_file");
+        supplyClickable7.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable7, supplyMap.get("File")));
+        supplyMap.put("File Foulder", "https://www.staples.com/file+foulder/directory_file%2520foulder");
+        supplyClickable8.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable8, supplyMap.get("File Foulder")));
+        supplyMap.put("File Labels", "https://www.staples.com/file+labels/directory_file%2520labels");
+        supplyClickable9.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable9, supplyMap.get("File Labels")));
+        supplyMap.put("Mechanical Pencils", "https://www.staples.com/mechanical+pencil/directory_mechanical%2520pencil");
+        supplyClickable10.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable10, supplyMap.get("Mechanical Pencil")));
+        supplyMap.put("Multicolor Pens", "https://www.staples.com/multi+colored+pens/directory_multi%2520colored%2520pens");
+        supplyClickable11.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable11, supplyMap.get("Multicolor Pens")));
+        supplyMap.put("Notebook", "https://www.staples.com/notebook/directory_notebook");
+        supplyClickable12.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable12, supplyMap.get("Notebook")));
+        supplyMap.put("Office Clips", "https://www.staples.com/office+clips/directory_office%2520clips");
+        supplyClickable13.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable13, supplyMap.get("Office Clips")));
+        supplyMap.put("Red Pens", "https://www.staples.com/red+pens/directory_red%2520pens");
+        supplyClickable14.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable14, supplyMap.get("Red Pens")));
+        supplyMap.put("Scissors", "https://www.staples.com/scissors/directory_scissors");
+        supplyClickable15.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable15, supplyMap.get("Scissors")));
+        supplyMap.put("Sharpies", "https://www.staples.com/sharpies/directory_sharpies");
+        supplyClickable16.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable16, supplyMap.get("Sharpies")));
+        supplyMap.put("Stapler", "https://www.staples.com/stapler/directory_stapler");
+        supplyClickable17.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable17, supplyMap.get("Stapler")));
+        supplyMap.put("Staples", "https://www.staples.com/staples/directory_staples");
+        supplyClickable18.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable18, supplyMap.get("Staples")));
+        supplyMap.put("Sticky Notes", "https://www.staples.com/sticky+notes/directory_sticky%2520notes");
+        supplyClickable19.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable19, supplyMap.get("Sticky Notes")));
+        supplyMap.put("White Out", "https://www.staples.com/white+out/directory_white%2520out");
+        supplyClickable20.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable20, supplyMap.get("White Out")));
+        supplyMap.put("Wooden Pencils", "https://www.staples.com/wooden+pencil/directory_wooden%2520pencil");
+        supplyClickable21.addEventHandler(EventType.ROOT, addEventHandler(supplyClickable21, supplyMap.get("Wooden Pencils")));
 
 
     }

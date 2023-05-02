@@ -46,6 +46,45 @@
                 </GridPane>
             </content>
         </TitledPane>
+        <TitledPane text="Supply Request">
+            <content>
+                <GridPane alignment="CENTER" hgap="10" vgap="10">
+                    <Label text="Stapples:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <font>
+                            <Font size="27.0" />
+                        </font>
+                    </Label>
+                    <Text fx:id="supplyClickable1" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable2" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable3" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable4" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable5" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable6" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable7" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable8" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable9" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable10" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable11" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable12" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable13" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable14" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable15" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable16" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable17" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable18" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable19" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable20" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Text fx:id="supplyClickable21" style="-fx-fill: blue; -fx-font-size: 20;" text="All Supply items" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                    </rowConstraints>
+                </GridPane>
+            </content>
+        </TitledPane>
         <TitledPane text="Meal Request">
             <content>
                 <GridPane alignment="center" hgap="10" vgap="10">
@@ -219,6 +258,9 @@
                         <Text fx:id="flowerClickable8" style="-fx-fill: blue; -fx-font-size: 20;" text="Sunny Morning" GridPane.columnIndex="7" GridPane.rowIndex="13" />
                         <Text fx:id="flowerClickable9" style="-fx-fill: blue; -fx-font-size: 20;" text="Summer Solstice" GridPane.columnIndex="8" GridPane.rowIndex="13" />
                         <Text fx:id="flowerClickable10" style="-fx-fill: blue; -fx-font-size: 20;" text="Wonderland Bouquet" GridPane.columnIndex="9" GridPane.rowIndex="13" />
+
+
+
                         <columnConstraints>
                             <ColumnConstraints />
                             <ColumnConstraints />
