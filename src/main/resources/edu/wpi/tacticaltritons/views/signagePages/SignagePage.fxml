@@ -16,7 +16,7 @@
     <BorderPane fx:id="selectPresetPages">
 
     </BorderPane>
-    <GridPane fx:id="basePane"  prefHeight="600" prefWidth="1280" alignment="CENTER_LEFT" >
+    <GridPane fx:id="basePane" prefHeight="600" prefWidth="1280" alignment="CENTER_LEFT" >
         <stylesheets>
             <URL value="@../../stylesheets/signageBlocks.css"/>
         </stylesheets>

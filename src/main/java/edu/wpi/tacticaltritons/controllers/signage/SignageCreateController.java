@@ -56,7 +56,7 @@ public class SignageCreateController {
     @FXML private MFXButton saveButton;
     @FXML private MFXButton cancelButton;
     private ArrayList<Label> locationLabels;
-    private final double arrowIconSize = 400;
+    private final double arrowIconSize = 420;
     private final double fontSize = 70;
     private final double buttonsTotalSize = 420;
     private final double seperatorRatio = 0.6;
