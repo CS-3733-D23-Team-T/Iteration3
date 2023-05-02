@@ -25,92 +25,92 @@ public class AboutController {
     public void initialize() {
         luisPane.setOnMouseClicked(event ->
         {
-            nameText.setText("Name: Luis");
+            nameText.setText("Name: Luis Aldarondo Jr");
             nameText.setVisible(true);
-            positionText.setText("Position: Document");
+            positionText.setText("Position: Document Analyst and Part Time Software Engineer");
             positionText.setVisible(true);
             positionText.setTextAlignment(TextAlignment.LEFT);
             positionText.setWrappingWidth(245);
             positionText.setWrappingWidth(245);
-            majorText.setText("Major: major");
+            majorText.setText("Major: Robotics Engineering");
             majorText.setVisible(true);
             factText.setText("Fun fact: I'm a lefty");
             factText.setVisible(true);
         });
         youssefPane.setOnMouseClicked(event ->
         {
-            nameText.setText("Name: Youssef");
+            nameText.setText("Name: Youssef Benchiki");
             nameText.setVisible(true);
-            positionText.setText("Position: Full time");
+            positionText.setText("Position: Full Time Software Engineer");
             positionText.setVisible(true);
             positionText.setTextAlignment(TextAlignment.LEFT);
             positionText.setWrappingWidth(245);
-            majorText.setText("Major: major");
+            majorText.setText("Major: Computer Science");
             majorText.setVisible(true);
-            factText.setText("Fun fact: fact");
+            factText.setText("Fun fact: I like to surf");
             factText.setVisible(true);
         });
         markPane.setOnMouseClicked(event ->
         {
-            nameText.setText("Name: Mark");
+            nameText.setText("Name: Mark Caleca");
             nameText.setVisible(true);
-            positionText.setText("Position: Manager");
+            positionText.setText("Position: Project Manager and Part Time Software Engineer");
             positionText.setVisible(true);
             positionText.setTextAlignment(TextAlignment.LEFT);
             positionText.setWrappingWidth(245);
-            majorText.setText("Major: major");
+            majorText.setText("Major: Robotics Engineering");
             majorText.setVisible(true);
             factText.setText("Fun fact: I'm in Alpha Chi Rho and RhoBeta Epsilon");
             factText.setVisible(true);
         });
         quentinPane.setOnMouseClicked(event ->
         {
-            nameText.setText("Name: Quentin");
+            nameText.setText("Name: Quentin Hall");
             nameText.setVisible(true);
-            positionText.setText("Position: Assistant Lead");
+            positionText.setText("Position: Assistant Lead Software Engineer");
             positionText.setVisible(true);
             positionText.setTextAlignment(TextAlignment.LEFT);
             positionText.setWrappingWidth(245);
-            majorText.setText("Major: major");
+            majorText.setText("Major: Computer Science");
             majorText.setVisible(true);
             factText.setText("Fun fact: I've traveled to 54 countries.");
             factText.setVisible(true);
         });
         jaiPane.setOnMouseClicked(event ->
         {
-            nameText.setText("Name: Jai");
+            nameText.setText("Name: Jai Jariwala");
             nameText.setVisible(true);
-            positionText.setText("Position: Scrum");
+            positionText.setText("Position: Scrum Master and Part Time Software Engineer");
             positionText.setVisible(true);
             positionText.setTextAlignment(TextAlignment.LEFT);
             positionText.setWrappingWidth(245);
-            majorText.setText("Major: major");
+            majorText.setText("Major: Robotics Engineering");
             majorText.setVisible(true);
-            factText.setText("Fun fact: fact");
+            factText.setText("Fun fact: I like to play the guitar");
             factText.setVisible(true);
         });
         sophiaPane.setOnMouseClicked(event ->
         {
-            nameText.setText("Name: Sophia");
+            nameText.setText("Name: Sophia Kalavantis");
             nameText.setVisible(true);
-            positionText.setText("Position: Product Owner");
+            positionText.setText("Position: Product Owner and Part Time Software Engineer");
             positionText.setVisible(true);
             positionText.setTextAlignment(TextAlignment.LEFT);
             positionText.setWrappingWidth(245);
-            majorText.setText("Major: major");
+            majorText.setText("Major: Computer Science");
             majorText.setVisible(true);
             factText.setText("Fun fact: I'm in Alpha Phi and I have an identical twin sister");
             factText.setVisible(true);
         });
         vincentPane.setOnMouseClicked(event ->
         {
-            nameText.setText("Name: Vincent");
+            nameText.setText("Name: Yuancen (Vincent) Pu");
             nameText.setVisible(true);
-            positionText.setText("Position: Full Time");
+            positionText.setText("Position: Full Time Software Engineer");
             positionText.setVisible(true);
             positionText.setTextAlignment(TextAlignment.LEFT);
             positionText.setWrappingWidth(245);
-            majorText.setText("Major: major");
+            majorText.setText("Major: Robotics Engineering");
             majorText.setVisible(true);
             majorText.setVisible(true);
             factText.setText("Fun fact: fact");
@@ -118,39 +118,39 @@ public class AboutController {
         });
         apolloPane.setOnMouseClicked(event ->
         {
-            nameText.setText("Name: Apollo");
+            nameText.setText("Name: Apollinaris (Apollo) Rowe");
             nameText.setVisible(true);
-            positionText.setText("Position: Lead");
+            positionText.setText("Position: Lead Software Engineer");
             positionText.setVisible(true);
             positionText.setTextAlignment(TextAlignment.LEFT);
             positionText.setWrappingWidth(245);
-            majorText.setText("Major: major");
+            majorText.setText("Major: Computer Science");
             majorText.setVisible(true);
             factText.setText("Fun fact: I'm from California");
             factText.setVisible(true);
         });
         vanessaPane.setOnMouseClicked(event ->
         {
-            nameText.setText("Name: Vanessa");
+            nameText.setText("Name: Vanessa Sam");
             nameText.setVisible(true);
-            positionText.setText("Position: Full Time");
+            positionText.setText("Position: Full Time Software Engineer");
             positionText.setVisible(true);
             positionText.setTextAlignment(TextAlignment.LEFT);
             positionText.setWrappingWidth(245);
-            majorText.setText("Major: major");
+            majorText.setText("Major: Data Science");
             majorText.setVisible(true);
-            factText.setText("Fun fact: fact");
+            factText.setText("Fun fact: I like to collect tiny cups and spoons from the different countries I visit");
             factText.setVisible(true);
         });
         jamesPane.setOnMouseClicked(event ->
         {
-            nameText.setText("Name: James");
+            nameText.setText("Name: James Yi");
             nameText.setVisible(true);
-            positionText.setText("Position: Assistant Lead");
+            positionText.setText("Position: Assistant Lead Software Engineer");
             positionText.setVisible(true);
             positionText.setTextAlignment(TextAlignment.LEFT);
             positionText.setWrappingWidth(245);
-            majorText.setText("Major: major");
+            majorText.setText("Major: Computer Science");
             majorText.setVisible(true);
             factText.setText("Fun fact: I went to Korean school alongside regular school");
             factText.setVisible(true);
