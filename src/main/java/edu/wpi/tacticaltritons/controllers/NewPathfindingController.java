@@ -63,6 +63,8 @@ public class NewPathfindingController extends MapSuperController {
     List<MFXFilterComboBox> allLongNames = new ArrayList<>();
     List<Node> shortestPath = new ArrayList<>();
 
+    int firstNode = 0;
+
     public NewPathfindingController() throws SQLException {
     }
 
@@ -301,6 +303,8 @@ public class NewPathfindingController extends MapSuperController {
                         today = java.sql.Date.valueOf(date.getValue());
                         final int[] startNodeID = {0};
                         final int[] endNodeID = {0};
+
+
                         String start = allLongNames.get(i - 1).getSelectedItem().toString();
                         String end = allLongNames.get(i).getSelectedItem().toString();
                         try {
@@ -314,6 +318,7 @@ public class NewPathfindingController extends MapSuperController {
                             hash.forEach((key, value) -> {
                                 if (value.getLocation().getLongName().equals(start)) {
                                     startNodeID[0] = key;
+
                                 }
                                 if (value.getLocation().getLongName().equals(end)) {
                                     endNodeID[0] = key;
@@ -329,6 +334,16 @@ public class NewPathfindingController extends MapSuperController {
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
+                        if(i==1){
+                            firstNode = startNodeID[0];
+                        }
+                    }
+
+                    try {
+                        gesturePane.centreOn(new Point2D(getNodeHashMap().get(firstNode).getXcoord(),getNodeHashMap().get(firstNode).getYcoord()));
+                        setClickedButton(getNodeHashMap().get(firstNode).getFloor());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
                     }
                 });
     }
