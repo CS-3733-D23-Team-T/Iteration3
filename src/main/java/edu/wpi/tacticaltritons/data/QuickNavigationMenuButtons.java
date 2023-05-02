@@ -70,7 +70,6 @@ public class QuickNavigationMenuButtons {
             case DATABASE -> databaseNavigationMap.forEach((key, value) -> {
                 if(admin){
                     MenuItem item = new MenuItem(key);
-                    System.out.println(value);
                     item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);
                 }
