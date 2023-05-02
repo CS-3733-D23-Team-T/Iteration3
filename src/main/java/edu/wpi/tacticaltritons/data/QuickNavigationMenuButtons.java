@@ -25,6 +25,7 @@ public class QuickNavigationMenuButtons {
 
     public enum QuickNavigationMenu{SERVICE_REQUEST, HOSPITAL_MAP, SIGNAGE, DATABASE, ANNOUNCEMENTS}
     public QuickNavigationMenuButtons() throws IOException {
+        serviceRequestNavigationMap.clear();
         serviceRequestNavigationMap.put(GoogleTranslate.getString("mealRequest"), Screen.MEAL_RESTAURANT);
         serviceRequestNavigationMap.put(GoogleTranslate.getString("flowerRequest"), Screen.FLOWER_CHOICE);
         serviceRequestNavigationMap.put(GoogleTranslate.getString("furnitureRequest"), Screen.FURNITURE_DELIVERY);
@@ -32,19 +33,22 @@ public class QuickNavigationMenuButtons {
         serviceRequestNavigationMap.put(GoogleTranslate.getString("conferenceRoomRequest"), Screen.CONFERENCE_ROOM);
         serviceRequestNavigationMap.put(GoogleTranslate.getString("viewServiceRequest"), Screen.VIEW_SERVICE_REQUEST);
 
-
+        hospitalMapNavigationMap.clear();
         hospitalMapNavigationMap.put(GoogleTranslate.getString("hospitalMap"), Screen.VIEW_MAP);
         hospitalMapNavigationMap.put(GoogleTranslate.getString("editHospitalMap"), Screen.EDIT_MAP);
         hospitalMapNavigationMap.put(GoogleTranslate.getString("pathfinding"), Screen.PATHFINDING);
 
+        signageNavigationMap.clear();
         signageNavigationMap.put(GoogleTranslate.getString("signage"), Screen.SIGNAGE);
         signageNavigationMap.put(GoogleTranslate.getString("editSignage"), Screen.EDIT_SIGNAGE);
         signageNavigationMap.put(GoogleTranslate.getString("moveSignage"), Screen.MOVE_SIGN);
 
-        databaseNavigationMap.put(GoogleTranslate.getString("Database"), Screen.DATABASE);
+        databaseNavigationMap.clear();
+        databaseNavigationMap.put(GoogleTranslate.getString("database"), Screen.DATABASE);
         databaseNavigationMap.put(GoogleTranslate.getString("editDatabase"), Screen.EDIT_DATABASE);
         databaseNavigationMap.put(GoogleTranslate.getString("databaseHelp"), Screen.DATABASE_HELP);
 
+        announcementNavigationMap.clear();
         announcementNavigationMap.put(GoogleTranslate.getString("editAnnouncements"), Screen.EDIT_ANNOUNCEMENTS);
         announcementNavigationMap.put(GoogleTranslate.getString("createAnnouncements"), Screen.CREATE_ANNOUNCEMENTS);
     }

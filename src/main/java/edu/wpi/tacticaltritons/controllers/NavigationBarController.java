@@ -39,14 +39,13 @@ public class NavigationBarController {
     @FXML
     private void initialize() throws IOException {
         nameDisplay.textProperty().bind(UserSessionToken.fullNameProperty);
-        UserSessionToken.adminProperty.addListener((obs, o, n) -> {
-            if(n){
+        if(UserSessionToken.getUser()!=null) {
+            if (UserSessionToken.getUser().isAdmin()) {
                 accountTypeDisplay.setText(GoogleTranslate.getString("admin"));
-            }
-            else{
+            } else {
                 accountTypeDisplay.setText(GoogleTranslate.getString("staff"));
             }
-        });
+        }
 
         Navigation.screen.addListener((obs, o ,n) -> {
             if(n != null) {

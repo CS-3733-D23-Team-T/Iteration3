@@ -2,6 +2,7 @@ package edu.wpi.tacticaltritons.controllers.settings;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.*;
+import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.database.Session;
@@ -20,6 +21,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -36,6 +38,7 @@ import javafx.scene.text.Text;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +88,12 @@ public class SettingsController {
         //todo implement me
         List<String> languageList = new ArrayList<>();
         languageList.add(Language.English.formalName());
-        languageList.add(Language.Spanish.formalName() + " - Español");
+        languageList.add(Language.Spanish.formalName());
+        languageList.add(Language.Chinese.formalName());
+        languageList.add(Language.Korean.formalName());
+        languageList.add(Language.Hindi.formalName());
+        languageList.add(Language.Greek.formalName());
+        languageList.add(Language.German.formalName());
         languageComboBox.setItems(FXCollections.observableList(languageList));
         languageComboBox.setValue(Language.parseLanguage(user.getLanguage()).formalName());
 
@@ -100,6 +108,19 @@ public class SettingsController {
                         throw new RuntimeException(e);
                     }
                 }).start();
+                FXMLLoader navLoader = new FXMLLoader(App.class.getResource("views/NavigationBar.fxml"));
+                FXMLLoader adminLoader = new FXMLLoader(App.class.getResource("views/navigation/AdminQuickNavigation.fxml"));
+                FXMLLoader staffLoader = new FXMLLoader(App.class.getResource("views/navigation/StaffQuickNavigation.fxml"));
+                try {
+                    App.quickNavigationMenuButtons = new QuickNavigationMenuButtons();
+                    App.setNavBar(navLoader.load());
+                    App.setAdminQuickNavigation(adminLoader.load());
+                    App.setStaffQuickNavigation(staffLoader.load());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                App.getPrimaryStage().setScene(App.getRootPane().getScene());
+                App.getPrimaryStage().show();
                 Navigation.navigate(Screen.HOME);
                 Navigation.navigate(Screen.SETTINGS);
             }

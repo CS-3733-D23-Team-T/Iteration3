@@ -1,6 +1,8 @@
 package edu.wpi.tacticaltritons.controllers.login;
 
+import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.*;
+import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
 import edu.wpi.tacticaltritons.navigation.LoginNavigation;
@@ -13,10 +15,13 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class LoginController {
@@ -57,6 +62,19 @@ public class LoginController {
                     throw new RuntimeException(e);
                 }
                 GoogleTranslate.setLanguage(Language.parseLanguage(login.getLanguage()).getLanguage());
+                FXMLLoader navLoader = new FXMLLoader(App.class.getResource("views/NavigationBar.fxml"));
+                FXMLLoader adminLoader = new FXMLLoader(App.class.getResource("views/navigation/AdminQuickNavigation.fxml"));
+                FXMLLoader staffLoader = new FXMLLoader(App.class.getResource("views/navigation/StaffQuickNavigation.fxml"));
+                try {
+                    App.quickNavigationMenuButtons = new QuickNavigationMenuButtons();
+                    App.setAdminQuickNavigation(adminLoader.load());
+                    App.setStaffQuickNavigation(staffLoader.load());
+                    App.setNavBar(navLoader.load());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                App.getPrimaryStage().setScene(App.getRootPane().getScene());
+                App.getPrimaryStage().show();
                 Navigation.navigate(Screen.HOME);
             }
             else if(ret == -1){
