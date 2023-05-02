@@ -12,7 +12,6 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 <?import net.kurobako.gesturefx.GesturePane?>
 
 <BorderPane prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.NewViewMapController">
@@ -69,40 +68,6 @@
                         </children>
                     </StackPane>
                 </GesturePane>
-            <StackPane fx:id="menuPane" maxWidth="220.0" style="-fx-background-color: ffffff; -fx-background-radius: 0;" StackPane.alignment="TOP_LEFT">
-               <children>
-                  <Line fx:id="filterLine1" endX="70.0" startX="-70.0" stroke="#c6c6c6" StackPane.alignment="TOP_CENTER">
-                     <StackPane.margin>
-                        <Insets top="72.0" />
-                     </StackPane.margin>
-                  </Line>
-                  <Text fx:id="menuLocationName" strokeType="OUTSIDE" strokeWidth="0.0" text="Location Name" StackPane.alignment="TOP_CENTER">
-                     <StackPane.margin>
-                        <Insets top="25.0" />
-                     </StackPane.margin>
-                  </Text>
-                  <Text fx:id="menuLocationDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="Location Description" StackPane.alignment="TOP_LEFT">
-                     <StackPane.margin>
-                        <Insets left="15.0" top="100.0" />
-                     </StackPane.margin>
-                  </Text>
-                  <MFXButton fx:id="editMap" prefHeight="50.0" prefWidth="110.0" text="EDIT MAP" StackPane.alignment="BOTTOM_CENTER">
-                     <StackPane.margin>
-                        <Insets bottom="20.0" />
-                     </StackPane.margin>
-                  </MFXButton>
-               </children>
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color opacity="0.3499999940395355" />
-                     </color>
-                  </DropShadow>
-               </effect>
-               <StackPane.margin>
-                  <Insets />
-               </StackPane.margin>
-            </StackPane>
                 <StackPane fx:id="filterPane" maxHeight="510.0" maxWidth="200.0" style="-fx-background-color: ffffff; -fx-background-radius: 10;" StackPane.alignment="TOP_RIGHT">
                     <children>
                         <MFXCheckbox fx:id="restrooms" prefHeight="25.0" prefWidth="150.0" text="Restrooms" StackPane.alignment="TOP_CENTER">
@@ -269,11 +234,6 @@
             <ImageView fx:id="pathfinding" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
                <StackPane.margin>
                   <Insets left="390.0" top="20.0" />
-               </StackPane.margin>
-            </ImageView>
-            <ImageView fx:id="menuBar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
-               <StackPane.margin>
-                  <Insets left="20.0" top="20.0" />
                </StackPane.margin>
             </ImageView>
             </children>

@@ -142,6 +142,7 @@ public class NewEditMapController extends MapSuperController {
                             line.setOnContextMenuRequested(event -> {
                                 line.setStroke(Color.RED);
                                 deleteLine.add(line);
+
                             });
                             lineList.add(line);
                         }
@@ -264,6 +265,7 @@ public class NewEditMapController extends MapSuperController {
             }
         });
         this.editMap.setOnAction(event -> {
+            Navigation.navigate(Screen.PATHFINDING);
             Navigation.navigate(Screen.EDIT_MAP);
         });
     }
@@ -372,6 +374,11 @@ public class NewEditMapController extends MapSuperController {
 
     @FXML
     private void initialize() throws SQLException {
+
+        allNodes = DAOFacade.getAllNodes();
+        allMoves = DAOFacade.getAllCurrentMoves(today);
+        allEdges = DAOFacade.getAllEdges();
+        allLocationNames = DAOFacade.getAllLocationNames();
 
         menuBar.setImage(App.menuBar);
 
@@ -592,10 +599,12 @@ public class NewEditMapController extends MapSuperController {
                 try {
                     getNodeHashMap().get(key).setXcoord((int) value.getCenterX());
                     getNodeHashMap().get(key).setYcoord((int) value.getCenterY());
+                    DAOFacade.updateNode(getNodeHashMap().get(key));
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             });
+
         });
 
         this.delete.setOnAction(event -> {
@@ -620,6 +629,12 @@ public class NewEditMapController extends MapSuperController {
                         for (Line line : deleteLine) {
                             if (value.contains(line)) {
                                 value.remove(line);
+//                                Edge edge = new Edge();
+//                                try {
+//                                    DAOFacade.deleteEdge(edge);
+//                                } catch (SQLException e) {
+//                                    throw new RuntimeException(e);
+//                                }
                             }
                         }
                     });

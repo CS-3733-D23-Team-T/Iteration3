@@ -19,6 +19,8 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -27,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -115,7 +118,6 @@ public class MapSuperController {
 
     @FXML
     protected MFXButton viewNodes = new MFXButton();
-
 
     @FXML
     protected MFXFilterComboBox<String> startLocation = new MFXFilterComboBox<>();
@@ -687,7 +689,40 @@ public class MapSuperController {
 
             popover.setArrowLocation(PopOver.ArrowLocation.LEFT_CENTER);
             popover.show(circle);
-            submit.setOnAction(event1 -> {pathfindingCommentString = textField.getText();});
+            submit.setOnAction(event1 -> {
+                System.out.println(textField.getText());
+                Label pathfindingComment = new Label();
+                Rectangle rectangle = new Rectangle();
+                pathfindingComment.setText(textField.getText());
+                pathfindingComment.setFont(Font.font("Arial",FontWeight.BOLD,30));
+                pathfindingComment.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE");
+                rectangle.setStyle("-fx-background-color: WHITE; -fx-border-width: 3; -fx-border-color: BLACK");
+                rectangle.widthProperty().bind(pathfindingComment.widthProperty());
+                rectangle.heightProperty().bind(pathfindingComment.heightProperty());
+
+                Group group = new Group();
+                group.getChildren().add(rectangle);
+                group.getChildren().add(pathfindingComment);
+                pathfindingComment.toFront();
+
+                Parent parent = circle.getParent();
+                if (parent.equals(L1Group)) {
+                    this.L1Group.getChildren().add(group);
+                } else if (parent.equals(L2Group)) {
+                    this.L2Group.getChildren().add(group);
+                } else if (parent.equals(floor1Group)) {
+                    this.floor1Group.getChildren().add(group);
+                } else if (parent.equals(floor2Group)) {
+                    this.floor2Group.getChildren().add(group);
+                } else if (parent.equals(floor3Group)) {
+                    this.floor3Group.getChildren().add(group);
+                }
+
+
+                group.setVisible(true);
+                group.setTranslateX(circle.getCenterX()+30);
+                group.setTranslateY(circle.getCenterY());
+            });
         });
     }
 

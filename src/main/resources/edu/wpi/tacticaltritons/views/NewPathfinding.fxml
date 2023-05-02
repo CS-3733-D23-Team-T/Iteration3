@@ -32,7 +32,6 @@
                                     </ImageView>
                                 </children>
                             </Group>
-
                             <Group fx:id="L2Group">
                                 <children>
                                     <ImageView fx:id="lowerLevel2Image" pickOnBounds="true" preserveRatio="true" visible="false">
@@ -68,11 +67,6 @@
                                     </ImageView>
                                 </children>
                             </Group>
-                     <MFXDatePicker fx:id="date" prefHeight="50.0" prefWidth="170.0" text="Date" StackPane.alignment="TOP_LEFT">
-                        <StackPane.margin>
-                           <Insets left="450.0" top="80.0" />
-                        </StackPane.margin>
-                     </MFXDatePicker>
                         </children>
                     </StackPane>
                 </GesturePane>
@@ -92,10 +86,10 @@
                      <content>
                         <VBox fx:id="allDirections" maxWidth="300.0" prefWidth="300.0" spacing="20.0">
                            <padding>
-                              <Insets left="20.0" top="30.0" />
+                              <Insets left="20.0" top="40.0" />
                            </padding>
                            <children>
-                              <Text fx:id="textForDirections" strokeType="OUTSIDE" strokeWidth="0.0" text="Directions">
+                              <Text fx:id="textForDirections" strokeType="OUTSIDE" strokeWidth="0.0">
                                  <font>
                                     <Font name="Arial Bold" size="24.0" />
                                  </font>
@@ -136,9 +130,9 @@
                         <Insets left="750.0" top="20.0" />
                     </StackPane.margin>
                 </MFXButton>
-                <MFXButton fx:id="directions" text="DIRECTIONS" StackPane.alignment="TOP_RIGHT">
+                <MFXButton fx:id="directions" prefHeight="50.0" text="DIRECTIONS" StackPane.alignment="TOP_RIGHT">
                     <StackPane.margin>
-                        <Insets right="30.0" top="30.0" />
+                        <Insets right="30.0" top="20.0" />
                     </StackPane.margin>
                 </MFXButton>
             <VBox fx:id="allStops" maxHeight="-Infinity" maxWidth="360.0" spacing="10.0" StackPane.alignment="TOP_LEFT">
@@ -170,6 +164,11 @@
                   <Insets top="70.0" />
                </StackPane.margin>
             </MFXToggleButton>
+            <MFXDatePicker fx:id="date" prefHeight="50.0" prefWidth="170.0" text="Date" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="450.0" top="80.0" />
+               </StackPane.margin>
+            </MFXDatePicker>
             </children>
             <BorderPane.margin>
                 <Insets />

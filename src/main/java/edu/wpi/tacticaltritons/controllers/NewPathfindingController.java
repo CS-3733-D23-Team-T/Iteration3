@@ -47,9 +47,6 @@ public class NewPathfindingController extends MapSuperController {
     private Text textForDirections;
 
     @FXML
-    private Text pathfindingComment;
-
-    @FXML
     private ImageView addStop;
 
     @FXML
@@ -194,6 +191,8 @@ public class NewPathfindingController extends MapSuperController {
 
     public void initialize() throws SQLException {
 
+        date.setVisible(true);
+
         gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
         gesturePane.reset();
 
@@ -233,9 +232,12 @@ public class NewPathfindingController extends MapSuperController {
         this.directions.setVisible(true);
         showDirections(false);
         this.directions.setOnAction(event -> {
+
             if (!directionsPane.isVisible()) {
+                directions.setTranslateX(-155);
                 showDirections(true);
             } else {
+                directions.setTranslateX(0);
                 showDirections(false);
             }
 
@@ -275,6 +277,7 @@ public class NewPathfindingController extends MapSuperController {
                 allLongNames.remove(addedStop);
             });
         });
+
 
         this.pathfinding.setOnMouseClicked(
                 event -> {

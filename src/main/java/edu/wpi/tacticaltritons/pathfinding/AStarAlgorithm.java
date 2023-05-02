@@ -86,7 +86,7 @@ public class AStarAlgorithm implements PathFindingAlgorithm {
     }
 
     if (hash.get(b.getNodeID()).getLocation().getNodeType().equals("ELEV")) {
-      distance = .9 * distance;
+      distance = 0.9 * distance;
     }
 
     return distance;
