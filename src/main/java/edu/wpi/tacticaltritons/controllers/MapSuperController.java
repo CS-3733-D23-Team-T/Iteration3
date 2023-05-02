@@ -5,6 +5,7 @@ import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
+import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithmHandicap;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import edu.wpi.tacticaltritons.pathfinding.CongestionController;
 import io.github.palexdev.materialfx.controls.*;
@@ -18,6 +19,8 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -26,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -114,7 +118,6 @@ public class MapSuperController {
 
     @FXML
     protected MFXButton viewNodes = new MFXButton();
-
 
     @FXML
     protected MFXFilterComboBox<String> startLocation = new MFXFilterComboBox<>();
@@ -207,8 +210,6 @@ public class MapSuperController {
 
     }
 
-
-
     public void componentShift(int translate) {
         menuBar.setTranslateX(translate);
         searchOnMap.setTranslateX(translate);
@@ -229,8 +230,6 @@ public class MapSuperController {
         floor1Image.setImage(App.firstfloor);
         floor2Image.setImage(App.secondfloor);
         floor3Image.setImage(App.thirdfloor);
-        pathfinding.setImage(App.pathfinding);
-        menuBar.setImage(App.menuBar);
     }
 
     public void resetButtons() {
@@ -646,19 +645,7 @@ public class MapSuperController {
                     setLocationSearch(node);
                 });
                 break;
-            case "Pathfinding":
-                circle.setOnMouseClicked(event -> {
-                    circle.setFill(Color.GREEN);
-                    pathfindingList.add(node);
-                    System.out.println(pathfindingList.size());
-                    if (pathfindingList.size() == 2) {
-                        System.out.println("pathfinding");
-                        clearAllNodes();
-                        pathfinding(pathfindingList.get(0).getNodeID(), pathfindingList.get(1).getNodeID());
-                        pathfindingList.clear();
-                    }
-                });
-                break;
+
         }
 
     }
@@ -701,11 +688,44 @@ public class MapSuperController {
 
             popover.setArrowLocation(PopOver.ArrowLocation.LEFT_CENTER);
             popover.show(circle);
-            submit.setOnAction(event1 -> {pathfindingCommentString = textField.getText();});
+            submit.setOnAction(event1 -> {
+                System.out.println(textField.getText());
+                Label pathfindingComment = new Label();
+                Rectangle rectangle = new Rectangle();
+                pathfindingComment.setText(textField.getText());
+                pathfindingComment.setFont(Font.font("Arial",FontWeight.BOLD,30));
+                pathfindingComment.setStyle("-fx-border-color: BLACK; -fx-background-color: WHITE");
+                rectangle.setStyle("-fx-background-color: WHITE; -fx-border-width: 3; -fx-border-color: BLACK");
+                rectangle.widthProperty().bind(pathfindingComment.widthProperty());
+                rectangle.heightProperty().bind(pathfindingComment.heightProperty());
+
+                Group group = new Group();
+                group.getChildren().add(rectangle);
+                group.getChildren().add(pathfindingComment);
+                pathfindingComment.toFront();
+
+                Parent parent = circle.getParent();
+                if (parent.equals(L1Group)) {
+                    this.L1Group.getChildren().add(group);
+                } else if (parent.equals(L2Group)) {
+                    this.L2Group.getChildren().add(group);
+                } else if (parent.equals(floor1Group)) {
+                    this.floor1Group.getChildren().add(group);
+                } else if (parent.equals(floor2Group)) {
+                    this.floor2Group.getChildren().add(group);
+                } else if (parent.equals(floor3Group)) {
+                    this.floor3Group.getChildren().add(group);
+                }
+
+
+                group.setVisible(true);
+                group.setTranslateX(circle.getCenterX()+30);
+                group.setTranslateY(circle.getCenterY());
+            });
         });
     }
 
-    public void pathfinding(int startNodeID, int endNodeID) {
+    public void pathfinding(int startNodeID, int endNodeID , Boolean accessible) {
 
         try {
             shortestPathMap.add(getNodeHashMap().get(startNodeID));
@@ -716,7 +736,6 @@ public class MapSuperController {
         xCoord.clear();
         yCoord.clear();
         startEnd.clear();
-        clearAllNodes();
         int startNodeId;
         int endNodeId;
         Node endNode1 = null;
@@ -725,11 +744,19 @@ public class MapSuperController {
         endNodeId = endNodeID;
         try {
             CongestionController congestionController =new CongestionController();
-            AStarAlgorithm mapAlgorithm = new AStarAlgorithm(congestionController);
+
             startNode1 = DAOFacade.getNode(startNodeId);
             endNode1 = DAOFacade.getNode(endNodeId);
-            shortestPathMap = AlgorithmSingleton.getInstance().algorithm.findShortestPath(startNode1, endNode1);
-            System.out.println(shortestPathMap.get(0).getXcoord() + "," + shortestPathMap.get(0).getYcoord());
+            AStarAlgorithmHandicap path = new AStarAlgorithmHandicap(congestionController);
+
+            if(accessible==false) {
+                shortestPathMap = AlgorithmSingleton.getInstance().algorithm.findShortestPath(startNode1, endNode1);
+            }
+            else {
+                shortestPathMap = path.findShortestPath(startNode1, endNode1);
+            }
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -739,6 +766,9 @@ public class MapSuperController {
         Node finalNode = shortestPathMap.get(shortestPathMap.size() - 2);
         int change = 0;
         for (Node node : shortestPathMap) {
+
+            polyList.add((double) node.getXcoord());
+            polyList.add((double) node.getYcoord());
 
             System.out.println("new Node: " + node.getFloor());
             System.out.println("old Node: " + lastNode.getFloor());
