@@ -50,7 +50,7 @@ public class AStarAlgorithmHandicap implements PathFindingAlgorithm {
             }
 
             for (Node neighbor : neighborMap.getOrDefault(current, Collections.emptySet())) {
-                if (neighbor.equals(current) || visitedNodes.contains(neighbor) || isStairs(moveHash.get(neighbor))) {
+                if (neighbor.equals(current) || visitedNodes.contains(neighbor) || isStairs(moveHash.get(neighbor.getNodeID()))) {
                     continue;
                 }
 
