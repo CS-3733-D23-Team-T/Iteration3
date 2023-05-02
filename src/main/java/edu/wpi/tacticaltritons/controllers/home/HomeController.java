@@ -272,7 +272,7 @@ public class HomeController {
 
         PopOver popOver = new PopOver();
         popOver.setPrefSize(300, 300);
-        popOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+        popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
 
         Date currentDate = Date.valueOf(java.time.LocalDate.now());
         List<Move> allMoves = DAOFacade.getAllMoves();
