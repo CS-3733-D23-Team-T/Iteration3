@@ -36,10 +36,8 @@ public class NewViewMapController extends MapSuperController {
 
     @FXML
     private MFXButton filter;
-
     @FXML
     private MFXCheckbox bathrooms;
-
     @FXML
     private MFXCheckbox restrooms;
     @FXML
@@ -94,6 +92,7 @@ public class NewViewMapController extends MapSuperController {
         exits.setSelected(bool);
         bathrooms.setSelected(bool);
     }
+
     public void selectNone() {
 
         selectNone(restrooms);
@@ -120,8 +119,6 @@ public class NewViewMapController extends MapSuperController {
     }
 
 
-
-
     @FXML
     private void initialize() throws SQLException {
         filter.setText(GoogleTranslate.getString("filter"));
@@ -138,9 +135,6 @@ public class NewViewMapController extends MapSuperController {
         services.setText(GoogleTranslate.getString("services"));
         exits.setText(GoogleTranslate.getString("exits"));
         bathrooms.setText(GoogleTranslate.getString("bathrooms"));
-
-        pathfinding.setImage(App.pathfinding);
-
 
         gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
         gesturePane.reset();
@@ -168,11 +162,6 @@ public class NewViewMapController extends MapSuperController {
 
         floor1.setStyle("-fx-background-color: #f0ab0b");
         initalizeFloorButtons();
-
-        this.pathfinding.setOnMouseClicked(event -> {
-            Navigation.navigate(Screen.PATHFINDING);
-        });
-
 
         this.selectAll.setOnMouseClicked(event -> {
             if (selectAll.isSelected()) {
@@ -258,8 +247,7 @@ public class NewViewMapController extends MapSuperController {
 
             try {
                 getMoveHashMap().forEach((key, value) -> {
-                    if(value.getLocation().getLongName().equals(this.searchOnMap.getSelectedItem()))
-                    {
+                    if (value.getLocation().getLongName().equals(this.searchOnMap.getSelectedItem())) {
                         try {
                             circleCoord[0] = getNodeHashMap().get(key).getXcoord();
                             circleCoord[1] = getNodeHashMap().get(key).getYcoord();
@@ -279,7 +267,7 @@ public class NewViewMapController extends MapSuperController {
                 throw new RuntimeException(e);
             }
 
-            circle = drawCircle( circleCoord[0],  circleCoord[1], Color.PINK, Color.RED);
+            circle = drawCircle(circleCoord[0], circleCoord[1], Color.PINK, Color.RED);
 
             String endFloor = null;
             endFloor = thisFloor[0];
