@@ -154,15 +154,12 @@ public class SupplyCheckoutController {
         this.supplyTotal = SupplyDeliveryController.supplyTotal;
         priceText.setText(Double.toString(supplyTotal));
 
-
         checkoutItems.forEach((key, value) ->
         {
             checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, App.supplyHashMap ));
         });
         checkoutFlowplan.setAlignment(Pos.CENTER);
         ;
-
-        shopName.setText(SupplyChoiceController.name);
 
         clearButton.setOnMouseClicked(event -> clearForm());
 

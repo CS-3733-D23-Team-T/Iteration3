@@ -95,6 +95,9 @@ public class HomeController {
         initEventTable();
         initMoveTable();
         initServiceTable();
+
+        tableServiceRequest.getStylesheets().add("/edu/wpi/tacticaltritons/stylesheets/HomeTab.css");
+        tableInvitation.getStylesheets().add("/edu/wpi/tacticaltritons/stylesheets/HomeTab.css");
     }
 
     private void initAnnouncements() throws SQLException, IOException {
@@ -193,11 +196,11 @@ public class HomeController {
                     if (invitation.isAccepted()) {
                         invitation.setAccepted(false);
                         button.setText("Accept");
-                        button.setStyle("-fx-background-color: green");
+                        button.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 10;");
                     } else {
                         invitation.setAccepted(true);
                         button.setText("Cancel");
-                        button.setStyle("-fx-background-color: red");
+                        button.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 10;");
                     }
                     try {
                         DAOFacade.updateInvitation(invitation);
@@ -216,10 +219,10 @@ public class HomeController {
                     Invitations invitation = getTableView().getItems().get(getIndex());
                     if (invitation.isAccepted()) {
                         button.setText("Cancel");
-                        button.setStyle("-fx-background-color: red");
+                        button.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 10;");
                     } else {
                         button.setText("Accept");
-                        button.setStyle("-fx-background-color: green");
+                        button.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 10;");
                     }
                     setGraphic(button);
                 }
@@ -386,8 +389,8 @@ public class HomeController {
         completed.setPrefWidth(100);
         completed.setCellFactory(event -> new TableCell<>() {
             private final MFXButton button = new MFXButton("Complete");
-
             {
+                button.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 10;");
                 button.setOnAction(event -> {
                     HomeServiceRequests request = getTableView().getItems().get(getIndex());
                     try {
@@ -432,7 +435,6 @@ public class HomeController {
         TableColumn<HomeServiceRequests, String> title = new TableColumn<>("Service Request Table");
 
         tableServiceRequest.getColumns().addAll(completed, serviceType, items, location, fullNameCol, deliveryDate, deliveryTime);
-
 
         tableServiceRequest.getItems().addAll(requestObservableList);
         tableServiceRequest.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
