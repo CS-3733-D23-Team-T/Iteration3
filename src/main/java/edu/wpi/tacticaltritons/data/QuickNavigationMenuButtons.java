@@ -64,7 +64,7 @@ public class QuickNavigationMenuButtons {
                 }
             });
             case SIGNAGE -> signageNavigationMap.forEach((key, value) -> {
-                if(admin || !key.equals("Edit Signage")){
+                if(admin || (!key.equals("Edit Signage") &&  !key.equals("Move Signage"))){
                     MenuItem item = new MenuItem(key);
                     item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);
