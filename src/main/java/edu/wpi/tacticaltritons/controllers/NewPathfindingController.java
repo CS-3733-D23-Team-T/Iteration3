@@ -124,7 +124,7 @@ public class NewPathfindingController extends MapSuperController {
 
         menuBar.setVisible(true);
         menuPane.setVisible(false);
-        floor1.setStyle("-fx-background-color: BLUE");
+        floor1.setStyle("-fx-background-color: #f0ab0b");
 
         this.viewNodes.setOnAction(event -> {
             clearAllNodes();

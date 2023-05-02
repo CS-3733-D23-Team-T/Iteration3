@@ -311,7 +311,7 @@ public class SignageMoveController {
             }
         });
 
-        bottomTextDisplay.setText("Choose display location");
+        bottomTextDisplay.setText("CHOOSE DISPLAY LOCATION");
         MFXFilterComboBox<String> displaySelect = new MFXFilterComboBox<>();
         displaySelect.setPromptText("Display location");
         displaySelect.setFloatingText("Display location");

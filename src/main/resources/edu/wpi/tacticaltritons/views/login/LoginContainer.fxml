@@ -4,21 +4,30 @@
 <?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="610.0" prefWidth="400.0" style="-fx-background-color: white; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.login.LoginController">
+<BorderPane prefHeight="610.0" prefWidth="400.0" style="-fx-background-color: rgb(255, 255, 255, .5); -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.login.LoginController">
     <BorderPane.margin>
         <Insets bottom="25.0" left="25" right="25" top="25" />
     </BorderPane.margin>
     <center>
         <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefWrapLength="600.0" BorderPane.alignment="CENTER">
+         <ImageView fitHeight="79.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true">
+             <image>
+                 <Image preserveRatio="false" smooth="false" url="@/edu/wpi/tacticaltritons/images/login_page/mgb-icon.png" />
+             </image>
+            <FlowPane.margin>
+               <Insets bottom="30.0" />
+            </FlowPane.margin>
+         </ImageView>
              <FlowPane alignment="CENTER" orientation="VERTICAL" prefWrapLength="60.0">
                  <children>
-                     <MFXTextField fx:id="usernameField" floatMode="BORDER" floatingText="Username" prefWidth="200.0" promptText="Username">
+                     <MFXTextField fx:id="usernameField" floatMode="BORDER" prefWidth="200.0" promptText="Username">
                          <font>
                              <Font size="14.0" />
                          </font>
@@ -38,7 +47,7 @@
              </FlowPane>
              <FlowPane alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" prefWrapLength="60.0">
                  <children>
-                     <MFXPasswordField fx:id="passwordField" allowPaste="true" floatMode="BORDER" floatingText="Password" prefWidth="200.0" promptText="Password">
+                     <MFXPasswordField fx:id="passwordField" allowPaste="true" floatMode="BORDER" prefWidth="200.0" promptText="Password">
                          <FlowPane.margin>
                              <Insets left="10.0" right="10.0" />
                          </FlowPane.margin>
@@ -72,7 +81,7 @@
                  </children>
              </FlowPane>
             <BorderPane.margin>
-                <Insets />
+                <Insets right="20.0" />
             </BorderPane.margin>
         </FlowPane>
     </center>

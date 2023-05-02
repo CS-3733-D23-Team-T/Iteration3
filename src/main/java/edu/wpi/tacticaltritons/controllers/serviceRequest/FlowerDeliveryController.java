@@ -120,7 +120,7 @@ public class FlowerDeliveryController {
             }
             tab.setContent(scrollPane);
             tabPane.getTabs().add(tab);
-            tabPane.getStyleClass().add("tab-pane");
+            tabPane.getStylesheets().add("tab-pane");
         });
 
         // this makes it so that the user can not close any of the tabs then addeds it to the boardpane for resizeablity

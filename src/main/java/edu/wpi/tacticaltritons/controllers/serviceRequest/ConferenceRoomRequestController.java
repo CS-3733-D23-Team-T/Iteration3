@@ -221,6 +221,13 @@ public class ConferenceRoomRequestController {
         groundFloor.reset();
         groundFloor.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
 
+        javafx.application.Platform.runLater(() -> {
+            groundFloor.centreOn(new Point2D(2500, 1000));
+        });
+        this.groundFloor.setVisible(true);
+        groundFloor.toBack();
+        groundFloor.reset();
+
     }
 
     private void initializeData() throws SQLException {

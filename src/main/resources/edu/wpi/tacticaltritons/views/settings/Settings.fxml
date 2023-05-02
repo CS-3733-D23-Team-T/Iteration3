@@ -17,12 +17,12 @@
    <center>
       <BorderPane style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
          <top>
-            <Text fx:id="preferenceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Preferences" underline="true" BorderPane.alignment="CENTER">
+            <Text fx:id="preferenceText" strokeType="OUTSIDE" strokeWidth="0.0" fill="#222222" text="PREFERENCES" BorderPane.alignment="CENTER">
                <font>
-                  <Font size="32.0" />
+                  <Font size="25.0" />
                </font>
                <BorderPane.margin>
-                  <Insets top="5.0" />
+                  <Insets top="10.0" />
                </BorderPane.margin>
             </Text>
          </top>

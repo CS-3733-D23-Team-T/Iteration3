@@ -29,7 +29,7 @@ public class QuickNavigationMenuButtons {
         serviceRequestNavigationMap.put(GoogleTranslate.getString("mealRequest"), Screen.MEAL_RESTAURANT);
         serviceRequestNavigationMap.put(GoogleTranslate.getString("flowerRequest"), Screen.FLOWER_CHOICE);
         serviceRequestNavigationMap.put(GoogleTranslate.getString("furnitureRequest"), Screen.FURNITURE_DELIVERY);
-        serviceRequestNavigationMap.put(GoogleTranslate.getString("officeSupplyRequest"), Screen.SUPPLY_CHOICE);
+        serviceRequestNavigationMap.put(GoogleTranslate.getString("officeSupplyRequest"), Screen.SUPPLY_REQUEST);
         serviceRequestNavigationMap.put(GoogleTranslate.getString("conferenceRoomRequest"), Screen.CONFERENCE_ROOM);
         serviceRequestNavigationMap.put(GoogleTranslate.getString("viewServiceRequest"), Screen.VIEW_SERVICE_REQUEST);
 
@@ -37,6 +37,7 @@ public class QuickNavigationMenuButtons {
         hospitalMapNavigationMap.put(GoogleTranslate.getString("hospitalMap"), Screen.VIEW_MAP);
         hospitalMapNavigationMap.put(GoogleTranslate.getString("editHospitalMap"), Screen.EDIT_MAP);
         hospitalMapNavigationMap.put(GoogleTranslate.getString("pathfinding"), Screen.PATHFINDING);
+        hospitalMapNavigationMap.put(GoogleTranslate.getString("moveLocation"), Screen.MOVE);
 
         signageNavigationMap.clear();
         signageNavigationMap.put(GoogleTranslate.getString("signage"), Screen.SIGNAGE);
@@ -45,11 +46,9 @@ public class QuickNavigationMenuButtons {
 
         databaseNavigationMap.clear();
         databaseNavigationMap.put(GoogleTranslate.getString("database"), Screen.DATABASE);
-        databaseNavigationMap.put(GoogleTranslate.getString("editDatabase"), Screen.EDIT_DATABASE);
         databaseNavigationMap.put(GoogleTranslate.getString("databaseHelp"), Screen.DATABASE_HELP);
 
         announcementNavigationMap.clear();
-        announcementNavigationMap.put(GoogleTranslate.getString("editAnnouncements"), Screen.EDIT_ANNOUNCEMENTS);
         announcementNavigationMap.put(GoogleTranslate.getString("createAnnouncements"), Screen.CREATE_ANNOUNCEMENTS);
     }
     public List<MenuItem> generateMenuButton(boolean admin, QuickNavigationMenu menu){
@@ -62,14 +61,14 @@ public class QuickNavigationMenuButtons {
             });
             case HOSPITAL_MAP -> hospitalMapNavigationMap.forEach((key, value) -> {
 
-                if(admin || !key.equals("Edit Hospital Map")) {
+                if(admin || (!key.equals("Edit Hospital Map") && !key.equals("Move Location"))) {
                     MenuItem item = new MenuItem(key);
                     item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);
                 }
             });
             case SIGNAGE -> signageNavigationMap.forEach((key, value) -> {
-                if(admin || !key.equals("Edit Signage")){
+                if(admin || (!key.equals("Edit Signage") &&  !key.equals("Move Signage"))){
                     MenuItem item = new MenuItem(key);
                     item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);
