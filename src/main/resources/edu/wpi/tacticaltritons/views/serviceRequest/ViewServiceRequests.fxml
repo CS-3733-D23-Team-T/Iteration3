@@ -41,7 +41,7 @@
    </center>
    <stylesheets>
       <URL value="@../../stylesheets/TabPane.css" />
-      <URL value="@../../stylesheets/Table.css" />
+      <URL value="@../../stylesheets/HomeTab.css" />
    </stylesheets>
    <effect>
    </effect>

@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -103,7 +102,7 @@
                      <children>
                         <VBox alignment="CENTER" spacing="10.0">
                            <children>
-                              <Text fill="#002d59" strokeType="OUTSIDE" strokeWidth="0.0" text="Recipients" underline="true">
+                              <Text fill="#222222" strokeType="OUTSIDE" strokeWidth="0.0" text="RECIPIENTS">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -125,7 +124,7 @@
          <top>
             <HBox alignment="CENTER" BorderPane.alignment="CENTER">
                <children>
-                  <Text fill="#002d59" strokeType="OUTSIDE" strokeWidth="0.0" text="User Information" underline="true">
+                  <Text fill="#222222" strokeType="OUTSIDE" strokeWidth="0.0" text="USER INFORMATION">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -142,12 +141,12 @@
          <bottom>
             <HBox alignment="CENTER" spacing="75.0" BorderPane.alignment="CENTER">
                <children>
-                  <MFXButton id="clearButton" fx:id="clearButton" style="-fx-font-size: 16;" text="Clear">
+                  <MFXButton id="clearButton" fx:id="clearButton" prefHeight="16.0" prefWidth="59.0" text="Clear">
                      <padding>
                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                      </padding>
                      <font>
-                        <Font size="12.0" />
+                        <Font size="10.0" />
                      </font>
                   </MFXButton>
                   <MFXButton id="normalButton" fx:id="submitButton" disable="true" text="Submit">
@@ -168,7 +167,7 @@
          <top>
             <VBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Text fill="#002d59" strokeType="OUTSIDE" strokeWidth="0.0" text="Announcement Details" underline="true">
+                  <Text fill="#222222" strokeType="OUTSIDE" strokeWidth="0.0" text="ANNOUNCEMENT DETAILS">
                      <font>
                         <Font size="24.0" />
                      </font>
