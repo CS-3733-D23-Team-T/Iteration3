@@ -38,6 +38,7 @@ public class QuickNavigationMenuButtons {
         hospitalMapNavigationMap.put(GoogleTranslate.getString("editHospitalMap"), Screen.EDIT_MAP);
         hospitalMapNavigationMap.put(GoogleTranslate.getString("pathfinding"), Screen.PATHFINDING);
         hospitalMapNavigationMap.put(GoogleTranslate.getString("moveLocation"), Screen.MOVE);
+        hospitalMapNavigationMap.put("3D Map", Screen.THREE_D_MAP);
 
         signageNavigationMap.clear();
         signageNavigationMap.put(GoogleTranslate.getString("signage"), Screen.SIGNAGE);
@@ -60,7 +61,6 @@ public class QuickNavigationMenuButtons {
                 list.add(item);
             });
             case HOSPITAL_MAP -> hospitalMapNavigationMap.forEach((key, value) -> {
-
                 if(admin || (!key.equals("Edit Hospital Map") && !key.equals("Move Location"))) {
                     MenuItem item = new MenuItem(key);
                     item.setOnAction(event -> Navigation.navigate(value));

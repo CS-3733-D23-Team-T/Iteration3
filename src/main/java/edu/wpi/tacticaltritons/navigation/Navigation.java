@@ -28,7 +28,8 @@ public class Navigation {
         if(UserSessionToken.getUser() == null
                 && destination != Screen.SIGNAGE
                 && destination != Screen.VIEW_MAP
-                && destination != Screen.PATHFINDING){
+                && destination != Screen.PATHFINDING
+                && destination != Screen.THREE_D_MAP){
             destination = DEFAULT_SCREEN;
         }
         if(destination.equals(screen.get())) return;
