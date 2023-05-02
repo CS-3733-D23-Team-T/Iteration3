@@ -87,9 +87,12 @@ public class HomeController {
 
     @FXML
     private GridPane announcementGridPane;
-    @FXML Text eventsText;
-    @FXML Text requestText;
-    @FXML Text moveText;
+    @FXML
+    Text eventsText;
+    @FXML
+    Text requestText;
+    @FXML
+    Text moveText;
 
     TableView<HomeServiceRequests> tableServiceRequest = new TableView<>();
     TableView<Invitations> tableInvitation = new TableView<>();
@@ -119,21 +122,21 @@ public class HomeController {
                     FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
                     GridPane gridPane = loader.load();
                     setContent(gridPane, announcementsList.get(i));
-                    gridPane.setMargin(gridPane,new Insets(10,10,10,10));
-                    announcementGridPane.add(gridPane, 0,0);
+                    gridPane.setMargin(gridPane, new Insets(10, 10, 10, 10));
+                    announcementGridPane.add(gridPane, 0, 0);
                     ColumnConstraints newCol = new ColumnConstraints();
                     newCol.setHgrow(Priority.ALWAYS);
-                    announcementGridPane.getColumnConstraints().add(i,newCol);
+                    announcementGridPane.getColumnConstraints().add(i, newCol);
 
                 } else {
                     FXMLLoader loader = new FXMLLoader(App.class.getResource(Screen.ANNOUNCEMENT.getFilename()));
                     GridPane gridPane = loader.load();
                     setContent(gridPane, announcementsList.get(i));
-                    gridPane.setMargin(gridPane,new Insets(10,10,10,10));
+                    gridPane.setMargin(gridPane, new Insets(10, 10, 10, 10));
                     announcementGridPane.addColumn(i, gridPane);
                     ColumnConstraints newCol = new ColumnConstraints();
                     newCol.setHgrow(Priority.ALWAYS);
-                    announcementGridPane.getColumnConstraints().add(i,newCol);
+                    announcementGridPane.getColumnConstraints().add(i, newCol);
                 }
             }
         }
@@ -145,7 +148,7 @@ public class HomeController {
             if (node.getClass().equals(Label.class)) {
                 if (node.getId().equals("discriptionLabel")) {
                     ((Label) node).setText(GoogleTranslate.translate(announcements.getContent()));
-                }else if (node.getId().equals("titleLabel")) {
+                } else if (node.getId().equals("titleLabel")) {
                     ((Label) node).setText(GoogleTranslate.translate(announcements.getTitle()));
                 } else if (node.getId().equals("dateLabel")) {
                     ((Label) node).setText(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(announcements.getEffectiveDate().toLocalDateTime()));
@@ -397,6 +400,7 @@ public class HomeController {
         completed.setPrefWidth(100);
         completed.setCellFactory(event -> new TableCell<>() {
             private final MFXButton button = new MFXButton("Complete");
+
             {
                 button.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 10;");
                 button.setOnAction(event -> {
