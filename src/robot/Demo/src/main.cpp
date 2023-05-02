@@ -61,7 +61,7 @@ void handleMessage(){
         long deltaT;
         while(!chassis.checkMotionComplete()){
           deltaT = millis() - now;
-            Serial.println("d:" + (String)(baseSpeed * deltaT/(1000.0*scaling))); //TODO get distance
+            Serial.println("d:" + (String)(baseSpeed * deltaT/(1000.0*scaling)));
         }
       }
       Serial.print("Done");
@@ -77,9 +77,7 @@ void handleMessage(){
         long deltaT; 
         while(!chassis.checkMotionComplete()){
           deltaT = millis() - now;
-          if(deltaT % 500 == 0){
-            // Serial.print("r:" + (String)(2.0*baseSpeed*deltaT/1000.0)); //TODO get rotation and reset angle when done
-          }
+            // Serial.print("r:" + (String)(2.0*baseSpeed*deltaT/1000.0));
         }
         currentAngle += deltaAngle;
       }
