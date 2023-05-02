@@ -85,14 +85,14 @@ public class SettingsController {
         //todo implement me
         List<String> languageList = new ArrayList<>();
         languageList.add(Language.English.formalName());
-        languageList.add(Language.Español.formalName());
+        languageList.add(Language.Spanish.formalName() + " - EspaÃ±ol");
         languageComboBox.setItems(FXCollections.observableList(languageList));
         languageComboBox.setValue(Language.parseLanguage(user.getLanguage()).formalName());
 
         languageComboBox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
             if(!Objects.equals(n, o)){
-                user.setLanguage(Language.parseLanguage(n).formalName());
-                GoogleTranslate.setLanguage(Language.parseLanguage(n).getLanguage());
+                user.setLanguage(Language.parseLanguage(n.split(" -")[0]).formalName());
+                GoogleTranslate.setLanguage(Language.parseLanguage(n.split(" -")[0]).getLanguage());
                 new Thread(() -> {
                     try{
                         DAOFacade.updateLogin(user);
@@ -100,6 +100,8 @@ public class SettingsController {
                         throw new RuntimeException(e);
                     }
                 }).start();
+                Navigation.navigate(Screen.HOME);
+                Navigation.navigate(Screen.SETTINGS);
             }
         });
 

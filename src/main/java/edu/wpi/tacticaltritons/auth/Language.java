@@ -4,7 +4,7 @@ import java.util.Locale;
 
 public enum Language {
     English("en"),
-    Español("es");
+    Spanish("es");
     private final String lang;
     Language(String lang){
         this.lang = lang;
@@ -15,7 +15,7 @@ public enum Language {
     public static Language parseLanguage(String language){
         if(language == null) return null;
         if(English.name().equals(language)) return English;
-        else if(Español.name().equals(language)) return Español;
+        else if(Spanish.name().equals(language)) return Spanish;
         return null;
     }
     public String formalName(){
