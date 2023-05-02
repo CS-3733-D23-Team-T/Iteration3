@@ -26,7 +26,7 @@ public class QuickNavigationMenuButtons {
         serviceRequestNavigationMap.put("Meal Request", Screen.MEAL_RESTAURANT);
         serviceRequestNavigationMap.put("Flower Request", Screen.FLOWER_CHOICE);
         serviceRequestNavigationMap.put("Furniture Request", Screen.FURNITURE_DELIVERY);
-        serviceRequestNavigationMap.put("Office Supply Request", Screen.SUPPLY_CHOICE);
+        serviceRequestNavigationMap.put("Office Supply Request", Screen.SUPPLY_REQUEST);
         serviceRequestNavigationMap.put("Conference Room Request", Screen.CONFERENCE_ROOM);
         serviceRequestNavigationMap.put("View Service Request", Screen.VIEW_SERVICE_REQUEST);
 

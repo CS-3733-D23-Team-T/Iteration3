@@ -39,10 +39,10 @@ public class SignagePageController {
     @FXML private VBox signageBackLocations;
     @FXML private Rectangle signageBackSeparator;
 
-    double seperatorRatio = 0.6;
-    double arrowIconSize = 400;
-    int fontSize = 70;
-    double referenceWidth = 3840;
+    private double seperatorRatio = 0.6;
+    private double arrowIconSize = 400;
+    private int fontSize = 70;
+    private double referenceWidth = 3840;
     VBox[] signageLocationBlocks;
 
     ArrayList<Label> locationLabels;
@@ -53,7 +53,7 @@ public class SignagePageController {
             SignagePageInteraction.leftLocations = signageList.get(0).getLeftdir();
             SignagePageInteraction.rightLocations = signageList.get(0).getRightdir();
             SignagePageInteraction.backLocations = signageList.get(0).getBackdir();
-            SignagePageInteraction.signleDisplay = signageList.get(0).isSingleDisplay();
+            SignagePageInteraction.singleDisplay = signageList.get(0).isSingleDisplay();
             SignagePageInteraction.firstDisplay = false;
         }
         locationLabels = new ArrayList<>();
@@ -68,7 +68,7 @@ public class SignagePageController {
 
     private void generatePage(){
         loadLocation(signageForwardLocations, SignagePageInteraction.forwardLocations); // forward direction block is the default display area
-        if(SignagePageInteraction.signleDisplay){
+        if(SignagePageInteraction.singleDisplay){
             formatAsSingleDisplay();
         }else{
             loadLocation(signageLeftLocations, SignagePageInteraction.leftLocations);
@@ -118,8 +118,10 @@ public class SignagePageController {
         App.getPrimaryStage().widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                horizontalResizing(newValue);
-                resizeTexts(newValue);
+                if(newValue.doubleValue() > 600){
+                    horizontalResizing(newValue);
+                    resizeTexts(newValue);
+                }
             }
         });
         signageForwardBlock.heightProperty().addListener(new ChangeListener<Number>() {
@@ -151,7 +153,7 @@ public class SignagePageController {
         for(Label locaionLabel: locationLabels){
             locaionLabel.setStyle("-fx-font-size: " + fontSize);
         }
-        if(SignagePageInteraction.signleDisplay){
+        if(SignagePageInteraction.singleDisplay){
             signageForwardLocations.getChildren().get(0).setStyle("-fx-text-fill: " + ThemeColors.YELLOW.getColor() + ";" + "-fx-font-size: " + (fontSize + 10));
         }
     }
