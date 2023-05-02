@@ -80,6 +80,12 @@ public class FlowerDeliveryController {
 
     @FXML
     public void initialize() throws IOException {
+
+        checkoutItems = FXCollections.observableHashMap();
+        priceOfItems = FXCollections.observableHashMap();
+        flowerRequestOptionsList = new ArrayList<>();
+
+
         clearButton.setText(GoogleTranslate.getString("clear"));
         checkoutButton.setText(GoogleTranslate.getString("checkout"));
         orderFromText.setText(GoogleTranslate.getString("orderFrom"));
