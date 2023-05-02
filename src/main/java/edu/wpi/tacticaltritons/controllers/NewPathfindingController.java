@@ -183,35 +183,20 @@ public class NewPathfindingController extends MapSuperController {
 
         //robot path following with live map updating
         //checks if connection is active, then converts cartesian coordinates to polar coordinates
-        //robot code uses new threads so the map is still usable while communicating with robot
+        //robot code uses a new thread so the map is still usable while communicating with robot
         this.robotIcon.setOnMouseClicked(event -> {
-            RobotComm.checkConnection(new Arduino(RobotComm.getCom(),RobotComm.getBaud()));
-            if(RobotComm.isCheckConnection() && shortestPathMap.size() > 0){
-                Node startNode = shortestPathMap.get(0);
-                Node previousNode = startNode;
-                List<Float> distance = new ArrayList<>(), angle = new ArrayList<>();
-                for(Node node: shortestPathMap){
-                    if(!node.equals(startNode)){
-                        int xDiff = node.getXcoord() - previousNode.getXcoord();
-                        int yDiff = -1*(node.getYcoord() - previousNode.getYcoord()); //inverted
-                        float dist = (float)Math.sqrt(Math.pow(xDiff,2) + Math.pow(yDiff,2));
-                        float ang = (float)Math.toDegrees(Math.atan2(yDiff,xDiff));
-                        distance.add(dist);
-                        angle.add(ang);
-                        previousNode = node;
-                    }
-                }
-                List<Group> groups = new ArrayList<>();
-                groups.add(L1Group);
-                groups.add(L2Group);
-                groups.add(floor1Group);
-                groups.add(floor2Group);
-                groups.add(floor3Group);
-                for(Group group:groups){
-                    group.getChildren().add(RobotComm.drawObservableCircle());
-                }
-                RobotComm.runRobot(angle,distance,shortestPathMap);
+            robotIcon.setDisable(true);
+            List<Group> groups = new ArrayList<>();
+            groups.add(L1Group);
+            groups.add(L2Group);
+            groups.add(floor1Group);
+            groups.add(floor2Group);
+            groups.add(floor3Group);
+            for (Group group : groups) {
+                group.getChildren().add(RobotComm.drawObservableCircle());
             }
+            RobotComm.runRobot(shortestPathMap);
+            robotIcon.setDisable(false);
         });
     }
 

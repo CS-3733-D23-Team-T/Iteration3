@@ -100,31 +100,38 @@ public class RobotComm {
         sendData("l:" + (on == true?"1":"0"), arduino);
     }
 
-/*    public static void runRobot(float angle, float drive){
+    public static void runRobot(List<Node> nodes){
         Runnable robotRunnable = () -> {
-            setLED(true);
-            drive(angle,drive);
-            setLED(false);
-        };
-        Thread robotThread = new Thread(robotRunnable);
-        robotThread.start();
-    }*/
-
-    public static void runRobot(List<Float> angle, List<Float> drive, List<Node> nodes){
-        Runnable robotRunnable = () -> {
-            xRobotCoordinate.set(nodes.get(0).getXcoord());
-            yRobotCoordinate.set(nodes.get(0).getYcoord());
-            Arduino robot = new Arduino(com, baud);
-            openConnection(robot);
-            setLED(true, robot);
-            while(!readData(robot));
-            for(int i = 0; i < angle.size();i++){
-                drive(angle.get(i),drive.get(i), robot, nodes.get(i)); //TODO nodes.get(i+1)
-                while (!checkComplete);
+            checkConnection(new Arduino(RobotComm.getCom(),RobotComm.getBaud()));
+            if(checkConnection && nodes.size() > 0) {
+                Node startNode = nodes.get(0);
+                Node previousNode = startNode;
+                List<Float> distance = new ArrayList<>(), angle = new ArrayList<>();
+                for (Node node : nodes) {
+                    if (!node.equals(startNode)) {
+                        int xDiff = node.getXcoord() - previousNode.getXcoord();
+                        int yDiff = -1 * (node.getYcoord() - previousNode.getYcoord()); //inverted
+                        float dist = (float) Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+                        float ang = (float) Math.toDegrees(Math.atan2(yDiff, xDiff));
+                        distance.add(dist);
+                        angle.add(ang);
+                        previousNode = node;
+                    }
+                }
+                xRobotCoordinate.set(nodes.get(0).getXcoord());
+                yRobotCoordinate.set(nodes.get(0).getYcoord());
+                Arduino robot = new Arduino(com, baud);
+                openConnection(robot);
+                setLED(true, robot);
+                while(!readData(robot));
+                for(int i = 0; i < angle.size();i++){
+                    drive(angle.get(i),distance.get(i), robot, nodes.get(i));
+                    while (!checkComplete);
+                }
+                setLED(false, robot);
+                closeConnection(robot);
+                Thread.currentThread().interrupt();
             }
-            setLED(false, robot);
-            closeConnection(robot);
-            Thread.currentThread().interrupt();
         };
         Thread robotThread = new Thread(robotRunnable);
         robotThread.start();
