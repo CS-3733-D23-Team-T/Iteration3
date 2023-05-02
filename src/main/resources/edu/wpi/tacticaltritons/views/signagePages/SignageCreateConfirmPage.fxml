@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<GridPane id="block" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="145" prefWidth="400"  maxHeight="145" maxWidth="400" alignment="CENTER">
+    <MFXTextField fx:id="name" prefHeight="50" prefWidth="380" GridPane.rowIndex="0" floatingText="Preset Name">
+        <GridPane.margin>
+            <Insets top="10" bottom="10"/>
+        </GridPane.margin>
+    </MFXTextField>
+    <HBox GridPane.rowIndex="1" spacing="20">
+        <MFXButton id="cancelButton" fx:id="confirmCancelButton" prefWidth="180" prefHeight="30" text="Cancel"/>
+        <MFXButton id="normalButton" fx:id="confirmButton" prefWidth="180" prefHeight="30" text="Confirm"/>
+    </HBox>
+</GridPane>

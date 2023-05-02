@@ -20,6 +20,7 @@ public class EffectGenerator {
     }
 
 
+
     public static void generateSpacing(FlowPane targetPane, int spacing){
         Insets marginInsets = new Insets(spacing / 2,spacing,spacing / 2,spacing);
         ObservableList<Node> childrenItems = targetPane.getChildren();
