@@ -77,7 +77,7 @@ public class Account {
                         admin,
                         null,
                         false,
-                        "en-us",
+                        "English",
                         false,
                         null,
                         null,
