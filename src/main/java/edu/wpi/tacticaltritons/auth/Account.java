@@ -69,8 +69,8 @@ public class Account {
 
         DAOFacade.addLogin(
                 new Login(username,
-                        passwordTuple[0],
                         passwordTuple[1],
+                        passwordTuple[0],
                         email,
                         firstname,
                         lastname,
