@@ -35,9 +35,7 @@ public class LoginController {
     @FXML
     private void initialize() {
         usernameField.setPromptText(GoogleTranslate.getString("username"));
-        usernameField.setFloatingText(GoogleTranslate.getString("username"));
         passwordField.setPromptText(GoogleTranslate.getString("password"));
-        passwordField.setFloatingText(GoogleTranslate.getString("password"));
         loginButton.setText(GoogleTranslate.getString("Login"));
         resetPasswordLink.setText(GoogleTranslate.getString("resetPassword"));
         usernameValidator.setText(GoogleTranslate.getString("usernameValidator"));
