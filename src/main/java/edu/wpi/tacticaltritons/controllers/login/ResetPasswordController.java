@@ -211,7 +211,10 @@ public class ResetPasswordController {
         });
 
         this.cancelButton.setOnAction(event -> {
-            if(currentStep == 0) LoginNavigation.navigate(Screen.LOGIN_CONTAINER);
+            if(currentStep == 0)
+            {
+                LoginNavigation.navigate(Screen.LOGIN);
+            }
             else{
                 if(currentStep == 1){
                     validConfirmationCode.removeListener(stepTwoFormListener);

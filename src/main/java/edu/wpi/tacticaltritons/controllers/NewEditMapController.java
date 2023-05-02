@@ -414,7 +414,7 @@ public class NewEditMapController extends MapSuperController {
 
         menuBar.setVisible(true);
         menuPane.setVisible(false);
-        floor1.setStyle("-fx-background-color: BLUE");
+        floor1.setStyle("-fx-background-color: #f0ab0b");
 
         importExport.setVisible(true);
         importExportPane.setVisible(false);

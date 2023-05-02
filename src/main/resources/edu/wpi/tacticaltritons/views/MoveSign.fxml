@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -30,7 +29,7 @@
                   </Rectangle>
                   <VBox prefHeight="650.0" prefWidth="409.0" spacing="20.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-header" text="Information:">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-header" text="INFORMATION:" style="-fx-font-size: 24;">
                            <VBox.margin>
                               <Insets left="30.0" top="30.0" />
                            </VBox.margin>
@@ -115,7 +114,7 @@
                            <content>
                               <VBox fx:id="vBox" alignment="TOP_CENTER" prefHeight="330.0" prefWidth="346.0" spacing="15.0" style="-fx-background-color: white;">
                                  <children>
-                                    <Label fx:id="bottomTextDisplay" prefHeight="36.0" prefWidth="320.0" styleClass="text-header" text="Label" />
+                                    <Label fx:id="bottomTextDisplay" prefHeight="36.0" prefWidth="320.0" styleClass="text-header" text="Label" style="-fx-font-size: 24;"/>
                                  </children>
                               </VBox>
                            </content>
@@ -128,13 +127,6 @@
                     <StackPane.margin>
                         <Insets right="20.0" top="20.0" />
                     </StackPane.margin>
-                    <effect>
-                        <DropShadow>
-                            <color>
-                                <Color opacity="0.3499999940395355" />
-                            </color>
-                        </DropShadow>
-                    </effect>
                     <children>
                         <TextArea fx:id="textDirections" prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
                             <StackPane.margin>

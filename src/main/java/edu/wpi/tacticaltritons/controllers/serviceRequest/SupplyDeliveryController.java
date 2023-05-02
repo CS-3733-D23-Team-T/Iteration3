@@ -85,7 +85,6 @@ public class SupplyDeliveryController {
         ArrayList<SupplyRequestOptions> shopItems = getSupplyItems(supplyRequestOptionsList);
         HashMap<String, String> numberOfTabs = getNumberOfTables(shopItems);
 
-
         // Create the individual tabs based on the number of types of items that the shop has
         numberOfTabs.forEach((key, value) ->
         {
@@ -99,7 +98,6 @@ public class SupplyDeliveryController {
         // this makes it so that the user can not close any of the tabs then addeds it to the boardpane for resizeablity
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         infoBoardPane.setCenter(tabPane);
-
 
         clearButton.setOnAction(event ->
         {
@@ -145,6 +143,7 @@ public class SupplyDeliveryController {
                 flowPane.setColumnHalignment(HPos.CENTER);
                 flowPane.setAlignment(Pos.TOP_CENTER);
                 flowPane.setBackground(Background.fill(Color.WHITE));
+                flowPane.setStyle("-fx-background-radius: 10; -fx-background-color: white");
                 flowPane.setMargin(flowPane, new Insets(20, 20, 20, 20));
 
                 // Creates the image view
