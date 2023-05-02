@@ -19,7 +19,7 @@ public class LoginDaoImpl implements LoginDao {
     ResultSet rs = null;
     Login login = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
 
       String sql = "SELECT * FROM Login WHERE username = ?;";
@@ -52,7 +52,7 @@ public class LoginDaoImpl implements LoginDao {
     ResultSet rs = null;
     List<Login> logins = new ArrayList<>();
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
       String sql = "SELECT * FROM Login;";
       statement = connection.createStatement();
@@ -99,6 +99,7 @@ public class LoginDaoImpl implements LoginDao {
     int tokenTime = rs.getInt("tokenTime");
     String algorithmPreference = rs.getString("algorithmPreference");
     boolean darkMode = rs.getBoolean("darkMode");
+    String database = rs.getString("database");
 
     LocalDateTime lastLog = lastLogin == null ? null : LocalDateTime.ofInstant(lastLogin.toInstant(), ZoneId.systemDefault());
     return new Login(username,
@@ -116,7 +117,8 @@ public class LoginDaoImpl implements LoginDao {
             twoFactorFrequency,
             tokenTime,
             algorithmPreference,
-            darkMode);
+            darkMode,
+            database);
   }
 
   @Override
@@ -125,7 +127,7 @@ public class LoginDaoImpl implements LoginDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql =
               "INSERT INTO Login (username, " +
                       "email, " +
@@ -142,8 +144,9 @@ public class LoginDaoImpl implements LoginDao {
                       "twoFactorFrequency, " +
                       "tokenTime, " +
                       "algorithmPreference, " +
-                      "darkMode) " +
-                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                      "darkMode, " +
+                      "database)" +
+                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
       ps = connection.prepareStatement(sql);
       mapStatement(ps, login, connection,true);
@@ -167,7 +170,7 @@ public class LoginDaoImpl implements LoginDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql =
               "UPDATE Login SET " +
                       "email = ?, " +
@@ -184,7 +187,8 @@ public class LoginDaoImpl implements LoginDao {
                       "twoFactorFrequency = ?, " +
                       "tokenTime = ?, " +
                       "algorithmPreference = ?, " +
-                      "darkMode = ? " +
+                      "darkMode = ?, " +
+                      "database = ? " +
                       "WHERE username = ?";
 
       ps = connection.prepareStatement(sql);
@@ -206,7 +210,7 @@ public class LoginDaoImpl implements LoginDao {
   private void mapStatement(PreparedStatement statement, Login login, Connection connection, boolean type) throws SQLException {
     Timestamp timestamp = login.getLastLogin() == null ? null : Timestamp.valueOf(login.getLastLogin());
 
-    statement.setString(type ? 1 : 16, login.getUsername());
+    statement.setString(type ? 1 : 17, login.getUsername());
     statement.setString(type ? 2 : 1, login.getEmail());
     statement.setString(type ? 3 : 2, login.getFirstName());
     statement.setString(type ? 4 : 3, login.getLastName());
@@ -222,6 +226,7 @@ public class LoginDaoImpl implements LoginDao {
     statement.setInt(type ? 14 : 13, login.getTokenTime());
     statement.setString(type ? 15 : 14, login.getAlgorithmPreference());
     statement.setBoolean(type ? 16 : 15, login.getDarkMode());
+    statement.setString(type ? 17 : 16, login.getDatabase());
   }
 
   @Override
@@ -230,7 +235,7 @@ public class LoginDaoImpl implements LoginDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "DELETE FROM Login WHERE username = ?";
 
       ps = connection.prepareStatement(sql);

@@ -16,7 +16,7 @@ public class MoveDaoImpl implements MoveDao {
     ResultSet rs = null;
     Move move = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
 
       String sql = "SELECT * FROM Move WHERE nodeid = ? AND longName  = ? AND date = ?;";
@@ -54,7 +54,7 @@ public class MoveDaoImpl implements MoveDao {
     ResultSet rs = null;
     List<Move> moves = new ArrayList<>();
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
 
       String sql = "SELECT m.nodeID, m.longName, m.date, l.shortName, l.nodeType, n.xcoord, n.ycoord, n.floor, n.building "
@@ -103,7 +103,7 @@ public class MoveDaoImpl implements MoveDao {
     ResultSet rs = null;
     List<Move> moves = new ArrayList<>();
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
 
       String sql = "SELECT m.nodeID, m.longName, m.date, l.shortName, l.nodeType, n.xcoord, n.ycoord, n.floor, n.building "
@@ -156,7 +156,7 @@ public class MoveDaoImpl implements MoveDao {
     ResultSet rs = null;
     List<Move> moves = new ArrayList<>();
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
 
       String sql = "SELECT m.nodeID, m.longName, m.date, l.shortName, l.nodeType, n.xcoord, n.ycoord, n.floor, n.building "
@@ -208,7 +208,7 @@ public class MoveDaoImpl implements MoveDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "INSERT INTO Move (nodeID, longName, date) VALUES (?, ?, ?)";
 
       ps = connection.prepareStatement(sql);
@@ -236,7 +236,7 @@ public class MoveDaoImpl implements MoveDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "DELETE FROM Move WHERE (nodeID = ? AND longName = ? AND date = ?)";
 
       ps = connection.prepareStatement(sql);

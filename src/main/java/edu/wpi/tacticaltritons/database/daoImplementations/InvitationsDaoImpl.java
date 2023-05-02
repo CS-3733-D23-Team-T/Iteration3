@@ -20,7 +20,7 @@ public class InvitationsDaoImpl implements InvitationsDao {
         ResultSet rs = null;
         List<Invitations> invitations = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT I.firstName, I.lastName, I.conferenceID, I.accepted, C.date, C.location " +
                     "FROM Invitations I " +
@@ -68,7 +68,7 @@ public class InvitationsDaoImpl implements InvitationsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql =
                     "INSERT INTO Invitations (firstName, lastName, "
                             + "conferenceID, accepted, date, location) "
@@ -105,7 +105,7 @@ public class InvitationsDaoImpl implements InvitationsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql =
                     "UPDATE Invitations SET accepted = ? where conferenceID = ? AND firstName = ? ANd lastName = ?";
 

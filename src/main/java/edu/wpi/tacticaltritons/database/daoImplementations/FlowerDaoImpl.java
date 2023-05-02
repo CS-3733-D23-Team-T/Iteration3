@@ -17,7 +17,7 @@ public class FlowerDaoImpl implements FlowerDao {
     ResultSet rs = null;
     Flower flower = null;
     try {
-      connection = Tdb.INSTANCE.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
 
       String sql = "SELECT * FROM Flower WHERE orderNum = ?;";
@@ -80,7 +80,7 @@ public class FlowerDaoImpl implements FlowerDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql =
               "UPDATE Flower SET "
                       + "requesterFirst = ?,"
@@ -135,7 +135,7 @@ public class FlowerDaoImpl implements FlowerDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql =
               "INSERT INTO Flower (requesterFirst, requesterLast, patientFirst, patientLast,"
                       + "assignedStaffFirst, assignedStaffLast, deliveryDate, deliveryTime, location, items, total, status) "
@@ -178,7 +178,7 @@ public class FlowerDaoImpl implements FlowerDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "DELETE FROM Flower WHERE orderNum = ?";
 
       ps = connection.prepareStatement(sql);
@@ -208,7 +208,7 @@ public class FlowerDaoImpl implements FlowerDao {
     ResultSet rs = null;
     List<Flower> flowers = new ArrayList<>();
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
       String sql = "SELECT * FROM Flower ORDER BY status, deliverydate, deliverytime;";
       statement = connection.createStatement();

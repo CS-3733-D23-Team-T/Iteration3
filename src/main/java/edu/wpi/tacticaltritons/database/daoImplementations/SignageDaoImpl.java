@@ -18,7 +18,7 @@ public class SignageDaoImpl implements SignageDao {
         ResultSet rs = null;
         List<Signage> signs = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM signage;";
             statement = connection.createStatement();
@@ -62,7 +62,7 @@ public class SignageDaoImpl implements SignageDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "INSERT INTO signage (title, forwarddir, leftdir, rightdir, backdir, singleDisplay) VALUES (?, ?, ?, ?, ?, ?)";
 
             ps = connection.prepareStatement(sql);
@@ -95,7 +95,7 @@ public class SignageDaoImpl implements SignageDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "DELETE FROM signage WHERE title = ?";
 
             ps = connection.prepareStatement(sql);
@@ -121,7 +121,7 @@ public class SignageDaoImpl implements SignageDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "UPDATE signage SET forwarddir = ?, leftdir = ?, rightdir = ?, backdir = ?, singleDisplay = ? WHERE title = ?;";
 
             ps = connection.prepareStatement(sql);
@@ -153,7 +153,7 @@ public class SignageDaoImpl implements SignageDao {
         ResultSet rs = null;
         Signage sign = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM signage WHERE title = ?;";
             ps = connection.prepareStatement(sql);

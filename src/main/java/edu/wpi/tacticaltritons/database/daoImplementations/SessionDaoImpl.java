@@ -18,7 +18,7 @@ public class SessionDaoImpl implements SessionDao {
         ResultSet rs = null;
         List<Session> sessions = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM Sessions;";
             statement = connection.createStatement();
@@ -72,7 +72,7 @@ public class SessionDaoImpl implements SessionDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "INSERT INTO Sessions (username, " +
                     "location, " +
                     "firstName, " +
@@ -118,7 +118,7 @@ public class SessionDaoImpl implements SessionDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "DELETE FROM Sessions WHERE username = ?";
 
             ps = connection.prepareStatement(sql);
@@ -147,7 +147,7 @@ public class SessionDaoImpl implements SessionDao {
         ResultSet rs = null;
         Session session = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM Sessions WHERE username = ?;";
             ps = connection.prepareStatement(sql);
@@ -178,7 +178,7 @@ public class SessionDaoImpl implements SessionDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "UPDATE Sessions SET " +
                     "location = ?, " +
                     "firstName = ?, " +

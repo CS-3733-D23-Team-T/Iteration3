@@ -16,7 +16,7 @@ public class FurnitureRequestOptionsDaoImpl implements FurnitureRequestOptionsDa
         ResultSet rs = null;
         FurnitureRequestOptions furnitureRequestOptions = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM FurnitureRequestOptions WHERE itemName = ?;";
             ps = connection.prepareStatement(sql);
@@ -50,7 +50,7 @@ public class FurnitureRequestOptionsDaoImpl implements FurnitureRequestOptionsDa
         List<FurnitureRequestOptions> furnitureRequestOptions = new ArrayList<>();
 
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "SELECT * FROM FurnitureRequestOptions;";
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
@@ -85,7 +85,7 @@ public class FurnitureRequestOptionsDaoImpl implements FurnitureRequestOptionsDa
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "INSERT INTO FurnitureRequestOptions (itemName, itemType, itemDescription) VALUES (?, ?, ?)";
 
             ps = connection.prepareStatement(sql);
@@ -115,7 +115,7 @@ public class FurnitureRequestOptionsDaoImpl implements FurnitureRequestOptionsDa
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "DELETE FROM FurnitureRequestOptions WHERE (itemName = ?)";
 
             ps = connection.prepareStatement(sql);

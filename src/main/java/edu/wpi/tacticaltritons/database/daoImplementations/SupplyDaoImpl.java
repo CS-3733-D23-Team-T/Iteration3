@@ -18,7 +18,7 @@ public class SupplyDaoImpl implements SupplyDao {
     ResultSet rs = null;
     Supply supply = null;
     try {
-      connection = Tdb.INSTANCE.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
 
       String sql = "SELECT * FROM officesuppliesform WHERE orderNum = ?;";
@@ -77,7 +77,7 @@ public class SupplyDaoImpl implements SupplyDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql =
               "UPDATE officesuppliesform SET "
                       + "firstname = ?,"
@@ -128,7 +128,7 @@ public class SupplyDaoImpl implements SupplyDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql =
               "INSERT INTO officesuppliesform (firstname, lastname, "
                       + "assignedStaffFirst, assignedStaffLast, date, time, location, items, price, status) "
@@ -169,7 +169,7 @@ public class SupplyDaoImpl implements SupplyDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "DELETE FROM officesuppliesform WHERE orderNum = ?";
 
       ps = connection.prepareStatement(sql);
@@ -199,7 +199,7 @@ public class SupplyDaoImpl implements SupplyDao {
     ResultSet rs = null;
     List<Supply> supplys = new ArrayList<>();
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
       String sql = "SELECT * FROM officesuppliesform ORDER BY orderNum DESC;";
       statement = connection.createStatement();

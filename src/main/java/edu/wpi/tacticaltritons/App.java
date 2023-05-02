@@ -106,7 +106,7 @@ public class App extends Application {
 
   @Override
   public void stop() throws SQLException, ClassNotFoundException {
-    Tdb.getConnection().close();
+    Tdb.getInstance().getConnection().close();
     log.info("Shutting Down");
   }
 }
