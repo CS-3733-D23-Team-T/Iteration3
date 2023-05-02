@@ -6,6 +6,7 @@ import edu.wpi.tacticaltritons.database.LocationName;
 import edu.wpi.tacticaltritons.database.Move;
 import edu.wpi.tacticaltritons.database.Node;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
+import edu.wpi.tacticaltritons.robot.RobotComm;
 import io.github.palexdev.materialfx.controls.*;
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
@@ -41,6 +42,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ThreeDMapController {
@@ -2004,6 +2006,88 @@ public class ThreeDMapController {
                         pathTransition.get().getChildren().add(transition);
                     }
                 }
+                pathTransition.get().play();
+            }
+            else if (event.getCode() == KeyCode.K && pathTransition.get() == null) {
+                RobotComm.runRobot(walkingPath.get());
+                //Move camera to node start
+                camera.translateXProperty().unbindBidirectional(cameraX);
+                camera.translateYProperty().unbindBidirectional(cameraY);
+                camera.translateZProperty().unbindBidirectional(cameraZ);
+
+                List<Integer> pathIds = walkingPath.get().parallelStream().map(Node::getNodeID).toList();
+
+                root.getChildren().parallelStream().filter(n -> n instanceof VBox).forEach(n -> {
+                    if(n.getId() != null){
+                        int id = Integer.parseInt(n.getId().substring(n.getId().lastIndexOf('e') + 1));
+                        if(pathIds.contains(id)){
+                            n.setTranslateY(30);
+                            n.setVisible(true);
+                            ((VBox) n).getChildren().forEach(node1 -> {
+                                if(node1 instanceof Text && node1.getId() != null && node1.getId().contains("nodeText")){
+                                    String tid = node1.getId().substring(node1.getId().lastIndexOf('t') + 1);
+                                    ((Text) node1).setFont(new Font(10));
+                                    n.setTranslateX(nodes.parallelStream().filter(n1 -> n1.getNodeID() == Integer.parseInt(tid)).toList().get(0).getXcoord() - ((node1.getLayoutBounds().getWidth() + 10) / 2));
+                                }
+                            });
+                        }
+                    }
+                });
+
+                camera.setTranslateX(walkingPath.get().get(0).getXcoord());
+                camera.setTranslateZ(walkingPath.get().get(0).getYcoord());
+//                camera.setTranslateX(RobotComm.xRobotCoordinate.get());
+//                camera.setTranslateZ(RobotComm.yRobotCoordinate.get());
+
+                camera.getTransforms().clear();
+//                double opp = walkingPath.get().get(1).getXcoord() - walkingPath.get().get(0).getXcoord();
+//                double adj = walkingPath.get().get(1).getYcoord() - walkingPath.get().get(0).getYcoord();
+//                double angle = 180 + Math.toDegrees(Math.atan2(opp, adj));
+                double angle = RobotComm.angleRobotCoordinate.get();
+                xRotate.setAngle(180);
+                yRotate.setAngle(angle);
+                camera.getTransforms().addAll(xRotate, yRotate);
+                camera.setTranslateY(13);
+                double oldAngle = angle;
+                pathTransition.set(new SequentialTransition());
+                AtomicLong now = new AtomicLong(System.currentTimeMillis());
+                AtomicLong deltaT = new AtomicLong(0);
+                RobotComm.xRobotCoordinate.addListener(((observable, oldValue, newValue) -> {
+                    Point3D currentPosition = new Point3D(oldValue.doubleValue(),5,RobotComm.yRobotCoordinate.get());
+                    Point3D endPosition = new Point3D(newValue.doubleValue(),5,RobotComm.yRobotCoordinate.get());
+                    Point3D translation = endPosition.subtract(currentPosition);
+                    deltaT.set(System.currentTimeMillis() - now.get());
+                    TranslateTransition transition = new TranslateTransition(Duration.millis(deltaT.get()), camera);
+                    transition.setByX(translation.getX());
+                    transition.setByY(translation.getY());
+                    transition.setByZ(translation.getZ());
+                    now.set(System.currentTimeMillis());
+                    pathTransition.get().getChildren().add(transition);
+                }));
+
+                RobotComm.yRobotCoordinate.addListener(((observable, oldValue, newValue) -> {
+                    Point3D currentPosition = new Point3D(RobotComm.xRobotCoordinate.get(),5,oldValue.doubleValue());
+                    Point3D endPosition = new Point3D(RobotComm.xRobotCoordinate.get(),5,newValue.doubleValue());
+                    Point3D translation = endPosition.subtract(currentPosition);
+                    deltaT.set(System.currentTimeMillis() - now.get());
+                    TranslateTransition transition = new TranslateTransition(Duration.millis(deltaT.get()), camera);
+                    transition.setByX(translation.getX());
+                    transition.setByY(translation.getY());
+                    transition.setByZ(translation.getZ());
+                    now.set(System.currentTimeMillis());
+                    pathTransition.get().getChildren().add(transition);
+                }));
+
+/*                RobotComm.angleRobotCoordinate.addListener(((observable, oldValue, newValue) -> {
+                    deltaT.set(System.currentTimeMillis() - now.get());
+                    RotateTransition rotateTransition = new RotateTransition(Duration.millis(deltaT.get()), camera);
+                    rotateTransition.setFromAngle(oldValue.doubleValue());
+                    rotateTransition.setToAngle(newValue.doubleValue());
+                    rotateTransition.setAxis(Rotate.Y_AXIS);
+                    now.set(System.currentTimeMillis());
+                    pathTransition.get().getChildren().add(rotateTransition);
+                }));*/
+
                 pathTransition.get().play();
             }
             else if (event.getCode() == KeyCode.E) { // Turn Camera Right
