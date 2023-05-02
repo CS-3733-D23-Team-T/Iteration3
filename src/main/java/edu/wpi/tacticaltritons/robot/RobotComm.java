@@ -1,6 +1,7 @@
 package edu.wpi.tacticaltritons.robot;
 
 import arduino.Arduino;
+import edu.wpi.tacticaltritons.database.Node;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -8,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RobotComm {
@@ -20,6 +22,8 @@ public class RobotComm {
     private static boolean checkConnection = true; //true for able to connect, false if unable to connect
     private static boolean checkComplete = false;
     public static DoubleProperty xRobotCoordinate = new SimpleDoubleProperty(-10), yRobotCoordinate = new SimpleDoubleProperty(-10), angleRobotCoordinate = new SimpleDoubleProperty(0);
+    @Getter private static String in = "";
+    private static boolean open = false;
 
     /**
      * re-check if the program can communicate with the robot, does not always need to be called
@@ -30,69 +34,70 @@ public class RobotComm {
         arduino.closeConnection();
     }
 
-    private static String in = "";
+    public static void openConnection(Arduino arduino){
+        if(!open){
+            arduino.openConnection();
+        }
+        open = true;
+    }
 
-    public static void readData(){
-        Arduino robot = new Arduino(com, baud);
+    public static void closeConnection(Arduino arduino){
+        if(open){
+            arduino.closeConnection();
+        }
+        open = false;
+    }
+
+    public static boolean readData(Arduino arduino){
+        return readData(arduino,null);
+    }
+
+    public static boolean readData(Arduino arduino, Node node){
         in = "";
-        if(checkConnection && !robot.openConnection()){
-            System.out.println("Error connecting to robot");
-            checkConnection = false;
-        } else{
-            while(in.equals("")){
-                in = robot.serialRead();
-            }
-            System.out.println("Read [" + in + "] from robot");
-            switch(in.charAt(0)){
-                case 't':{
-                    angleRobotCoordinate.set(Double.parseDouble(in.substring(2)));
-                    break;
-                }
-                case 'd':{
-                    double linearDistance = Double.parseDouble(in.substring(2));
-                    xRobotCoordinate.set(linearDistance * Math.sin(angleRobotCoordinate.get()));
-                    yRobotCoordinate.set(linearDistance * Math.cos(angleRobotCoordinate.get()));
-                    break;
-                }
-                default:
-                    break;
-            }
-            robot.closeConnection();
+        while(in.equals("")){
+            in = arduino.serialRead();
         }
+        System.out.println("Read [" + in.substring(0,in.indexOf('\n')) + "] from robot");
+        if(in.charAt(0) == 'd'){
+            double linearDistance = Double.parseDouble(in.substring(2,in.indexOf('\n')));
+            xRobotCoordinate.set(linearDistance * Math.cos(Math.toRadians(angleRobotCoordinate.get())) + node.getXcoord());
+            yRobotCoordinate.set(-1*linearDistance * Math.sin(Math.toRadians(angleRobotCoordinate.get())) + node.getYcoord());
+        }
+        if(checkComplete()){
+/*            if(node != null){
+                xRobotCoordinate.set(node.getXcoord());
+                yRobotCoordinate.set(node.getYcoord());
+            }*/
+            return true;
+        }
+        else return false;
     }
 
-    private static void sendData(String data){
-        Arduino robot = new Arduino(com, baud);
-        if(checkConnection && !robot.openConnection()){
-            System.out.println("Error connecting to robot");
-            checkConnection = false;
-        } else{
-            robot.serialWrite(data + '\n');
-            System.out.println("Wrote [" + data + "] to robot");
-            robot.closeConnection();
-        }
+    private static void sendData(String data, Arduino arduino){
+        arduino.serialWrite(data + '\n');
+        System.out.println("Wrote [" + data + "] to robot");
     }
 
-    private static void drive(float angle, float distance){
+    private static void drive(float angle, float distance, Arduino arduino, Node node){
         checkComplete = false;
-        sendData("t:" + angle);
-        while(!checkComplete()){
-            readData();
+        sendData("t:" + angle, arduino);
+        angleRobotCoordinate.set(angle);
+        System.out.println(angle);
+        while(!readData(arduino)){
+            sleep(1);
         }
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        sendData("f:" + distance);
-        while(!checkComplete()){
-            readData();
+
+        sleep(0);
+
+        sendData("f:" + distance, arduino);
+        while(!readData(arduino, node)){
+            sleep(1);
         }
         checkComplete = true;
     }
 
-    public static void setLED(boolean on){
-        sendData("l:" + (on == true?"1":"0"));
+    public static void setLED(boolean on, Arduino arduino){
+        sendData("l:" + (on == true?"1":"0"), arduino);
     }
 
 /*    public static void runRobot(float angle, float drive){
@@ -105,15 +110,21 @@ public class RobotComm {
         robotThread.start();
     }*/
 
-    public static void runRobot(List<Float> angle, List<Float> drive){
+    public static void runRobot(List<Float> angle, List<Float> drive, List<Node> nodes){
         Runnable robotRunnable = () -> {
-            Circle circle = drawObservableCircle();
-            setLED(true);
+            xRobotCoordinate.set(nodes.get(0).getXcoord());
+            yRobotCoordinate.set(nodes.get(0).getYcoord());
+            Arduino robot = new Arduino(com, baud);
+            openConnection(robot);
+            setLED(true, robot);
+            while(!readData(robot));
             for(int i = 0; i < angle.size();i++){
-                drive(angle.get(i),drive.get(i));
+                drive(angle.get(i),drive.get(i), robot, nodes.get(i)); //TODO nodes.get(i+1)
+                while (!checkComplete);
             }
-            setLED(false);
-            circle.setVisible(false);
+            setLED(false, robot);
+            closeConnection(robot);
+            Thread.currentThread().interrupt();
         };
         Thread robotThread = new Thread(robotRunnable);
         robotThread.start();
@@ -141,6 +152,14 @@ public class RobotComm {
         circle.centerYProperty().bind(yRobotCoordinate);
         circle.setRadius(10.0);
         return circle;
+    }
+
+    private static void sleep(int millis){
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

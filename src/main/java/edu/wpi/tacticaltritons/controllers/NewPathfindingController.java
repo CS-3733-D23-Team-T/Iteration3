@@ -17,6 +17,7 @@ import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -179,6 +180,10 @@ public class NewPathfindingController extends MapSuperController {
                         throw new RuntimeException(e);
                     }
                 });
+
+        //robot path following with live map updating
+        //checks if connection is active, then converts cartesian coordinates to polar coordinates
+        //robot code uses new threads so the map is still usable while communicating with robot
         this.robotIcon.setOnMouseClicked(event -> {
             RobotComm.checkConnection(new Arduino(RobotComm.getCom(),RobotComm.getBaud()));
             if(RobotComm.isCheckConnection() && shortestPathMap.size() > 0){
@@ -186,7 +191,6 @@ public class NewPathfindingController extends MapSuperController {
                 Node previousNode = startNode;
                 List<Float> distance = new ArrayList<>(), angle = new ArrayList<>();
                 for(Node node: shortestPathMap){
-                    System.out.println(node.getXcoord() + "\t" + node.getYcoord());
                     if(!node.equals(startNode)){
                         int xDiff = node.getXcoord() - previousNode.getXcoord();
                         int yDiff = -1*(node.getYcoord() - previousNode.getYcoord()); //inverted
@@ -194,14 +198,21 @@ public class NewPathfindingController extends MapSuperController {
                         float ang = (float)Math.toDegrees(Math.atan2(yDiff,xDiff));
                         distance.add(dist);
                         angle.add(ang);
-                        System.out.println(xDiff + "\t" + yDiff + "\t" + dist + "\t" + ang);
                         previousNode = node;
                     }
                 }
-                RobotComm.runRobot(angle,distance);
+                List<Group> groups = new ArrayList<>();
+                groups.add(L1Group);
+                groups.add(L2Group);
+                groups.add(floor1Group);
+                groups.add(floor2Group);
+                groups.add(floor3Group);
+                for(Group group:groups){
+                    group.getChildren().add(RobotComm.drawObservableCircle());
+                }
+                RobotComm.runRobot(angle,distance,shortestPathMap);
             }
         });
     }
-
 
 }
