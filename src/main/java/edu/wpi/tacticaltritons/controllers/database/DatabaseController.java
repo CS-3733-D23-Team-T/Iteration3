@@ -30,7 +30,7 @@ public class DatabaseController {
   @FXML MFXButton editTableButton;
   @FXML MFXButton importButton;
   @FXML MFXButton exportButton;
-  @FXML MFXButton moveButton;
+  @FXML MFXButton helpButton;
   @FXML FlowPane tableInsert;
 
   @FXML
@@ -81,7 +81,8 @@ public class DatabaseController {
                   table.setPrefWidth(tableInsert.getWidth());
                   table.setPrefHeight(tableInsert.getHeight());
                 tableInsert.getChildren().add(table);
-              } else if (selectTable.getValue().equals("Edge")) {
+              }
+              else if (selectTable.getValue().equals("Edge")) {
 
                 tableInsert.getChildren().clear();
                 TableView<Edge> table = new TableView<>();
@@ -106,7 +107,8 @@ public class DatabaseController {
                   table.setPrefWidth(tableInsert.getWidth());
                   table.setPrefHeight(tableInsert.getHeight());
                 tableInsert.getChildren().add(table);
-              } else if (selectTable.getValue().equals("Location Name")) {
+              }
+              else if (selectTable.getValue().equals("Location Name")) {
                 tableInsert.getChildren().clear();
                 TableView<LocationName> table = new TableView<>();
                 TableColumn<LocationName, String> longName = new TableColumn<>("Long Name");
@@ -137,7 +139,8 @@ public class DatabaseController {
                   table.setPrefHeight(tableInsert.getHeight());
                 tableInsert.getChildren().add(table);
 
-              } else if (selectTable.getValue().equals("Move")) {
+              }
+              else if (selectTable.getValue().equals("Move")) {
                 tableInsert.getChildren().clear();
                 TableView<Move> table = new TableView<>();
                 TableColumn<Move, String> nodeID = new TableColumn<>("Node ID");
@@ -256,8 +259,7 @@ public class DatabaseController {
                 throw new RuntimeException(e);
               }
             });
-    this.moveButton.setOnAction(event -> {
-        Navigation.navigate(Screen.MOVE);
-    });
+
+      this.helpButton.setOnAction(event -> Navigation.navigate(Screen.DATABASE_HELP));
   }
 }

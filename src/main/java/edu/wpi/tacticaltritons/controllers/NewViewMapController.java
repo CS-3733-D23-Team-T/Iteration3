@@ -174,7 +174,7 @@ public class NewViewMapController extends MapSuperController {
         filterPane.setVisible(false);
         selectFilters(true);
 
-        floor1.setStyle("-fx-background-color: BLUE");
+        floor1.setStyle("-fx-background-color: #f0ab0b");
         initalizeFloorButtons();
 
         this.pathfinding.setOnMouseClicked(event -> {

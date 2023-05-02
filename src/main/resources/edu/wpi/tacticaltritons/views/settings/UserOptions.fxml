@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="610" prefWidth="300.0" style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.settings.UserOptionsController">
+<BorderPane prefHeight="610" prefWidth="300.0" style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.settings.UserOptionsController">
     <BorderPane.margin>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </BorderPane.margin>
@@ -59,12 +61,12 @@
         </FlowPane>
     </center>
     <top>
-        <Text fx:id="userHeader" strokeType="OUTSIDE" strokeWidth="0.0" text="User Options" underline="true" BorderPane.alignment="CENTER">
+        <Text fx:id="userHeader" fill="#222222" strokeType="OUTSIDE" strokeWidth="0.0" text="USER OPTIONS" BorderPane.alignment="CENTER">
             <font>
-                <Font size="32.0" />
+                <Font size="24.0" />
             </font>
             <BorderPane.margin>
-                <Insets top="5.0" />
+                <Insets top="10.0" />
             </BorderPane.margin>
         </Text>
     </top>

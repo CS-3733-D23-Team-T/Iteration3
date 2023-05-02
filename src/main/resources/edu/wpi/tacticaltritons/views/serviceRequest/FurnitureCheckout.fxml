@@ -17,6 +17,7 @@
 <?import javafx.scene.text.Text?>
 <?import net.kurobako.gesturefx.GesturePane?>
 
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
 <BorderPane fx:id="basePane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.FurnitureCheckoutController">
     <center>
         <StackPane alignment="TOP_CENTER" style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
@@ -256,9 +257,9 @@
         </FlowPane>
     </left>
     <right>
-        <BorderPane prefWidth="400.0" style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
+        <BorderPane prefWidth="400.0" style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER" >
             <center>
-                <ScrollPane prefWidth="300.0" BorderPane.alignment="CENTER">
+                <MFXScrollPane prefWidth="300.0" BorderPane.alignment="CENTER" style="-fx-background-color: #eeeeee; -fx-background-radius: 10; -fx-border-color: transparent;">
                     <content>
                         <FlowPane fx:id="checkoutFlowplan" alignment="TOP_CENTER" columnHalignment="CENTER" prefWidth="350.0">
                             <padding>
@@ -269,7 +270,7 @@
                     <BorderPane.margin>
                         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                     </BorderPane.margin>
-                </ScrollPane>
+                </MFXScrollPane>
             </center>
             <top>
                 <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="50.0" prefWidth="300.0" BorderPane.alignment="CENTER">
@@ -277,7 +278,7 @@
                         <Insets left="25.0" right="25.0" top="25.0" />
                     </BorderPane.margin>
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Items in Order:" textAlignment="CENTER">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ITEMS IN ORDER:" textAlignment="CENTER">
                             <font>
                                 <Font size="20.0" />
                             </font>
