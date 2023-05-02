@@ -1951,7 +1951,7 @@ public class ThreeDMapController {
                 xRotate.setAngle(180);
                 yRotate.setAngle(angle);
                 camera.getTransforms().addAll(xRotate, yRotate);
-                camera.setTranslateY(10);
+                camera.setTranslateY(13);
                 double oldAngle = angle;
                 //Transition from node to node
                 pathTransition.set(new SequentialTransition());
