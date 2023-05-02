@@ -27,6 +27,7 @@ import javafx.scene.shape.Polyline;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import net.kurobako.gesturefx.GesturePane;
 import org.checkerframework.checker.units.qual.C;
 import org.controlsfx.control.PopOver;
 
@@ -192,6 +193,9 @@ public class NewPathfindingController extends MapSuperController {
     }
 
     public void initialize() throws SQLException {
+
+        gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
+        gesturePane.reset();
 
         wheelChair.setImage(App.disability);
 

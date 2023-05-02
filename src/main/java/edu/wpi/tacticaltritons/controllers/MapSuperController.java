@@ -733,6 +733,9 @@ public class MapSuperController {
         int change = 0;
         for (Node node : shortestPathMap) {
 
+            polyList.add((double) node.getXcoord());
+            polyList.add((double) node.getYcoord());
+
             System.out.println("new Node: " + node.getFloor());
             System.out.println("old Node: " + lastNode.getFloor());
 
@@ -810,8 +813,6 @@ public class MapSuperController {
                 }
                 polyList.clear();
             }
-            polyList.add((double) node.getXcoord());
-            polyList.add((double) node.getYcoord());
             lastNode = node;
         }
         polyList.clear();

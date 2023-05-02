@@ -152,6 +152,9 @@ public class NewViewMapController extends MapSuperController {
     @FXML
     private void initialize() throws SQLException {
 
+        gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
+        gesturePane.reset();
+
         menuBar.setImage(App.menuBar);
 
 
