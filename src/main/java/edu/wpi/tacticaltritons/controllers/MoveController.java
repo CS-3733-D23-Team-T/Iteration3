@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MoveController {
+public class MoveController extends MapSuperController {
     @FXML
     MFXTextField firstName, lastName;
     @FXML
@@ -59,25 +59,9 @@ public class MoveController {
     StackPane stackPane;
     List<MFXTextField> fields = new ArrayList<>();
 
-    public void clearAllNodes() {
-        floor1Group.getChildren().remove(1, floor1Group.getChildren().size());
-        floor2Group.getChildren().remove(1, floor2Group.getChildren().size());
-        floor3Group.getChildren().remove(1, floor3Group.getChildren().size());
-        L1Group.getChildren().remove(1, L1Group.getChildren().size());
-        L2Group.getChildren().remove(1, L2Group.getChildren().size());
+    public MoveController() throws SQLException {
     }
 
-    public Circle drawCircle(double x, double y) {
-        Circle circle = new Circle();
-        circle.setVisible(true);
-        circle.setFill(Color.web(ThemeColors.PATH_NODE_COLOR.getColor()));
-        circle.setStroke(Color.web(ThemeColors.GRAY.getColor()));
-        circle.setStrokeWidth(3.0f);
-        circle.setCenterX(x);
-        circle.setCenterY(y);
-        circle.setRadius(10.0);
-        return circle;
-    }
     @FXML
     public void initialize() throws SQLException {
 
@@ -181,7 +165,7 @@ public class MoveController {
             Circle circle = new Circle();
 
             try {
-                circle = drawCircle(DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem().split(" -")[0])).getXcoord(), DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem().split(" -")[0])).getYcoord());
+                circle = drawCircle(DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem().split(" -")[0])).getXcoord(), DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem().split(" -")[0])).getYcoord(), Color.BLUE, Color.BLACK);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -192,6 +176,9 @@ public class MoveController {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+
+            resetImages();
+
 
             if (endFloor != null) {
                 switch (endFloor) {
@@ -233,11 +220,10 @@ public class MoveController {
             Circle circle = new Circle();
 
             try {
-                circle = drawCircle(DAOFacade.getNode((String) this.originalRoom.getSelectedItem(), today).getXcoord(), DAOFacade.getNode((String) this.originalRoom.getSelectedItem(), today).getYcoord());
+                circle = drawCircle(DAOFacade.getNode((String) this.originalRoom.getSelectedItem(), today).getXcoord(), DAOFacade.getNode((String) this.originalRoom.getSelectedItem(), today).getYcoord(), Color.RED, Color.BLACK );
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-
 
             String endFloor = null;
             try {
@@ -245,6 +231,8 @@ public class MoveController {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+
+            resetImages();
 
             if (endFloor != null) {
                 switch (endFloor) {
