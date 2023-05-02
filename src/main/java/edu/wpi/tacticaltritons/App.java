@@ -8,14 +8,13 @@ import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.database.Node;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
-import io.github.palexdev.materialfx.controls.MFXToggleButton;
+import io.github.palexdev.materialfx.controls.*;
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.beans.property.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -25,13 +24,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
+import javafx.geometry.Pos;
 import javafx.scene.*;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -158,14 +157,14 @@ log.info("Starting Up");
         ImageView iv = new ImageView(writer);
         iv.getTransforms().add(new Rotate(90, Rotate.X_AXIS));
 
-        Rotate yRotate = new Rotate(180, Rotate.Y_AXIS);
+        Rotate yRotate = new Rotate(0, Rotate.Y_AXIS);
         Rotate xRotate = new Rotate(90, Rotate.X_AXIS);
 
-        AtomicInteger floorNumber = new AtomicInteger(2);
-        List<Node> nodes = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now())).parallelStream()
+        StringProperty floorNumber = new SimpleStringProperty("2");
+        List<Node> nodes = new ArrayList<>(DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now())).parallelStream()
 //                        .filter(move -> !move.getLocation().getNodeType().equals("HALL"))
                 .map(Move::getNode)
-                .filter(node -> node.getFloor().equals(String.valueOf(floorNumber))).toList();
+                .filter(node -> node.getFloor().equals(floorNumber.get())).toList());
 
 
         // Create and position camera
@@ -191,10 +190,8 @@ log.info("Starting Up");
 
         root.getChildren().add(camera);
 
-
-
         Map<Node, LocationName> locations = new HashMap<>();
-        List<Move> moves = DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now()));
+        List<Move> moves = new ArrayList<>(DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now())));
         nodes.forEach(node -> locations.put(node, moves.parallelStream().filter(move -> move.getNode().getNodeID() == node.getNodeID()).map(Move::getLocation).toList().get(0)));
         Map<String, Color> nodeColors = new HashMap<>();
         nodeColors.put("BATH", Color.MEDIUMSLATEBLUE);
@@ -239,6 +236,7 @@ log.info("Starting Up");
         });
         sidePane.getChildren().add(newPathButton);
 
+        HBox searchBox = new HBox();
         MFXFilterComboBox<String> nodeSearchBox = new MFXFilterComboBox<>();
         nodeSearchBox.setPromptText("Find a Location");
         nodeSearchBox.getItems().addAll(locations.values().parallelStream().map(LocationName::getLongName).toList());
@@ -259,8 +257,42 @@ log.info("Starting Up");
                     });
                 }
             });
+            nodeSearchBox.getSelectionModel().clearSelection();
         });
-//        sidePane.getChildren().add(0, nodeSearchBox);
+        nodeSearchBox.setDisable(true);
+        nodeSearchBox.setOnHidden(event -> nodeSearchBox.setDisable(true));
+
+        MFXButton searchButton = new MFXButton("Search");
+        searchButton.setOnAction(event -> {
+            if(nodeSearchBox.isDisable()){
+                nodeSearchBox.setDisable(false);
+                nodeSearchBox.requestFocus();
+                nodeSearchBox.show();
+            }
+            else{
+                if(nodeSearchBox.getSelectedItem() != null){
+                    locations.forEach((k, v) -> {
+                        if(v.getLongName().equals(nodeSearchBox.getSelectedItem())){
+                            cameraZ.set(k.getYcoord() + 500);
+                            cameraX.set(k.getXcoord());
+                            cameraY.set(500);
+                            yRotate.setAngle(0);
+                            xRotate.setAngle(135);
+
+                            root.getChildren().parallelStream().forEach(node -> {
+                                if(node.getId() != null && node.getId().contains("nodeText" + k.getNodeID())){
+                                    node.setVisible(true);
+                                }
+                            });
+                        }
+                    });
+                    nodeSearchBox.getSelectionModel().clearSelection();
+                }
+            }
+        });
+        searchBox.getChildren().add(nodeSearchBox);
+        searchBox.getChildren().add(searchButton);
+        sidePane.getChildren().add(0, searchBox);
 
         //drawing nodes
         nodes.forEach(node -> {
@@ -288,8 +320,8 @@ log.info("Starting Up");
                             //removing old paths
                             root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("pathBlock"));
                             root.getChildren().removeIf(i -> i.getId() != null && i.getId().contains("bNode")
-                                && !i.getId().contains(String.valueOf(start.getNodeID()))
-                                && !i.getId().contains(String.valueOf(node.getNodeID())));
+                                    && !i.getId().contains(String.valueOf(start.getNodeID()))
+                                    && !i.getId().contains(String.valueOf(node.getNodeID())));
 
                             try {
                                 //Pathfinding
@@ -300,7 +332,7 @@ log.info("Starting Up");
 
                                     //formula
                                     double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
-                                    Math.pow(path.get(i + 1).getYcoord() - path.get(i).getYcoord(), 2));
+                                            Math.pow(path.get(i + 1).getYcoord() - path.get(i).getYcoord(), 2));
 
                                     double opp = path.get(i + 1).getXcoord() - path.get(i).getXcoord();
                                     double adj = path.get(i + 1).getYcoord() - path.get(i).getYcoord();
@@ -332,7 +364,7 @@ log.info("Starting Up");
                             t.setTranslateX(node.getXcoord() - (t.getLayoutBounds().getWidth() / 2));
 
                             Text lt = new Text(locations.get(node).getLongName());
-                            lt.setId("dNode");
+                            lt.setId("dNode" + node.getNodeID());
                             lt.setFont(new Font(24));
                             lt.setTranslateZ(node.getYcoord());
                             lt.setTranslateX(node.getXcoord() - (lt.getLayoutBounds().getWidth() / 2));
@@ -340,13 +372,13 @@ log.info("Starting Up");
 
                             Text nXY = new Text("x: " + node.getXcoord() + ", y: " + node.getYcoord());
                             nXY.setFont(new Font(20));
-                            nXY.setId("dNode");
+                            nXY.setId("dNode" + node.getNodeID());
                             nXY.setTranslateZ(node.getYcoord());
                             nXY.setTranslateX(node.getXcoord() - (nXY.getLayoutBounds().getWidth() / 2));
                             nXY.getTransforms().addAll(t.getTransforms());
 
                             Text lty = new Text("Type: " + locations.get(node).getNodeType());
-                            lty.setId("dNode");
+                            lty.setId("dNode" + node.getNodeID());
                             lty.setFont(new Font(20));
                             lty.setTranslateZ(node.getYcoord());
                             lty.setTranslateX(node.getXcoord() - (lty.getLayoutBounds().getWidth() / 2));
@@ -376,7 +408,7 @@ log.info("Starting Up");
                             root.getChildren().addAll(nXY, lty, lt);
                         }
                         else {
-                            root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("dNode"));
+                            root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("dNode" + node.getNodeID()));
                             permVisibleText.set(false);
                             permVisibleTexts.remove(permVisibleText);
                             t.setVisible(false);
@@ -396,7 +428,6 @@ log.info("Starting Up");
                 s.setOnMouseEntered(event -> {
                     if(!permVisibleText.get()) {
                         t.setVisible(true);
-                        System.out.println(t.getRotate() + " " + yRotate.getAngle());
                     }
                 });
                 s.setOnMouseExited(event -> {
@@ -412,8 +443,8 @@ log.info("Starting Up");
 
                 //drawing the floating text
                 t.getTransforms().addAll(
-                    new Rotate(180, Rotate.Z_AXIS),
-                    new Rotate(180, Rotate.Y_AXIS));
+                        new Rotate(180, Rotate.Z_AXIS),
+                        new Rotate(180, Rotate.Y_AXIS));
                 t.setVisible(false);
                 t.setFont(new Font(24));
                 t.setTranslateZ(node.getYcoord());
@@ -421,6 +452,7 @@ log.info("Starting Up");
                 t.setTranslateY(75);
 
 
+                rect.setId("nodeRect" + node.getNodeID());
                 rect.setWidth(t.getLayoutBounds().getWidth() + 20);
                 rect.setHeight(t.getLayoutBounds().getHeight());
                 rect.setTranslateZ(node.getYcoord() - 5);
@@ -595,19 +627,329 @@ log.info("Starting Up");
         });
         sidePane.getChildren().add(wallsToggle);
 
-
         MFXToggleButton movementToggle = new MFXToggleButton("Toggle Movement");
         movementToggle.setStyle("-fx-text-fill: blue");
         movementToggle.selectedProperty().bindBidirectional(movement);
         sidePane.getChildren().add(1, movementToggle);
 
+        HBox floorToggles = new HBox();
+        ToggleGroup floor = new ToggleGroup();
+        MFXRadioButton lower2 = new MFXRadioButton("L2");
+        floor.getToggles().add(lower2);
+        lower2.selectedProperty().addListener((obs, o, n) -> {
+            if(n){
+                root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("pathBlock"));
+                root.getChildren().removeIf(i -> i.getId() != null && (i.getId().contains("Node") || i.getId().contains("node")));
+
+                Image img = new Image(Objects.requireNonNull(App.class.getResource("images/clean_map/map_lowerlevel_2_clean.png")).toString());
+                WritableImage wri = new WritableImage(img.getPixelReader(), (int) img.getWidth(), (int) img.getHeight());
+                PixelWriter pixWri = writer.getPixelWriter();
+                PixelReader pixRea = writer.getPixelReader();
+
+                for (int i = 0; i < wri.getHeight(); i++) {
+                    for (int j = 0; j < wri.getWidth(); j++) {
+                        Color c = pixRea.getColor(j, i);
+                        double red = c.getRed() * 255;
+                        double green = c.getRed() * 255;
+                        double blue = c.getBlue() * 255;
+
+                        if (red < 230 && green < 230 && blue < 230) {
+                            matrix[i][j] = 1;
+                        }
+                        else {
+                            pixWri.setColor(j, i, Color.WHITE);
+                            matrix[i][j] = 0;
+                        }
+                    }
+                }
+
+                iv.setImage(wri);
+
+                floorNumber.set("L2");
+                nodes.clear();
+                try {
+                    nodes.addAll(DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now())).parallelStream()
+                            .map(Move::getNode)
+                            .filter(node -> node.getFloor().equals(String.valueOf(floorNumber.get()))).toList());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                cameraX.set(computeMidPoint(nodes.parallelStream().map(Node::getXcoord).toList()));
+                cameraY.set(3 * computeSTD(nodes.parallelStream().map(node -> new Point2D(node.getXcoord(), node.getYcoord())).toList()));
+                cameraZ.set(computeMidPoint(nodes.parallelStream().map(Node::getYcoord).toList()));
+
+                locations.clear();
+                moves.clear();
+                try {
+                    moves.addAll(DAOFacade.getAllCurrentMoves(Date.valueOf(LocalDate.now())));
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                nodes.forEach(node -> locations.put(node, moves.parallelStream().filter(move -> move.getNode().getNodeID() == node.getNodeID()).map(Move::getLocation).toList().get(0)));
+                walkingPath.set(null);
+                pathToCompute.clear();
+                visibleNodes.clear();
+                pathFinding.set(false);
+
+                permVisibleTexts.clear();
+                nodeSearchBox.getItems().clear();
+                nodeSearchBox.getItems().addAll(locations.values().parallelStream().map(LocationName::getLongName).toList());
+
+                nodes.forEach(node -> {
+                    if(!locations.get(node).getNodeType().equals("HALL")) {
+                        Text t = new Text(locations.get(node).getShortName());
+                        Rectangle rect = new Rectangle();
+                        t.setId("nodeText"+node.getNodeID());
+                        Box s = new Box(10, 10, 10);
+                        AtomicBoolean permVisibleText = new AtomicBoolean(false);
+                        s.setOnMouseClicked(event -> {
+                            //pathfinding
+                            if (pathFinding.get()) {
+                                permVisibleTexts.add(permVisibleText);
+                                permVisibleText.set(true);
+                                t.setVisible(true);
+                                //starting point
+                                s.setMaterial(new PhongMaterial(Color.BLACK));
+                                if (pathToCompute.size() == 0) {
+                                    pathToCompute.add(node);
+                                }
+                                //ending point
+                                else {
+                                    Node start = pathToCompute.get(0);
+
+                                    //removing old paths
+                                    root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("pathBlock"));
+                                    root.getChildren().removeIf(i -> i.getId() != null && i.getId().contains("bNode")
+                                            && !i.getId().contains(String.valueOf(start.getNodeID()))
+                                            && !i.getId().contains(String.valueOf(node.getNodeID())));
+
+                                    try {
+                                        //Pathfinding
+                                        List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
+                                        walkingPath.set(path);
+
+                                        for (int i = 0; i < path.size() - 1; i++) {
+
+                                            //formula
+                                            double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
+                                                    Math.pow(path.get(i + 1).getYcoord() - path.get(i).getYcoord(), 2));
+
+                                            double opp = path.get(i + 1).getXcoord() - path.get(i).getXcoord();
+                                            double adj = path.get(i + 1).getYcoord() - path.get(i).getYcoord();
+                                            double angle = Math.atan(opp / adj) * (180 / Math.PI);
+
+                                            Box line = new Box(5, 5, distance);
+                                            line.setId("pathBlock");
+                                            line.setTranslateZ(path.get(i).getYcoord() + adj / 2);
+                                            line.setTranslateX(path.get(i).getXcoord() + opp / 2);
+                                            line.getTransforms().add(new Rotate(angle, Rotate.Y_AXIS));
+                                            line.setMaterial(new PhongMaterial(Color.BLUE));
+
+                                            root.getChildren().add(line);
+                                        }
+
+                                    } catch (SQLException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    pathToCompute.clear();
+                                }
+                            }
+                            else {
+                                if(!permVisibleText.get()) {
+                                    permVisibleTexts.add(permVisibleText);
+                                    permVisibleText.set(true);
+                                    t.setVisible(true);
+
+                                    t.setFont(new Font(20));
+                                    t.setTranslateX(node.getXcoord() - (t.getLayoutBounds().getWidth() / 2));
+
+                                    Text lt = new Text(locations.get(node).getLongName());
+                                    lt.setId("dNode" + node.getNodeID());
+                                    lt.setFont(new Font(24));
+                                    lt.setTranslateZ(node.getYcoord());
+                                    lt.setTranslateX(node.getXcoord() - (lt.getLayoutBounds().getWidth() / 2));
+                                    lt.getTransforms().addAll(t.getTransforms());
+
+                                    Text nXY = new Text("x: " + node.getXcoord() + ", y: " + node.getYcoord());
+                                    nXY.setFont(new Font(20));
+                                    nXY.setId("dNode" + node.getNodeID());
+                                    nXY.setTranslateZ(node.getYcoord());
+                                    nXY.setTranslateX(node.getXcoord() - (nXY.getLayoutBounds().getWidth() / 2));
+                                    nXY.getTransforms().addAll(t.getTransforms());
+
+                                    Text lty = new Text("Type: " + locations.get(node).getNodeType());
+                                    lty.setId("dNode" + node.getNodeID());
+                                    lty.setFont(new Font(20));
+                                    lty.setTranslateZ(node.getYcoord());
+                                    lty.setTranslateX(node.getXcoord() - (lty.getLayoutBounds().getWidth() / 2));
+                                    lty.getTransforms().addAll(t.getTransforms());
+
+                                    double newRectWidth = computeMax(t.getLayoutBounds().getWidth(),
+                                            lt.getLayoutBounds().getWidth(),
+                                            nXY.getLayoutBounds().getWidth(),
+                                            lty.getLayoutBounds().getWidth()) + 15;
+                                    double newRectHeight = computeSum(t.getLayoutBounds().getHeight(),
+                                            lt.getLayoutBounds().getHeight(),
+                                            nXY.getLayoutBounds().getHeight(),
+                                            lty.getLayoutBounds().getHeight()) + 30;
+
+                                    lt.setTranslateY(t.getTranslateY() + newRectHeight - lt.getLayoutBounds().getHeight());
+                                    t.setTranslateY(lt.getTranslateY() - t.getLayoutBounds().getHeight() - 5);
+                                    lty.setTranslateY(t.getTranslateY() - lty.getLayoutBounds().getHeight() - 5);
+                                    nXY.setTranslateY(lty.getTranslateY() - nXY.getLayoutBounds().getHeight() - 5);
 
 
-        Rectangle background = new Rectangle(300,720);
-        background.setFill(Color.WHITE);
-        background.setArcHeight(20);
-        background.setArcWidth(20);
-        pane.getChildren().add(background);
+                                    double newTranslateY = rect.getTranslateY() - rect.getHeight() + newRectHeight;
+                                    double newTranslateX = node.getXcoord() - (newRectWidth / 2);
+                                    rect.setWidth(newRectWidth);
+                                    rect.setHeight(newRectHeight);
+                                    rect.setTranslateY(newTranslateY);
+                                    rect.setTranslateX(newTranslateX);
+                                    root.getChildren().addAll(nXY, lty, lt);
+                                }
+                                else {
+                                    root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("dNode" + node.getNodeID()));
+                                    permVisibleText.set(false);
+                                    permVisibleTexts.remove(permVisibleText);
+                                    t.setVisible(false);
+
+                                    t.setFont(new Font(24));
+                                    t.setTranslateX(node.getXcoord() - (t.getLayoutBounds().getWidth() / 2));
+
+                                    rect.setTranslateY(100);
+                                    rect.setWidth(t.getLayoutBounds().getWidth() + 20);
+                                    rect.setHeight(t.getLayoutBounds().getHeight());
+                                    rect.setTranslateX(node.getXcoord() - (rect.getWidth() / 2));
+
+                                    t.setTranslateY(80);
+                                }
+                            }
+                        });
+                        s.setOnMouseEntered(event -> {
+                            if(!permVisibleText.get()) {
+                                t.setVisible(true);
+                            }
+                        });
+                        s.setOnMouseExited(event -> {
+                            if(!permVisibleText.get()) {
+                                t.setVisible(false);
+                            }
+                        });
+                        s.setId("bNode"+node.getNodeID());
+                        s.setMaterial(new PhongMaterial(nodeColors.get(locations.get(node).getNodeType())));
+                        s.setTranslateZ(node.getYcoord());
+                        s.setTranslateX(node.getXcoord());
+                        visibleNodes.add(s);
+
+                        //drawing the floating text
+                        t.getTransforms().addAll(
+                                new Rotate(180, Rotate.Z_AXIS),
+                                new Rotate(180, Rotate.Y_AXIS));
+                        t.setVisible(false);
+                        t.setFont(new Font(24));
+                        t.setTranslateZ(node.getYcoord());
+                        t.setTranslateX(node.getXcoord() - (t.getLayoutBounds().getWidth() / 2));
+                        t.setTranslateY(75);
+
+
+                        rect.setId("nodeRect" + node.getNodeID());
+                        rect.setWidth(t.getLayoutBounds().getWidth() + 20);
+                        rect.setHeight(t.getLayoutBounds().getHeight());
+                        rect.setTranslateZ(node.getYcoord() - 5);
+                        rect.setTranslateX(node.getXcoord() - (rect.getWidth() / 2));
+                        rect.setTranslateY(95);
+                        rect.setFill(Color.WHITE);
+                        rect.setStroke(Color.BLACK);
+                        rect.setStrokeWidth(5);
+                        rect.visibleProperty().bind(t.visibleProperty());
+                        rect.getTransforms().addAll(t.getTransforms());
+
+                        root.getChildren().addAll(s, t, rect);
+                    }
+                });
+            }
+        });
+        floorToggles.getChildren().add(lower2);
+
+        MFXRadioButton lower1 = new MFXRadioButton("L1");
+        floor.getToggles().add(lower1);
+        lower1.selectedProperty().addListener((obs, o, n) -> {
+
+        });
+        floorToggles.getChildren().add(lower1);
+
+        MFXRadioButton floor1 = new MFXRadioButton("1");
+        floor.getToggles().add(floor1);
+        floorToggles.getChildren().add(floor1);
+
+        MFXRadioButton floor2 = new MFXRadioButton("2");
+        floor.getToggles().add(floor2);
+        floorToggles.getChildren().add(floor2);
+
+        MFXRadioButton floor3 = new MFXRadioButton("3");
+        floor.getToggles().add(floor3);
+        floorToggles.getChildren().add(floor3);
+
+        floorToggles.setAlignment(Pos.CENTER);
+        floorToggles.setSpacing(10);
+        sidePane.getChildren().add(floorToggles);
+
+        Text filterHeader = new Text("Filters");
+        filterHeader.setFont(new Font(24));
+        sidePane.getChildren().add(filterHeader);
+
+        HBox filterLine1 = new HBox();
+        filterLine1.setSpacing(25);
+
+        MFXCheckbox restroomFilter = new MFXCheckbox("Restrooms");
+        restroomFilter.setTextFill(Color.MEDIUMSLATEBLUE);
+        restroomFilter.setSelected(true);
+        restroomFilter.selectedProperty().addListener((obs, o, n) -> {
+            if (n) {
+                root.getChildren().forEach(node -> {
+//                    if(node.getId() != null && )
+                });
+            }
+            else{
+
+            }
+        });
+        filterLine1.getChildren().add(restroomFilter);
+
+        sidePane.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-min-width: 300; -fx-min-height: 720");
+        sidePane.setAlignment(Pos.TOP_CENTER);
+        BooleanProperty menuShowing = new SimpleBooleanProperty(true);
+        MFXButton transportMenu = new MFXButton("hide");
+        transportMenu.setOnAction(event -> {
+            if(menuShowing.get()){
+                menuShowing.set(false);
+                transportMenu.setText("hide");
+                TranslateTransition transition = new TranslateTransition();
+                transition.setNode(sidePane);
+                transition.setByX(-sidePane.getWidth());
+                transition.setDuration(Duration.millis(500));
+                transition.play();
+                transition.setOnFinished(e -> {
+                    sidePane.getChildren().remove(transportMenu);
+                    transportMenu.setLayoutX(0);
+                    pane.getChildren().add(transportMenu);
+                });
+            }
+            else {
+                menuShowing.set(true);
+                transportMenu.setText("show");
+                TranslateTransition transition = new TranslateTransition();
+                transition.setNode(sidePane);
+                transition.setByX(sidePane.getWidth());
+                transition.setDuration(Duration.millis(500));
+                transition.play();
+                pane.getChildren().remove(transportMenu);
+                sidePane.getChildren().add(0, transportMenu);
+            }
+        });
+        transportMenu.setAlignment(Pos.CENTER_RIGHT);
+        sidePane.getChildren().add(0, transportMenu);
+
         pane.getChildren().add(sidePane);
         pane.getChildren().add(group);
         group.toBack();
@@ -636,22 +978,12 @@ log.info("Starting Up");
                 double forwardDir = -1;
                 double normalDir = 0;
 
-                // w = -1
-                // s = 1
-                // d = 1
-                // a = -1
-
                 cameraX.set(cameraX.get() + forwardDir * dxForward + normalDir * dxNormal);
                 cameraZ.set(cameraZ.get() + forwardDir * dzForward + normalDir * dzNormal);
             }
             else if (event.getCode() == KeyCode.D) {
                 double forwardDir = 0;
                 double normalDir = 1;
-
-                // w = -1
-                // s = 1
-                // d = 1
-                // a = -1
 
                 cameraX.set(cameraX.get() + forwardDir * dxForward + normalDir * dxNormal);
                 cameraZ.set(cameraZ.get() + forwardDir * dzForward + normalDir * dzNormal);
@@ -660,22 +992,12 @@ log.info("Starting Up");
                 double forwardDir = 1;
                 double normalDir = 0;
 
-                // w = -1
-                // s = 1
-                // d = 1
-                // a = -1
-
                 cameraX.set(cameraX.get() + forwardDir * dxForward + normalDir * dxNormal);
                 cameraZ.set(cameraZ.get() + forwardDir * dzForward + normalDir * dzNormal);
             }
             else if (event.getCode() == KeyCode.A) {
                 double forwardDir = 0;
                 double normalDir = -1;
-
-                // w = -1
-                // s = 1
-                // d = 1
-                // a = -1
 
                 cameraX.set(cameraX.get() + forwardDir * dxForward + normalDir * dxNormal);
                 cameraZ.set(cameraZ.get() + forwardDir * dzForward + normalDir * dzNormal);
@@ -784,8 +1106,24 @@ log.info("Starting Up");
                 else{
                     permVisibleTexts.forEach(bool -> bool.set(false));
                     permVisibleTexts.clear();
+                    root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("dNode"));
                     root.getChildren().forEach(node -> {
-                        if(node.getId() != null && node.getId().contains("nodeText")) node.setVisible(false);
+                        if(node.getId() != null && node.getId().contains("nodeText")) {
+                            String id = node.getId().substring(node.getId().lastIndexOf('t') + 1);
+                            Node n = nodes.parallelStream().filter(no -> no.getNodeID() == Integer.parseInt(id)).toList().get(0);
+                            node.setVisible(false);
+
+                            assert node instanceof Text;
+                            ((Text) node).setFont(new Font(24));
+                            node.setTranslateX(n.getXcoord() - (node.getLayoutBounds().getWidth() / 2));
+                            node.setTranslateY(80);
+
+                            Rectangle rect = (Rectangle) root.getChildren().parallelStream().filter(no -> no.getId() != null && no.getId().equals("nodeRect" + id)).toList().get(0);
+                            rect.setTranslateY(100);
+                            rect.setWidth(node.getLayoutBounds().getWidth() + 20);
+                            rect.setHeight(node.getLayoutBounds().getHeight());
+                            rect.setTranslateX(n.getXcoord() - (rect.getWidth() / 2));
+                        }
                     });
                 }
             }
@@ -804,6 +1142,7 @@ log.info("Starting Up");
         });
 
 
+        primaryStage.requestFocus();
         primaryStage.setScene(scene);
         primaryStage.setTitle("CS3733 - Tactical Tritons");
         primaryStage.show();
