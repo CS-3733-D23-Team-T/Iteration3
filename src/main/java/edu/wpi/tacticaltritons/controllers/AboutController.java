@@ -113,7 +113,7 @@ public class AboutController {
             majorText.setText("Major: Robotics Engineering");
             majorText.setVisible(true);
             majorText.setVisible(true);
-            factText.setText("Fun fact: fact");
+            factText.setText("Fun fact: I grew up in China");
             factText.setVisible(true);
         });
         apolloPane.setOnMouseClicked(event ->
