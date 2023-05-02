@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -25,12 +26,13 @@ import java.util.Objects;
 @Slf4j
 public class App extends Application {
 
-  @Getter private static Stage primaryStage;
-  @Getter private static BorderPane rootPane;
-  @Getter private static BorderPane navBar;
-  @Getter private static GridPane loginQuickNavigation;
-  @Getter private static GridPane staffQuickNavigation;
-  @Getter private static GridPane adminQuickNavigation;
+  @Getter @Setter
+  static Stage primaryStage;
+  @Getter @Setter private static BorderPane rootPane;
+  @Getter @Setter private static BorderPane navBar;
+  @Getter @Setter private static GridPane loginQuickNavigation;
+  @Getter @Setter private static GridPane staffQuickNavigation;
+  @Getter @Setter private static GridPane adminQuickNavigation;
   public static Image groundfloor;
   public static Image lowerlevel1;
   public static Image lowerlevel2;

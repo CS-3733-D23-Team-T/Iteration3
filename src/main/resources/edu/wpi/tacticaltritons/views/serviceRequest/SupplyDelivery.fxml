@@ -20,7 +20,7 @@
                <children>
                   <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
+                        <Text fx:id="orderFromText" strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
                            <font>
                               <Font name="System Font" size="20.0" />
                            </font>
@@ -34,7 +34,7 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER" columnHalignment="CENTER">
                      <children>
-                        <Label text="Total Price: ">
+                        <Label fx:id="totalPriceText" text="Total Price: ">
                            <font>
                               <Font size="15.0" />
                            </font>

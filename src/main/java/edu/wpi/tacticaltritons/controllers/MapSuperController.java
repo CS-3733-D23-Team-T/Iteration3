@@ -8,6 +8,7 @@ import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
 import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithmHandicap;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import edu.wpi.tacticaltritons.pathfinding.CongestionController;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
@@ -622,7 +623,7 @@ public class MapSuperController {
                     StackPane stackPane = new StackPane();
                     Text text = new Text();
                     try {
-                        text.setText("Long Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getLongName() + "\n" + "Short Name: " + getMoveHashMap().get(node.getNodeID()).getLocation().getShortName() + "\n" + "Node Type: " + getMoveHashMap().get(node.getNodeID()).getLocation().getNodeType() + "\n" + "Node ID: " + node.getNodeID() + "\n" + "Coordinates (x,y): (" + node.getXcoord() + "," + node.getYcoord() + ")" + "\n" + "Floor: " + node.getFloor() + "\n" + "Building: " + node.getBuilding());
+                        text.setText(GoogleTranslate.getString("longName") + getMoveHashMap().get(node.getNodeID()).getLocation().getLongName() + "\n" + GoogleTranslate.getString("shortName") + getMoveHashMap().get(node.getNodeID()).getLocation().getShortName() + "\n" + GoogleTranslate.getString("nodeType") + getMoveHashMap().get(node.getNodeID()).getLocation().getNodeType() + "\n" + GoogleTranslate.getString("nodeID") + node.getNodeID() + "\n" + GoogleTranslate.getString("coordinates") + "(x,y): (" + node.getXcoord() + "," + node.getYcoord() + ")" + "\n" + GoogleTranslate.getString("floor") + node.getFloor() + "\n" + GoogleTranslate.getString("building") + node.getBuilding());
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }

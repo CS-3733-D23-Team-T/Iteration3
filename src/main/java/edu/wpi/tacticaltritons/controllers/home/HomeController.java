@@ -4,7 +4,9 @@ import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import edu.wpi.tacticaltritons.styling.ThemeColors;
+import edu.wpi.tacticaltritons.styling.Translation;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -85,12 +87,18 @@ public class HomeController {
 
     @FXML
     private GridPane announcementGridPane;
+    @FXML Text eventsText;
+    @FXML Text requestText;
+    @FXML Text moveText;
 
     TableView<HomeServiceRequests> tableServiceRequest = new TableView<>();
     TableView<Invitations> tableInvitation = new TableView<>();
 
     @FXML
     public void initialize() throws SQLException, IOException {
+        eventsText.setText(GoogleTranslate.getString("eventText"));
+        requestText.setText(GoogleTranslate.getString("serviceText"));
+        moveText.setText(GoogleTranslate.getString("moveText"));
         initAnnouncements();
         initEventTable();
         initMoveTable();
@@ -131,14 +139,14 @@ public class HomeController {
         }
     }
 
-    private void setContent(GridPane gridPane, Announcements announcements) {
+    private void setContent(GridPane gridPane, Announcements announcements) throws IOException {
         List<Node> nodes = gridPane.getChildren();
         for (Node node : nodes) {
             if (node.getClass().equals(Label.class)) {
                 if (node.getId().equals("discriptionLabel")) {
-                    ((Label) node).setText(announcements.getContent());
+                    ((Label) node).setText(GoogleTranslate.translate(announcements.getContent()));
                 }else if (node.getId().equals("titleLabel")) {
-                    ((Label) node).setText(announcements.getTitle());
+                    ((Label) node).setText(GoogleTranslate.translate(announcements.getTitle()));
                 } else if (node.getId().equals("dateLabel")) {
                     ((Label) node).setText(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(announcements.getEffectiveDate().toLocalDateTime()));
                 }
@@ -146,8 +154,8 @@ public class HomeController {
         }
     }
 
-    private void initEventTable() {
-        TableColumn<Invitations, String> location = new TableColumn<>("Location");
+    private void initEventTable() throws IOException {
+        TableColumn<Invitations, String> location = new TableColumn<>(GoogleTranslate.getString("location"));
         location.setCellValueFactory(new PropertyValueFactory<>("location"));
         location.setPrefWidth(150);
         location.setCellFactory(column -> {
@@ -173,7 +181,7 @@ public class HomeController {
         });
 
 
-        TableColumn<Invitations, Date> date = new TableColumn<>("Date");
+        TableColumn<Invitations, Date> date = new TableColumn<>(GoogleTranslate.getString("date"));
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
         date.setPrefWidth(75);
 
@@ -340,18 +348,18 @@ public class HomeController {
         }
     }
 
-    private void initServiceTable() {
+    private void initServiceTable() throws IOException {
 
-        TableColumn<HomeServiceRequests, String> serviceType = new TableColumn<>("Service Type");
+        TableColumn<HomeServiceRequests, String> serviceType = new TableColumn<>(GoogleTranslate.getString("serviceType"));
         serviceType.setCellValueFactory(new PropertyValueFactory<>("requestType"));
 
-        TableColumn<HomeServiceRequests, Integer> orderNum = new TableColumn<>("Order Num");
+        TableColumn<HomeServiceRequests, Integer> orderNum = new TableColumn<>(GoogleTranslate.getString("orderNum"));
         orderNum.setCellValueFactory(new PropertyValueFactory<>("orderNum"));
 
-        TableColumn<HomeServiceRequests, Date> deliveryDate = new TableColumn<>("Date");
+        TableColumn<HomeServiceRequests, Date> deliveryDate = new TableColumn<>(GoogleTranslate.getString("date"));
         deliveryDate.setCellValueFactory(new PropertyValueFactory<>("deliveryDate"));
 
-        TableColumn<HomeServiceRequests, String> deliveryTime = new TableColumn<>("Time");
+        TableColumn<HomeServiceRequests, String> deliveryTime = new TableColumn<>(GoogleTranslate.getString("time"));
         deliveryTime.setCellValueFactory(cellData -> {
             String time = cellData.getValue().getDeliveryTime().toString();
             if (time.equals("00:00:00")) {
@@ -361,7 +369,7 @@ public class HomeController {
             }
         });
 
-        TableColumn<HomeServiceRequests, String> fullNameCol = new TableColumn<>("Patient");
+        TableColumn<HomeServiceRequests, String> fullNameCol = new TableColumn<>(GoogleTranslate.getString("patient"));
         fullNameCol.setCellValueFactory(cellData -> {
             String lastName = cellData.getValue().getPatientLast();
             String firstName = cellData.getValue().getPatientFirst();
@@ -372,10 +380,10 @@ public class HomeController {
             }
         });
 
-        TableColumn<HomeServiceRequests, String> items = new TableColumn<>("Item(s)");
+        TableColumn<HomeServiceRequests, String> items = new TableColumn<>(GoogleTranslate.getString("items"));
         items.setCellValueFactory(new PropertyValueFactory<>("items"));
 
-        TableColumn<HomeServiceRequests, String> location = new TableColumn<>("Location");
+        TableColumn<HomeServiceRequests, String> location = new TableColumn<>(GoogleTranslate.getString("location"));
         location.setCellValueFactory(new PropertyValueFactory<>("location"));
 
         ObservableList<HomeServiceRequests> requestObservableList = null;

@@ -281,7 +281,7 @@
             <top>
                 <FlowPane orientation="VERTICAL" prefHeight="50.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
+                        <Text fx:id="orderFromText" strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
                             <font>
                                 <Font size="18.0" />
                             </font>
@@ -308,7 +308,7 @@
                <children>
                   <FlowPane alignment="CENTER" columnHalignment="CENTER">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price: ">
+                        <Text fx:id="priceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Price: ">
                            <font>
                               <Font size="15.0" />
                            </font>

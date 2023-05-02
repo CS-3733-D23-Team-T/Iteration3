@@ -4,6 +4,7 @@ import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -120,6 +121,20 @@ public class NewViewMapController extends MapSuperController {
 
     @FXML
     private void initialize() throws SQLException {
+        filter.setText(GoogleTranslate.getString("filter"));
+        applyFilter.setText(GoogleTranslate.getString("apply"));
+        restrooms.setText(GoogleTranslate.getString("restrooms"));
+        elevators.setText(GoogleTranslate.getString("elevators"));
+        stairs.setText(GoogleTranslate.getString("stairs"));
+        hallways.setText(GoogleTranslate.getString("hallways"));
+        departments.setText(GoogleTranslate.getString("departments"));
+        labs.setText(GoogleTranslate.getString("labs"));
+        infoDesks.setText(GoogleTranslate.getString("infoDesks"));
+        conferenceRooms.setText(GoogleTranslate.getString("conferenceRooms"));
+        retail.setText(GoogleTranslate.getString("retail"));
+        services.setText(GoogleTranslate.getString("services"));
+        exits.setText(GoogleTranslate.getString("exits"));
+        bathrooms.setText(GoogleTranslate.getString("bathrooms"));
 
         gesturePane.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
         gesturePane.reset();

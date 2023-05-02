@@ -5,6 +5,7 @@ import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.FlowerRequestOptions;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -19,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -65,11 +67,15 @@ public class FlowerChoiceController {
         uniqueShops = findNumberOfShops(flowerRequestOptionsList);
 
         uniqueShops.forEach((key, value) -> {
-            createFlowerShopButton(value, App.flowerHashMap.get(value.getShop()));
+            try {
+                createFlowerShopButton(value, App.flowerHashMap.get(value.getShop()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
-    private void createFlowerShopButton(FlowerRequestOptions value, Image shopImage) {
+    private void createFlowerShopButton(FlowerRequestOptions value, Image shopImage) throws IOException {
         // created the outer flow pane
         FlowPane flowPaneOuter = new FlowPane();
         flowPaneOuter.setPrefWidth(defaultOuterFlowPanePrefWidth);
@@ -107,7 +113,7 @@ public class FlowerChoiceController {
         //creates the discription label
         Label discriptionLabel = new Label();
         discriptionLabel.setPrefWidth(flowPaneInner.getPrefWidth());
-        discriptionLabel.setText(value.getShopDescription());
+        discriptionLabel.setText(GoogleTranslate.translate(value.getShopDescription()));
         discriptionLabel.setFont(new Font(defaultDiscriptionFontSize));
         discriptionLabel.setWrapText(true);
         discriptionLabel.setPadding(new Insets(0, 20, 0, 20));

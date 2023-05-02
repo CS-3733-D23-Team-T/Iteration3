@@ -20,7 +20,7 @@
                <children>
                   <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="FURNITURE FROM">
+                        <Text fx:id="furnitureFromText" strokeType="OUTSIDE" strokeWidth="0.0" text="FURNITURE FROM">
                            <font>
                               <Font size="20.0" />
                            </font>
