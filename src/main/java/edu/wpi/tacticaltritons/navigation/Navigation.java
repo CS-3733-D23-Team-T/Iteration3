@@ -2,6 +2,7 @@ package edu.wpi.tacticaltritons.navigation;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,12 @@ public class Navigation {
     public static ArrayList<Screen> history = new ArrayList<>();
     public static ArrayList<Screen> forwardHistory = new ArrayList<>();
     private static boolean checker = false;
-    public static SimpleStringProperty pageName = new SimpleStringProperty(DEFAULT_SCREEN.formatScreenName());
+    public static SimpleStringProperty pageName;
+
+    static {
+        pageName = new SimpleStringProperty(GoogleTranslate.getString(DEFAULT_SCREEN.formatScreenName()));
+    }
+
     public static SimpleObjectProperty<Screen> screen = new SimpleObjectProperty<>(DEFAULT_SCREEN);
 
     public static void navigate(Screen destination) {
@@ -46,7 +52,7 @@ public class Navigation {
             }
         }
         try {
-            pageName.set(destination.formatScreenName());
+            pageName.set(GoogleTranslate.getString(destination.formatScreenName()));
             screen.set(destination);
             final var resource = App.class.getResource(destination.getFilename());
             final FXMLLoader loader = new FXMLLoader(resource);

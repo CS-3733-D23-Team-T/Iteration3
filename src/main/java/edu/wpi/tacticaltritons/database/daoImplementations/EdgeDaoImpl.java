@@ -19,7 +19,7 @@ public class EdgeDaoImpl implements EdgeDao {
     ResultSet rs = null;
     Edge edge = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "SELECT * FROM Edge WHERE startNode = ? AND endNode = ?;";
       ps = connection.prepareStatement(sql);
       ps.setInt(1, startNode.getNodeID());
@@ -53,7 +53,7 @@ public class EdgeDaoImpl implements EdgeDao {
     ResultSet rs = null;
     List<Edge> edges = new ArrayList<>();
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
       String sql = "SELECT e.startNode, e.endNode, e.congestion, n1.nodeID AS startNodeID, n1.xcoord AS startXcoord, n1.ycoord AS startYcoord, n1.floor AS startFloor, n1.building AS startBuilding, n2.nodeID AS endNodeID, n2.xcoord AS endXcoord, n2.ycoord AS endYcoord, n2.floor AS endFloor, n2.building AS endBuilding FROM Edge e JOIN Node n1 ON e.startNode = n1.nodeID JOIN Node n2 ON e.endNode = n2.nodeID";
       statement = connection.createStatement();
@@ -100,7 +100,7 @@ public class EdgeDaoImpl implements EdgeDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "INSERT INTO Edge (startNode, endNode, congestion) VALUES (?, ?, ?)";
 
       ps = connection.prepareStatement(sql);
@@ -130,7 +130,7 @@ public class EdgeDaoImpl implements EdgeDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "DELETE FROM Edge WHERE (startNode = ? AND endNode = ?)";
 
       ps = connection.prepareStatement(sql);

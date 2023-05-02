@@ -13,7 +13,7 @@ public class CongestionController {
     public enum CongestionLevel {
         LOW(1.2),
         MEDIUM(1.5),
-        HIGH(2.0);
+        HIGH(1000.0);
 
         private double value;
 
@@ -51,5 +51,15 @@ public class CongestionController {
 
     public double getCongestionFactor(Node a, Node b) {
         return congestionFactors.getOrDefault(new AbstractMap.SimpleImmutableEntry<>(a, b), 1.0);
+    }
+
+    public void printCongestionFactors() {
+        System.out.println("Congestion Factors:");
+        for (Map.Entry<AbstractMap.SimpleImmutableEntry<Node, Node>, Double> entry : congestionFactors.entrySet()) {
+            Node nodeA = entry.getKey().getKey();
+            Node nodeB = entry.getKey().getValue();
+            double factor = entry.getValue();
+            System.out.printf("Node A: %s, Node B: %s, Congestion Factor: %.2f%n", nodeA, nodeB, factor);
+        }
     }
 }

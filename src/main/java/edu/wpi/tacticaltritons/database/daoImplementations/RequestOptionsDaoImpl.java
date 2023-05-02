@@ -14,7 +14,7 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
         ResultSet rs = null;
         RequestOptions requestOptions = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM RequestOptions WHERE itemName = ? AND restaurant  = ?;";
             ps = connection.prepareStatement(sql);
@@ -23,8 +23,11 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
 
             rs = ps.executeQuery();
             if (rs.next()) {
-                int price = rs.getInt("prices");
-                requestOptions = new RequestOptions(itemName, price, restaurant);
+                double price = rs.getDouble("prices");
+                String shopDescription = rs.getString("shopDescription");
+                String itemDescription = rs.getString("itemDescription");
+                String itemType = rs.getString("itemType");
+                requestOptions = new RequestOptions(itemName, price, restaurant, shopDescription, itemDescription, itemType);
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -47,7 +50,7 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
         ResultSet rs = null;
         List<RequestOptions> requestOptions = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM RequestOptions;";
             statement = connection.createStatement();
@@ -55,10 +58,13 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
 
             while (rs.next()) {
                 String itemName = rs.getString("itemName");
-                int prices = rs.getInt("prices");
                 String restaurant = rs.getString("restaurant");
+                double price = rs.getDouble("prices");
+                String shopDescription = rs.getString("shopDescription");
+                String itemDescription = rs.getString("itemDescription");
+                String itemType = rs.getString("itemType");
 
-                RequestOptions option = new RequestOptions(itemName, prices, restaurant);
+                RequestOptions option = new RequestOptions(itemName, price, restaurant, shopDescription, itemDescription, itemType);
 
                 requestOptions.add(option);
             }
@@ -81,14 +87,17 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
-            String sql = "INSERT INTO RequestOptions (itemName, prices, restaurant) VALUES (?, ?, ?)";
+            connection = Tdb.getInstance().getConnection();
+            String sql = "INSERT INTO RequestOptions (itemName, prices, restaurant, shopDescription, itemDescription, itemType) VALUES (?, ?, ?, ?, ?, ?)";
 
             ps = connection.prepareStatement(sql);
 
             ps.setString(1, requestOptions.getItemName());
             ps.setDouble(2, requestOptions.getPrice());
             ps.setString(3, requestOptions.getRestaurant());
+            ps.setString(4, requestOptions.getShopDescription());
+            ps.setString(5, requestOptions.getItemDescription());
+            ps.setString(6, requestOptions.getItemType());
 
             int result = ps.executeUpdate();
         } catch (SQLException e){
@@ -111,7 +120,7 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
             String sql = "DELETE FROM RequestOptions WHERE (itemName = ? AND restaurant = ?)";
 
             ps = connection.prepareStatement(sql);
@@ -141,7 +150,7 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
         ResultSet rs = null;
         List<RequestOptions> requestOptions = new ArrayList<>();
         try {
-            connection = Tdb.getConnection();
+            connection = Tdb.getInstance().getConnection();
 
             String sql = "SELECT * FROM RequestOptions WHERE restaurant = ?;";
             ps = connection.prepareStatement(sql);
@@ -150,9 +159,12 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
             rs = ps.executeQuery();
             while (rs.next()) {
                 String itemName = rs.getString("itemName");
-                int prices = rs.getInt("prices");
+                double prices = rs.getDouble("prices");
+                String shopDescription = rs.getString("shopDescription");
+                String itemDescription = rs.getString("itemDescription");
+                String itemType = rs.getString("itemType");
 
-                RequestOptions option = new RequestOptions(itemName, prices, restaurant);
+                RequestOptions option = new RequestOptions(itemName, prices, restaurant, shopDescription, itemDescription, itemType);
 
                 requestOptions.add(option);
             }
@@ -175,14 +187,17 @@ public class RequestOptionsDaoImpl implements RequestOptionsDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = Tdb.getConnection();
-            String sql = "UPDATE RequestOptions SET prices = ? where (itemName = ? AND restaurant = ?)";
+            connection = Tdb.getInstance().getConnection();
+            String sql = "UPDATE RequestOptions SET prices = ?, shopDescription = ?, itemDescription = ?, itemType = ? where (itemName = ? AND restaurant = ?)";
 
             ps = connection.prepareStatement(sql);
 
             ps.setDouble(1, restaurantOption.getPrice());
-            ps.setString(2, restaurantOption.getItemName());
-            ps.setString(3, restaurantOption.getRestaurant());
+            ps.setString(2, restaurantOption.getShopDescription());
+            ps.setString(3, restaurantOption.getItemDescription());
+            ps.setString(4, restaurantOption.getItemType());
+            ps.setString(5, restaurantOption.getItemName());
+            ps.setString(6, restaurantOption.getRestaurant());
 
             int result = ps.executeUpdate();
         } catch (SQLException | ClassNotFoundException e){

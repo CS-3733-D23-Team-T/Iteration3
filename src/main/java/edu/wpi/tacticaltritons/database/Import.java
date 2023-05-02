@@ -23,7 +23,7 @@ public class Import {
   public static void importFile(File file, String tableName) throws IOException, SQLException, ParseException {
     Connection connection = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       BufferedReader br = new BufferedReader(new FileReader(file));
       String headerLine = br.readLine().toLowerCase();
       CopyManager copyManager = new CopyManager((BaseConnection) connection);
@@ -31,8 +31,9 @@ public class Import {
 
       if (headerLine.equals("nodeid,xcoord,ycoord,floor,building") && tableName.equals("node")) {
         copyManager.copyIn("COPY node FROM STDIN (FORMAT csv, HEADER)", fileReader);
-      } else if (headerLine.equals("startnode,endnode") && tableName.equals("edge")) {
-        copyManager.copyIn("COPY edge FROM STDIN (FORMAT csv, HEADER)", fileReader);
+      } else if (headerLine.equals("startnode,endnode")) {
+        copyManager.copyIn(
+                "COPY edge (startNode, endNode) FROM STDIN (FORMAT csv, HEADER)", fileReader);
       } else if (headerLine.equals("longname,shortname,nodetype") && tableName.equals("locationname")) {
         copyManager.copyIn("COPY locationname FROM STDIN (FORMAT csv, HEADER)", fileReader);
       } else if (headerLine.equals("nodeid,longname,date") && tableName.equals("move")) {

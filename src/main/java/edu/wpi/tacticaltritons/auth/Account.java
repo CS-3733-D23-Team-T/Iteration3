@@ -2,6 +2,7 @@ package edu.wpi.tacticaltritons.auth;
 
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Login;
+import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 
 import java.nio.charset.StandardCharsets;
@@ -68,21 +69,22 @@ public class Account {
 
         DAOFacade.addLogin(
                 new Login(username,
-                        passwordTuple[0],
                         passwordTuple[1],
+                        passwordTuple[0],
                         email,
                         firstname,
                         lastname,
                         admin,
                         null,
                         false,
-                        "en-us",
+                        "English",
                         false,
                         null,
                         null,
                         UserSessionToken.DEFAULT_SESSION_TIME,
                         AlgorithmSingleton.ASTAR.name(),
-                        false));
+                        false,
+                        Tdb.WPI_DATABASE.name()));
 
         return 1;
 
@@ -116,7 +118,8 @@ public class Account {
                         return 2;
                     }
                 }
-
+                Tdb.setInstance(Tdb.parseTdb(login.getDatabase()));
+                AlgorithmSingleton.setInstance(AlgorithmSingleton.parseAlgorithm(login.getAlgorithmPreference()));
                 UserSessionToken.registerToken(login);
                 DAOFacade.updateLogin(login);
             } catch (SQLException e) {

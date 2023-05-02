@@ -52,9 +52,9 @@ dependencies {
             'de.mkammerer:argon2-jvm:2.11',
             'com.github.hervegirod:fxsvgimage:1.1',
             'net.java.dev.jna:jna:5.12.1',
+            'org.json:json:20230227',
 
             'com.calendarfx:view:11.12.5'
-
     )
     implementation 'javax.mail:mail:1.5.0-b01'
 

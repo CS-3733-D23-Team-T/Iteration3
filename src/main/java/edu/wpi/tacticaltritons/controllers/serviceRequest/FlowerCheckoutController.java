@@ -8,6 +8,7 @@ import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import io.github.palexdev.materialfx.controls.*;
 
+import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -95,6 +96,7 @@ public class FlowerCheckoutController {
     @FXML private Group floor3Group;
     @FXML MFXFilterComboBox assignedComboBox;
     @FXML private Text priceText;
+    @FXML private Text orderFromText;
     private String userFirst;
     private String userLast;
     private String patientFirst;
@@ -112,9 +114,36 @@ public class FlowerCheckoutController {
 
 
     public void initialize() throws SQLException {
+        userFirstField.setPromptText(GoogleTranslate.getString("firstName"));
+        userFirstField.setFloatingText(GoogleTranslate.getString("firstName"));
+        userLastField.setPromptText(GoogleTranslate.getString("lastName"));
+        userLastField.setFloatingText(GoogleTranslate.getString("lastName"));
+        patientFirstField.setPromptText(GoogleTranslate.getString("patientFirstName"));
+        patientFirstField.setFloatingText(GoogleTranslate.getString("patientFirstName"));
+        patientLastField.setPromptText(GoogleTranslate.getString("patientLastName"));
+        patientLastField.setFloatingText(GoogleTranslate.getString("patientLastName"));
+        assignedComboBox.setPromptText(GoogleTranslate.getString("assignedStaff"));
+        assignedComboBox.setFloatingText(GoogleTranslate.getString("assignedStaff"));
+        deliveryDateField.setPromptText(GoogleTranslate.getString("date"));
+        locationComboBox.setFloatingText(GoogleTranslate.getString("searchTheMap"));
+        hourComboBox.setPromptText(GoogleTranslate.getString("hour"));
+        hourComboBox.setFloatingText(GoogleTranslate.getString("hour"));
+        minComboBox.setPromptText(GoogleTranslate.getString("minutes"));
+        minComboBox.setFloatingText(GoogleTranslate.getString("minutes"));
+        cancelButton.setText(GoogleTranslate.getString("cancel"));
+        clearButton.setText(GoogleTranslate.getString("clear"));
+        submitButton.setText(GoogleTranslate.getString("submit"));
+        orderFromText.setText(GoogleTranslate.getString("orderFrom"));
+        userFirstValidator.setText(GoogleTranslate.getString("firstNameValidator"));
+        userLastValidator.setText(GoogleTranslate.getString("firstLastValidator"));
+        patientFirstValidator.setText(GoogleTranslate.getString("patientFirstValidator"));
+        patientLastValidator.setText(GoogleTranslate.getString("patientLastValidator"));
+        dateValidator.setText(GoogleTranslate.getString("dateValidator"));
+        priceText.setText(GoogleTranslate.getString("price"));
+
 
         hourComboBox.setItems(FXCollections.observableArrayList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23));
-        minComboBox.setItems(FXCollections.observableArrayList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "00", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
+        minComboBox.setItems(FXCollections.observableArrayList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
 
         for (Login login : DAOFacade.getAllLogins()) {
             assignedComboBox.getItems().add(login.getFirstName() + " " + login.getLastName());
@@ -144,7 +173,11 @@ public class FlowerCheckoutController {
 
         checkoutItems.forEach((key, value) ->
         {
-            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, App.flowerHashMap.get(key)));
+            try {
+                checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, App.flowerHashMap.get(key)));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
         checkoutFlowplan.setAlignment(Pos.CENTER);
         ;
@@ -259,7 +292,7 @@ public class FlowerCheckoutController {
                         flowPane.setRowValignment(VPos.CENTER);
                         flowPane.setColumnHalignment(HPos.CENTER);
                         Text text = new Text();
-                        text.setText("Your order has been confirmed");
+                        text.setText(GoogleTranslate.getString("orderConfirmed"));
                         text.setFont(new Font(20));
                         text.setStyle("-fx-text-fill: black");
                         flowPane.getChildren().add(text);
@@ -352,10 +385,16 @@ public class FlowerCheckoutController {
 
         groundFloor.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
 
+        javafx.application.Platform.runLater(() -> {
+            groundFloor.centreOn(new Point2D(2500, 1000));
+        });
+        this.groundFloor.setVisible(true);
+        groundFloor.toBack();
+        groundFloor.reset();
 
     }
 
-    private FlowPane createCheckoutNode(String key, int value, Image flowerImage) {
+    private FlowPane createCheckoutNode(String key, int value, Image flowerImage) throws IOException {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(200);
         flowPane.setPrefHeight(100);
@@ -377,7 +416,7 @@ public class FlowerCheckoutController {
         Label itemTitle = new Label();
         itemTitle.setPrefWidth(200);
         itemTitle.setPrefHeight(50);
-        itemTitle.setText(key);
+        itemTitle.setText(GoogleTranslate.translate(key));
         itemTitle.setFont(new Font(15));
         itemTitle.setWrapText(true);
         itemTitle.setPadding(new Insets(0, 20, 0, 20));

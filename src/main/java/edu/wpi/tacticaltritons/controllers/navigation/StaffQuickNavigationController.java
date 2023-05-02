@@ -2,6 +2,7 @@ package edu.wpi.tacticaltritons.controllers.navigation;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
+import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuButton;
@@ -27,5 +28,9 @@ public class StaffQuickNavigationController {
                 .generateMenuButton(false, QuickNavigationMenuButtons.QuickNavigationMenu.SERVICE_REQUEST));
         serviceRequestMenuButton.addEventHandler(EventType.ROOT,
                 QuickNavigationMenuButtons.generateQuickNavEventHandler());
+
+        signageMenuButton.setText(GoogleTranslate.getString("signage"));
+        hospitalMapMenuButton.setText(GoogleTranslate.getString("hospitalMap"));
+        serviceRequestMenuButton.setText(GoogleTranslate.getString("serviceRequest"));
     }
 }

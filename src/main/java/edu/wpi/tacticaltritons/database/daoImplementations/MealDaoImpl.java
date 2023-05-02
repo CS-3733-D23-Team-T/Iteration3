@@ -16,7 +16,7 @@ public class MealDaoImpl implements MealDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql =
               "UPDATE Meal SET "
                       + "requesterFirst = ?,"
@@ -73,7 +73,7 @@ public class MealDaoImpl implements MealDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql =
               "INSERT INTO Meal (requesterFirst, requesterLast, patientFirst, patientLast,"
                       + "assignedStaffFirst, assignedStaffLast, deliveryDate, deliveryTime, location, items, total, status) "
@@ -116,7 +116,7 @@ public class MealDaoImpl implements MealDao {
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
       String sql = "DELETE FROM Meal WHERE orderNum = ?";
 
       ps = connection.prepareStatement(sql);
@@ -146,7 +146,7 @@ public class MealDaoImpl implements MealDao {
     ResultSet rs = null;
     Meal meal = null;
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
       String sql = "SELECT * FROM Meal WHERE orderNum = ?;";
       ps = connection.prepareStatement(sql);
@@ -207,7 +207,7 @@ public class MealDaoImpl implements MealDao {
     ResultSet rs = null;
     List<Meal> meals = new ArrayList<>();
     try {
-      connection = Tdb.getConnection();
+      connection = Tdb.getInstance().getConnection();
 
 
       String sql = "SELECT * FROM Meal ORDER BY status, deliverydate, deliverytime;";

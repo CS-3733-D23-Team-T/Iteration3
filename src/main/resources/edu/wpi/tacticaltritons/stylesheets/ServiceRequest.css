@@ -1,14 +1,15 @@
-.button{
-    -fx-text-fill: white;
+.button {
+    -fx-text-fill: black;
     -fx-padding: 7;
     -fx-background-radius: 20;
 }
 
 .button:hover{
-    -fx-text-fill: black;
+    -fx-text-fill: #f0ab0b;
 }
 
 .button-submit {
+    -fx-text-fill: white;
     -fx-background-color: #002D59;
 }
 

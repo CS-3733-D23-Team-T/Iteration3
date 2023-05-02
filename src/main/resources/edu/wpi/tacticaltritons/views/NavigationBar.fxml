@@ -57,9 +57,9 @@
             </left>
             <center>
                 <VBox alignment="CENTER" BorderPane.alignment="CENTER">
-                    <Text fx:id="pageTitle" fill="#000000" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" textAlignment="CENTER">
+                    <Text fx:id="pageTitle" fill="#222222" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" textAlignment="CENTER">
                         <font>
-                            <Font name="Arial" size="32.0" />
+                            <Font name="Arial" size="25.0" />
                         </font>
                         <VBox.margin>
                             <Insets />
