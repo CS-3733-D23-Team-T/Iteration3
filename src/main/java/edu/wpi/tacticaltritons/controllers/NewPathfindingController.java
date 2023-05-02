@@ -194,6 +194,7 @@ public class NewPathfindingController extends MapSuperController {
 
                             submit.setOnAction(event1 -> {
                                 System.out.println(combobox.getSelectedItem().toString());
+
                                 congestionController.setCongestionLevel(pathfindingList.get(0), pathfindingList.get(1), combobox.getSelectedItem().toString());
                                 congestionController.printCongestionFactors();
                                 clearAllNodes();
