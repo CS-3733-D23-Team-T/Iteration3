@@ -199,21 +199,7 @@
             </center>
             <top>
                 <FlowPane orientation="VERTICAL" prefHeight="50.0" prefWidth="300.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
-                            <font>
-                                <Font name="Times New Roman" size="18.0" />
-                            </font>
-                            <FlowPane.margin>
-                                <Insets />
-                            </FlowPane.margin>
-                        </Text>
-                        <Text fx:id="shopName" strokeType="OUTSIDE" strokeWidth="0.0" text="EDIBLE ARRANGEMENTS">
-                            <font>
-                                <Font name="Times New Roman" size="22.0" />
-                            </font>
-                        </Text>
-                    </children>
+
                     <BorderPane.margin>
                         <Insets left="25.0" right="25.0" top="25.0" />
                     </BorderPane.margin>
