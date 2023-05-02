@@ -364,7 +364,7 @@ public class ThreeDMapController {
 
         // Use a SubScene
         SubScene subScene = new SubScene(
-                root, 1280, 620,
+                root, 1400, 800,
                 true,
                 SceneAntialiasing.BALANCED);
         subScene.setFill(Color.BLACK);
@@ -1815,7 +1815,7 @@ public class ThreeDMapController {
         filterCol1.getChildren().add(serviceFilter);
         filterCol2.getChildren().add(stairsFilter);
 
-        sidePane.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-min-width: 300; -fx-min-height: 720");
+        sidePane.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-min-width: 300; -fx-min-height: 800");
         sidePane.setAlignment(Pos.TOP_CENTER);
         BooleanProperty menuShowing = new SimpleBooleanProperty(true);
         MFXButton transportMenu = new MFXButton("hide");
