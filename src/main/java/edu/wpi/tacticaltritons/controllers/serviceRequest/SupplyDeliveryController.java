@@ -70,12 +70,9 @@ public class SupplyDeliveryController {
 
     @FXML
     public void initialize() {
-        //Hashmap for flower images
-        HashMap<String, Image> imageHashMap = new HashMap<>();
-
 
 //        EffectGenerator.generateShadowEffect(basePane);
-        this.shopName = SupplyChoiceController.name;
+        this.shopName = "Staples";
         // Sets the label to the name of the shop that was selected
         checkoutLabel.setText(shopName);
 
@@ -94,7 +91,7 @@ public class SupplyDeliveryController {
         {
             Tab tab = new Tab(value);
             tab.setId(value);
-            ScrollPane scrollPane = createShopIteams(shopItems, value, imageHashMap);
+            ScrollPane scrollPane = createShopIteams(shopItems, value, App.supplyHashMap);
             tab.setContent(scrollPane);
             tabPane.getTabs().add(tab);
         });

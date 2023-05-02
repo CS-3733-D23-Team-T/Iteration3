@@ -10,271 +10,315 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.AboutController">
-    <left>
-        <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" BorderPane.alignment="CENTER">
-            <children>
-            <BorderPane style="-fx-border-color: black;">
-               <left>
-                        <ImageView fx:id="Luis" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
-                            <image>
-                                <Image url="@../images/QuetinHeadshots/Luis_Headshot.jpg" />
-                            </image>
-                        </ImageView>
-               </left>
-               <center>
-                        <Text lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Luis Aldarondo Jr: Documentation Analyst &amp; Part Time Software Engineer" textAlignment="CENTER" wrappingWidth="160.0" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <BorderPane.margin>
-                        <Insets />
-                     </BorderPane.margin></Text>
-               </center>
-               <FlowPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </FlowPane.margin>
-            </BorderPane>
-            <BorderPane style="-fx-border-color: black;">
-               <left>
-                        <ImageView fx:id="Youssef" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
-
-                            <image>
-                                <Image url="@../images/QuetinHeadshots/Youssef_Headshot.jpg" />
-                            </image>
-                        </ImageView>
-               </left>
-               <center>
-
-                        <Text lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Youssef Benchikhi: Full Time Software Engineer" textAlignment="CENTER" wrappingWidth="115.623046875" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Text>
-               </center>
-               <FlowPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </FlowPane.margin>
-            </BorderPane>
-            <BorderPane style="-fx-border-color: black;">
-               <left>
-                        <ImageView fx:id="Mark" fitHeight="115.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
-                            <image>
-                                <Image url="@../images/QuetinHeadshots/Mark_Headshot.jpg" />
-                            </image>
-                        </ImageView>
-               </left>
-               <center>
-
-                        <Text lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mark Caleca: Project Manager &amp; Part Time Software Engineer" textAlignment="CENTER" wrappingWidth="110.0" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Text>
-               </center>
-               <FlowPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </FlowPane.margin>
-            </BorderPane>
-            <BorderPane style="-fx-border-color: black;">
-               <left>
-                        <ImageView fx:id="Quentin" fitHeight="114.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
-
-                            <image>
-                                <Image url="@../images/QuetinHeadshots/Quentin_Headshot.jpg" />
-                            </image>
-                        </ImageView>
-               </left>
-               <center>
-
-                        <Text lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quentin Hall:   Front End Assistant Lead Software Engineer" textAlignment="CENTER" wrappingWidth="110.0" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Text>
-               </center>
-               <FlowPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </FlowPane.margin>
-            </BorderPane>
-            <BorderPane style="-fx-border-color: black;">
-               <left>
-                        <ImageView fx:id="Jai" fitHeight="114.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
-
-                            <image>
-                                <Image url="@../images/QuetinHeadshots/Jai_Headshot.jpg" />
-                            </image>
-                        </ImageView>
-               </left>
-               <center>
-
-                        <Text lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jai Jariwala: Scrum Master &amp; Part Time Software Engineer" textAlignment="CENTER" wrappingWidth="110.0" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Text>
-               </center>
-               <FlowPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </FlowPane.margin>
-            </BorderPane>
-            <BorderPane style="-fx-border-color: black;">
-               <left>
-                        <ImageView fx:id="Sophia" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
-
-
-                            <image>
-                                <Image url="@../images/QuetinHeadshots/Sophia_Headshot.jpg" />
-                            </image>
-                        </ImageView>
-               </left>
-               <center>
-
-
-                        <Text lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sophia Kalavantis: Product Owner &amp; Part Time Software Engineer" textAlignment="CENTER" wrappingWidth="120.0" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Text>
-               </center>
-               <FlowPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </FlowPane.margin>
-            </BorderPane>
-            <BorderPane style="-fx-border-color: black;">
-               <left>
-                        <ImageView fx:id="Vincent" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
-
-                            <image>
-                                <Image url="@../images/QuetinHeadshots/Vincent_Headshot.jpg" />
-                            </image>
-                        </ImageView>
-               </left>
-               <center>
-
-
-                        <Text lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Yuancen (Vincent) Pu: Full Time Software Engineer" textAlignment="CENTER" wrappingWidth="140.0" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Text>
-               </center>
-               <FlowPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </FlowPane.margin>
-            </BorderPane>
-            <BorderPane style="-fx-border-color: black;">
-               <left>
-                        <ImageView fx:id="Apollo" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
-
-                            <image>
-                                <Image url="@../images/QuetinHeadshots/Apollo.jpg" />
-                            </image>
-                        </ImageView>
-               </left>
-               <center>
-
-
-                        <Text lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apollinaris (Apollo) Rowe: Lead Software Engineer" textAlignment="CENTER" wrappingWidth="170.0" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <BorderPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </BorderPane.margin></Text>
-               </center>
-               <FlowPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </FlowPane.margin>
-            </BorderPane>
-            <BorderPane style="-fx-border-color: black;">
-               <left>
-                        <ImageView fx:id="Vanessa" fitHeight="111.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
-
-                            <image>
-                                <Image url="@../images/QuetinHeadshots/Vanessa_Headshot.jpg" />
-                            </image>
-                        </ImageView>
-               </left>
-               <center>
-
-
-                        <Text lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vanessa Sam:        Full Time Software Engineer" textAlignment="CENTER" wrappingWidth="120.0" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Text>
-               </center>
-               <FlowPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </FlowPane.margin>
-            </BorderPane>
-            <BorderPane style="-fx-border-color: black;">
-               <left>
-                        <ImageView fx:id="James" fitHeight="114.0" fitWidth="100.0" pickOnBounds="true" BorderPane.alignment="CENTER">
-
-                            <image>
-                                <Image url="@../images/QuetinHeadshots/James_Headshot.jpg" />
-                            </image>
-                        </ImageView>
-               </left>
-               <center>
-
-
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="James Yi: Back End Assistant Lead Software Engineer" textAlignment="CENTER" wrappingWidth="140.0" BorderPane.alignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Text>
-               </center>
-               <FlowPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </FlowPane.margin>
-            </BorderPane>
-            </children>
-        </FlowPane>
-    </left>
-    <right>
-        <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" prefHeight="450.0" prefWidth="253.0" vgap="20.0" BorderPane.alignment="CENTER">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Acknowledgement:" underline="true">
-               <font>
-                  <Font name="System Bold" size="22.0" />
-               </font></Text>
-                <Text lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="We want to thank the Brigham and Women's Hospital and all the information and resources that they have provided. We would also like to give a special Shoutout to Andrew Shinn for all the time and input he contributed to make this all happen " textAlignment="CENTER" wrappingWidth="231.97271728515625">
-               <font>
-                  <Font size="16.0" />
-               </font></Text>
-            </children>
-        </FlowPane>
-    </right>
    <top>
       <BorderPane BorderPane.alignment="CENTER">
-         <left>
-            <VBox BorderPane.alignment="CENTER">
-               <children>
-                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CS3733-D23 Software Engineering">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Text>
-                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Professor: Wilson Wong" textAlignment="CENTER" wrappingWidth="183.3203125">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Text>
-                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Team Coach: Brianna Sahagian" textAlignment="CENTER" wrappingWidth="186.283203125">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Text>
-               </children>
-            </VBox>
-         </left>
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </BorderPane.margin>
          <center>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tactical Tritons" BorderPane.alignment="CENTER">
                <font>
-                  <Font size="56.0" />
+                  <Font size="48.0" />
                </font>
+               <BorderPane.margin>
+                  <Insets top="20.0" />
+               </BorderPane.margin>
             </Text>
          </center>
-         <right>
-            <VBox prefWidth="210.5" BorderPane.alignment="CENTER" />
-         </right>
       </BorderPane>
    </top>
+   <center>
+      <FlowPane prefHeight="531.0" prefWidth="856.0" BorderPane.alignment="CENTER">
+         <children>
+            <BorderPane fx:id="luisPane">
+               <center>
+                  <ImageView fx:id="Luis" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../images/QuetinHeadshots/Luis_Headshot.jpg" />
+                     </image>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </ImageView>
+               </center>
+               <bottom>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Luis Aldarondo Jr" BorderPane.alignment="CENTER" />
+               </bottom>
+               <FlowPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </FlowPane.margin>
+            </BorderPane>
+            <BorderPane fx:id="youssefPane">
+               <bottom>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Youssef Benchikhi" BorderPane.alignment="CENTER" />
+               </bottom>
+               <center>
+                  <ImageView fx:id="Youssef" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../images/QuetinHeadshots/Youssef_Headshot.jpg" />
+                     </image>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </ImageView>
+               </center>
+               <FlowPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </FlowPane.margin>
+            </BorderPane>
+            <BorderPane fx:id="markPane" layoutX="110.0" layoutY="10.0">
+               <bottom>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mark Caleca" BorderPane.alignment="CENTER" />
+               </bottom>
+               <center>
+                  <ImageView fx:id="Mark" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../images/QuetinHeadshots/Mark_Headshot.jpg" />
+                     </image>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </ImageView>
+               </center>
+               <FlowPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </FlowPane.margin>
+            </BorderPane>
+            <BorderPane fx:id="quentinPane" layoutX="210.0" layoutY="10.0">
+               <bottom>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quentin Hall" BorderPane.alignment="CENTER" />
+               </bottom>
+               <center>
+                  <ImageView fx:id="Quentin" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../images/QuetinHeadshots/Quentin_Headshot.jpg" />
+                     </image>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </ImageView>
+               </center>
+               <FlowPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </FlowPane.margin>
+            </BorderPane>
+            <BorderPane fx:id="jaiPane" layoutX="210.0" layoutY="10.0">
+               <bottom>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Jai Jariwala" BorderPane.alignment="CENTER" />
+               </bottom>
+               <center>
+                  <ImageView fx:id="Jai" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../images/QuetinHeadshots/Jai_Headshot.jpg" />
+                     </image>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </ImageView>
+               </center>
+               <FlowPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </FlowPane.margin>
+            </BorderPane>
+            <BorderPane fx:id="sophiaPane" layoutX="210.0" layoutY="10.0">
+               <bottom>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sophia Kalavantis" BorderPane.alignment="CENTER" />
+               </bottom>
+               <center>
+                  <ImageView fx:id="Sophia" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../images/QuetinHeadshots/Sophia_Headshot.jpg" />
+                     </image>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </ImageView>
+               </center>
+               <FlowPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </FlowPane.margin>
+            </BorderPane>
+            <BorderPane fx:id="vincentPane" layoutX="210.0" layoutY="10.0">
+               <bottom>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Yuancen (Vincent) Pu" BorderPane.alignment="CENTER" />
+               </bottom>
+               <center>
+                  <ImageView fx:id="Vincent" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../images/QuetinHeadshots/Vincent_Headshot.jpg" />
+                     </image>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </ImageView>
+               </center>
+               <FlowPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </FlowPane.margin>
+            </BorderPane>
+            <BorderPane fx:id="apolloPane" layoutX="210.0" layoutY="10.0">
+               <bottom>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Apollinaris (Apollo) Rowe" BorderPane.alignment="CENTER" />
+               </bottom>
+               <center>
+                  <ImageView fx:id="Apollo" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../images/QuetinHeadshots/Apollo.jpg" />
+                     </image>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </ImageView>
+               </center>
+               <FlowPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </FlowPane.margin>
+            </BorderPane>
+            <BorderPane fx:id="vanessaPane" layoutX="720.0" layoutY="10.0">
+               <bottom>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Vanessa Sam" BorderPane.alignment="CENTER" />
+               </bottom>
+               <center>
+                  <ImageView fx:id="Vanessa" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../images/QuetinHeadshots/Vanessa_Headshot.jpg" />
+                     </image>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </ImageView>
+               </center>
+               <FlowPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </FlowPane.margin>
+            </BorderPane>
+            <BorderPane fx:id="jamesPane" layoutX="720.0" layoutY="10.0">
+               <bottom>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="James Yi" BorderPane.alignment="CENTER" />
+               </bottom>
+               <center>
+                  <ImageView fx:id="James" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../images/QuetinHeadshots/James_Headshot.jpg" />
+                     </image>
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </ImageView>
+               </center>
+               <FlowPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </FlowPane.margin>
+            </BorderPane>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="We want to thank the Brigham and Women's Hospital and all the information and resources that they have provided. We would also like to give a special Shoutout to Andrew Shinn for all the time and input he contributed to make this all happen " wrappingWidth="810.0">
+               <FlowPane.margin>
+                  <Insets top="20.0" />
+               </FlowPane.margin>
+               <font>
+                  <Font size="14.5" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="The Brigham &amp; Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes." wrappingWidth="825.0">
+               <FlowPane.margin>
+                  <Insets top="10.0" />
+               </FlowPane.margin>
+               <font>
+                  <Font size="12.5" />
+               </font>
+            </Text>
+         </children>
+         <BorderPane.margin>
+            <Insets left="25.0" top="5.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="50.0" />
+         </padding>
+      </FlowPane>
+   </center>
+   <left>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <top>
+            <VBox alignment="TOP_CENTER" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" BorderPane.alignment="CENTER_LEFT">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Meet the team!" textAlignment="CENTER" wrappingWidth="275.0">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="nameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Name: " visible="false" wrappingWidth="245.0">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="positionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Click each picture to see each triton's info" textAlignment="CENTER" wrappingWidth="275.0">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="majorText" strokeType="OUTSIDE" strokeWidth="0.0" text="Major:" visible="false" wrappingWidth="245.0">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="factText" strokeType="OUTSIDE" strokeWidth="0.0" text="Fun Fact:" visible="false" wrappingWidth="245.0">
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="15.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="40.0" right="10.0" top="18.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets left="20.0" top="15.0" />
+               </padding>
+            </VBox>
+         </top>
+         <bottom>
+            <VBox prefHeight="76.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CS3733-D23 Software Engineering">
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Professor Wilson Wong">
+                     <VBox.margin>
+                        <Insets left="15.0" top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Team Coach: Brianna Sahagian">
+                     <VBox.margin>
+                        <Insets left="15.0" top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Text>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="25.0" left="40.0" right="10.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets left="25.0" />
+               </padding>
+            </VBox>
+         </bottom>
+      </BorderPane>
+   </left>
 </BorderPane>
