@@ -2,7 +2,6 @@ package edu.wpi.tacticaltritons;
 
 import edu.wpi.tacticaltritons.data.FlowerHashMap;
 import edu.wpi.tacticaltritons.data.FurnitureHashMap;
-import edu.wpi.tacticaltritons.data.IconHashMap;
 import edu.wpi.tacticaltritons.data.SupplyHashMap;
 import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
 import edu.wpi.tacticaltritons.database.Tdb;
@@ -60,7 +59,7 @@ public class App extends Application {
     quickNavigationMenuButtons = new QuickNavigationMenuButtons();
     flowerHashMap = new FlowerHashMap();
     furnitureHashMap = new FurnitureHashMap();
-    iconHashMap = new IconHashMap();
+    //iconHashMap = new IconHashMap();
     supplyHashMap = new SupplyHashMap();
 
 
