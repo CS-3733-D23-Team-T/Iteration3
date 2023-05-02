@@ -34,6 +34,7 @@ public class QuickNavigationMenuButtons {
         hospitalMapNavigationMap.put("Hospital Map", Screen.VIEW_MAP);
         hospitalMapNavigationMap.put("Edit Hospital Map", Screen.EDIT_MAP);
         hospitalMapNavigationMap.put("Pathfinding", Screen.PATHFINDING);
+        hospitalMapNavigationMap.put("Move Location", Screen.MOVE);
 
         signageNavigationMap.put("Signage", Screen.SIGNAGE);
         signageNavigationMap.put("Edit Signage", Screen.EDIT_SIGNAGE);
@@ -54,14 +55,14 @@ public class QuickNavigationMenuButtons {
             });
             case HOSPITAL_MAP -> hospitalMapNavigationMap.forEach((key, value) -> {
 
-                if(admin || !key.equals("Edit Hospital Map")) {
+                if(admin || (!key.equals("Edit Hospital Map") && !key.equals("Move Location"))) {
                     MenuItem item = new MenuItem(key);
                     item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);
                 }
             });
             case SIGNAGE -> signageNavigationMap.forEach((key, value) -> {
-                if(admin || !key.equals("Edit Signage")){
+                if(admin || (!key.equals("Edit Signage") &&  !key.equals("Move Signage"))){
                     MenuItem item = new MenuItem(key);
                     item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);

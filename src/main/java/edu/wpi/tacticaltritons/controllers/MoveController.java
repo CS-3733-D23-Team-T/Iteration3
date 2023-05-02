@@ -2,10 +2,7 @@ package edu.wpi.tacticaltritons.controllers;
 
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
-import edu.wpi.tacticaltritons.database.DAOFacade;
-import edu.wpi.tacticaltritons.database.LocationName;
-import edu.wpi.tacticaltritons.database.Login;
-import edu.wpi.tacticaltritons.database.Node;
+import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.styling.ThemeColors;
@@ -97,19 +94,24 @@ public class MoveController {
         floor3Image.setImage(App.thirdfloor);
 
         List<Node> nodes = DAOFacade.getAllNodes();
+        List<Move> moves = DAOFacade.getAllCurrentMoves(Date.valueOf(java.time.LocalDate.now()));
         HashMap<String,Node> nodeHashMap = new HashMap<>();
-        for(Node node: nodes){
-            newRoom.getItems().add(Integer.toString(node.getNodeID()));
-            nodeHashMap.put(Integer.toString(node.getNodeID()),node);
+        for(Move move: moves){
+            if(!move.getLocation().getNodeType().equals("HALL")){
+                newRoom.getItems().add(Integer.toString(move.getNode().getNodeID()) + " - " + move.getLocation().getShortName());
+                nodeHashMap.put(Integer.toString(move.getNode().getNodeID()),move.getNode());
+            }
         }
 
         List<LocationName> names = DAOFacade.getAllLocationNames();
 
         HashMap<String,LocationName> locationNameHashMap = new HashMap<>();
 
-        for (LocationName name : names) {
-            originalRoom.getItems().add(name.getLongName());
-            locationNameHashMap.put(name.getLongName(),name);
+        for (Move move : moves) {
+            if(!move.getLocation().getNodeType().equals("HALL")) {
+                originalRoom.getItems().add(move.getLocation().getLongName());
+                locationNameHashMap.put(move.getLocation().getLongName(), move.getLocation());
+            }
         }
 
         ArrayList<Login> allPeople = (ArrayList<Login>) DAOFacade.getAllLogins();
@@ -147,7 +149,7 @@ public class MoveController {
                 String newDate = (date.getText().isEmpty()) ? df.format(LocalDate.now()) : df.format(date.getValue());
                 Date sendDate = Date.valueOf(newDate);
                 try {
-                    DAOFacade.addMove(new edu.wpi.tacticaltritons.database.Move(nodeHashMap.get(newRoom.getText()),locationNameHashMap.get(originalRoom.getText()),sendDate));
+                    DAOFacade.addMove(new edu.wpi.tacticaltritons.database.Move(nodeHashMap.get(newRoom.getText().split(" -")[0]),locationNameHashMap.get(originalRoom.getText()),sendDate));
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -179,14 +181,14 @@ public class MoveController {
             Circle circle = new Circle();
 
             try {
-                circle = drawCircle(DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem())).getXcoord(), DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem())).getYcoord());
+                circle = drawCircle(DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem().split(" -")[0])).getXcoord(), DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem().split(" -")[0])).getYcoord());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
 
             String endFloor = null;
             try {
-                endFloor = DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem())).getFloor();
+                endFloor = DAOFacade.getNode(Integer.parseInt(this.newRoom.getSelectedItem().split(" -")[0])).getFloor();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
