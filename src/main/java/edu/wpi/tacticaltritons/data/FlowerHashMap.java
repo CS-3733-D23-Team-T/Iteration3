@@ -88,6 +88,5 @@ public class FlowerHashMap extends HashMap<String, Image> {
         this.put("Sunny Day", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WESunnyDay.png")).toString()));
         this.put("Blooming Love", new Image(Objects.requireNonNull(App.class.getResource("images/flower_request/WEBloomingLove.png")).toString()));
 
-
     }
 }
