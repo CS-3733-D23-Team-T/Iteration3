@@ -1,5 +1,6 @@
 package edu.wpi.tacticaltritons.controllers.login;
 
+import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.auth.ConfirmApp;
 import edu.wpi.tacticaltritons.auth.UserSessionToken;
 import edu.wpi.tacticaltritons.auth.Validator;
@@ -14,6 +15,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 import java.sql.SQLException;
@@ -27,8 +29,14 @@ public class LoginAppAuthenticationController {
 
     @FXML
     private void initialize() throws SQLException {
-        this.cancelButton.setOnAction(event -> Navigation.navigate(Screen.LOGIN));
         Login login = DAOFacade.getLogin(LoginNavigation.retrievePacket());
+
+        this.cancelButton.setOnAction(event ->
+        {
+            StackPane stackPane = (StackPane) App.getRootPane().getCenter();
+            stackPane.getChildren().remove(2, stackPane.getChildren().size());
+            Navigation.navigate(Screen.LOGIN);
+        });
 
         BooleanProperty validConfirmationCode = new SimpleBooleanProperty(false);
         this.confirmationCodeField.textProperty().addListener(Validator.generateRestrictiveValidatorListener(
