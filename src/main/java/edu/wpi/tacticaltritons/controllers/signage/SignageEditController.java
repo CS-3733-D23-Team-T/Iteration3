@@ -101,6 +101,9 @@ public class SignageEditController {
         deleteButton.setOnAction(event -> {
             controller.deleteSignage();
             basePane.getChildren().remove(presetButton);
+            if(SignagePageInteraction.presetName.equals(controller.getPresetName())){
+                SignagePageInteraction.clear();
+            }
         });
         controller.setPresetName(presetName);
         controller.setPresetContents(singleDisplay,forward,left,right,back);

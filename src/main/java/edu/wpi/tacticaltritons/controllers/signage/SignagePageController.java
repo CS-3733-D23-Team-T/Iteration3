@@ -53,7 +53,7 @@ public class SignagePageController {
             SignagePageInteraction.leftLocations = signageList.get(0).getLeftdir();
             SignagePageInteraction.rightLocations = signageList.get(0).getRightdir();
             SignagePageInteraction.backLocations = signageList.get(0).getBackdir();
-            SignagePageInteraction.signleDisplay = signageList.get(0).isSingleDisplay();
+            SignagePageInteraction.singleDisplay = signageList.get(0).isSingleDisplay();
             SignagePageInteraction.firstDisplay = false;
         }
         locationLabels = new ArrayList<>();
@@ -68,7 +68,7 @@ public class SignagePageController {
 
     private void generatePage(){
         loadLocation(signageForwardLocations, SignagePageInteraction.forwardLocations); // forward direction block is the default display area
-        if(SignagePageInteraction.signleDisplay){
+        if(SignagePageInteraction.singleDisplay){
             formatAsSingleDisplay();
         }else{
             loadLocation(signageLeftLocations, SignagePageInteraction.leftLocations);
@@ -153,7 +153,7 @@ public class SignagePageController {
         for(Label locaionLabel: locationLabels){
             locaionLabel.setStyle("-fx-font-size: " + fontSize);
         }
-        if(SignagePageInteraction.signleDisplay){
+        if(SignagePageInteraction.singleDisplay){
             signageForwardLocations.getChildren().get(0).setStyle("-fx-text-fill: " + ThemeColors.YELLOW.getColor() + ";" + "-fx-font-size: " + (fontSize + 10));
         }
     }

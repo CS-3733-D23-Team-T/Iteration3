@@ -76,6 +76,10 @@ public class PresetButtonController {
         this.singleDisplay = singleDisplay;
     }
 
+    public String getPresetName(){
+        return presetName.getText();
+    }
+
     private void loadData(){
         loadForInteraction();
         SignagePageInteraction.firstDisplay = false;
@@ -83,11 +87,12 @@ public class PresetButtonController {
     }
 
     private void loadForInteraction(){
+        SignagePageInteraction.presetName = presetName.getText();
         SignagePageInteraction.forwardLocations = forwardLocations;
         SignagePageInteraction.leftLocations = leftLocations;
         SignagePageInteraction.rightLocations = rightLocations;
         SignagePageInteraction.backLocations = backLocations;
-        SignagePageInteraction.signleDisplay = singleDisplay;
+        SignagePageInteraction.singleDisplay = singleDisplay;
     }
 
     private void editSignage(){
