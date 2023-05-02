@@ -63,7 +63,10 @@ public class ThreeDMapController {
                 double green = c.getRed() * 255;
                 double blue = c.getBlue() * 255;
 
-                if (red < 230 && green < 230 && blue < 230) {
+                if(red < 100 && green < 100 && blue < 100){
+                    matrix[i][j] = 0;
+                }
+                else if (red < 230 && green < 230 && blue < 230) {
                     matrix[i][j] = 1;
                 }
                 else {
@@ -136,6 +139,19 @@ public class ThreeDMapController {
             root.getChildren().removeIf(i -> i.getId() != null && i.getId().contains("bNode"));
             root.getChildren().forEach(node -> {
                 if(node.getId() != null && node.getId().contains("node")){
+                    node.setVisible(false);
+                }
+            });
+            root.getChildren().forEach(node -> {
+                if(node.getId() != null && node.getId().contains("node") && node instanceof VBox) {
+                    ((VBox) node).getChildren().removeIf(node1 -> node1.getId() != null && node1.getId().contains("dNode"));
+                    ((VBox) node).getChildren().forEach(node1 -> {
+                        if(node1 instanceof Text && node1.getId() != null && node1.getId().contains("nodeText")){
+                            String id = node1.getId().substring(node1.getId().lastIndexOf('t') + 1);
+                            ((Text) node1).setFont(new Font(24));
+                            node.setTranslateX(nodes.parallelStream().filter(n -> n.getNodeID() == Integer.parseInt(id)).toList().get(0).getXcoord() - ((node1.getLayoutBounds().getWidth() + 10) / 2));
+                        }
+                    });
                     node.setVisible(false);
                 }
             });
@@ -253,6 +269,7 @@ public class ThreeDMapController {
                             try {
                                 //Pathfinding
                                 List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
+
                                 walkingPath.set(path);
 
                                 for (int i = 0; i < path.size() - 1; i++) {
@@ -1905,6 +1922,25 @@ public class ThreeDMapController {
                 camera.translateYProperty().unbindBidirectional(cameraY);
                 camera.translateZProperty().unbindBidirectional(cameraZ);
 
+                List<Integer> pathIds = walkingPath.get().parallelStream().map(Node::getNodeID).toList();
+
+                root.getChildren().parallelStream().filter(n -> n instanceof VBox).forEach(n -> {
+                    if(n.getId() != null){
+                        int id = Integer.parseInt(n.getId().substring(n.getId().lastIndexOf('e') + 1));
+                        if(pathIds.contains(id)){
+                            n.setTranslateY(30);
+                            n.setVisible(true);
+                            ((VBox) n).getChildren().forEach(node1 -> {
+                                if(node1 instanceof Text && node1.getId() != null && node1.getId().contains("nodeText")){
+                                    String tid = node1.getId().substring(node1.getId().lastIndexOf('t') + 1);
+                                    ((Text) node1).setFont(new Font(10));
+                                    n.setTranslateX(nodes.parallelStream().filter(n1 -> n1.getNodeID() == Integer.parseInt(tid)).toList().get(0).getXcoord() - ((node1.getLayoutBounds().getWidth() + 10) / 2));
+                                }
+                            });
+                        }
+                    }
+                });
+
                 camera.setTranslateX(walkingPath.get().get(0).getXcoord());
                 camera.setTranslateZ(walkingPath.get().get(0).getYcoord());
 
@@ -2002,10 +2038,27 @@ public class ThreeDMapController {
                         camera.translateXProperty().bindBidirectional(cameraX);
                         camera.translateYProperty().bindBidirectional(cameraY);
                         camera.translateZProperty().bindBidirectional(cameraZ);
+
+                        root.getChildren().forEach(node -> {
+                            if(node.getId() != null && node.getId().contains("node") && node instanceof VBox) {
+                                ((VBox) node).getChildren().removeIf(node1 -> node1.getId() != null && node1.getId().contains("dNode"));
+                                ((VBox) node).getChildren().forEach(node1 -> {
+                                    if(node1 instanceof Text && node1.getId() != null && node1.getId().contains("nodeText")){
+                                        String id = node1.getId().substring(node1.getId().lastIndexOf('t') + 1);
+                                        ((Text) node1).setFont(new Font(24));
+                                        node.setTranslateX(nodes.parallelStream().filter(n -> n.getNodeID() == Integer.parseInt(id)).toList().get(0).getXcoord() - ((node1.getLayoutBounds().getWidth() + 10) / 2));
+                                    }
+                                });
+                                if(!node.getId().contains(String.valueOf(walkingPath.get().get(0).getNodeID())) && !node.getId().contains(String.valueOf(walkingPath.get().get(walkingPath.get().size() - 1).getNodeID()))){
+                                    node.setVisible(false);
+                                }
+                            }
+                        });
                     }
                     else if(walkingPath.get() != null){
                         newPathButton.fire();
                     }
+
                 }
                 else{
                     permVisibleTexts.forEach(bool -> bool.set(false));
@@ -2038,6 +2091,10 @@ public class ThreeDMapController {
                     }
                 }
             }
+        });
+
+        parent.setOnScroll(event -> {
+            System.out.println(event.getDeltaY());
         });
     }
 
