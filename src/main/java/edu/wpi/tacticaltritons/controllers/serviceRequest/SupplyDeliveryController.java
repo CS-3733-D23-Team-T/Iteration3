@@ -143,6 +143,7 @@ public class SupplyDeliveryController {
                 flowPane.setColumnHalignment(HPos.CENTER);
                 flowPane.setAlignment(Pos.TOP_CENTER);
                 flowPane.setBackground(Background.fill(Color.WHITE));
+                flowPane.setStyle("-fx-background-radius: 10; -fx-background-color: white");
                 flowPane.setMargin(flowPane, new Insets(20, 20, 20, 20));
 
                 // Creates the image view
