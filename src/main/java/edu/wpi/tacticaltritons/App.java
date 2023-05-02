@@ -2,6 +2,7 @@ package edu.wpi.tacticaltritons;
 
 import edu.wpi.tacticaltritons.data.FlowerHashMap;
 import edu.wpi.tacticaltritons.data.FurnitureHashMap;
+import edu.wpi.tacticaltritons.data.SupplyHashMap;
 import edu.wpi.tacticaltritons.data.QuickNavigationMenuButtons;
 import edu.wpi.tacticaltritons.database.Tdb;
 import edu.wpi.tacticaltritons.navigation.Screen;
@@ -43,6 +44,8 @@ public class App extends Application {
   public static QuickNavigationMenuButtons quickNavigationMenuButtons;
   public static HashMap<String, Image> flowerHashMap;
   public static HashMap<String, Image> furnitureHashMap;
+  public static HashMap<String, Image> iconHashMap;
+  public static HashMap<String, Image> supplyHashMap;
 
   @Override
   public void init() {
@@ -56,6 +59,8 @@ public class App extends Application {
     quickNavigationMenuButtons = new QuickNavigationMenuButtons();
     flowerHashMap = new FlowerHashMap();
     furnitureHashMap = new FurnitureHashMap();
+    //iconHashMap = new IconHashMap();
+    supplyHashMap = new SupplyHashMap();
 
 
     groundfloor =
