@@ -125,7 +125,7 @@ public class SupplyCheckoutController {
     public void initialize() throws SQLException {
 
         hourComboBox.setItems(FXCollections.observableArrayList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23));
-        minComboBox.setItems(FXCollections.observableArrayList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "00", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
+        minComboBox.setItems(FXCollections.observableArrayList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"));
 
         for (Login login : DAOFacade.getAllLogins()) {
             assignedComboBox.getItems().add(login.getFirstName() + " " + login.getLastName());
@@ -138,8 +138,6 @@ public class SupplyCheckoutController {
         floor1Image.setImage(App.firstfloor);
         floor2Image.setImage(App.secondfloor);
         floor3Image.setImage(App.thirdfloor);
-        HashMap<String, Image> imageHashMap = new HashMap<>();
-
 
 //    EffectGenerator.generateShadowEffect(basePane); //shadow generator
         lowerLevel1Image.setImage(App.lowerlevel1);
@@ -159,7 +157,7 @@ public class SupplyCheckoutController {
 
         checkoutItems.forEach((key, value) ->
         {
-            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, imageHashMap.get(key)));
+            checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, App.supplyHashMap ));
         });
         checkoutFlowplan.setAlignment(Pos.CENTER);
         ;
@@ -303,7 +301,7 @@ public class SupplyCheckoutController {
 
     }
 
-    private FlowPane createCheckoutNode(String key, int value, Image supplyImage) {
+    private FlowPane createCheckoutNode(String key, int value, HashMap<String, Image> ImageHashMap)  {
         FlowPane flowPane = new FlowPane();
         flowPane.setPrefWidth(200);
         flowPane.setPrefHeight(100);
@@ -316,7 +314,7 @@ public class SupplyCheckoutController {
         flowPane.setBackground(Background.fill(Color.WHITE));
 
         // Creates the image view
-        Image image = supplyImage;
+        Image image = ImageHashMap.get(key);
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);

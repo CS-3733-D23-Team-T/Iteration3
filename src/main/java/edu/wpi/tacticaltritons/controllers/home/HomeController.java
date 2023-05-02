@@ -465,7 +465,6 @@ public class HomeController {
         tableServiceRequest.setPlaceholder(new Label("No Pending Requests"));
     }
 
-
     public void displayNode(Move moveFrom, GesturePane gesturePane) {
         L1Group.setVisible(false);
         L2Group.setVisible(false);
