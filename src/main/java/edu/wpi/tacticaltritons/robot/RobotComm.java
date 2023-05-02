@@ -153,11 +153,13 @@ public class RobotComm {
                 yRobotCoordinate.set(nodes.get(0).getYcoord());
                 openConnection(robot);
                 setLED(true, robot);
+                running = true;
                 while(!readData(robot));
                 for(int i = 0; i < angle.size();i++){
                     drive(angle.get(i),distance.get(i), robot, nodes.get(i));
                     while (!checkComplete);
                 }
+                running = false;
                 setLED(false, robot);
                 closeConnection(robot);
                 Thread.currentThread().interrupt();
@@ -167,6 +169,7 @@ public class RobotComm {
         robotThread.start();
     }
 
+    public static boolean running = false; //true when sending commands to robot
 
     /**
      * checks if the current task is reported finished by the robot
