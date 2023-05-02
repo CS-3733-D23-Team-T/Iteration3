@@ -226,159 +226,6 @@ public class ThreeDMapController {
         searchBox.getChildren().add(searchButton);
         sidePane.getChildren().add(0, searchBox);
 
-        //drawing nodes
-        nodes.forEach(node -> {
-            if(!locations.get(node).getNodeType().equals("HALL")) {
-                VBox box = new VBox();
-                box.setId("node" + node.getNodeID());
-                box.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 3");
-                box.setSpacing(10);
-                box.setAlignment(Pos.CENTER);
-                box.setPrefSize(VBox.USE_COMPUTED_SIZE, VBox.USE_COMPUTED_SIZE);
-                box.setPickOnBounds(false);
-                box.setMouseTransparent(true);
-
-                Text t = new Text(locations.get(node).getShortName());
-                t.setId("nodeText" + node.getNodeID());
-                t.setFont(new Font(24));
-                box.getChildren().add(t);
-
-                Box s = new Box(10, 10, 10);
-                AtomicBoolean permVisible = new AtomicBoolean(false);
-                s.setOnMouseClicked(event -> {
-                    //pathfinding
-                    if (pathFinding.get()) {
-                        permVisibleTexts.add(permVisible);
-                        permVisible.set(true);
-                        box.setVisible(true);
-                        //starting point
-                        s.setMaterial(new PhongMaterial(Color.BLACK));
-                        if (pathToCompute.size() == 0) {
-                            pathToCompute.add(node);
-                        }
-                        //ending point
-                        else {
-                            Node start = pathToCompute.get(0);
-
-                            //removing old paths
-                            root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("pathBlock"));
-                            root.getChildren().removeIf(i -> i.getId() != null && i.getId().contains("bNode")
-                                    && !i.getId().contains(String.valueOf(start.getNodeID()))
-                                    && !i.getId().contains(String.valueOf(node.getNodeID())));
-
-                            try {
-                                //Pathfinding
-                                List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
-
-                                walkingPath.set(path);
-
-                                for (int i = 0; i < path.size() - 1; i++) {
-
-                                    //formula
-                                    double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
-                                            Math.pow(path.get(i + 1).getYcoord() - path.get(i).getYcoord(), 2));
-
-                                    double opp = path.get(i + 1).getXcoord() - path.get(i).getXcoord();
-                                    double adj = path.get(i + 1).getYcoord() - path.get(i).getYcoord();
-                                    double angle = Math.atan(opp / adj) * (180 / Math.PI);
-
-                                    Box line = new Box(5, 5, distance);
-                                    line.setId("pathBlock");
-                                    line.setTranslateZ(path.get(i).getYcoord() + adj / 2);
-                                    line.setTranslateX(path.get(i).getXcoord() + opp / 2);
-                                    line.getTransforms().add(new Rotate(angle, Rotate.Y_AXIS));
-                                    line.setMaterial(new PhongMaterial(Color.BLUE));
-
-                                    root.getChildren().add(line);
-                                }
-
-                            } catch (SQLException e) {
-                                throw new RuntimeException(e);
-                            }
-                            pathToCompute.clear();
-                        }
-                    }
-                    else {
-                        if(!permVisible.get()) {
-                            permVisibleTexts.add(permVisible);
-                            permVisible.set(true);
-                            box.setVisible(true);
-
-                            t.setFont(new Font(20));
-
-                            Text lt = new Text(locations.get(node).getLongName());
-                            lt.setId("dNode" + node.getNodeID());
-                            lt.setFont(new Font(24));
-
-                            Text nXY = new Text("x: " + node.getXcoord() + ", y: " + node.getYcoord());
-                            nXY.setFont(new Font(20));
-                            nXY.setId("dNode" + node.getNodeID());
-
-                            Text lty = new Text("Type: " + locations.get(node).getNodeType());
-                            lty.setId("dNode" + node.getNodeID());
-                            lty.setFont(new Font(20));
-
-                            double maxWidth = (computeMax(t.getLayoutBounds().getWidth(),
-                                    lt.getLayoutBounds().getWidth(),
-                                    nXY.getLayoutBounds().getWidth(),
-                                    lty.getLayoutBounds().getWidth()) + 10) / 2;
-
-                            double maxHeight = computeSum(t.getLayoutBounds().getHeight(),
-                                    lt.getLayoutBounds().getHeight(),
-                                    nXY.getLayoutBounds().getHeight(),
-                                    lty.getLayoutBounds().getHeight());
-
-                            box.setTranslateX(node.getXcoord() - maxWidth);
-                            box.setTranslateY(100 + maxHeight - box.getHeight());
-                            box.getChildren().add(0, lt);
-                            box.getChildren().addAll(nXY, lty);
-                        }
-                        else {
-                            box.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("dNode" + node.getNodeID()));
-                            permVisible.set(false);
-                            permVisibleTexts.remove(permVisible);
-                            t.setFont(new Font(24));
-                            box.setTranslateX(node.getXcoord() - ((t.getLayoutBounds().getWidth() + 10) / 2));
-                            box.setVisible(false);
-                            box.setTranslateY(100);
-                        }
-                    }
-                });
-                s.setOnMouseEntered(event -> {
-                    if(!permVisible.get()) {
-                        box.setVisible(true);
-                    }
-                });
-                s.setOnMouseExited(event -> {
-                    if(!permVisible.get()) {
-                        box.setVisible(false);
-                    }
-                });
-                s.setId("bNode" + node.getNodeID());
-                s.setMaterial(new PhongMaterial(nodeColors.get(locations.get(node).getNodeType())));
-                s.setTranslateZ(node.getYcoord());
-                s.setTranslateX(node.getXcoord());
-                visibleNodes.add(s);
-
-                //drawing the floating text
-                box.setTranslateZ(node.getYcoord());
-                box.setTranslateX(node.getXcoord() - ((t.getLayoutBounds().getWidth() + 10) / 2));
-                box.setTranslateY(100);
-
-                box.getTransforms().addAll(
-                        new Rotate(180, Rotate.Z_AXIS),
-                        new Rotate(180, Rotate.Y_AXIS));
-                box.setVisible(false);
-                box.layoutYProperty().bind(xRotate.pivotXProperty());
-                box.setRotationAxis(Rotate.Y_AXIS);
-                box.rotateProperty().bind(yRotate.angleProperty());
-                box.getTransforms().addAll(xRotate, new Rotate(180, Rotate.X_AXIS));
-
-                root.getChildren().addAll(s, box);
-            }
-        });
-
-
         // Use a SubScene
         SubScene subScene = new SubScene(
                 root, 1400, 800,
@@ -560,6 +407,10 @@ public class ThreeDMapController {
         movementToggle.selectedProperty().bindBidirectional(movement);
         sidePane.getChildren().add(1, movementToggle);
 
+        AtomicReference<List<String>> transitionFloor = new AtomicReference<>(null);
+        AtomicReference<List<List<Node>>> paths = new AtomicReference<>(null);
+        AtomicInteger currentPathIndex = new AtomicInteger(0);
+
         HBox floorToggles = new HBox();
         ToggleGroup floor = new ToggleGroup();
         MFXRadioButton lower2 = new MFXRadioButton("L2");
@@ -576,16 +427,19 @@ public class ThreeDMapController {
 
                 for (int i = 0; i < wri.getHeight(); i++) {
                     for (int j = 0; j < wri.getWidth(); j++) {
-                        Color c = pixRea.getColor(j, i);
+                        Color c = pixelReader.getColor(j, i);
                         double red = c.getRed() * 255;
                         double green = c.getRed() * 255;
                         double blue = c.getBlue() * 255;
 
-                        if (red < 230 && green < 230 && blue < 230) {
+                        if(red < 100 && green < 100 && blue < 100){
+                            matrix[i][j] = 0;
+                        }
+                        else if (red < 230 && green < 230 && blue < 230) {
                             matrix[i][j] = 1;
                         }
                         else {
-                            pixWri.setColor(j, i, Color.WHITE);
+                            pixelWriter.setColor(j, i, Color.WHITE);
                             matrix[i][j] = 0;
                         }
                     }
@@ -662,12 +516,33 @@ public class ThreeDMapController {
                                             && !i.getId().contains(String.valueOf(start.getNodeID()))
                                             && !i.getId().contains(String.valueOf(node.getNodeID())));
 
+
                                     try {
                                         //Pathfinding
                                         List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
-                                        walkingPath.set(path);
 
-                                        for (int i = 0; i < path.size() - 1; i++) {
+                                        paths.set(new ArrayList<>());
+                                        List<Node> tempPath = new ArrayList<>();
+                                        String curFloor = path.get(0).getFloor();
+                                        transitionFloor.set(new ArrayList<>(List.of(curFloor)));
+                                        for(int i = 0; i < path.size() - 1; i++){
+                                            tempPath.add(path.get(i));
+                                            if(!curFloor.equals(path.get(i + 1).getFloor())){
+                                                curFloor = path.get(i + 1).getFloor();
+                                                transitionFloor.get().add(curFloor);
+                                                paths.get().add(tempPath);
+                                                tempPath.clear();
+                                            }
+                                        }
+                                        tempPath.add(path.get(path.size() - 1));
+                                        paths.get().add(tempPath);
+
+                                        currentPathIndex.set(0);
+                                        walkingPath.set(paths.get().get(0));
+                                        path.clear();
+                                        path.addAll(paths.get().get(0));
+
+                                        for (int i = 0; i < path.size(); i++) {
 
                                             //formula
                                             double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
@@ -790,16 +665,19 @@ public class ThreeDMapController {
 
                 for (int i = 0; i < wri.getHeight(); i++) {
                     for (int j = 0; j < wri.getWidth(); j++) {
-                        Color c = pixRea.getColor(j, i);
+                        Color c = pixelReader.getColor(j, i);
                         double red = c.getRed() * 255;
                         double green = c.getRed() * 255;
                         double blue = c.getBlue() * 255;
 
-                        if (red < 230 && green < 230 && blue < 230) {
+                        if(red < 100 && green < 100 && blue < 100){
+                            matrix[i][j] = 0;
+                        }
+                        else if (red < 230 && green < 230 && blue < 230) {
                             matrix[i][j] = 1;
                         }
                         else {
-                            pixWri.setColor(j, i, Color.WHITE);
+                            pixelWriter.setColor(j, i, Color.WHITE);
                             matrix[i][j] = 0;
                         }
                     }
@@ -876,12 +754,33 @@ public class ThreeDMapController {
                                             && !i.getId().contains(String.valueOf(start.getNodeID()))
                                             && !i.getId().contains(String.valueOf(node.getNodeID())));
 
+
                                     try {
                                         //Pathfinding
                                         List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
-                                        walkingPath.set(path);
 
-                                        for (int i = 0; i < path.size() - 1; i++) {
+                                        paths.set(new ArrayList<>());
+                                        List<Node> tempPath = new ArrayList<>();
+                                        String curFloor = path.get(0).getFloor();
+                                        transitionFloor.set(new ArrayList<>(List.of(curFloor)));
+                                        for(int i = 0; i < path.size() - 1; i++){
+                                            tempPath.add(path.get(i));
+                                            if(!curFloor.equals(path.get(i + 1).getFloor())){
+                                                curFloor = path.get(i + 1).getFloor();
+                                                transitionFloor.get().add(curFloor);
+                                                paths.get().add(tempPath);
+                                                tempPath.clear();
+                                            }
+                                        }
+                                        tempPath.add(path.get(path.size() - 1));
+                                        paths.get().add(tempPath);
+
+                                        currentPathIndex.set(0);
+                                        walkingPath.set(paths.get().get(0));
+                                        path.clear();
+                                        path.addAll(paths.get().get(0));
+
+                                        for (int i = 0; i < path.size(); i++) {
 
                                             //formula
                                             double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
@@ -1005,16 +904,19 @@ public class ThreeDMapController {
 
                 for (int i = 0; i < wri.getHeight(); i++) {
                     for (int j = 0; j < wri.getWidth(); j++) {
-                        Color c = pixRea.getColor(j, i);
+                        Color c = pixelReader.getColor(j, i);
                         double red = c.getRed() * 255;
                         double green = c.getRed() * 255;
                         double blue = c.getBlue() * 255;
 
-                        if (red < 230 && green < 230 && blue < 230) {
+                        if(red < 100 && green < 100 && blue < 100){
+                            matrix[i][j] = 0;
+                        }
+                        else if (red < 230 && green < 230 && blue < 230) {
                             matrix[i][j] = 1;
                         }
                         else {
-                            pixWri.setColor(j, i, Color.WHITE);
+                            pixelWriter.setColor(j, i, Color.WHITE);
                             matrix[i][j] = 0;
                         }
                     }
@@ -1091,12 +993,33 @@ public class ThreeDMapController {
                                             && !i.getId().contains(String.valueOf(start.getNodeID()))
                                             && !i.getId().contains(String.valueOf(node.getNodeID())));
 
+
                                     try {
                                         //Pathfinding
                                         List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
-                                        walkingPath.set(path);
 
-                                        for (int i = 0; i < path.size() - 1; i++) {
+                                        paths.set(new ArrayList<>());
+                                        List<Node> tempPath = new ArrayList<>();
+                                        String curFloor = path.get(0).getFloor();
+                                        transitionFloor.set(new ArrayList<>(List.of(curFloor)));
+                                        for(int i = 0; i < path.size() - 1; i++){
+                                            tempPath.add(path.get(i));
+                                            if(!curFloor.equals(path.get(i + 1).getFloor())){
+                                                curFloor = path.get(i + 1).getFloor();
+                                                transitionFloor.get().add(curFloor);
+                                                paths.get().add(tempPath);
+                                                tempPath.clear();
+                                            }
+                                        }
+                                        tempPath.add(path.get(path.size() - 1));
+                                        paths.get().add(tempPath);
+
+                                        currentPathIndex.set(0);
+                                        walkingPath.set(paths.get().get(0));
+                                        path.clear();
+                                        path.addAll(paths.get().get(0));
+
+                                        for (int i = 0; i < path.size(); i++) {
 
                                             //formula
                                             double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
@@ -1219,16 +1142,19 @@ public class ThreeDMapController {
 
                 for (int i = 0; i < wri.getHeight(); i++) {
                     for (int j = 0; j < wri.getWidth(); j++) {
-                        Color c = pixRea.getColor(j, i);
+                        Color c = pixelReader.getColor(j, i);
                         double red = c.getRed() * 255;
                         double green = c.getRed() * 255;
                         double blue = c.getBlue() * 255;
 
-                        if (red < 230 && green < 230 && blue < 230) {
+                        if(red < 100 && green < 100 && blue < 100){
+                            matrix[i][j] = 0;
+                        }
+                        else if (red < 230 && green < 230 && blue < 230) {
                             matrix[i][j] = 1;
                         }
                         else {
-                            pixWri.setColor(j, i, Color.WHITE);
+                            pixelWriter.setColor(j, i, Color.WHITE);
                             matrix[i][j] = 0;
                         }
                     }
@@ -1305,12 +1231,33 @@ public class ThreeDMapController {
                                             && !i.getId().contains(String.valueOf(start.getNodeID()))
                                             && !i.getId().contains(String.valueOf(node.getNodeID())));
 
+
                                     try {
                                         //Pathfinding
                                         List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
-                                        walkingPath.set(path);
 
-                                        for (int i = 0; i < path.size() - 1; i++) {
+                                        paths.set(new ArrayList<>());
+                                        List<Node> tempPath = new ArrayList<>();
+                                        String curFloor = path.get(0).getFloor();
+                                        transitionFloor.set(new ArrayList<>(List.of(curFloor)));
+                                        for(int i = 0; i < path.size() - 1; i++){
+                                            tempPath.add(path.get(i));
+                                            if(!curFloor.equals(path.get(i + 1).getFloor())){
+                                                curFloor = path.get(i + 1).getFloor();
+                                                transitionFloor.get().add(curFloor);
+                                                paths.get().add(tempPath);
+                                                tempPath.clear();
+                                            }
+                                        }
+                                        tempPath.add(path.get(path.size() - 1));
+                                        paths.get().add(tempPath);
+
+                                        currentPathIndex.set(0);
+                                        walkingPath.set(paths.get().get(0));
+                                        path.clear();
+                                        path.addAll(paths.get().get(0));
+
+                                        for (int i = 0; i < path.size(); i++) {
 
                                             //formula
                                             double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
@@ -1433,16 +1380,19 @@ public class ThreeDMapController {
 
                 for (int i = 0; i < wri.getHeight(); i++) {
                     for (int j = 0; j < wri.getWidth(); j++) {
-                        Color c = pixRea.getColor(j, i);
+                        Color c = pixelReader.getColor(j, i);
                         double red = c.getRed() * 255;
                         double green = c.getRed() * 255;
                         double blue = c.getBlue() * 255;
 
-                        if (red < 230 && green < 230 && blue < 230) {
+                        if(red < 100 && green < 100 && blue < 100){
+                            matrix[i][j] = 0;
+                        }
+                        else if (red < 230 && green < 230 && blue < 230) {
                             matrix[i][j] = 1;
                         }
                         else {
-                            pixWri.setColor(j, i, Color.WHITE);
+                            pixelWriter.setColor(j, i, Color.WHITE);
                             matrix[i][j] = 0;
                         }
                     }
@@ -1519,12 +1469,33 @@ public class ThreeDMapController {
                                             && !i.getId().contains(String.valueOf(start.getNodeID()))
                                             && !i.getId().contains(String.valueOf(node.getNodeID())));
 
+
                                     try {
                                         //Pathfinding
                                         List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
-                                        walkingPath.set(path);
 
-                                        for (int i = 0; i < path.size() - 1; i++) {
+                                        paths.set(new ArrayList<>());
+                                        List<Node> tempPath = new ArrayList<>();
+                                        String curFloor = path.get(0).getFloor();
+                                        transitionFloor.set(new ArrayList<>(List.of(curFloor)));
+                                        for(int i = 0; i < path.size() - 1; i++){
+                                            tempPath.add(path.get(i));
+                                            if(!curFloor.equals(path.get(i + 1).getFloor())){
+                                                curFloor = path.get(i + 1).getFloor();
+                                                transitionFloor.get().add(curFloor);
+                                                paths.get().add(tempPath);
+                                                tempPath.clear();
+                                            }
+                                        }
+                                        tempPath.add(path.get(path.size() - 1));
+                                        paths.get().add(tempPath);
+
+                                        currentPathIndex.set(0);
+                                        walkingPath.set(paths.get().get(0));
+                                        path.clear();
+                                        path.addAll(paths.get().get(0));
+
+                                        for (int i = 0; i < path.size(); i++) {
 
                                             //formula
                                             double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
@@ -1636,6 +1607,178 @@ public class ThreeDMapController {
         floorToggles.setAlignment(Pos.CENTER);
         floorToggles.setSpacing(10);
         sidePane.getChildren().add(floorToggles);
+
+        //drawing nodes
+        nodes.forEach(node -> {
+            if(!locations.get(node).getNodeType().equals("HALL")) {
+                VBox box = new VBox();
+                box.setId("node" + node.getNodeID());
+                box.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 3");
+                box.setSpacing(10);
+                box.setAlignment(Pos.CENTER);
+                box.setPrefSize(VBox.USE_COMPUTED_SIZE, VBox.USE_COMPUTED_SIZE);
+                box.setPickOnBounds(false);
+                box.setMouseTransparent(true);
+
+                Text t = new Text(locations.get(node).getShortName());
+                t.setId("nodeText" + node.getNodeID());
+                t.setFont(new Font(24));
+                box.getChildren().add(t);
+
+                Box s = new Box(10, 10, 10);
+                AtomicBoolean permVisible = new AtomicBoolean(false);
+                s.setOnMouseClicked(event -> {
+                    //pathfinding
+                    if (pathFinding.get()) {
+                        permVisibleTexts.add(permVisible);
+                        permVisible.set(true);
+                        box.setVisible(true);
+                        //starting point
+                        s.setMaterial(new PhongMaterial(Color.BLACK));
+                        if (pathToCompute.size() == 0) {
+                            pathToCompute.add(node);
+                        }
+                        //ending point
+                        else {
+                            Node start = pathToCompute.get(0);
+
+                            //removing old paths
+                            root.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("pathBlock"));
+                            root.getChildren().removeIf(i -> i.getId() != null && i.getId().contains("bNode")
+                                    && !i.getId().contains(String.valueOf(start.getNodeID()))
+                                    && !i.getId().contains(String.valueOf(node.getNodeID())));
+
+
+                            try {
+                                //Pathfinding
+                                List<Node> path = AlgorithmSingleton.getInstance().algorithm.findShortestPath(start, node);
+
+                                paths.set(new ArrayList<>());
+                                List<Node> tempPath = new ArrayList<>();
+                                String curFloor = path.get(0).getFloor();
+                                transitionFloor.set(new ArrayList<>(List.of(curFloor)));
+                                for(int i = 0; i < path.size() - 1; i++){
+                                    tempPath.add(path.get(i));
+                                    if(!curFloor.equals(path.get(i + 1).getFloor())){
+                                        curFloor = path.get(i + 1).getFloor();
+                                        transitionFloor.get().add(curFloor);
+                                        paths.get().add(tempPath);
+                                        tempPath.clear();
+                                    }
+                                }
+                                tempPath.add(path.get(path.size() - 1));
+                                paths.get().add(tempPath);
+
+                                currentPathIndex.set(0);
+                                walkingPath.set(paths.get().get(0));
+                                path.clear();
+                                path.addAll(paths.get().get(0));
+
+                                for (int i = 0; i < path.size(); i++) {
+
+                                    //formula
+                                    double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
+                                            Math.pow(path.get(i + 1).getYcoord() - path.get(i).getYcoord(), 2));
+
+                                    double opp = path.get(i + 1).getXcoord() - path.get(i).getXcoord();
+                                    double adj = path.get(i + 1).getYcoord() - path.get(i).getYcoord();
+                                    double angle = Math.atan(opp / adj) * (180 / Math.PI);
+
+                                    Box line = new Box(5, 5, distance);
+                                    line.setId("pathBlock");
+                                    line.setTranslateZ(path.get(i).getYcoord() + adj / 2);
+                                    line.setTranslateX(path.get(i).getXcoord() + opp / 2);
+                                    line.getTransforms().add(new Rotate(angle, Rotate.Y_AXIS));
+                                    line.setMaterial(new PhongMaterial(Color.BLUE));
+
+                                    root.getChildren().add(line);
+                                }
+
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                            pathToCompute.clear();
+                        }
+                    }
+                    else {
+                        if(!permVisible.get()) {
+                            permVisibleTexts.add(permVisible);
+                            permVisible.set(true);
+                            box.setVisible(true);
+
+                            t.setFont(new Font(20));
+
+                            Text lt = new Text(locations.get(node).getLongName());
+                            lt.setId("dNode" + node.getNodeID());
+                            lt.setFont(new Font(24));
+
+                            Text nXY = new Text("x: " + node.getXcoord() + ", y: " + node.getYcoord());
+                            nXY.setFont(new Font(20));
+                            nXY.setId("dNode" + node.getNodeID());
+
+                            Text lty = new Text("Type: " + locations.get(node).getNodeType());
+                            lty.setId("dNode" + node.getNodeID());
+                            lty.setFont(new Font(20));
+
+                            double maxWidth = (computeMax(t.getLayoutBounds().getWidth(),
+                                    lt.getLayoutBounds().getWidth(),
+                                    nXY.getLayoutBounds().getWidth(),
+                                    lty.getLayoutBounds().getWidth()) + 10) / 2;
+
+                            double maxHeight = computeSum(t.getLayoutBounds().getHeight(),
+                                    lt.getLayoutBounds().getHeight(),
+                                    nXY.getLayoutBounds().getHeight(),
+                                    lty.getLayoutBounds().getHeight());
+
+                            box.setTranslateX(node.getXcoord() - maxWidth);
+                            box.setTranslateY(100 + maxHeight - box.getHeight());
+                            box.getChildren().add(0, lt);
+                            box.getChildren().addAll(nXY, lty);
+                        }
+                        else {
+                            box.getChildren().removeIf(i -> i.getId() != null && i.getId().equals("dNode" + node.getNodeID()));
+                            permVisible.set(false);
+                            permVisibleTexts.remove(permVisible);
+                            t.setFont(new Font(24));
+                            box.setTranslateX(node.getXcoord() - ((t.getLayoutBounds().getWidth() + 10) / 2));
+                            box.setVisible(false);
+                            box.setTranslateY(100);
+                        }
+                    }
+                });
+                s.setOnMouseEntered(event -> {
+                    if(!permVisible.get()) {
+                        box.setVisible(true);
+                    }
+                });
+                s.setOnMouseExited(event -> {
+                    if(!permVisible.get()) {
+                        box.setVisible(false);
+                    }
+                });
+                s.setId("bNode" + node.getNodeID());
+                s.setMaterial(new PhongMaterial(nodeColors.get(locations.get(node).getNodeType())));
+                s.setTranslateZ(node.getYcoord());
+                s.setTranslateX(node.getXcoord());
+                visibleNodes.add(s);
+
+                //drawing the floating text
+                box.setTranslateZ(node.getYcoord());
+                box.setTranslateX(node.getXcoord() - ((t.getLayoutBounds().getWidth() + 10) / 2));
+                box.setTranslateY(100);
+
+                box.getTransforms().addAll(
+                        new Rotate(180, Rotate.Z_AXIS),
+                        new Rotate(180, Rotate.Y_AXIS));
+                box.setVisible(false);
+                box.layoutYProperty().bind(xRotate.pivotXProperty());
+                box.setRotationAxis(Rotate.Y_AXIS);
+                box.rotateProperty().bind(yRotate.angleProperty());
+                box.getTransforms().addAll(xRotate, new Rotate(180, Rotate.X_AXIS));
+
+                root.getChildren().addAll(s, box);
+            }
+        });
 
         Text filterHeader = new Text("Filters");
         filterHeader.setFont(new Font(24));
@@ -2083,11 +2226,44 @@ public class ThreeDMapController {
                 if(pathFinding.get()){
                     if(pathTransition.get() != null){
                         if(pathTransition.get().getStatus() == Animation.Status.RUNNING){
-                            pathTransition.get().stop();
+                            pathTransition.get().pause();
                         }
                         else if(pathTransition.get().getStatus() == Animation.Status.STOPPED){
                             pathTransition.get().play();
                         }
+                    }
+                }
+            }
+            else if(event.getCode() == KeyCode.ENTER){
+                if(pathFinding.get() && pathTransition.get().getStatus() == Animation.Status.STOPPED && currentPathIndex.get() < paths.get().size()){
+                    currentPathIndex.set(currentPathIndex.get() + 1);
+                    int floorN = parseFloorNumb(transitionFloor.get().get(currentPathIndex.get()));
+                    switch (floorN){
+                        case 0 -> lower2.setSelected(true);
+                        case 1 -> lower1.setSelected(true);
+                        case 2 -> floor1.setSelected(true);
+                        case 3 -> floor2.setSelected(true);
+                        case 4 -> floor3.setSelected(true);
+                    }
+                    List<Node> path = paths.get().get(currentPathIndex.get());
+                    walkingPath.set(path);
+                    for (int i = 0; i < path.size() - 1; i++) {
+                        //formula
+                        double distance = Math.sqrt(Math.pow(path.get(i + 1).getXcoord() - path.get(i).getXcoord(), 2) +
+                                Math.pow(path.get(i + 1).getYcoord() - path.get(i).getYcoord(), 2));
+
+                        double opp = path.get(i + 1).getXcoord() - path.get(i).getXcoord();
+                        double adj = path.get(i + 1).getYcoord() - path.get(i).getYcoord();
+                        double angle = Math.atan(opp / adj) * (180 / Math.PI);
+
+                        Box line = new Box(5, 5, distance);
+                        line.setId("pathBlock");
+                        line.setTranslateZ(path.get(i).getYcoord() + adj / 2);
+                        line.setTranslateX(path.get(i).getXcoord() + opp / 2);
+                        line.getTransforms().add(new Rotate(angle, Rotate.Y_AXIS));
+                        line.setMaterial(new PhongMaterial(Color.BLUE));
+
+                        root.getChildren().add(line);
                     }
                 }
             }
@@ -2142,5 +2318,26 @@ public class ThreeDMapController {
         }
 
         return Math.sqrt(Math.sqrt(stdX / items.size()) * Math.sqrt(stdY / items.size()));
+    }
+    private int parseFloorNumb(String floor){
+        if(floor == null) return -1;
+        switch (floor){
+            case "L2" -> {
+                return 0;
+            }
+            case "L1" -> {
+                return 1;
+            }
+            case "1" -> {
+                return 2;
+            }
+            case "2" -> {
+                return 3;
+            }
+            case "3" -> {
+                return 4;
+            }
+        }
+        return -1;
     }
 }
