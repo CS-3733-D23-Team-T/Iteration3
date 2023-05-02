@@ -1015,9 +1015,9 @@ log.info("Starting Up");
                 double opp = walkingPath.get().get(1).getXcoord() - walkingPath.get().get(0).getXcoord();
                 double adj = walkingPath.get().get(1).getYcoord() - walkingPath.get().get(0).getYcoord();
                 double angle = 180 + Math.toDegrees(Math.atan2(opp, adj));
-                Rotate rotateY = new Rotate(angle, Rotate.Y_AXIS);
-                Rotate rotateX = new Rotate(180, Rotate.X_AXIS);
-                camera.getTransforms().addAll(rotateY, rotateX);
+                xRotate.setAngle(180);
+                yRotate.setAngle(angle);
+                camera.getTransforms().addAll(xRotate, yRotate);
                 camera.setTranslateY(10);
                 double oldAngle = angle;
                 //Transition from node to node
@@ -1041,7 +1041,7 @@ log.info("Starting Up");
                     //Animation for rotating
                     if(i < walkingPath.get().size() - 2){
                         camera.getTransforms().clear();
-                        camera.getTransforms().add(rotateX);
+                        camera.getTransforms().add(xRotate);
                         opp = walkingPath.get().get(i + 2).getXcoord() - walkingPath.get().get(i+1).getXcoord();
                         adj = walkingPath.get().get(i + 2).getYcoord() - walkingPath.get().get(i+1).getYcoord();
                         angle = 180 + Math.toDegrees(Math.atan2(opp, adj));
@@ -1061,6 +1061,10 @@ log.info("Starting Up");
                         rotateTransition.setAxis(Rotate.Y_AXIS);
                         oldAngle = angle;
 
+                        double finalAngle = angle;
+                        rotateTransition.setOnFinished(event1 -> {
+                            yRotate.setAngle(finalAngle);
+                        });
                         pathTransition.get().getChildren().addAll(transition, rotateTransition);
                     }
                     else {
@@ -1086,6 +1090,9 @@ log.info("Starting Up");
             else if(event.getCode() == KeyCode.ESCAPE){
                 if(pathFinding.get()) {
                     if (pathTransition.get() != null) {
+                        camera.setRotationAxis(Rotate.Y_AXIS);
+                        camera.setRotate(0);
+                        xRotate.setAngle(90);
                         if (pathTransition.get().getStatus() == Animation.Status.RUNNING) {
                             pathTransition.get().stop();
                         }
