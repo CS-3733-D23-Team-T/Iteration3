@@ -152,6 +152,9 @@ public class NewViewMapController extends MapSuperController {
     @FXML
     private void initialize() throws SQLException {
 
+        menuBar.setImage(App.menuBar);
+
+
         selectedFloor.FLOOR.floor = "1";
 
         findAllNodes(allNodeTypes, selectedFloor.FLOOR.floor, "ViewMap");

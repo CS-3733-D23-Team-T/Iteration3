@@ -373,6 +373,9 @@ public class NewEditMapController extends MapSuperController {
     @FXML
     private void initialize() throws SQLException {
 
+        menuBar.setImage(App.menuBar);
+
+
         this.selector.setItems(FXCollections.observableArrayList("Node", "Edge", "Location Name", "Move"));
 
 

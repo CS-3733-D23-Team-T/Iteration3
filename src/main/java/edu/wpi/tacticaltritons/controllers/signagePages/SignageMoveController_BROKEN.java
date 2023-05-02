@@ -103,7 +103,7 @@ public class SignageMoveController_BROKEN extends MapSuperController {
                 @Override
                 public void handle(ActionEvent event) {
                     try {
-                        pathfinding(DAOFacade.getNode(displaySelect.getSelectedItem(),today).getNodeID(),moves.get(0).getNode().getNodeID());
+                        pathfinding(DAOFacade.getNode(displaySelect.getSelectedItem(),today).getNodeID(),moves.get(0).getNode().getNodeID(), false);
                         setLabels(moves.get(0),displaySelect.getSelectedItem());
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
@@ -123,7 +123,7 @@ public class SignageMoveController_BROKEN extends MapSuperController {
                                 @Override
                                 public void handle(ActionEvent event) {
                                     try {
-                                        pathfinding(DAOFacade.getNode(displaySelect.getSelectedItem(),today).getNodeID(),move.getNode().getNodeID());
+                                        pathfinding(DAOFacade.getNode(displaySelect.getSelectedItem(),today).getNodeID(),move.getNode().getNodeID(), false);
                                         setLabels(move,displaySelect.getSelectedItem());
                                     } catch (SQLException e) {
                                         throw new RuntimeException(e);

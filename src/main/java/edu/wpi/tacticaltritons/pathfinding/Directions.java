@@ -13,6 +13,10 @@ public class Directions {
     public Node currentNode;
     public Node nextNode;
 
+    public int nextNodeInt;
+    public int currentNodeInt;
+
+
     public Node futureNode;
     // public List<Node> nodeList;
     CongestionController congestion = new CongestionController();
@@ -216,9 +220,50 @@ public class Directions {
                 textDirections.add("Go Straight to " + nextLocation);
             }
 
+            switch(nextNode.getFloor()){
+                case "L1":
+                    nextNodeInt = -1;
+                    break;
+                case "L2":
+                    nextNodeInt = 0;
+                    break;
+                case "1":
+                    nextNodeInt = 1;
+                    break;
+                case "2":
+                    nextNodeInt = 2;
+                    break;
+                case "3":
+                    nextNodeInt = 3;
+                    break;
+            }
+
+            switch(currentNode.getFloor()){
+                case "L1":
+                    currentNodeInt = -1;
+                    break;
+                case "L2":
+                    currentNodeInt = 0;
+                    break;
+                case "1":
+                    currentNodeInt = 1;
+                    break;
+                case "2":
+                    currentNodeInt = 2;
+                    break;
+                case "3":
+                    currentNodeInt = 3;
+                    break;
+            }
+
 
             if (!nextNode.getFloor().equals(currentNode.getFloor())) {
-                textDirections.add(futureNode.getFloor());
+                if(nextNodeInt>currentNodeInt){
+                    textDirections.add("Go Up to " + futureNode.getFloor());
+                }
+                else{
+                    textDirections.add("Go Down to " + futureNode.getFloor());
+                }
             }
 
         }

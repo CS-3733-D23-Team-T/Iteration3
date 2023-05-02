@@ -5,6 +5,7 @@ import edu.wpi.tacticaltritons.database.*;
 import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
+import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithmHandicap;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import edu.wpi.tacticaltritons.pathfinding.CongestionController;
 import io.github.palexdev.materialfx.controls.*;
@@ -228,7 +229,6 @@ public class MapSuperController {
         floor2Image.setImage(App.secondfloor);
         floor3Image.setImage(App.thirdfloor);
         pathfinding.setImage(App.pathfinding);
-        menuBar.setImage(App.menuBar);
     }
 
     public void resetButtons() {
@@ -644,19 +644,7 @@ public class MapSuperController {
                     setLocationSearch(node);
                 });
                 break;
-            case "Pathfinding":
-                circle.setOnMouseClicked(event -> {
-                    circle.setFill(Color.GREEN);
-                    pathfindingList.add(node);
-                    System.out.println(pathfindingList.size());
-                    if (pathfindingList.size() == 2) {
-                        System.out.println("pathfinding");
-                        clearAllNodes();
-                        pathfinding(pathfindingList.get(0).getNodeID(), pathfindingList.get(1).getNodeID());
-                        pathfindingList.clear();
-                    }
-                });
-                break;
+
         }
 
     }
@@ -703,7 +691,7 @@ public class MapSuperController {
         });
     }
 
-    public void pathfinding(int startNodeID, int endNodeID) {
+    public void pathfinding(int startNodeID, int endNodeID , Boolean accessible) {
 
         try {
             shortestPathMap.add(getNodeHashMap().get(startNodeID));
@@ -722,10 +710,19 @@ public class MapSuperController {
         endNodeId = endNodeID;
         try {
             CongestionController congestionController =new CongestionController();
-            AStarAlgorithm mapAlgorithm = new AStarAlgorithm(congestionController);
+
             startNode1 = DAOFacade.getNode(startNodeId);
             endNode1 = DAOFacade.getNode(endNodeId);
-            shortestPathMap = AlgorithmSingleton.getInstance().algorithm.findShortestPath(startNode1, endNode1);
+            AStarAlgorithmHandicap path = new AStarAlgorithmHandicap(congestionController);
+
+            if(accessible==false) {
+                shortestPathMap = AlgorithmSingleton.getInstance().algorithm.findShortestPath(startNode1, endNode1);
+            }
+            else {
+                shortestPathMap = path.findShortestPath(startNode1, endNode1);
+            }
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

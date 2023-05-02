@@ -73,11 +73,6 @@
                            <Insets left="450.0" top="80.0" />
                         </StackPane.margin>
                      </MFXDatePicker>
-                     <MFXToggleButton fx:id="accessible" contentDisposition="CENTER" prefHeight="50.0" prefWidth="80.0" StackPane.alignment="TOP_LEFT">
-                        <StackPane.margin>
-                           <Insets top="70.0" />
-                        </StackPane.margin>
-                     </MFXToggleButton>
                         </children>
                     </StackPane>
                 </GesturePane>
@@ -136,11 +131,6 @@
                         <Insets left="690.0" top="20.0" />
                     </StackPane.margin>
                 </MFXButton>
-                <ImageView fx:id="wheelChair" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
-                    <StackPane.margin>
-                        <Insets left="20.0" top="20.0" />
-                    </StackPane.margin>
-                </ImageView>
                 <MFXButton fx:id="viewNodes" prefHeight="50.0" text="VIEW NODES" StackPane.alignment="TOP_LEFT">
                     <StackPane.margin>
                         <Insets left="750.0" top="20.0" />
@@ -170,6 +160,16 @@
                         <Insets left="390.0" top="20.0" />
                     </StackPane.margin>
                 </ImageView>
+                <ImageView fx:id="wheelChair" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
+                    <StackPane.margin>
+                        <Insets left="20.0" top="20.0" />
+                    </StackPane.margin>
+                </ImageView>
+            <MFXToggleButton fx:id="accessible" contentDisposition="CENTER" prefHeight="50.0" prefWidth="80.0" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets top="70.0" />
+               </StackPane.margin>
+            </MFXToggleButton>
             </children>
             <BorderPane.margin>
                 <Insets />
