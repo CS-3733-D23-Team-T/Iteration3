@@ -40,10 +40,8 @@ public class QuickNavigationMenuButtons {
         signageNavigationMap.put("Move Signage", Screen.MOVE_SIGN);
 
         databaseNavigationMap.put("Database", Screen.DATABASE);
-        databaseNavigationMap.put("Edit Database", Screen.EDIT_DATABASE);
         databaseNavigationMap.put("Database Help", Screen.DATABASE_HELP);
 
-        announcementNavigationMap.put("Edit Announcements", Screen.EDIT_ANNOUNCEMENTS);
         announcementNavigationMap.put("Create Announcements", Screen.CREATE_ANNOUNCEMENTS);
     }
     public List<MenuItem> generateMenuButton(boolean admin, QuickNavigationMenu menu){
@@ -72,6 +70,7 @@ public class QuickNavigationMenuButtons {
             case DATABASE -> databaseNavigationMap.forEach((key, value) -> {
                 if(admin){
                     MenuItem item = new MenuItem(key);
+                    System.out.println(value);
                     item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);
                 }
