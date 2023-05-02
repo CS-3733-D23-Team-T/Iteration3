@@ -154,6 +154,9 @@ public class MapSuperController {
 
     public List<Node> shortestPathMap = new ArrayList<>();
 
+    public CongestionController congestionController = new CongestionController();
+
+
 
 
     public MapSuperController() throws SQLException {
@@ -744,8 +747,6 @@ public class MapSuperController {
         startNodeId = startNodeID;
         endNodeId = endNodeID;
         try {
-            CongestionController congestionController =new CongestionController();
-
             startNode1 = DAOFacade.getNode(startNodeId);
             endNode1 = DAOFacade.getNode(endNodeId);
             AStarAlgorithmHandicap path = new AStarAlgorithmHandicap(congestionController);

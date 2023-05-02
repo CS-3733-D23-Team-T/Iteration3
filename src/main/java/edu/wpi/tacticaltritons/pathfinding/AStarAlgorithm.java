@@ -56,7 +56,9 @@ public class AStarAlgorithm implements PathFindingAlgorithm {
         double tentativeGScore =
                 gScore.getOrDefault(current, Double.MAX_VALUE) + euclideanDistance(current, neighbor, moveHash);
         double tentativeFScore = tentativeGScore + manhattanDistance(neighbor, endNode);
+
         double congestionFactor = congestionController.getCongestionFactor(current, neighbor);
+
         tentativeFScore *= congestionFactor;
 
         if (openSet.contains(neighbor) && tentativeFScore >= fScore.get(neighbor)) {

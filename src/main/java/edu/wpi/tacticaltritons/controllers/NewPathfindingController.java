@@ -8,6 +8,7 @@ import edu.wpi.tacticaltritons.navigation.Navigation;
 import edu.wpi.tacticaltritons.navigation.Screen;
 import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
+import edu.wpi.tacticaltritons.pathfinding.CongestionController;
 import edu.wpi.tacticaltritons.pathfinding.Directions;
 import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -16,6 +17,7 @@ import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import io.github.palexdev.materialfx.controls.MFXFilterComboBox;
 import io.github.palexdev.materialfx.controls.*;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -63,7 +65,8 @@ public class NewPathfindingController extends MapSuperController {
     @FXML
     private MFXToggleButton accessible;
 
-    @FXML private ImageView wheelChair;
+    @FXML
+    private ImageView wheelChair;
 
     List<MFXFilterComboBox> allLongNames = new ArrayList<>();
     List<Node> shortestPath = new ArrayList<>();
@@ -137,18 +140,83 @@ public class NewPathfindingController extends MapSuperController {
         switch (page) {
             case "Pathfinding":
                 circle.setOnMouseClicked(event -> {
-                    circle.setFill(Color.GREEN);
-                    pathfindingList.add(node);
-                    System.out.println(pathfindingList.size());
-                    if (pathfindingList.size() == 2) {
-                        System.out.println("pathfinding");
-                        clearAllNodes();
-                        pathfinding(pathfindingList.get(0).getNodeID(), pathfindingList.get(1).getNodeID(), accessible.isSelected());
-                        pathfindingList.clear();
-                        try {
-                            setTextDirections(shortestPathMap);
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
+                    if (event.isShiftDown()) {
+                        circle.setFill(Color.GREEN);
+                        pathfindingList.add(node);
+                        if (pathfindingList.size() == 2) {
+                            clearAllNodes();
+                            pathfinding(pathfindingList.get(0).getNodeID(), pathfindingList.get(1).getNodeID(), accessible.isSelected());
+                            VBox vBox = new VBox();
+                            vBox.setStyle("-fx-background-color: WHITE; -fx-border-color: BLACK;-fx-border-width: 2px;");
+                            MFXComboBox combobox = new MFXComboBox();
+                            MFXButton submit = new MFXButton("SUBMIT");
+
+                            combobox.setPrefWidth(130);
+                            combobox.setPrefHeight(50);
+
+                            combobox.setItems(
+                                    FXCollections.observableArrayList(
+                                            "HIGH",
+                                            "MEDIUM",
+                                            "LOW",
+                                            "NORMAL"));
+
+
+                            submit.setPrefSize(100, 50);
+
+                            vBox.setAlignment(Pos.TOP_CENTER);
+                            vBox.getChildren().add(combobox);
+                            vBox.getChildren().add(submit);
+                            vBox.setPadding(new Insets(10));
+                            vBox.setSpacing(10);
+
+
+                            switch (pathfindingList.get(0).getFloor()) {
+                                case "L1":
+                                    this.L1Group.getChildren().add(vBox);
+                                    break;
+                                case "L2":
+                                    this.L2Group.getChildren().add(vBox);
+                                    break;
+                                case "1":
+                                    this.floor1Group.getChildren().add(vBox);
+                                    break;
+                                case "2":
+                                    this.floor2Group.getChildren().add(vBox);
+                                    break;
+                                case "3":
+                                    this.floor3Group.getChildren().add(vBox);
+                                    break;
+                            }
+
+                            vBox.setTranslateX(pathfindingList.get(0).getXcoord() + 20);
+                            vBox.setTranslateY(pathfindingList.get(0).getYcoord() + 20);
+
+                            submit.setOnAction(event1 -> {
+                                System.out.println(combobox.getSelectedItem().toString());
+                                congestionController.setCongestionLevel(pathfindingList.get(0), pathfindingList.get(1), combobox.getSelectedItem().toString());
+                                congestionController.printCongestionFactors();
+                                clearAllNodes();
+                                try {
+                                    findAllPathNodes(allNodeTypes, selectedFloor.FLOOR.floor, "Pathfinding");
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                pathfindingList.clear();
+                            });
+                        }
+                    } else {
+                        circle.setFill(Color.GREEN);
+                        pathfindingList.add(node);
+                        if (pathfindingList.size() == 2) {
+                            clearAllNodes();
+                            pathfinding(pathfindingList.get(0).getNodeID(), pathfindingList.get(1).getNodeID(), accessible.isSelected());
+                            pathfindingList.clear();
+                            try {
+                                setTextDirections(shortestPathMap);
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
                 });
@@ -339,13 +407,13 @@ public class NewPathfindingController extends MapSuperController {
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
-                        if(i==1){
+                        if (i == 1) {
                             firstNode = startNodeID[0];
                         }
                     }
 
                     try {
-                        gesturePane.centreOn(new Point2D(getNodeHashMap().get(firstNode).getXcoord(),getNodeHashMap().get(firstNode).getYcoord()));
+                        gesturePane.centreOn(new Point2D(getNodeHashMap().get(firstNode).getXcoord(), getNodeHashMap().get(firstNode).getYcoord()));
                         setClickedButton(getNodeHashMap().get(firstNode).getFloor());
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
