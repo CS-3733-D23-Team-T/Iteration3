@@ -21,7 +21,7 @@ public class RobotComm {
     private static final int BAUD = 115200;
     private static boolean checkConnection = true; //true for able to connect, false if unable to connect
     private static boolean checkComplete = false;
-    private static DoubleProperty xRobotCoordinate = new SimpleDoubleProperty(-10), yRobotCoordinate = new SimpleDoubleProperty(-10), angleRobotCoordinate = new SimpleDoubleProperty(0);
+    public static DoubleProperty xRobotCoordinate = new SimpleDoubleProperty(-10), yRobotCoordinate = new SimpleDoubleProperty(-10), angleRobotCoordinate = new SimpleDoubleProperty(0);
     private static String in = "";
     private static boolean open = false;
 
@@ -106,7 +106,6 @@ public class RobotComm {
         checkComplete = false;
         sendData("t:" + angle, arduino);
         angleRobotCoordinate.set(angle);
-        System.out.println(angle);
         while(!readData(arduino)){
         }
 

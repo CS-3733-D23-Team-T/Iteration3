@@ -197,6 +197,17 @@ public class NewPathfindingController extends MapSuperController {
             }
             RobotComm.runRobot(shortestPathMap);
             robotIcon.setDisable(false);
+
+            RobotComm.xRobotCoordinate.addListener(((observable, oldValue, newValue) -> {
+                Point2D centerpoint = new Point2D(RobotComm.xRobotCoordinate.get(),RobotComm.yRobotCoordinate.get());
+                gesturePane.zoomTo(1, centerpoint);
+                gesturePane.centreOn(centerpoint);
+            }));
+            RobotComm.yRobotCoordinate.addListener(((observable, oldValue, newValue) -> {
+                Point2D centerpoint = new Point2D(RobotComm.xRobotCoordinate.get(),RobotComm.yRobotCoordinate.get());
+                gesturePane.zoomTo(1, centerpoint);
+                gesturePane.centreOn(centerpoint);
+            }));
         });
     }
 
