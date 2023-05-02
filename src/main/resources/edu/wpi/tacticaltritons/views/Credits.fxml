@@ -20,7 +20,7 @@
     <panes>
         <TitledPane prefHeight="823.0" prefWidth="2157.0" text="API">
             <content>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tactical Tiritons used a couple API, including Google QR code API.">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tactical Tiritons used a couple API, including Google QR code API and Google Translate.">
                     <font>
                         <Font size="27.0" />
                     </font>
