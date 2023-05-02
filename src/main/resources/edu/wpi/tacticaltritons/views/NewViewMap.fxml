@@ -208,34 +208,29 @@
                 </MFXFilterComboBox>
             <MFXButton fx:id="lowerLevel1" prefHeight="50.0" prefWidth="50.0" text="L2" StackPane.alignment="TOP_LEFT">
                <StackPane.margin>
-                  <Insets left="450.0" top="20.0" />
+                  <Insets left="390.0" top="20.0" />
                </StackPane.margin>
             </MFXButton>
             <MFXButton fx:id="lowerLevel2" prefHeight="50.0" prefWidth="50.0" text="L1" StackPane.alignment="TOP_LEFT">
                <StackPane.margin>
-                  <Insets left="510.0" top="20.0" />
+                  <Insets left="450.0" top="20.0" />
                </StackPane.margin>
             </MFXButton>
             <MFXButton fx:id="floor1" prefHeight="50.0" prefWidth="50.0" text="1" StackPane.alignment="TOP_LEFT">
                <StackPane.margin>
-                  <Insets left="570.0" top="20.0" />
+                  <Insets left="510.0" top="20.0" />
                </StackPane.margin>
             </MFXButton>
             <MFXButton fx:id="floor2" prefHeight="50.0" prefWidth="50.0" text="2" StackPane.alignment="TOP_LEFT">
                <StackPane.margin>
-                  <Insets left="630.0" top="20.0" />
+                  <Insets left="570.0" top="20.0" />
                </StackPane.margin>
             </MFXButton>
             <MFXButton fx:id="floor3" prefHeight="50.0" prefWidth="50.0" text="3" StackPane.alignment="TOP_LEFT">
                <StackPane.margin>
-                  <Insets left="690.0" top="20.0" />
+                  <Insets left="630.0" top="20.0" />
                </StackPane.margin>
             </MFXButton>
-            <ImageView fx:id="pathfinding" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
-               <StackPane.margin>
-                  <Insets left="390.0" top="20.0" />
-               </StackPane.margin>
-            </ImageView>
             </children>
             <BorderPane.margin>
                 <Insets />
