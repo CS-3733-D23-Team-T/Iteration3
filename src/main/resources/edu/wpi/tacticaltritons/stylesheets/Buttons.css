@@ -49,3 +49,13 @@
     -fx-background-color: -navy;
     -fx-text-fill: -yellow;
 }
+
+#deleteButton{
+    -fx-background-color: -alert;
+    -fx-text-fill: white;
+}
+
+#deleteButton:hover{
+    -fx-background-color: -yellow;
+    -fx-text-fill: -navy;
+}

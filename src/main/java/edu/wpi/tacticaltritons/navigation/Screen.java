@@ -48,6 +48,7 @@ public enum Screen {
 
   SIGNAGE("views/signagePages/SignagePage.fxml"),
   EDIT_SIGNAGE("views/signagePages/SignageEditPage.fxml"),
+  CREATE_SIGNAGE("views/signagePages/SignageCreatePage.fxml"),
 
   PATHFINDING("views/NewPathfinding.fxml"),
   EDIT_MAP("views/NewEditMap.fxml"),
