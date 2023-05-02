@@ -352,6 +352,12 @@ public class FlowerCheckoutController {
 
         groundFloor.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
 
+        javafx.application.Platform.runLater(() -> {
+            groundFloor.centreOn(new Point2D(2500, 1000));
+        });
+        this.groundFloor.setVisible(true);
+        groundFloor.toBack();
+        groundFloor.reset();
 
     }
 

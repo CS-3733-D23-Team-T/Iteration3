@@ -154,15 +154,12 @@ public class SupplyCheckoutController {
         this.supplyTotal = SupplyDeliveryController.supplyTotal;
         priceText.setText(Double.toString(supplyTotal));
 
-
         checkoutItems.forEach((key, value) ->
         {
             checkoutFlowplan.getChildren().add(createCheckoutNode(key, value, App.supplyHashMap ));
         });
         checkoutFlowplan.setAlignment(Pos.CENTER);
         ;
-
-        shopName.setText(SupplyChoiceController.name);
 
         clearButton.setOnMouseClicked(event -> clearForm());
 
@@ -298,7 +295,12 @@ public class SupplyCheckoutController {
 
         groundFloor.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
 
-
+        javafx.application.Platform.runLater(() -> {
+            groundFloor.centreOn(new Point2D(2500, 1000));
+        });
+        this.groundFloor.setVisible(true);
+        groundFloor.toBack();
+        groundFloor.reset();
     }
 
     private FlowPane createCheckoutNode(String key, int value, HashMap<String, Image> ImageHashMap)  {

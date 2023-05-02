@@ -34,16 +34,15 @@ public class QuickNavigationMenuButtons {
         hospitalMapNavigationMap.put("Hospital Map", Screen.VIEW_MAP);
         hospitalMapNavigationMap.put("Edit Hospital Map", Screen.EDIT_MAP);
         hospitalMapNavigationMap.put("Pathfinding", Screen.PATHFINDING);
+        hospitalMapNavigationMap.put("Move Location", Screen.MOVE);
 
         signageNavigationMap.put("Signage", Screen.SIGNAGE);
         signageNavigationMap.put("Edit Signage", Screen.EDIT_SIGNAGE);
         signageNavigationMap.put("Move Signage", Screen.MOVE_SIGN);
 
         databaseNavigationMap.put("Database", Screen.DATABASE);
-        databaseNavigationMap.put("Edit Database", Screen.EDIT_DATABASE);
         databaseNavigationMap.put("Database Help", Screen.DATABASE_HELP);
 
-        announcementNavigationMap.put("Edit Announcements", Screen.EDIT_ANNOUNCEMENTS);
         announcementNavigationMap.put("Create Announcements", Screen.CREATE_ANNOUNCEMENTS);
     }
     public List<MenuItem> generateMenuButton(boolean admin, QuickNavigationMenu menu){
@@ -56,14 +55,14 @@ public class QuickNavigationMenuButtons {
             });
             case HOSPITAL_MAP -> hospitalMapNavigationMap.forEach((key, value) -> {
 
-                if(admin || !key.equals("Edit Hospital Map")) {
+                if(admin || (!key.equals("Edit Hospital Map") && !key.equals("Move Location"))) {
                     MenuItem item = new MenuItem(key);
                     item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);
                 }
             });
             case SIGNAGE -> signageNavigationMap.forEach((key, value) -> {
-                if(admin || !key.equals("Edit Signage")){
+                if(admin || (!key.equals("Edit Signage") &&  !key.equals("Move Signage"))){
                     MenuItem item = new MenuItem(key);
                     item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);
