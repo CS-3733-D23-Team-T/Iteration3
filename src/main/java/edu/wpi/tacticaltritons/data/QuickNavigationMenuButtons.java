@@ -26,7 +26,7 @@ public class QuickNavigationMenuButtons {
         serviceRequestNavigationMap.put("Meal Request", Screen.MEAL_RESTAURANT);
         serviceRequestNavigationMap.put("Flower Request", Screen.FLOWER_CHOICE);
         serviceRequestNavigationMap.put("Furniture Request", Screen.FURNITURE_DELIVERY);
-        serviceRequestNavigationMap.put("Office Supply Request", Screen.SUPPLY_CHOICE);
+        serviceRequestNavigationMap.put("Office Supply Request", Screen.SUPPLY_REQUEST);
         serviceRequestNavigationMap.put("Conference Room Request", Screen.CONFERENCE_ROOM);
         serviceRequestNavigationMap.put("View Service Request", Screen.VIEW_SERVICE_REQUEST);
 
@@ -34,6 +34,7 @@ public class QuickNavigationMenuButtons {
         hospitalMapNavigationMap.put("Hospital Map", Screen.VIEW_MAP);
         hospitalMapNavigationMap.put("Edit Hospital Map", Screen.EDIT_MAP);
         hospitalMapNavigationMap.put("Pathfinding", Screen.PATHFINDING);
+        hospitalMapNavigationMap.put("Move Location", Screen.MOVE);
 
         signageNavigationMap.put("Signage", Screen.SIGNAGE);
         signageNavigationMap.put("Edit Signage", Screen.EDIT_SIGNAGE);
@@ -56,14 +57,14 @@ public class QuickNavigationMenuButtons {
             });
             case HOSPITAL_MAP -> hospitalMapNavigationMap.forEach((key, value) -> {
 
-                if(admin || !key.equals("Edit Hospital Map")) {
+                if(admin || (!key.equals("Edit Hospital Map") && !key.equals("Move Location"))) {
                     MenuItem item = new MenuItem(key);
                     item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);
                 }
             });
             case SIGNAGE -> signageNavigationMap.forEach((key, value) -> {
-                if(admin || !key.equals("Edit Signage")){
+                if(admin || (!key.equals("Edit Signage") &&  !key.equals("Move Signage"))){
                     MenuItem item = new MenuItem(key);
                     item.setOnAction(event -> Navigation.navigate(value));
                     list.add(item);

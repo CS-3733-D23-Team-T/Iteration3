@@ -272,7 +272,7 @@ public class HomeController {
 
         PopOver popOver = new PopOver();
         popOver.setPrefSize(300, 300);
-        popOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+        popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
 
         Date currentDate = Date.valueOf(java.time.LocalDate.now());
         List<Move> allMoves = DAOFacade.getAllMoves();
@@ -462,7 +462,6 @@ public class HomeController {
         tableServiceRequest.setFocusTraversable(false);
         tableServiceRequest.setPlaceholder(new Label("No Pending Requests"));
     }
-
 
     public void displayNode(Move moveFrom, GesturePane gesturePane) {
         L1Group.setVisible(false);

@@ -30,7 +30,6 @@ public class DatabaseController {
   @FXML MFXButton editTableButton;
   @FXML MFXButton importButton;
   @FXML MFXButton exportButton;
-  @FXML MFXButton moveButton;
   @FXML FlowPane tableInsert;
 
   @FXML
@@ -256,8 +255,5 @@ public class DatabaseController {
                 throw new RuntimeException(e);
               }
             });
-    this.moveButton.setOnAction(event -> {
-        Navigation.navigate(Screen.MOVE);
-    });
   }
 }
