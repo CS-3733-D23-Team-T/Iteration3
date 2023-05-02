@@ -1,0 +1,12 @@
+@import "Colors.css";
+.mfx-text-field{
+    -fx-border-color: -alert;
+}
+
+.mfx-text-field .floating-text{
+    -fx-text-fill: -alert;
+}
+
+.mfx-date-picker{
+    -fx-border-color: -alert;
+}

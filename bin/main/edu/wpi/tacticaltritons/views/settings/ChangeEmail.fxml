@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="610.0" prefWidth="300.0" style="-fx-background-color: white; -fx-background-radius: 10;" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.settings.ChangeEmailController">
+
+    <BorderPane.margin>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </BorderPane.margin>
+
+    <center>
+        <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefWrapLength="9999.0" BorderPane.alignment="CENTER">
+            <children>
+            <BorderPane>
+               <FlowPane.margin>
+                  <Insets bottom="25.0" />
+               </FlowPane.margin>
+               <center>
+                  <Text fx:id="oldEmail" strokeType="OUTSIDE" strokeWidth="0.0" text="thisisalongemail@gmail.com" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <BorderPane.margin>
+                        <Insets left="10.0" />
+                     </BorderPane.margin>
+                  </Text>
+               </center>
+               <top>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Old Email" underline="true" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </top>
+            </BorderPane>
+                <FlowPane alignment="CENTER" layoutX="60.0" layoutY="237.0" orientation="VERTICAL" prefWrapLength="60.0">
+                    <children>
+                        <MFXTextField fx:id="emailField" floatMode="BORDER" floatingText="Email" prefWidth="200.0" promptText="Email">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <FlowPane.margin>
+                                <Insets />
+                            </FlowPane.margin>
+                        </MFXTextField>
+                        <Text fx:id="emailValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Invalid Email" visible="false">
+                            <FlowPane.margin>
+                                <Insets left="15.0" />
+                            </FlowPane.margin>
+                        </Text>
+                    </children>
+                    <FlowPane.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                    </FlowPane.margin>
+                </FlowPane>
+                <FlowPane alignment="CENTER" layoutX="60.0" layoutY="237.0" orientation="VERTICAL" prefWrapLength="60.0">
+                    <children>
+                        <MFXTextField fx:id="confirmEmailField" floatMode="BORDER" floatingText="Confirm Email" prefWidth="200.0" promptText="Confirm Email">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <FlowPane.margin>
+                                <Insets />
+                            </FlowPane.margin>
+                        </MFXTextField>
+                        <Text fx:id="confirmEmailValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Emails Do not Match" visible="false">
+                            <FlowPane.margin>
+                                <Insets left="15.0" />
+                            </FlowPane.margin>
+                        </Text>
+                    </children>
+                    <FlowPane.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                    </FlowPane.margin>
+                </FlowPane>
+            <FlowPane alignment="CENTER" layoutX="60.0" layoutY="353.0" orientation="VERTICAL" prefWrapLength="60.0">
+               <children>
+                  <MFXTextField fx:id="confirmationCodeField" floatMode="BORDER" floatingText="Confirmation Code" prefWidth="200.0" promptText="Code" visible="false">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <FlowPane.margin>
+                        <Insets />
+                     </FlowPane.margin>
+                  </MFXTextField>
+                  <Text fx:id="confirmationCodeValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Incorrect Code" visible="false">
+                     <FlowPane.margin>
+                        <Insets left="15.0" />
+                     </FlowPane.margin>
+                  </Text>
+               </children>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </FlowPane.margin>
+            </FlowPane>
+            </children>
+        </FlowPane>
+    </center>
+
+    <bottom>
+        <FlowPane alignment="CENTER" BorderPane.alignment="CENTER">
+            <children>
+                <MFXButton id="cancelButton" fx:id="cancelButton" alignment="CENTER" minHeight="27.0" minWidth="70.0" text="Cancel">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <FlowPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </FlowPane.margin>
+                </MFXButton>
+                <MFXButton id="normalButton" fx:id="confirmEmailButton" alignment="CENTER" disable="true" minHeight="27.0" minWidth="70.0" style="-fx-background-color: #003A96; -fx-text-fill: #ffffff; -fx-border-radius: 10; -fx-background-radius: 10;" text="Confirm">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <FlowPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </FlowPane.margin>
+                </MFXButton>
+            </children>
+        </FlowPane>
+    </bottom>
+    <top>
+        <Text fx:id="userHeader" strokeType="OUTSIDE" strokeWidth="0.0" text="Change Email" underline="true" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="32.0" />
+            </font>
+        </Text>
+    </top>
+</BorderPane>

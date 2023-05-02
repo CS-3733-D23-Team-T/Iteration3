@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<GridPane alignment="CENTER" prefWidth="1280.0" style="-fx-background-color: #002D59;" stylesheets="@../../stylesheets/NavigationBar.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.navigation.LoginQuickNavigationController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="ALWAYS"  percentWidth="33"/>
+      <ColumnConstraints hgrow="ALWAYS"  percentWidth="33"/>
+    <ColumnConstraints hgrow="ALWAYS"  percentWidth="33"/>
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <MenuButton fx:id="hospitalMapMenuButton" alignment="CENTER" style="-fx-background-color: transparent;" text="Hospital Map" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <padding>
+            <Insets bottom="5.0" top="5.0" />
+         </padding>
+      </MenuButton>
+       <MenuButton fx:id="loginButton" alignment="CENTER" style="-fx-background-color: transparent;" text="Login" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+           <font>
+               <Font size="16.0" />
+           </font>
+           <padding>
+               <Insets bottom="5.0" top="5.0" />
+           </padding>
+       </MenuButton>
+      <MenuButton fx:id="signageMenuButton" style="-fx-background-color: transparent;" text="Signage" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <padding>
+            <Insets bottom="5.0" top="5.0" />
+         </padding>
+      </MenuButton>
+   </children>
+</GridPane>

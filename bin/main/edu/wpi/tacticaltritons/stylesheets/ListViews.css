@@ -1,0 +1,29 @@
+@import "Colors.css";
+.mfx-check-list-view .virtual-flow .mfx-check-list-cell .mfx-checkbox:selected .box{
+    -fx-background-color: -navy;
+    -fx-border-color: -navy;
+}
+
+.mfx-check-list-view .virtual-flow .mfx-check-list-cell .mfx-ripple-generator{
+    -mfx-ripple-color: -yellow;
+}
+
+.mfx-check-list-view .virtual-flow .mfx-check-list-cell:hover{
+    -fx-background-color: -light-yellow;
+}
+
+.mfx-check-list-view .virtual-flow .mfx-check-list-cell:selected{
+    -fx-background-color: -light-navy;
+}
+
+.mfx-list-view .virtual-flow .mfx-list-cell .mfx-ripple-generator{
+    -mfx-ripple-color: -yellow;
+}
+
+.mfx-list-view .virtual-flow .mfx-list-cell:hover{
+    -fx-background-color: -light-yellow;
+}
+
+.mfx-list-view .virtual-flow .mfx-list-cell:selected{
+    -fx-background-color: -light-navy;
+}
