@@ -67,6 +67,9 @@ public class FurnitureDeliveryController {
 
     @FXML
     public void initialize() throws IOException {
+        checkoutItems = FXCollections.observableHashMap();
+        furnitureRequestOptionsList = new ArrayList<>();
+
         furnitureFromText.setText(GoogleTranslate.getString("furnitureFrom"));
         checkoutButton.setText(GoogleTranslate.getString("checkout"));
         clearButton.setText(GoogleTranslate.getString("clear"));

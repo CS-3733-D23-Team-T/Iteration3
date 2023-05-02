@@ -75,6 +75,11 @@ public class SupplyDeliveryController {
 
     @FXML
     public void initialize() {
+
+        checkoutItems = FXCollections.observableHashMap();
+        priceOfItems = FXCollections.observableHashMap();
+        supplyRequestOptionsList = new ArrayList<>();
+
         orderFromText.setText(GoogleTranslate.getString("orderFrom"));
         totalPriceText.setText(GoogleTranslate.getString("totalPrice"));
         checkoutButton.setText(GoogleTranslate.getString("checkout"));

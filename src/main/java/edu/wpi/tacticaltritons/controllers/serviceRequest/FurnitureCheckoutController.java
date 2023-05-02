@@ -103,6 +103,9 @@ public class FurnitureCheckoutController {
     private ObservableMap<String, Integer> checkoutItems = FXCollections.observableHashMap();
 
     public void initialize() throws SQLException {
+
+        checkoutItems = FXCollections.observableHashMap();
+
         userFirstField.setPromptText(GoogleTranslate.getString("firstName"));
         userLastField.setPromptText(GoogleTranslate.getString("lastName"));
         assignedStaffComboBox.setPromptText(GoogleTranslate.getString("assignedStaff"));

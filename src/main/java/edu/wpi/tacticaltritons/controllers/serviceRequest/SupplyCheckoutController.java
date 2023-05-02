@@ -127,6 +127,8 @@ public class SupplyCheckoutController {
 
 
     public void initialize() throws SQLException {
+        checkoutItems = FXCollections.observableHashMap();
+
         userFirstField.setPromptText(GoogleTranslate.getString("firstName"));
         userFirstField.setFloatingText(GoogleTranslate.getString("firstName"));
         userLastField.setPromptText(GoogleTranslate.getString("lastName"));
