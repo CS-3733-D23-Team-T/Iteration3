@@ -813,6 +813,8 @@ public class MapSuperController {
                 }
                 polyList.clear();
             }
+            polyList.add((double) node.getXcoord());
+            polyList.add((double) node.getYcoord());
             lastNode = node;
         }
         polyList.clear();
