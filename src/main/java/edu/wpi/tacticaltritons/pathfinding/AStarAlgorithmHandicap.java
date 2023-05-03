@@ -86,8 +86,13 @@ public class AStarAlgorithmHandicap implements PathFindingAlgorithm {
         int deltaY = a.getYcoord() - b.getYcoord();
         double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
+        if (hash.get(b.getNodeID()).getLocation().getNodeType().equals("ELEV")) {
+            distance = 10000000 * distance; // Increase the weighting of elevators
+        }
+
         return distance;
     }
+
 
 
 }
