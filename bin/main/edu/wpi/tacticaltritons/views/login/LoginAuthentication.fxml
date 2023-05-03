@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="610.0" prefWidth="300.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.login.LoginAuthenticationController">
+    <BorderPane.margin>
+        <Insets bottom="25.0" left="25" right="25" top="25" />
+    </BorderPane.margin>
+    <center>
+        <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" BorderPane.alignment="CENTER">
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sent Confirmation Code To">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Text>
+         <Text fx:id="emailText" strokeType="OUTSIDE" strokeWidth="0.0" text="email">
+            <font>
+               <Font size="16.0" />
+            </font>
+            <FlowPane.margin>
+               <Insets bottom="25.0" />
+            </FlowPane.margin>
+         </Text>
+            <FlowPane alignment="CENTER" orientation="VERTICAL" prefWrapLength="60.0">
+                <children>
+                    <MFXTextField fx:id="confirmationCodeField" floatMode="BORDER" floatingText="Confirmation Code" prefWidth="200.0" promptText="Confirmation Code">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                        <FlowPane.margin>
+                            <Insets left="10.0" right="10.0" />
+                        </FlowPane.margin>
+                    </MFXTextField>
+                    <Text fx:id="confirmationCodeValidator" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Incorrect Code" visible="false">
+                        <FlowPane.margin>
+                            <Insets left="20.0" />
+                        </FlowPane.margin>
+                    </Text>
+                </children>
+                <FlowPane.margin>
+                    <Insets bottom="10.0" top="10.0" />
+                </FlowPane.margin>
+            </FlowPane>
+            <FlowPane alignment="CENTER" hgap="30.0">
+                <children>
+               <MFXButton fx:id="cancelButton" alignment="CENTER" minHeight="33.0" minWidth="70.0" style="-fx-background-color: transparent; -fx-text-fill: #000000; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: #000000;" text="Cancel">
+                  <font>
+                     <Font size="16.0" />
+                  </font>
+               </MFXButton>
+                    <MFXButton fx:id="confirmCodeButton" alignment="CENTER" minHeight="27.0" minWidth="70.0" style="-fx-background-color: #003A96; -fx-text-fill: #ffffff; -fx-border-radius: 10; -fx-background-radius: 10;" text="Confirm">
+                        <font>
+                            <Font size="16.0" />
+                        </font>
+                        <FlowPane.margin>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </FlowPane.margin>
+                    </MFXButton>
+                </children>
+            </FlowPane>
+        </FlowPane>
+    </center>
+
+</BorderPane>

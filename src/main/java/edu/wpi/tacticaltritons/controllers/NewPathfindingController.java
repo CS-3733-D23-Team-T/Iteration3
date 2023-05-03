@@ -1,5 +1,6 @@
 package edu.wpi.tacticaltritons.controllers;
 
+import arduino.Arduino;
 import edu.wpi.tacticaltritons.App;
 import edu.wpi.tacticaltritons.database.DAOFacade;
 import edu.wpi.tacticaltritons.database.Move;
@@ -10,6 +11,7 @@ import edu.wpi.tacticaltritons.pathfinding.AStarAlgorithm;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
 import edu.wpi.tacticaltritons.pathfinding.CongestionController;
 import edu.wpi.tacticaltritons.pathfinding.Directions;
+import edu.wpi.tacticaltritons.robot.RobotComm;
 import edu.wpi.tacticaltritons.styling.GoogleTranslate;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
@@ -21,6 +23,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
@@ -44,6 +47,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NewPathfindingController extends MapSuperController {
+
+    @FXML
+    private ImageView robotIcon;
 
     @FXML
     private MFXButton directions;
@@ -286,6 +292,7 @@ public class NewPathfindingController extends MapSuperController {
         allLongNames.add(endLocation);
 
         initializeImages();
+        robotIcon.setImage(App.robot);
         initalizeFloorButtons();
         initializeGesturePane();
         initializeSearch("Pathfinding");
@@ -419,7 +426,35 @@ public class NewPathfindingController extends MapSuperController {
                         throw new RuntimeException(e);
                     }
                 });
-    }
 
+        //robot path following with live map updating
+        //checks if connection is active, then converts cartesian coordinates to polar coordinates
+        //robot code uses a new thread so the map is still usable while communicating with robot
+        this.robotIcon.setOnMouseClicked(event -> {
+            robotIcon.setDisable(true);
+            List<Group> groups = new ArrayList<>();
+            groups.add(L1Group);
+            groups.add(L2Group);
+            groups.add(floor1Group);
+            groups.add(floor2Group);
+            groups.add(floor3Group);
+            for (Group group : groups) {
+                group.getChildren().add(RobotComm.drawObservableCircle());
+            }
+            RobotComm.runRobot(shortestPathMap);
+            robotIcon.setDisable(false);
+
+            RobotComm.xRobotCoordinate.addListener(((observable, oldValue, newValue) -> {
+                Point2D centerpoint = new Point2D(RobotComm.xRobotCoordinate.get(),RobotComm.yRobotCoordinate.get());
+                gesturePane.zoomTo(1, centerpoint);
+                gesturePane.centreOn(centerpoint);
+            }));
+            RobotComm.yRobotCoordinate.addListener(((observable, oldValue, newValue) -> {
+                Point2D centerpoint = new Point2D(RobotComm.xRobotCoordinate.get(),RobotComm.yRobotCoordinate.get());
+                gesturePane.zoomTo(1, centerpoint);
+                gesturePane.centreOn(centerpoint);
+            }));
+        });
+    }
 
 }

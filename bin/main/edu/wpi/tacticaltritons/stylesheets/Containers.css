@@ -1,0 +1,23 @@
+@import "Colors.css";
+
+#block{
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+}
+
+#dashBoard{
+    -fx-background-color: -background-gray;
+    -fx-background-radius: 10;
+}
+
+
+
+
+
+
+
+
+
+
+
+

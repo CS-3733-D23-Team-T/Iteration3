@@ -130,6 +130,11 @@
                         <Insets left="750.0" top="20.0" />
                     </StackPane.margin>
                 </MFXButton>
+            <ImageView fx:id="robotIcon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="858.0" top="20.0" />
+               </StackPane.margin>
+            </ImageView>
                 <MFXButton fx:id="directions" prefHeight="50.0" text="DIRECTIONS" StackPane.alignment="TOP_RIGHT">
                     <StackPane.margin>
                         <Insets right="30.0" top="20.0" />

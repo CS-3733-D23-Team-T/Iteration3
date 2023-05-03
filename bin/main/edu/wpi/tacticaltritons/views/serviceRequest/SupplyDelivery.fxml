@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXScrollPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="basePane" prefHeight="650.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.SupplyDeliveryController">
+   <right>
+      <BorderPane id="block" prefWidth="500.0" BorderPane.alignment="CENTER">
+         <top>
+            <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="100.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </BorderPane.margin>
+               <children>
+                  <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="50.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR ORDER FROM">
+                           <font>
+                              <Font name="Times New Roman" size="20.0" />
+                           </font>
+                        </Text>
+                        <Label fx:id="checkoutLabel" text="This is the Name of Shop" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Times New Roman" size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="CENTER" columnHalignment="CENTER">
+                     <children>
+                        <Label text="Total Price: ">
+                           <font>
+                              <Font name="Times New Roman" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="priceLable" text="0.00">
+                           <font>
+                              <Font name="Times New Roman" size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </FlowPane>
+               </children>
+            </FlowPane>
+         </top>
+         <center>
+            <MFXScrollPane id="dashBoard" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="25.0" left="25.0" right="25.0" />
+               </BorderPane.margin>
+               <content>
+                  <FlowPane fx:id="checkoutFlowpane" alignment="TOP_CENTER" columnHalignment="CENTER" />
+               </content>
+            </MFXScrollPane>
+         </center>
+         <bottom>
+            <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="50.0" prefWidth="500" BorderPane.alignment="CENTER">
+               <children>
+                  <MFXButton id="clearButton" fx:id="clearButton" prefHeight="30.0" prefWidth="210" text="Clear">
+                     <FlowPane.margin>
+                        <Insets right="10.0" />
+                     </FlowPane.margin>
+                  </MFXButton>
+                  <MFXButton id="normalButton" fx:id="checkoutButton" prefHeight="30.0" prefWidth="210" text="Checkout">
+                     <FlowPane.margin>
+                        <Insets left="10.0" />
+                     </FlowPane.margin>
+                  </MFXButton>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </BorderPane.margin>
+            </FlowPane>
+         </bottom>
+         <BorderPane.margin>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+         </BorderPane.margin>
+      </BorderPane>
+   </right>
+   <center>
+      <BorderPane id="block" fx:id="infoBoardPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+         </BorderPane.margin>
+      </BorderPane>
+   </center>
+</BorderPane>

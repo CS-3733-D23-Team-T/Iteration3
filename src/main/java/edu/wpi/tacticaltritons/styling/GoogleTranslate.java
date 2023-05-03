@@ -28,7 +28,7 @@ public final class GoogleTranslate { //Class marked as final since all methods a
      */
     private static final String GOOGLE_TRANSLATE_URL = "http://translate.google.com/translate_a/single";
     private static String language = "en";
-    private static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("edu.wpi.tacticaltritons.languages.language", new Locale("en"));
+    private static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("edu.wpi.tacticaltritons.languages.language_EN", new Locale("en"));
 
     /**
      * Private to prevent instantiation
@@ -49,7 +49,8 @@ public final class GoogleTranslate { //Class marked as final since all methods a
 
     public static void setLanguage(String text){
         language = text;
-        RESOURCE_BUNDLE = ResourceBundle.getBundle("edu.wpi.tacticaltritons.languages.language", new Locale(language));
+        String bundle = "edu.wpi.tacticaltritons.languages.language" + "_" + language.toUpperCase();
+        RESOURCE_BUNDLE = ResourceBundle.getBundle(bundle, new Locale(language));
     }
 
 

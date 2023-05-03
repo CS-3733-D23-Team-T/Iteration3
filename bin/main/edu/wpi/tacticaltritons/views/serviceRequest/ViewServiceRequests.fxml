@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.paint.Color?>
+
+<BorderPane fx:id="basePane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1280.0" style="-fx-background-radius: 20px;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.serviceRequest.ViewServiceRequestsController">
+   <center>
+      <TabPane id="normalTabPane" style="-fx-background-color: white; -fx-background-radius: 20px;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab id="normalTab" closable="false" text="Conference Room Request">
+               <content>
+                  <FlowPane fx:id="conferenceRoomRequest" />
+               </content>
+          </Tab>
+          <Tab id="normalTab" closable="false" text="Flower Requests">
+               <content>
+                  <FlowPane fx:id="flowerRequests" />
+               </content>
+          </Tab>
+            <Tab id="normalTab" closable="false" text="Furniture Request">
+               <content>
+                  <FlowPane fx:id="furnitureRequest" />
+               </content>
+            </Tab>
+            <Tab id="normalTab" closable="false" text="Office Supply Request">
+               <content>
+                  <FlowPane fx:id="officeSupplyRequest" />
+               </content>
+            </Tab>
+            <Tab id="normalTab" closable="false" text="Meal Requests">
+               <content>
+                  <FlowPane fx:id="mealRequests" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </center>
+   <stylesheets>
+      <URL value="@../../stylesheets/TabPane.css" />
+      <URL value="@../../stylesheets/Table.css" />
+   </stylesheets>
+   <effect>
+   </effect>
+</BorderPane>
