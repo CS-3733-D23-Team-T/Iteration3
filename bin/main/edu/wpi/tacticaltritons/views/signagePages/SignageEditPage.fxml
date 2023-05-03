@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane prefHeight="650" prefWidth="1280" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.tacticaltritons.controllers.signage.SignageEditController">
+    <FlowPane fx:id="basePane" style="-fx-padding: 25;">
+    </FlowPane>
+</StackPane>

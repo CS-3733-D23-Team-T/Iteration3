@@ -1,0 +1,43 @@
+.combo-box .arrow{
+    -fx-background-color: #000000;
+}
+
+.combo-box .arrow-button{
+    -fx-background-color: #c8c8c8;
+}
+
+.combo-box .list-view .list-cell{
+    -fx-text-fill: #000000;
+    -fx-background-color: #c8c8c8;
+}
+
+.combo-box .list-view .list-cell:hover{
+    -fx-background-color: rgba(160, 160, 160, 0.3);
+}
+
+.combo-box .list-cell{
+    -fx-text-fill: #000000;
+    -fx-background-color: #c8c8c8;
+}
+
+.combo-box .list-view{
+    -fx-background-color: #c8c8c8;
+}
+
+.check-box .box{
+    -fx-background-color: transparent;
+    -fx-border-radius: 2px;
+    -fx-border-color: black;
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-background-color: #003A96;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.button:hover, .button:focused{
+    -fx-text-fill: rgba(160, 160, 160, 0.3);
+}
+

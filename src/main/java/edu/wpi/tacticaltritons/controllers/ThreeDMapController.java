@@ -6,11 +6,9 @@ import edu.wpi.tacticaltritons.database.LocationName;
 import edu.wpi.tacticaltritons.database.Move;
 import edu.wpi.tacticaltritons.database.Node;
 import edu.wpi.tacticaltritons.pathfinding.AlgorithmSingleton;
+import edu.wpi.tacticaltritons.robot.RobotComm;
 import io.github.palexdev.materialfx.controls.*;
-import javafx.animation.Animation;
-import javafx.animation.RotateTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -41,6 +39,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ThreeDMapController {
@@ -2149,7 +2148,117 @@ public class ThreeDMapController {
                 }
                 pathTransition.get().play();
             }
+            else if (event.getCode() == KeyCode.K && pathTransition.get() == null) {
+                RobotComm.runRobot(walkingPath.get());
+                while(!RobotComm.running){
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                System.out.println("Done waiting");
+                //Move camera to node start
+                camera.translateXProperty().unbindBidirectional(cameraX);
+                camera.translateYProperty().unbindBidirectional(cameraY);
+                camera.translateZProperty().unbindBidirectional(cameraZ);
+
+                List<Integer> pathIds = walkingPath.get().parallelStream().map(Node::getNodeID).toList();
+
+                root.getChildren().parallelStream().filter(n -> n instanceof VBox).forEach(n -> {
+                    if(n.getId() != null){
+                        int id = Integer.parseInt(n.getId().substring(n.getId().lastIndexOf('e') + 1));
+                        if(pathIds.contains(id)){
+                            n.setTranslateY(30);
+                            n.setVisible(true);
+                            ((VBox) n).getChildren().forEach(node1 -> {
+                                if(node1 instanceof Text && node1.getId() != null && node1.getId().contains("nodeText")){
+                                    String tid = node1.getId().substring(node1.getId().lastIndexOf('t') + 1);
+                                    ((Text) node1).setFont(new Font(10));
+                                    n.setTranslateX(nodes.parallelStream().filter(n1 -> n1.getNodeID() == Integer.parseInt(tid)).toList().get(0).getXcoord() - ((node1.getLayoutBounds().getWidth() + 10) / 2));
+                                }
+                            });
+                        }
+                    }
+                });
+
+                camera.setTranslateX(walkingPath.get().get(0).getXcoord());
+                camera.setTranslateZ(walkingPath.get().get(0).getYcoord());
+                System.out.println("Test2");
+                camera.getTransforms().clear();
+                double opp = walkingPath.get().get(1).getXcoord() - walkingPath.get().get(0).getXcoord();
+                double adj = walkingPath.get().get(1).getYcoord() - walkingPath.get().get(0).getYcoord();
+//                double angle = 180 + Math.toDegrees(Math.atan2(opp, adj));
+                double angle = 0;
+                xRotate.setAngle(180);
+                yRotate.setAngle(angle);
+                camera.getTransforms().addAll(xRotate, yRotate);
+                camera.setTranslateY(6);
+                double oldAngle = angle;
+                //Transition from node to node
+                pathTransition.set(new SequentialTransition());
+                System.out.println("test3");
+                for (int i = nodeCounter.get(); i < walkingPath.get().size() - 1; i++) {
+                    //animation from node to node
+                    Point3D currentPosition = new Point3D(walkingPath.get().get(i).getXcoord(), 10, walkingPath.get().get(i).getYcoord());
+                    Point3D endPosition = new Point3D(walkingPath.get().get(i + 1).getXcoord(), 10, walkingPath.get().get(i + 1).getYcoord());
+
+                    Point3D translation = endPosition.subtract(currentPosition);
+
+                    double distance = translation.magnitude();
+                    double speed = 20;
+                    double duration = distance / speed;
+
+                    TranslateTransition transition = new TranslateTransition(Duration.seconds(duration), camera);
+                    transition.setByX(translation.getX());
+                    transition.setByY(translation.getY());
+                    transition.setByZ(translation.getZ());
+
+                    //Animation for rotating
+                    if(i < walkingPath.get().size() - 2){
+                        camera.getTransforms().clear();
+                        camera.getTransforms().add(xRotate);
+                        opp = walkingPath.get().get(i + 2).getXcoord() - walkingPath.get().get(i+1).getXcoord();
+                        adj = walkingPath.get().get(i + 2).getYcoord() - walkingPath.get().get(i+1).getYcoord();
+                        angle = 180 + Math.toDegrees(Math.atan2(opp, adj));
+                        double diff = angle - oldAngle;
+                        if (diff > 180) {
+                            angle -= 360;
+                        } else if (diff < -180) {
+                            angle += 360;
+                        }
+
+                        double rotationSpeed = speed * 2;
+                        double rotateDuration = Math.abs(oldAngle-angle) / rotationSpeed;
+
+                        RotateTransition rotateTransition = new RotateTransition(Duration.seconds(rotateDuration), camera);
+                        rotateTransition.setFromAngle(oldAngle);
+                        rotateTransition.setToAngle(angle);
+                        rotateTransition.setAxis(Rotate.Y_AXIS);
+                        oldAngle = angle;
+
+                        double finalAngle = angle;
+                        rotateTransition.setOnFinished(event1 -> {
+                            yRotate.setAngle(finalAngle);
+                        });
+//                        PauseTransition pause = new PauseTransition(Duration.millis(20));
+                        pathTransition.get().getChildren().addAll(transition,new PauseTransition(Duration.millis(100)), rotateTransition,new PauseTransition(Duration.millis(200)));
+                    }
+                    else {
+                        pathTransition.get().getChildren().add(transition);
+                    }
+                }
+                pathTransition.get().play();
+                System.out.println("test4");
+            }
             else if (event.getCode() == KeyCode.E) { // Turn Camera Right
+                
                 camera.getTransforms().stream().filter(node -> node instanceof Rotate).forEach(transform -> {
                     if(((Rotate) transform).getAxis() == Rotate.Y_AXIS){
                         ((Rotate) transform).setAngle(((Rotate) transform).getAngle() - 7.5);

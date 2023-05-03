@@ -56,6 +56,8 @@ dependencies {
 
             'com.calendarfx:view:11.12.5'
     )
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation 'javax.mail:mail:1.5.0-b01'
 
     String javaFxVersion = "19"
