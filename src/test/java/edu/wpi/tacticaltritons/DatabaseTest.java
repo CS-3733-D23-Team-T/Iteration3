@@ -491,11 +491,11 @@ public class DatabaseTest {
 
     @Test
     public void requestOptionsTest() throws SQLException{
-        RequestOptions requestOptions = new RequestOptions("Milk", 0.99, "Cafe");
+        RequestOptions requestOptions = new RequestOptions("Milk", 0.99, "Cafe", "Cafe is a fine eating establishment","Fresh Lowfat 1% milk", "Drink");
         String requestOptionsI = requestOptions.getItemName();
         String requestOptionsR = requestOptions.getRestaurant();
 
-        RequestOptions updatedRequestOptions = new RequestOptions("Milk", 2.99, "Cafe");
+        RequestOptions updatedRequestOptions = new RequestOptions("Milk", 2.99, "Cafe", "Cafe is a fine eating establishment","Fresh Lowfat 1% milk", "Drink");
 
         //insert
         DAOFacade.addRequestOption(requestOptions);
@@ -577,7 +577,13 @@ public class DatabaseTest {
         //insert
         DAOFacade.addConference(conference);
         List<Conference> expectedList = DAOFacade.getAllConference();
-        Conference expected = expectedList.get(expectedList.size()-1);
+        int on = 0;
+        for (Conference con : expectedList){
+            if(con.getOrderNum() > on){
+                on = con.getOrderNum();
+            }
+        }
+        Conference expected = DAOFacade.getConference(on);
         Assertions.assertEquals(conference.getFirstName(), expected.getFirstName());
         Assertions.assertEquals(conference.getLastName(), expected.getLastName());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -591,9 +597,13 @@ public class DatabaseTest {
         //get
         DAOFacade.addConference(conference);
         expectedList = DAOFacade.getAllConference();
-        int expectedON = expectedList.get(expectedList.size()-1).getOrderNum();
-        System.out.println(expectedON);
-        expected = DAOFacade.getConference(expectedON);
+        on = 0;
+        for (Conference con : expectedList){
+            if(con.getOrderNum() > on){
+                on = con.getOrderNum();
+            }
+        }
+        expected = DAOFacade.getConference(on);
         Assertions.assertEquals(conference.getFirstName(), expected.getFirstName());
         Assertions.assertEquals(conference.getLastName(), expected.getLastName());
         formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -608,9 +618,13 @@ public class DatabaseTest {
         DAOFacade.addConference(conference);
         DAOFacade.updateConference(updatedConference);
         expectedList = DAOFacade.getAllConference();
-        expectedON = expectedList.get(expectedList.size()-1).getOrderNum();
-        System.out.println(expectedON);
-        expected = DAOFacade.getConference(expectedON);
+        on = 0;
+        for (Conference con : expectedList){
+            if(con.getOrderNum() > on){
+                on = con.getOrderNum();
+            }
+        }
+        expected = DAOFacade.getConference(on);
         Assertions.assertEquals(conference.getFirstName(), expected.getFirstName());
         Assertions.assertEquals(conference.getLastName(), expected.getLastName());
         formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -623,7 +637,7 @@ public class DatabaseTest {
 
         //delete
         DAOFacade.addConference(updatedConference);
-        DAOFacade.deleteConference(DAOFacade.getConference(expectedON));
-        Assertions.assertNull(DAOFacade.getConference(expectedON));
+        DAOFacade.deleteConference(DAOFacade.getConference(on));
+        Assertions.assertNull(DAOFacade.getConference(on));
     }
 }
