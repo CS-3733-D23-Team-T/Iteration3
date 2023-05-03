@@ -2310,7 +2310,7 @@ public class ThreeDMapController {
                     else if(walkingPath.get() != null){
                         newPathButton.fire();
                     }
-
+                    pathToCompute.clear();
                 }
                 else{
                     permVisibleTexts.forEach(bool -> bool.set(false));

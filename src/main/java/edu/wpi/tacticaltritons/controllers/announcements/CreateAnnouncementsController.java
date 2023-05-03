@@ -104,10 +104,10 @@ public class CreateAnnouncementsController {
                 dateValidator.getText(), dateValidator, dateFormatters));
 
         DateTimeFormatter timeFormatter[] = new DateTimeFormatter[]{
-                DateTimeFormatter.ofPattern("hh:mm"),
-                DateTimeFormatter.ofPattern("h:mm:ss"),
-                DateTimeFormatter.ofPattern("h:mm"),
-                DateTimeFormatter.ofPattern("hh:mm:ss")
+                DateTimeFormatter.ofPattern("HH:mm"),
+                DateTimeFormatter.ofPattern("H:mm:ss"),
+                DateTimeFormatter.ofPattern("H:mm"),
+                DateTimeFormatter.ofPattern("HH:mm:ss")
         };
         BooleanProperty validTime = new SimpleBooleanProperty(true);
         timeField.setText(timeFormatter[0].format(LocalDateTime.now()));
@@ -232,6 +232,8 @@ public class CreateAnnouncementsController {
             dateField.setText("");
             timeField.setText("");
             typeCombobox.getSelectionModel().clearSelection();
+            textArea.clear();
+
         });
 
         submitButton.setOnAction(event -> {
