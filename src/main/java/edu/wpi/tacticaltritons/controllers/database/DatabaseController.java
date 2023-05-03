@@ -14,6 +14,7 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
@@ -167,6 +168,12 @@ public class DatabaseController {
                 table.setPrefWidth(tableInsert.getWidth());
                 table.setPrefHeight(tableInsert.getHeight());
                 tableInsert.getChildren().add(table);
+              }
+              else{
+                  tableInsert.getChildren().clear();
+                  TableView<String> table = new TableView<>();
+                  table.setPlaceholder(new Label("Table Not Viewable"));
+                  tableInsert.getChildren().add(table);
               }
             });
 
