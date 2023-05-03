@@ -169,11 +169,6 @@ public class FurnitureCheckoutController {
         BooleanProperty validAssignedStaff = new SimpleBooleanProperty(true);
         assignedStaffComboBox.selectedItemProperty().addListener((obs, o, n) -> validAssignedStaff.set(n != null));
 
-        BooleanProperty vaildHourCombobox = new SimpleBooleanProperty(true);
-        hourComboBox.selectedItemProperty().addListener((obs, o, n) -> vaildHourCombobox.set(n != null));
-
-        BooleanProperty vaildMinCombobox = new SimpleBooleanProperty(true);
-        minComboBox.selectedItemProperty().addListener((obs, o, n) -> vaildMinCombobox.set(n != null));
 
         DateTimeFormatter[] formatters = new DateTimeFormatter[]{
                 DateTimeFormatter.ofPattern("MMM dd, yyyy"),
@@ -191,8 +186,16 @@ public class FurnitureCheckoutController {
         BooleanProperty validDate = new SimpleBooleanProperty(true);
         deliveryDateField.textProperty().addListener(Validator.generateValidatorListener(
                 validDate, dateValidator.getText(), dateValidator, formatters));
+
         BooleanProperty validLocation = new SimpleBooleanProperty(false);
         locationComboBox.selectedItemProperty().addListener((obs, o, n) -> validLocation.set(n != null));
+
+        BooleanProperty vaildHourCombobox = new SimpleBooleanProperty(false);
+        hourComboBox.selectedItemProperty().addListener((obs, o, n) -> vaildHourCombobox.set(n != null));
+
+        BooleanProperty vaildMinCombobox = new SimpleBooleanProperty(false);
+        minComboBox.selectedItemProperty().addListener((obs, o, n) -> vaildMinCombobox.set(n != null));
+
 
         submitButton.setOnMouseClicked(
                 event -> {
@@ -271,55 +274,57 @@ public class FurnitureCheckoutController {
         }
 
         this.locationComboBox.setOnAction(event -> {
+            if(!(locationComboBox.getSelectedItem() == null))
+            {
+                clearAllNodes();
+                Circle circle = new Circle();
 
-            clearAllNodes();
-            Circle circle = new Circle();
-
-            try {
-                circle = drawCircle(DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getXcoord(), DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getYcoord());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-
-            String endFloor = null;
-            try {
-                endFloor = DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getFloor();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-            if (endFloor != null) {
-                switch (endFloor) {
-                    case "L1":
-                        L1Group.setVisible(true);
-                        lowerLevel1Image.setVisible(true);
-                        this.L1Group.getChildren().add(circle);
-                        break;
-                    case "L2":
-                        L2Group.setVisible(true);
-                        lowerLevel2Image.setVisible(true);
-                        this.L2Group.getChildren().add(circle);
-                        break;
-                    case "1":
-                        floor1Group.setVisible(true);
-                        floor1Image.setVisible(true);
-                        this.floor1Group.getChildren().add(circle);
-                        break;
-                    case "2":
-                        floor2Group.setVisible(true);
-                        floor2Image.setVisible(true);
-                        this.floor2Group.getChildren().add(circle);
-                        break;
-                    case "3":
-                        floor3Group.setVisible(true);
-                        floor3Image.setVisible(true);
-                        this.floor3Group.getChildren().add(circle);
-                        break;
+                try {
+                    circle = drawCircle(DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getXcoord(), DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getYcoord());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
+
+
+                String endFloor = null;
+                try {
+                    endFloor = DAOFacade.getNode((String) this.locationComboBox.getSelectedItem(), Date.valueOf(LocalDate.now())).getFloor();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                if (endFloor != null) {
+                    switch (endFloor) {
+                        case "L1":
+                            L1Group.setVisible(true);
+                            lowerLevel1Image.setVisible(true);
+                            this.L1Group.getChildren().add(circle);
+                            break;
+                        case "L2":
+                            L2Group.setVisible(true);
+                            lowerLevel2Image.setVisible(true);
+                            this.L2Group.getChildren().add(circle);
+                            break;
+                        case "1":
+                            floor1Group.setVisible(true);
+                            floor1Image.setVisible(true);
+                            this.floor1Group.getChildren().add(circle);
+                            break;
+                        case "2":
+                            floor2Group.setVisible(true);
+                            floor2Image.setVisible(true);
+                            this.floor2Group.getChildren().add(circle);
+                            break;
+                        case "3":
+                            floor3Group.setVisible(true);
+                            floor3Image.setVisible(true);
+                            this.floor3Group.getChildren().add(circle);
+                            break;
+                    }
+                }
+                Point2D centrePoint = new Point2D(circle.getCenterX(), circle.getCenterY());
+                groundFloor.centreOn(centrePoint);
             }
-            Point2D centrePoint = new Point2D(circle.getCenterX(), circle.getCenterY());
-            groundFloor.centreOn(centrePoint);
         });
 
         groundFloor.setScrollBarPolicy(GesturePane.ScrollBarPolicy.NEVER);
@@ -405,9 +410,9 @@ public class FurnitureCheckoutController {
         userLastField.clear();
         assignedStaffComboBox.clear();
         deliveryDateField.clear();
-        locationComboBox.clear();
-        hourComboBox.clear();
-        minComboBox.clear();
+        locationComboBox.clearSelection();
+        hourComboBox.clearSelection();
+        minComboBox.clearSelection();
     }
 
     public void clearAllNodes() {
