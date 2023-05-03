@@ -56,7 +56,6 @@ public enum Screen {
   THREE_D_MAP("views/ThreeDMap.fxml"),
 
   DATABASE("views/database/Database.fxml"),
-  DATABASE_HELP("views/database/DatabaseHelp.fxml"),
   EDIT_DATABASE("views/database/EditDatabase.fxml"),
 
   FURNITURE_DELIVERY("views/serviceRequest/FurnitureDelivery.fxml"),

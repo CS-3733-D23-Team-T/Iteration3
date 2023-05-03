@@ -47,7 +47,6 @@ public class QuickNavigationMenuButtons {
 
         databaseNavigationMap.clear();
         databaseNavigationMap.put(GoogleTranslate.getString("database"), Screen.DATABASE);
-        databaseNavigationMap.put(GoogleTranslate.getString("databaseHelp"), Screen.DATABASE_HELP);
 
         announcementNavigationMap.clear();
         announcementNavigationMap.put(GoogleTranslate.getString("createAnnouncements"), Screen.CREATE_ANNOUNCEMENTS);

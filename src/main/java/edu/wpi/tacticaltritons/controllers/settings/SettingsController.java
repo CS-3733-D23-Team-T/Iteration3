@@ -48,7 +48,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 public class SettingsController {
-    @FXML private CheckBox narrationCheckBox;
     @FXML private CheckBox requireTwoFactorCheckBox;
     @FXML private ComboBox<String> languageComboBox;
     @FXML private ComboBox<String> twoFactorFrequencyComboBox;
@@ -71,16 +70,11 @@ public class SettingsController {
         algoText.setText(GoogleTranslate.getString("algorithmPreference"));
         tokenText.setText(GoogleTranslate.getString("tokenTimeLimit"));
         warningText.setText(GoogleTranslate.getString("warningSettings"));
-        narrationCheckBox.setText(GoogleTranslate.getString("narration"));
         requireTwoFactorCheckBox.setText(GoogleTranslate.getString("requireTwoFactor"));
         databaseConnectionLabel.setText(GoogleTranslate.getString("databaseConnection"));
 
 
         Login user = DAOFacade.getLogin(UserSessionToken.getUser().getUsername());
-
-        //todo reenable me soon
-        narrationCheckBox.setSelected(user.getNarration());
-        narrationCheckBox.setDisable(true);
 
         //todo implement me
         requireTwoFactorCheckBox.setDisable(true);
