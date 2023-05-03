@@ -1605,7 +1605,7 @@ public class ThreeDMapController {
 
         floorToggles.setAlignment(Pos.CENTER);
         floorToggles.setSpacing(10);
-        sidePane.getChildren().add(floorToggles);
+        //sidePane.getChildren().add(floorToggles);
 
         //drawing nodes
         nodes.forEach(node -> {
